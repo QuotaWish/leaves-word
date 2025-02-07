@@ -40,12 +40,13 @@ import { AIButton } from '../common/AIButton';
 import { useLeavesWordAI } from '@/composables/aigc';
 import { ChatEventType } from '@coze/api';
 import { ExclamationCircleFilled, LoadingOutlined } from '@ant-design/icons';
-import { scoreEnglishWordUsingPost } from '@/services/backend/englishWordController';
+import { getScoreEnglishWordUsingGet, scoreEnglishWordUsingPost } from '@/services/backend/englishWordController';
 
 export type Prop = {
   data: API.EnglishWord;
   value?: string | null;
   editable?: boolean;
+  rate?: boolean; // 评分模式 会自动获取单词评分数据
   onChange?: (wordContent: string) => void;
 };
 
@@ -90,7 +91,7 @@ const RateScoreView = ({ score, maxScore }: { score: number; maxScore: number })
   );
 };
 
-const WordContentEditor: React.FC<Prop> = ({ data, value, editable, onChange }) => {
+const WordContentEditor: React.FC<Prop> = ({ data, value, rate, editable, onChange }) => {
   const [form] = Form.useForm();
   const [currentContent, setCurrentContent] = useState(emptyWordContent());
   const [isDrawerVisible, setDrawerVisible] = useState(false);
@@ -103,6 +104,51 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, editable, onChange }) 
   const [seconds, setSeconds] = useState(-1);
 
   const [aiSupplying, setAISupplying] = useState(false);
+  const [aiValidating, setAIValidating] = useState(false);
+  const [validateInfo, setValidateInfo] = useState('');
+  const [scoreInfo, setScoreInfo] = useState<{ ai: number; manual: number }>({
+    ai: 0,
+    manual: 0,
+  });
+
+  const autoGetScore = useCallback(async () => {
+    setAISupplying(true)
+    const res = await getScoreEnglishWordUsingGet({
+      id: data.id!,
+    })
+    setAISupplying(false)
+
+    if (res.code !== 0) {
+      message.error(`获取评分失败：${res.message}`)
+      return
+    }
+
+    const infoData = res.data
+
+    try {
+      const json = JSON.parse(infoData?.info || '{}')
+
+      setValidateInfo(json['info'])
+      setScoreInfo({
+        ...scoreInfo,
+        ai: json.score ?? 0,
+      })
+      message.success('已获取AI评分')
+
+      console.log(json['info'])
+    } catch (e) {
+      console.error(e)
+      message.error('获取评分失败：评分数据格式错误')
+    }
+
+  }, [data, scoreInfo, setSupplymentData, setScoreInfo])
+
+  // 获取AI评分数据
+  useEffect(() => {
+    if (rate && isDrawerVisible) {
+      autoGetScore()
+    }
+  }, [rate, isDrawerVisible])
 
   function tryParseInfo(info: string) {
     const [parsedInfo, parseStatus, msg] = parseWordContent(info);
@@ -266,13 +312,6 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, editable, onChange }) 
 
     setAISupplying(false);
   }, [infoData]);
-
-  const [aiValidating, setAIValidating] = useState(false);
-  const [validateInfo, setValidateInfo] = useState('');
-  const [scoreInfo, setScoreInfo] = useState<{ ai: number; manual: number }>({
-    ai: 0,
-    manual: 0,
-  });
 
   const handleScore = () => {
     if (scoreInfo.manual < 60) {
@@ -547,61 +586,61 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, editable, onChange }) 
             ...(editable
               ? []
               : [
-                  {
-                    label: '综合审阅',
-                    key: '0',
-                    children: (
-                      <>
-                        <Form.Item label="审阅评价">
-                          {validateInfo ? renderValidateReview : '当前暂无任何评价.'}
-                        </Form.Item>
-                        <Form.Item label="JSON数据">
-                          <InfoComponent readonly onChange={handleInfoChange} data={infoData} />
-                        </Form.Item>
-                        <Form.Item label="操作">
+                {
+                  label: '综合审阅',
+                  key: '0',
+                  children: (
+                    <>
+                      <Form.Item label="审阅评价">
+                        {validateInfo ? renderValidateReview : '当前暂无任何评价.'}
+                      </Form.Item>
+                      <Form.Item label="JSON数据">
+                        <InfoComponent readonly onChange={handleInfoChange} data={infoData} />
+                      </Form.Item>
+                      <Form.Item label="操作">
+                        <Button
+                          className="mx-2"
+                          loading={aiValidating}
+                          variant="outlined"
+                          color="volcano"
+                          onClick={handleAIValidate}
+                        >
+                          AI评分
+                        </Button>
+                        <Popconfirm
+                          title="人工评分"
+                          description={
+                            <>
+                              <p>请输入你对单词的整体打分</p>
+                              <InputNumber
+                                className="w-full"
+                                min={0}
+                                max={100}
+                                onChange={(value) => {
+                                  setScoreInfo({
+                                    ...scoreInfo,
+                                    manual: +(value ?? 0),
+                                  });
+                                }}
+                              />
+                            </>
+                          }
+                          showCancel={false}
+                        >
                           <Button
                             className="mx-2"
-                            loading={aiValidating}
+                            disabled={aiValidating}
                             variant="outlined"
-                            color="volcano"
-                            onClick={handleAIValidate}
+                            color="geekblue"
                           >
-                            AI评分
+                            人工评分
                           </Button>
-                          <Popconfirm
-                            title="人工评分"
-                            description={
-                              <>
-                                <p>请输入你对单词的整体打分</p>
-                                <InputNumber
-                                  className="w-full"
-                                  min={0}
-                                  max={100}
-                                  onChange={(value) => {
-                                    setScoreInfo({
-                                      ...scoreInfo,
-                                      manual: +(value ?? 0),
-                                    });
-                                  }}
-                                />
-                              </>
-                            }
-                            showCancel={false}
-                          >
-                            <Button
-                              className="mx-2"
-                              disabled={aiValidating}
-                              variant="outlined"
-                              color="geekblue"
-                            >
-                              人工评分
-                            </Button>
-                          </Popconfirm>
-                        </Form.Item>
-                      </>
-                    ),
-                  },
-                ]),
+                        </Popconfirm>
+                      </Form.Item>
+                    </>
+                  ),
+                },
+              ]),
             {
               label: '发音配置',
               key: '1',

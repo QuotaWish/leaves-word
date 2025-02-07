@@ -7,7 +7,7 @@ export async function listStatusChangeByPageUsingPost(
   body: API.EnglishWordStatusChangeQueryRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.BaseResponsePageWordStatusChange_>('/api/word_status_change/list/page', {
+  return request<API.BaseResponsePageWordStatusChangeVO_>('/api/word_status_change/list/page', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

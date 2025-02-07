@@ -240,9 +240,9 @@ declare namespace API {
     message?: string;
   };
 
-  type BaseResponsePageWordStatusChange_ = {
+  type BaseResponsePageWordStatusChangeVO_ = {
     code?: number;
-    data?: PageWordStatusChange_;
+    data?: PageWordStatusChangeVO_;
     message?: string;
   };
 
@@ -267,6 +267,12 @@ declare namespace API {
   type BaseResponseUserVO_ = {
     code?: number;
     data?: UserVO;
+    message?: string;
+  };
+
+  type BaseResponseWordStatusChange_ = {
+    code?: number;
+    data?: WordStatusChange;
     message?: string;
   };
 
@@ -570,6 +576,11 @@ declare namespace API {
     id?: number;
   };
 
+  type getScoreEnglishWordUsingGETParams = {
+    /** id */
+    id: number;
+  };
+
   type getUserByIdUsingGETParams = {
     /** id */
     id?: number;
@@ -862,14 +873,14 @@ declare namespace API {
     total?: number;
   };
 
-  type PageWordStatusChange_ = {
+  type PageWordStatusChangeVO_ = {
     countId?: string;
     current?: number;
     maxLimit?: number;
     optimizeCountSql?: boolean;
     orders?: OrderItem[];
     pages?: number;
-    records?: WordStatusChange[];
+    records?: WordStatusChangeVO[];
     searchCount?: boolean;
     size?: number;
     total?: number;
@@ -1057,5 +1068,34 @@ declare namespace API {
     status?: string;
     updateTime?: string;
     wordId?: number;
+  };
+
+  type WordStatusChangeVO = {
+    comment?: string;
+    createTime?: string;
+    id?: number;
+    info?: string;
+    status?:
+      | 'UNKNOWN'
+      | 'CREATED'
+      | 'UPLOADING'
+      | 'UPLOADED'
+      | 'IMPORTING'
+      | 'EXPORTING'
+      | 'EXPORTED'
+      | 'PROCESSING'
+      | 'PROCESSED'
+      | 'REVIEWING'
+      | 'APPROVED'
+      | 'REJECTED'
+      | 'FAILED'
+      | 'DATA_FORMAT_ERROR'
+      | 'DELETED'
+      | 'IN_QUEUE'
+      | 'PUBLISHED'
+      | 'UNPUBLISHED';
+    updateTime?: string;
+    wordId?: number;
+    word_head?: string;
   };
 }

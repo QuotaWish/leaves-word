@@ -90,9 +90,20 @@ const EnglishWordPage: React.FC = () => {
             setUpdateModalVisible(true);
           }}
         >
-          重新扩充处理
+          继续编辑
         </Typography.Link>
       }
+
+      // if (record.status === 'UPLOADED') {
+      //   return <Typography.Link
+      //     onClick={() => {
+      //       setCurrentRow(record);
+      //       setUpdateModalVisible(true);
+      //     }}
+      //   >
+      //     人工审核
+      //   </Typography.Link>
+      // }
 
       return <Popconfirm onConfirm={() => {
         setCurrentRow(record);
@@ -140,7 +151,7 @@ const EnglishWordPage: React.FC = () => {
           text: <Tag icon={<LoadingOutlined />} color="blue">上传中</Tag>,
         },
         UPLOADED: {
-          text: <Tag icon={<CloudUploadOutlined />} color="green">已上传</Tag>,
+          text: <Tag icon={<CloudUploadOutlined />} color="warning">AI已上传处理</Tag>,
         },
         IMPORTING: {
           text: <Tag icon={<SyncOutlined />} color="blue">导入中</Tag>,
@@ -191,9 +202,12 @@ const EnglishWordPage: React.FC = () => {
       dataIndex: 'info',
       hideInSearch: true,
       render: (value, data/* , _data, _row, _action */) => {
+         if (data.status === 'PROCESSING') return <Tag icon={<SyncOutlined />} color="blue">等待处理完成</Tag>
+
         if (data.status === 'UNKNOWN') return <Tag icon={<ExclamationCircleOutlined />} color="#DD001BE0">导入后等待扩充处理</Tag>
         if (data.status === 'CREATED') return <Tag icon={<ExclamationCircleOutlined />} color="#DD001B80">新建后等待扩充处理</Tag>
-        if (data.status !== 'PROCESSED') return
+        if (data.status === 'PROCESSED') return <Tag icon={<ExclamationCircleOutlined />} color="#E1BB88">等待AI评分审核</Tag>
+        if (data.status === 'UPLOADED') return <WordContentEditor rate data={data} value={value as any} />;
 
         return <WordContentEditor data={data} value={value as any} />;
       },

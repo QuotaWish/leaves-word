@@ -107,6 +107,21 @@ export async function listMyEnglishWordVoByPageUsingPost(
   });
 }
 
+/** getScoreEnglishWord GET /api/english_word/score */
+export async function getScoreEnglishWordUsingGet(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getScoreEnglishWordUsingGETParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseWordStatusChange_>('/api/english_word/score', {
+    method: 'GET',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
 /** scoreEnglishWord POST /api/english_word/score */
 export async function scoreEnglishWordUsingPost(
   body: API.EnglishWordScoreRequest,
