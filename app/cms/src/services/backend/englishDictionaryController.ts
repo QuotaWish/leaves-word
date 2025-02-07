@@ -64,10 +64,13 @@ export async function importEnglishDictionaryUsingPost(
 
 /** listEnglishDictionary GET /api/english_dictionary/list */
 export async function listEnglishDictionaryUsingGet(options?: { [key: string]: any }) {
-  return request<API.BaseResponseListEnglishDictionary_>('/api/english_dictionary/list', {
-    method: 'GET',
-    ...(options || {}),
-  });
+  return request<API.BaseResponseListEnglishDictionaryWithCategoryVO_>(
+    '/api/english_dictionary/list',
+    {
+      method: 'GET',
+      ...(options || {}),
+    },
+  );
 }
 
 /** listEnglishDictionaryByPage POST /api/english_dictionary/list/page */

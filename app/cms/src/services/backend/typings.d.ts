@@ -114,9 +114,9 @@ declare namespace API {
     message?: string;
   };
 
-  type BaseResponseListEnglishDictionary_ = {
+  type BaseResponseListEnglishDictionaryWithCategoryVO_ = {
     code?: number;
-    data?: EnglishDictionary[];
+    data?: EnglishDictionaryWithCategoryVO[];
     message?: string;
   };
 
@@ -237,6 +237,12 @@ declare namespace API {
   type BaseResponsePageUserVO_ = {
     code?: number;
     data?: PageUserVO_;
+    message?: string;
+  };
+
+  type BaseResponsePageWordStatusChange_ = {
+    code?: number;
+    data?: PageWordStatusChange_;
     message?: string;
   };
 
@@ -399,14 +405,30 @@ declare namespace API {
   };
 
   type EnglishDictionaryVO = {
-    content?: string;
-    createTime?: string;
+    author?: string;
+    create_time?: string;
+    description?: string;
     id?: number;
-    tagList?: string[];
-    title?: string;
-    updateTime?: string;
-    user?: UserVO;
-    userId?: number;
+    image_url?: string;
+    isbn?: string;
+    name?: string;
+    publication_date?: string;
+    publisher?: string;
+    update_time?: string;
+  };
+
+  type EnglishDictionaryWithCategoryVO = {
+    author?: string;
+    categoryList?: Category[];
+    create_time?: string;
+    description?: string;
+    id?: number;
+    image_url?: string;
+    isbn?: string;
+    name?: string;
+    publication_date?: string;
+    publisher?: string;
+    update_time?: string;
   };
 
   type EnglishWord = {
@@ -482,6 +504,15 @@ declare namespace API {
     score?: number;
   };
 
+  type EnglishWordStatusChangeQueryRequest = {
+    comment?: string;
+    current?: number;
+    id?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+  };
+
   type EnglishWordUpdateRequest = {
     id?: number;
     info?: string;
@@ -516,7 +547,7 @@ declare namespace API {
 
   type getEnglishDictionaryVOByIdUsingGETParams = {
     /** id */
-    id?: number;
+    id: string;
   };
 
   type getEnglishWordChangeLogVOByIdUsingGETParams = {
@@ -547,6 +578,13 @@ declare namespace API {
   type getUserVOByIdUsingGETParams = {
     /** id */
     id?: number;
+  };
+
+  type listRecordUsingGETParams = {
+    /** lastId */
+    lastId?: number;
+    /** wordId */
+    wordId: number;
   };
 
   type LoginUserVO = {
@@ -824,6 +862,19 @@ declare namespace API {
     total?: number;
   };
 
+  type PageWordStatusChange_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: WordStatusChange[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
   type Post = {
     content?: string;
     createTime?: string;
@@ -903,6 +954,11 @@ declare namespace API {
     updateTime?: string;
     user?: UserVO;
     userId?: number;
+  };
+
+  type selectOneUsingGET1Params = {
+    /** id */
+    id?: number;
   };
 
   type selectOneUsingGETParams = {
@@ -990,5 +1046,16 @@ declare namespace API {
     userName?: string;
     userProfile?: string;
     userRole?: string;
+  };
+
+  type WordStatusChange = {
+    comment?: string;
+    createTime?: string;
+    id?: number;
+    info?: string;
+    isDelete?: number;
+    status?: string;
+    updateTime?: string;
+    wordId?: number;
   };
 }
