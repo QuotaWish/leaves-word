@@ -1,0 +1,16 @@
+apiVersion: cd.coding.net/v1alpha1
+kind: GitSource
+metadata:
+  name: team-config
+spec:
+  git:
+    url: https://e.coding.net/g-wggu5114/thisai/thisai-ends.git
+    cred: git
+    ref:
+      branch: master
+  templateRenderer:
+    engine: Orbit
+    path: /ends
+    files:
+    - values.yaml
+  interval: 1m

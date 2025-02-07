@@ -1,0 +1,51 @@
+{
+  "name": "leaves-word",
+  "version": "1.0.0",
+  "description": "Leave words, Embrace worlds! 这是千叶单词的APP总仓库",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "openapi:cms": "pnpm -F @leaves-word/app-cms openapi",
+    "openapi:ends": "pnpm -F @leaves-word/app-ends openapi",
+    "dev:cms": "pnpm -F @leaves-word/app-cms dev",
+    "dev:view": "pnpm -F @leaves-word/app-view dev",
+    "dev:ends": "pnpm -F @leaves-word/app-ends dev",
+    "build:cms": "pnpm -F @leaves-word/app-cms build",
+    "build:view": "pnpm -F @leaves-word/app-view build",
+    "build:ends": "pnpm -F @leaves-word/app-ends build",
+    "preview:cms": "pnpm -F @leaves-word/app-cms preview",
+    "preview:view": "pnpm -F @leaves-word/app-view preview",
+    "preview:ends": "pnpm -F @leaves-word/app-ends preview",
+    "lint:cms": "pnpm -F @leaves-word/app-cms lint",
+    "lint:view": "pnpm -F @leaves-word/app-view lint",
+    "lint:ends": "pnpm -F @leaves-word/app-ends lint",
+    "format:cms": "pnpm -F @leaves-word/app-cms format",
+    "format:view": "pnpm -F @leaves-word/app-view format",
+    "format:ends": "pnpm -F @leaves-word/app-ends format",
+    "clean:cms": "pnpm -F @leaves-word/app-cms clean",
+    "clean:view": "pnpm -F @leaves-word/app-view clean",
+    "clean:ends": "pnpm -F @leaves-word/app-ends clean",
+    "test:cms": "pnpm -F @leaves-word/app-cms test",
+    "test:view": "pnpm -F @leaves-word/app-view test",
+    "test:ends": "pnpm -F @leaves-word/app-ends test",
+    "dev:all": "pnpm -F @leaves-word/app-cms dev && pnpm -F @leaves-word/app-view dev && pnpm -F @leaves-word/app-ends dev",
+    "build:all": "pnpm -F @leaves-word/app-cms build && pnpm -F @leaves-word/app-view build && pnpm -F @leaves-word/app-ends build",
+    "preview:all": "pnpm -F @leaves-word/app-cms preview && pnpm -F @leaves-word/app-view preview && pnpm -F @leaves-word/app-ends preview",
+    "lint:all": "pnpm -F @leaves-word/app-cms lint && pnpm -F @leaves-word/app-view lint && pnpm -F @leaves-word/app-ends lint",
+    "format:all": "pnpm -F @leaves-word/app-cms format && pnpm -F @leaves-word/app-view format && pnpm -F @leaves-word/app-ends format",
+    "clean:all": "pnpm -F @leaves-word/app-cms clean && pnpm -F @leaves-word/app-view clean && pnpm -F @leaves-word/app-ends clean",
+    "test:all": "pnpm -F @leaves-word/app-cms test && pnpm -F @leaves-word/app-view test && pnpm -F @leaves-word/app-ends test"
+  },
+  "keywords": [
+    "leaves-word",
+    "leaves-word-view",
+    "leaves-word-api",
+    "leaves-word-admin"
+  ],
+  "author": "TalexDreamSoul <talexdreamsoul@gmail.com>",
+  "license": "MIT",
+  "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0",
+  "lint-staged": {
+    "*": ""
+  }
+}

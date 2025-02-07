@@ -1,0 +1,15 @@
+.WordInfoComponent {
+  .monaco-editor .minimap {
+    border-left: 1px solid #D9D9D9;
+  }
+  position: relative;
+  padding: 5px;
+
+  width: max-content;
+  max-width: calc(100% - 10px);
+  height: calc(100% - 10px);
+
+  border-radius: 6px;
+  box-sizing: content-box;
+  border: 1px solid #D9D9D9;
+}

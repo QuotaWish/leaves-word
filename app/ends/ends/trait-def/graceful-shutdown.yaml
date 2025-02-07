@@ -1,0 +1,198 @@
+apiVersion: oam.coding.net/v1alpha1
+kind: Trait
+metadata:
+  annotations:
+    name: 优雅关闭
+  name: graceful-shutdown
+spec:
+  available: true
+  contextVariables:
+  - description: 目标对象命名空间
+    name: 目标对象命名空间
+    required: true
+    type: STRING
+    variable: namespace
+  - description: 目标对象
+    name: 目标对象
+    required: true
+    type: STRING
+    variable: src
+  - description: 目标对象名称
+    name: 目标对象名称
+    required: true
+    type: STRING
+    variable: name
+  customVariables:
+  - description: K8S 在发送 SIGTERM 和执行 preStop Hook 后所等待的时间。等待结束后将强行杀死进程。
+    id: 386045397079080
+    name: 优雅关闭等待时间（秒）
+    param1: '1'
+    required: true
+    type: INT
+    variable: grace_period_seconds
+  - description: 如果定义了 preStop Hook，K8S 在关闭容器前调用这个 Hook。注意，就算定义了 preStop hook，也要检查业务进程在收到
+      SIGTERM 后的反应。
+    id: 386045397079081
+    name: 关闭容器前 Hook（preStop Hook）
+    required: false
+    subVariables:
+    - description: preStop Hook 调用一个 Http 接口完成优雅关闭的逻辑。
+      name: HTTP hook
+      required: false
+      subVariables:
+      - description: 'Http preStop Hook 的 HTTP 路径 '
+        name: HTTP hook 路径
+        required: true
+        type: STRING
+        variable: path
+      - description: Http preStop Hook 的 HTTP 端口
+        name: HTTP hook 端口
+        param1: '1'
+        param2: '65535'
+        required: true
+        type: INT
+        variable: port
+      - description: 可以自定义 Http preStop Hook 发送时的请求头
+        name: HTTP hook 自定义请求头
+        required: false
+        subVariables:
+        - description: Http preStop Hook 自定义请求头的键
+          name: HTTP hook 自定义请的键
+          required: true
+          type: STRING
+          variable: name
+        - description: Http preStop Hook 自定义请求头的值
+          name: HTTP hook 自定义请的值
+          required: true
+          type: STRING
+          variable: value
+        type: OBJECT_ARRAY
+        variable: headers
+      type: OBJECT
+      variable: http_hook
+    - description: preStop Hook 调用一个命令完成优雅关闭的逻辑。
+      name: 命令行 hook
+      required: false
+      subVariables:
+      - description: 探测命令
+        name: 探测命令
+        param1: STRING
+        required: true
+        type: ARRAY
+        variable: cmd
+      type: OBJECT
+      variable: cmd_hook
+    type: OBJECT
+    variable: pre_stop_hook
+  description: |-
+    K8S 会自动进行故障恢复，负载均衡。处理好优雅关闭可以在 K8S 进行容器调度操作时，减少对用户流量的影响。
+    K8S 优雅关闭的流程：
+    1. 摘除流量
+    2. 执行 preStop hook
+    3. （同时）发送 SIGTERM 给容器进程
+    4. 等待“优雅关闭等待时间”
+    5. 发送 SIGKILL 强行杀死容器进程
+  strategy: PATCH
+  targetGVK:
+    apiVersion: apps/v1
+    kind: Deployment
+  trait:
+    apiVersion: apps/v1
+    avatar: graceful-shutdown
+    content: |-
+      #运维插件的定义
+      #假设运维插件的 id 和 name 都是 graceful-shutdown
+      # patch 类型的插件，作用对象类型 Deployment
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: {{.name}}
+        namespace: {{.namespace}}
+        labels:
+          coding.oam.trait/graceful-shutdown: "true"
+      spec:
+        template:
+          spec:
+            terminationGracePeriodSeconds: {{.grace_period_seconds}}
+            containers:
+            - name: {{.name}}
+              {{- if .pre_stop_hook}}
+              lifecycle:
+                preStop:
+                  {{- if .pre_stop_hook.http_hook}}
+                  httpGet:
+                    path: {{.pre_stop_hook.http_hook.path}}
+                    port: {{.pre_stop_hook.http_hook.port}}
+                    httpHeaders:
+                    {{- range .pre_stop_hook.http_hook.headers}}
+                    - name: {{.name}}
+                      value: {{.value | quote}}
+                    {{- end}}
+                  {{- end}}
+                  {{- if .pre_stop_hook.cmd_hook}}
+                  exec:
+                    command:
+                    {{- range .pre_stop_hook.cmd_hook.cmd}}
+                    - {{.}}
+                    {{- end}}
+                  {{- end}}
+              {{- end}}
+    createTime: 2024-08-17T09:57:35.596Z
+    creatorId: 9152296
+    deleted: false
+    description: |-
+      K8S 会自动进行故障恢复，负载均衡。处理好优雅关闭可以在 K8S 进行容器调度操作时，减少对用户流量的影响。
+      K8S 优雅关闭的流程：
+      1. 摘除流量
+      2. 执行 preStop hook
+      3. （同时）发送 SIGTERM 给容器进程
+      4. 等待“优雅关闭等待时间”
+      5. 发送 SIGKILL 强行杀死容器进程
+    id: 0
+    name: 优雅关闭
+    pattern: PATCH
+    seq: graceful-shutdown
+    status: ENABLE
+    targetType: Deployment
+    teamId: 4211598
+    updateTime: 2024-08-17T09:57:35.596Z
+  traitDefinition:
+    kube:
+      template: |-
+        #运维插件的定义
+        #假设运维插件的 id 和 name 都是 graceful-shutdown
+        # patch 类型的插件，作用对象类型 Deployment
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: {{.name}}
+          namespace: {{.namespace}}
+          labels:
+            coding.oam.trait/graceful-shutdown: "true"
+        spec:
+          template:
+            spec:
+              terminationGracePeriodSeconds: {{.grace_period_seconds}}
+              containers:
+              - name: {{.name}}
+                {{- if .pre_stop_hook}}
+                lifecycle:
+                  preStop:
+                    {{- if .pre_stop_hook.http_hook}}
+                    httpGet:
+                      path: {{.pre_stop_hook.http_hook.path}}
+                      port: {{.pre_stop_hook.http_hook.port}}
+                      httpHeaders:
+                      {{- range .pre_stop_hook.http_hook.headers}}
+                      - name: {{.name}}
+                        value: {{.value | quote}}
+                      {{- end}}
+                    {{- end}}
+                    {{- if .pre_stop_hook.cmd_hook}}
+                    exec:
+                      command:
+                      {{- range .pre_stop_hook.cmd_hook.cmd}}
+                      - {{.}}
+                      {{- end}}
+                    {{- end}}
+                {{- end}}

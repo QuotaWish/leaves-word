@@ -1,0 +1,115 @@
+apiVersion: oam.coding.net/v1alpha1
+kind: Trait
+metadata:
+  annotations:
+    name: nginx-ingress
+  name: nginx-ingress
+spec:
+  available: true
+  contextVariables:
+  - description: 目标对象命名空间
+    name: 目标对象命名空间
+    required: true
+    type: STRING
+    variable: namespace
+  - description: 目标对象
+    name: 目标对象
+    required: true
+    type: STRING
+    variable: src
+  - description: 目标对象名称
+    name: 目标对象名称
+    required: true
+    type: STRING
+    variable: name
+  customVariables:
+  - description: 此服务监听的域名，可以监听多个域名，也可以用 * 号通配
+    id: 386055174001704
+    name: 监听域名
+    required: true
+    type: STRING
+    variable: host
+  - description: https 访问设置
+    id: 386055174001705
+    name: https 访问
+    required: true
+    subVariables:
+    - description: 是否开启 https 访问
+      name: 开启 https 访问
+      required: true
+      type: BOOL
+      variable: enable
+    - description: https 证书
+      name: https 证书
+      required: false
+      type: STRING
+      variable: tls
+    type: OBJECT
+    variable: https
+  - description: 此服务监听的规则
+    id: 386055174001706
+    name: 监听路径
+    required: true
+    subVariables:
+    - description: 此服务监听的路径
+      name: 监听路径
+      required: true
+      type: STRING
+      variable: path
+    - description: 路径的匹配规则，可以是 Prefix、Exact 或 ImplementationSpecific
+      name: 路径匹配规则
+      param1: '["Prefix","Exact","ImplementationSpecific"]'
+      required: true
+      type: ENUM
+      variable: path_type
+    - description: 此路径监听的端口
+      name: 监听端口
+      param1: '1'
+      param2: '65535'
+      required: true
+      type: INT
+      variable: port
+    type: OBJECT_ARRAY
+    variable: paths
+  description: |-
+    通过 nginx 对外暴露服务。
+    K8S 集群版本大于 1.19 且要求先安装 ingress-nginx-controller, 请联系集群管理员安装，或者访问 https://kubernetes.github.io/ingress-nginx/deploy/#quick-start 获取安装方式。
+  strategy: ADD
+  targetGVK:
+    apiVersion: v1
+    kind: Service
+  trait:
+    apiVersion: v1
+    avatar: nginx-ingress
+    content: "#运维插件的定义\n#假设运维插件的 id 和 name 都是 nginx-ingress\napiVersion: networking.k8s.io/v1\n\
+      kind: Ingress\nmetadata:\n  name: {{.name}}-ingress\n  namespace: {{.namespace}}\n\
+      spec:\n  ingressClassName: nginx\n  {{- if .https.enable}}\n  tls:\n    - hosts:\n\
+      \      - {{.host|quote}}\n      secretName: {{ .https.tls}}\n  {{- end}}\n \
+      \ rules:\n  - host: {{.host|quote}}\n    http:\n      paths:\n     {{- range\
+      \ .paths}}\n      - path: {{.path}} \n        pathType: {{.path_type}}\n   \
+      \     backend:\n          service:\n            name: {{$.name}}\n         \
+      \   port:\n              number: {{.port}}\n     {{- end}}"
+    createTime: 2024-08-17T09:57:37.926Z
+    creatorId: 9152296
+    deleted: false
+    description: |-
+      通过 nginx 对外暴露服务。
+      K8S 集群版本大于 1.19 且要求先安装 ingress-nginx-controller, 请联系集群管理员安装，或者访问 https://kubernetes.github.io/ingress-nginx/deploy/#quick-start 获取安装方式。
+    id: 0
+    name: nginx-ingress
+    pattern: ADD
+    seq: nginx-ingress
+    status: ENABLE
+    targetType: Service
+    teamId: 4211598
+    updateTime: 2024-08-17T09:57:37.926Z
+  traitDefinition:
+    kube:
+      template: "#运维插件的定义\n#假设运维插件的 id 和 name 都是 nginx-ingress\napiVersion: networking.k8s.io/v1\n\
+        kind: Ingress\nmetadata:\n  name: {{.name}}-ingress\n  namespace: {{.namespace}}\n\
+        spec:\n  ingressClassName: nginx\n  {{- if .https.enable}}\n  tls:\n    -\
+        \ hosts:\n      - {{.host|quote}}\n      secretName: {{ .https.tls}}\n  {{-\
+        \ end}}\n  rules:\n  - host: {{.host|quote}}\n    http:\n      paths:\n  \
+        \   {{- range .paths}}\n      - path: {{.path}} \n        pathType: {{.path_type}}\n\
+        \        backend:\n          service:\n            name: {{$.name}}\n    \
+        \        port:\n              number: {{.port}}\n     {{- end}}"

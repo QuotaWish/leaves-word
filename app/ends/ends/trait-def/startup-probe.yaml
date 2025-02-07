@@ -1,0 +1,237 @@
+apiVersion: oam.coding.net/v1alpha1
+kind: Trait
+metadata:
+  annotations:
+    name: 启动探针
+  name: startup-probe
+spec:
+  available: true
+  contextVariables:
+  - description: 目标对象命名空间
+    name: 目标对象命名空间
+    required: true
+    type: STRING
+    variable: namespace
+  - description: 目标对象
+    name: 目标对象
+    required: true
+    type: STRING
+    variable: src
+  - description: 目标对象名称
+    name: 目标对象名称
+    required: true
+    type: STRING
+    variable: name
+  customVariables:
+  - description: K8S 通过命令对服务探活
+    id: 386061058610216
+    name: 命令行探针
+    required: false
+    subVariables:
+    - description: 探测命令
+      name: 探测命令
+      param1: STRING
+      required: true
+      type: ARRAY
+      variable: cmd
+    type: OBJECT
+    variable: cmd_probe
+  - description: 当探测失败时，Kubernetes 的重试次数。默认值是 3 次
+    id: 386061058610217
+    name: 失败重试次数
+    param1: '1'
+    required: false
+    type: INT
+    variable: failure_threadhold
+  - description: K8S 通过 HTTP 接口对服务探活
+    id: 386061058610218
+    name: HTTP 探针
+    required: false
+    subVariables:
+    - description: K8S 探活的 HTTP 路径
+      name: HTTP 探测路径
+      required: true
+      type: STRING
+      variable: path
+    - description: K8S 探活的 HTTP 端口
+      name: HTTP 探测端口
+      param1: '1'
+      param2: '65535'
+      required: true
+      type: INT
+      variable: port
+    - description: 可以自定义 K8S 探活时的请求头
+      name: HTTP 探测自定义请求头
+      required: false
+      subVariables:
+      - description: HTTP 探测自定义请求头的键
+        name: HTTP 探测自定义请的键
+        required: true
+        type: STRING
+        variable: name
+      - description: HTTP 探测自定义请求头的值
+        name: HTTP 探测自定义请的值
+        required: true
+        type: STRING
+        variable: value
+      type: OBJECT_ARRAY
+      variable: headers
+    type: OBJECT
+    variable: http_probe
+  - description: 容器启动后要等待多少秒后才启动存活和就绪探测器，合理设置此值可避免 Pod 不断重启
+    id: 386061058610219
+    name: 初始探测延迟
+    param1: '0'
+    required: true
+    type: INT
+    variable: init_delay
+  - description: 执行探测的时间间隔（单位是秒）。默认是 10 秒
+    id: 386061058610220
+    name: 探测间隔（秒）
+    param1: '1'
+    required: false
+    type: INT
+    variable: period_seconds
+  - description: K8S 通过 tcp 对服务探活
+    id: 386061058610221
+    name: tcp 探针
+    required: false
+    subVariables:
+    - description: tcp 探针端口
+      name: tcp 探针端口
+      param1: '1'
+      param2: '65535'
+      required: true
+      type: INT
+      variable: port
+    type: OBJECT
+    variable: tcp_probe
+  - description: 探测的超时后等待多少秒。默认值是 1 秒
+    id: 386061058610222
+    name: 探测超时（秒）
+    param1: '1'
+    required: false
+    type: INT
+    variable: timeout_seconds
+  description: |-
+    指示容器中的应用是否已经启动。K8S 会在启动探针成功后再启用存活探针。
+    有时候，会有一些服务在启动时需要较长的初始化时间。 要这种情况下，仅仅用存活探测，参数会非常复杂，设置不慎会导致服务无限重启。 可以通过使用启动探针来为服务设置为足够长的时间来应对糟糕情况下的启动时间。
+  strategy: PATCH
+  targetGVK:
+    apiVersion: apps/v1
+    kind: Deployment
+  trait:
+    apiVersion: apps/v1
+    avatar: startup_probe
+    content: |-
+      #运维插件的定义
+      #假设运维插件的 id 和 name 都是 startup-probe
+      # patch 类型的插件，作用对象类型 Deployment
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: {{.name}}
+        namespace: {{.namespace}}
+        labels:
+          coding.oam.trait/startup-probe: "true"
+      spec:
+        template:
+          spec:
+            containers:
+            - name: {{.name}}
+              startupProbe:
+                {{- if .http_probe}}
+                httpGet:
+                  path: {{.http_probe.path}}
+                  port: {{.http_probe.port}}
+                  httpHeaders:
+                  {{- range .http_probe.headers}}
+                  - name: {{.name}}
+                    value: {{.value | quote}}
+                  {{- end}}
+                {{- end}}
+                {{- if .cmd_probe}}
+                exec:
+                  command:
+                  {{- range .cmd_probe.cmd}}
+                  - {{.}}
+                  {{- end}}
+                {{- end}}
+                {{- if .tcp_probe}}
+                tcpSocket:
+                  port: {{.tcp_probe.port}}
+                {{- end}}
+                initialDelaySeconds: {{.init_delay}}
+                {{- if .period_seconds}}
+                periodSeconds: {{.period_seconds}}
+                {{- end}}
+                {{- if .timeout_seconds}}
+                timeoutSeconds: {{.timeout_seconds}}
+                {{- end}}
+                {{- if .failure_threadhold}}
+                failureThreshold: {{.failure_threadhold}}
+                {{- end}}
+    createTime: 2024-08-17T09:57:39.328Z
+    creatorId: 9152296
+    deleted: false
+    description: |-
+      指示容器中的应用是否已经启动。K8S 会在启动探针成功后再启用存活探针。
+      有时候，会有一些服务在启动时需要较长的初始化时间。 要这种情况下，仅仅用存活探测，参数会非常复杂，设置不慎会导致服务无限重启。 可以通过使用启动探针来为服务设置为足够长的时间来应对糟糕情况下的启动时间。
+    id: 0
+    name: 启动探针
+    pattern: PATCH
+    seq: startup-probe
+    status: ENABLE
+    targetType: Deployment
+    teamId: 4211598
+    updateTime: 2024-08-17T09:57:39.328Z
+  traitDefinition:
+    kube:
+      template: |-
+        #运维插件的定义
+        #假设运维插件的 id 和 name 都是 startup-probe
+        # patch 类型的插件，作用对象类型 Deployment
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: {{.name}}
+          namespace: {{.namespace}}
+          labels:
+            coding.oam.trait/startup-probe: "true"
+        spec:
+          template:
+            spec:
+              containers:
+              - name: {{.name}}
+                startupProbe:
+                  {{- if .http_probe}}
+                  httpGet:
+                    path: {{.http_probe.path}}
+                    port: {{.http_probe.port}}
+                    httpHeaders:
+                    {{- range .http_probe.headers}}
+                    - name: {{.name}}
+                      value: {{.value | quote}}
+                    {{- end}}
+                  {{- end}}
+                  {{- if .cmd_probe}}
+                  exec:
+                    command:
+                    {{- range .cmd_probe.cmd}}
+                    - {{.}}
+                    {{- end}}
+                  {{- end}}
+                  {{- if .tcp_probe}}
+                  tcpSocket:
+                    port: {{.tcp_probe.port}}
+                  {{- end}}
+                  initialDelaySeconds: {{.init_delay}}
+                  {{- if .period_seconds}}
+                  periodSeconds: {{.period_seconds}}
+                  {{- end}}
+                  {{- if .timeout_seconds}}
+                  timeoutSeconds: {{.timeout_seconds}}
+                  {{- end}}
+                  {{- if .failure_threadhold}}
+                  failureThreshold: {{.failure_threadhold}}
+                  {{- end}}

@@ -1,0 +1,237 @@
+apiVersion: oam.coding.net/v1alpha1
+kind: Trait
+metadata:
+  annotations:
+    name: 就绪探针
+  name: readiness-probe
+spec:
+  available: true
+  contextVariables:
+  - description: 目标对象命名空间
+    name: 目标对象命名空间
+    required: true
+    type: STRING
+    variable: namespace
+  - description: 目标对象
+    name: 目标对象
+    required: true
+    type: STRING
+    variable: src
+  - description: 目标对象名称
+    name: 目标对象名称
+    required: true
+    type: STRING
+    variable: name
+  customVariables:
+  - description: K8S 通过命令对服务探活
+    id: 386057107575848
+    name: 命令行探针
+    required: false
+    subVariables:
+    - description: 探测命令
+      name: 探测命令
+      param1: STRING
+      required: true
+      type: ARRAY
+      variable: cmd
+    type: OBJECT
+    variable: cmd_probe
+  - description: 当探测失败时，Kubernetes 的重试次数。默认值是 3 次
+    id: 386057107575849
+    name: 失败重试次数
+    param1: '1'
+    required: false
+    type: INT
+    variable: failure_threadhold
+  - description: K8S 通过 HTTP 接口对服务探活
+    id: 386057107575850
+    name: HTTP 探针
+    required: false
+    subVariables:
+    - description: K8S 探活的 HTTP 路径
+      name: HTTP 探测路径
+      required: true
+      type: STRING
+      variable: path
+    - description: K8S 探活的 HTTP 端口
+      name: HTTP 探测端口
+      param1: '1'
+      param2: '65535'
+      required: true
+      type: INT
+      variable: port
+    - description: 可以自定义 K8S 探活时的请求头
+      name: HTTP 探测自定义请求头
+      required: false
+      subVariables:
+      - description: HTTP 探测自定义请求头的键
+        name: HTTP 探测自定义请的键
+        required: true
+        type: STRING
+        variable: name
+      - description: HTTP 探测自定义请求头的值
+        name: HTTP 探测自定义请的值
+        required: true
+        type: STRING
+        variable: value
+      type: OBJECT_ARRAY
+      variable: headers
+    type: OBJECT
+    variable: http_probe
+  - description: 容器启动后要等待多少秒后才启动存活和就绪探测器，合理设置此值可避免 Pod 不断重启
+    id: 386057107575851
+    name: 初始探测延迟
+    param1: '0'
+    required: true
+    type: INT
+    variable: init_delay
+  - description: 执行探测的时间间隔（单位是秒）。默认是 10 秒
+    id: 386057107575852
+    name: 探测间隔（秒）
+    param1: '1'
+    required: false
+    type: INT
+    variable: period_seconds
+  - description: K8S 通过 tcp 对服务探活
+    id: 386057107575853
+    name: tcp 探针
+    required: false
+    subVariables:
+    - description: tcp 探针端口
+      name: tcp 探针端口
+      param1: '1'
+      param2: '65535'
+      required: true
+      type: INT
+      variable: port
+    type: OBJECT
+    variable: tcp_probe
+  - description: 探测的超时后等待多少秒。默认值是 1 秒
+    id: 386057107575854
+    name: 探测超时（秒）
+    param1: '1'
+    required: false
+    type: INT
+    variable: timeout_seconds
+  description: |-
+    指示容器是否准备好为请求提供服务。只有服务的就绪探针通过时，服务才能接收通过 Kubernetes Service 而来的流量。
+    有时候，服务会暂时性地无法为请求提供服务。 例如，服务在启动时可能需要加载大量的数据或配置文件，或是启动后要依赖等待外部服务。 在这种情况下，既不想杀死应用，也不想给它发送请求。 Kubernetes 提供了就绪探测器来发现并缓解这些情况。
+  strategy: PATCH
+  targetGVK:
+    apiVersion: apps/v1
+    kind: Deployment
+  trait:
+    apiVersion: apps/v1
+    avatar: readiness_probe
+    content: |-
+      #运维插件的定义
+      #假设运维插件的 id 和 name 都是 readiness-probe
+      # patch 类型的插件，作用对象类型 Deployment
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: {{.name}}
+        namespace: {{.namespace}}
+        labels:
+          coding.oam.trait/readiness-probe: "true"
+      spec:
+        template:
+          spec:
+            containers:
+            - name: {{.name}}
+              readinessProbe:
+                {{- if .http_probe}}
+                httpGet:
+                  path: {{.http_probe.path}}
+                  port: {{.http_probe.port}}
+                  httpHeaders:
+                  {{- range .http_probe.headers}}
+                  - name: {{.name}}
+                    value: {{.value | quote}}
+                  {{- end}}
+                {{- end}}
+                {{- if .cmd_probe}}
+                exec:
+                  command:
+                  {{- range .cmd_probe.cmd}}
+                  - {{.}}
+                  {{- end}}
+                {{- end}}
+                {{- if .tcp_probe}}
+                tcpSocket:
+                  port: {{.tcp_probe.port}}
+                {{- end}}
+                initialDelaySeconds: {{.init_delay}}
+                {{- if .period_seconds}}
+                periodSeconds: {{.period_seconds}}
+                {{- end}}
+                {{- if .timeout_seconds}}
+                timeoutSeconds: {{.timeout_seconds}}
+                {{- end}}
+                {{- if .failure_threadhold}}
+                failureThreshold: {{.failure_threadhold}}
+                {{- end}}
+    createTime: 2024-08-17T09:57:38.387Z
+    creatorId: 9152296
+    deleted: false
+    description: |-
+      指示容器是否准备好为请求提供服务。只有服务的就绪探针通过时，服务才能接收通过 Kubernetes Service 而来的流量。
+      有时候，服务会暂时性地无法为请求提供服务。 例如，服务在启动时可能需要加载大量的数据或配置文件，或是启动后要依赖等待外部服务。 在这种情况下，既不想杀死应用，也不想给它发送请求。 Kubernetes 提供了就绪探测器来发现并缓解这些情况。
+    id: 0
+    name: 就绪探针
+    pattern: PATCH
+    seq: readiness-probe
+    status: ENABLE
+    targetType: Deployment
+    teamId: 4211598
+    updateTime: 2024-08-17T09:57:38.387Z
+  traitDefinition:
+    kube:
+      template: |-
+        #运维插件的定义
+        #假设运维插件的 id 和 name 都是 readiness-probe
+        # patch 类型的插件，作用对象类型 Deployment
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: {{.name}}
+          namespace: {{.namespace}}
+          labels:
+            coding.oam.trait/readiness-probe: "true"
+        spec:
+          template:
+            spec:
+              containers:
+              - name: {{.name}}
+                readinessProbe:
+                  {{- if .http_probe}}
+                  httpGet:
+                    path: {{.http_probe.path}}
+                    port: {{.http_probe.port}}
+                    httpHeaders:
+                    {{- range .http_probe.headers}}
+                    - name: {{.name}}
+                      value: {{.value | quote}}
+                    {{- end}}
+                  {{- end}}
+                  {{- if .cmd_probe}}
+                  exec:
+                    command:
+                    {{- range .cmd_probe.cmd}}
+                    - {{.}}
+                    {{- end}}
+                  {{- end}}
+                  {{- if .tcp_probe}}
+                  tcpSocket:
+                    port: {{.tcp_probe.port}}
+                  {{- end}}
+                  initialDelaySeconds: {{.init_delay}}
+                  {{- if .period_seconds}}
+                  periodSeconds: {{.period_seconds}}
+                  {{- end}}
+                  {{- if .timeout_seconds}}
+                  timeoutSeconds: {{.timeout_seconds}}
+                  {{- end}}
+                  {{- if .failure_threadhold}}
+                  failureThreshold: {{.failure_threadhold}}
+                  {{- end}}
