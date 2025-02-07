@@ -133,9 +133,6 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, rate, editable, onChan
         ...scoreInfo,
         ai: json.score ?? 0,
       })
-      message.success('已获取AI评分')
-
-      console.log(json['info'])
     } catch (e) {
       console.error(e)
       message.error('获取评分失败：评分数据格式错误')
@@ -597,46 +594,48 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, rate, editable, onChan
                       <Form.Item label="JSON数据">
                         <InfoComponent readonly onChange={handleInfoChange} data={infoData} />
                       </Form.Item>
-                      <Form.Item label="操作">
-                        <Button
-                          className="mx-2"
-                          loading={aiValidating}
-                          variant="outlined"
-                          color="volcano"
-                          onClick={handleAIValidate}
-                        >
-                          AI评分
-                        </Button>
-                        <Popconfirm
-                          title="人工评分"
-                          description={
-                            <>
-                              <p>请输入你对单词的整体打分</p>
-                              <InputNumber
-                                className="w-full"
-                                min={0}
-                                max={100}
-                                onChange={(value) => {
-                                  setScoreInfo({
-                                    ...scoreInfo,
-                                    manual: +(value ?? 0),
-                                  });
-                                }}
-                              />
-                            </>
-                          }
-                          showCancel={false}
-                        >
+                      {data.status === 'APPROVED' ? <></> : <>
+                        <Form.Item label="操作">
                           <Button
                             className="mx-2"
-                            disabled={aiValidating}
+                            loading={aiValidating}
                             variant="outlined"
-                            color="geekblue"
+                            color="volcano"
+                            onClick={handleAIValidate}
                           >
-                            人工评分
+                            AI评分
                           </Button>
-                        </Popconfirm>
-                      </Form.Item>
+                          <Popconfirm
+                            title="人工评分"
+                            description={
+                              <>
+                                <p>请输入你对单词的整体打分</p>
+                                <InputNumber
+                                  className="w-full"
+                                  min={0}
+                                  max={100}
+                                  onChange={(value) => {
+                                    setScoreInfo({
+                                      ...scoreInfo,
+                                      manual: +(value ?? 0),
+                                    });
+                                  }}
+                                />
+                              </>
+                            }
+                            showCancel={false}
+                          >
+                            <Button
+                              className="mx-2"
+                              disabled={aiValidating}
+                              variant="outlined"
+                              color="geekblue"
+                            >
+                              人工评分
+                            </Button>
+                          </Popconfirm>
+                        </Form.Item>
+                      </>}
                     </>
                   ),
                 },
@@ -828,22 +827,26 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, rate, editable, onChan
           ]}
         />
         <div className="z-5 flex justify-end sticky bottom-0">
-          {editable ? (
-            <Button type="primary" onClick={handleSave}>
-              校验并提交
-            </Button>
-          ) : (
-            <div className="flex items-center gap-2">
-              {scoreInfo.ai < 75 && `还差 ${75 - scoreInfo.ai} 分达到标准线`}
-              <Button
-                disabled={scoreInfo.ai < 75}
-                variant="filled"
-                color="volcano"
-                onClick={handleScore}
-              >
-                提交审阅
-              </Button>
-            </div>
+          {data.status === 'APPROVED' ? <>已通过审阅</> : (
+            <>
+              {editable ? (
+                <Button type="primary" onClick={handleSave}>
+                  校验并提交
+                </Button>
+              ) : (
+                <div className="flex items-center gap-2">
+                  {scoreInfo.ai < 75 && `还差 ${75 - scoreInfo.ai} 分达到标准线`}
+                  <Button
+                    disabled={scoreInfo.ai < 75}
+                    variant="filled"
+                    color="volcano"
+                    onClick={handleScore}
+                  >
+                    提交审阅
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </>

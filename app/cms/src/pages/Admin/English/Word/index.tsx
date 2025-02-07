@@ -202,12 +202,13 @@ const EnglishWordPage: React.FC = () => {
       dataIndex: 'info',
       hideInSearch: true,
       render: (value, data/* , _data, _row, _action */) => {
-         if (data.status === 'PROCESSING') return <Tag icon={<SyncOutlined />} color="blue">等待处理完成</Tag>
+        if (data.status === 'PROCESSING') return <Tag icon={<SyncOutlined />} color="blue">等待处理完成</Tag>
 
         if (data.status === 'UNKNOWN') return <Tag icon={<ExclamationCircleOutlined />} color="#DD001BE0">导入后等待扩充处理</Tag>
         if (data.status === 'CREATED') return <Tag icon={<ExclamationCircleOutlined />} color="#DD001B80">新建后等待扩充处理</Tag>
         if (data.status === 'PROCESSED') return <Tag icon={<ExclamationCircleOutlined />} color="#E1BB88">等待AI评分审核</Tag>
         if (data.status === 'UPLOADED') return <WordContentEditor rate data={data} value={value as any} />;
+        if (data.status === 'APPROVED') return <WordContentEditor rate data={data} value={value as any} />;
 
         return <WordContentEditor data={data} value={value as any} />;
       },
