@@ -68,13 +68,13 @@ function handleMockChange() {
     background-position: center;
 
     pointer-events: none;
-    transform: scale(1.06);
+    transform: scale(1.05);
   }
 
   &-Clip {
     padding-bottom: 1rem;
 
-    border-radius: 38px !important;
+    border-radius: 48px !important;
     overflow: hidden !important;
   }
 }
