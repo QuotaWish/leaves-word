@@ -221,19 +221,22 @@ function selectPlan() {
   height: 8px;
   // margin: 8px 0;
 
+  --progress-color:  #028D81;
+  --progress-color-dark: #179BC2;
+
   .WordSignInfo-Content-Progress-Bg {
     position: absolute;
     inset: 0;
-    opacity: 0.2;
+    opacity: 0.8;
     border-radius: 12px;
-    background-color: var(--el-color-success);
+    background-color: vary(--progress-color);
     overflow: hidden;
 
     &::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
     }
   }
 
@@ -242,8 +245,8 @@ function selectPlan() {
     width: var(--p);
     height: 100%;
     border-radius: 12px;
-    background: linear-gradient(90deg, var(--el-color-success), var(--el-color-success-dark-2));
-    box-shadow: 0 0 10px var(--el-color-success);
+    background: linear-gradient(90deg, var(--progress-color), var(--progress-color-dark));
+    box-shadow: 0 0 10px var(--progress-color);
     transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
 

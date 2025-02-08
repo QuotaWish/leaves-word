@@ -51,7 +51,7 @@
   transition: all 0.25s ease;
   background: radial-gradient(65.28% 65.28% at 50% 100%, rgba(223, 113, 255, 0.8) 0%, rgba(223, 113, 255, 0) 100%),
     linear-gradient(0deg, #7a5af8, #7a5af8);
-  filter: hue-rotate(180deg);
+  filter: hue-rotate(275deg);
   border-radius: var(--round);
   border: none;
   outline: none;
