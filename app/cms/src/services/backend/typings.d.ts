@@ -66,6 +66,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseArrayLong_ = {
+    code?: number;
+    data?: number[];
+    message?: string;
+  };
+
   type BaseResponseAudioFileVO_ = {
     code?: number;
     data?: AudioFileVO;
@@ -111,6 +117,12 @@ declare namespace API {
   type BaseResponseListCategory_ = {
     code?: number;
     data?: Category[];
+    message?: string;
+  };
+
+  type BaseResponseListDictionaryWord_ = {
+    code?: number;
+    data?: DictionaryWord[];
     message?: string;
   };
 
@@ -491,6 +503,10 @@ declare namespace API {
     userId?: number;
   };
 
+  type EnglishWordGetBatchRequest = {
+    words?: string[];
+  };
+
   type EnglishWordQueryRequest = {
     current?: number;
     id?: number;
@@ -501,6 +517,11 @@ declare namespace API {
     sortOrder?: string;
     status?: string;
     userId?: number;
+  };
+
+  type EnglishWordRelativeBatchRequest = {
+    dictionary_id?: number;
+    words?: number[];
   };
 
   type EnglishWordScoreRequest = {
@@ -520,6 +541,7 @@ declare namespace API {
   };
 
   type EnglishWordUpdateRequest = {
+    draft?: boolean;
     id?: number;
     info?: string;
     word_head?: string;
@@ -1077,6 +1099,7 @@ declare namespace API {
     info?: string;
     status?:
       | 'UNKNOWN'
+      | 'DRAFT'
       | 'CREATED'
       | 'UPLOADING'
       | 'UPLOADED'

@@ -8,7 +8,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import '@umijs/max';
-import { Button, message, Space, Typography } from 'antd';
+import { Button, message, Space, Tooltip, Typography } from 'antd';
 import React, { useRef, useState } from 'react';
 import CategoryModal from './components/CategoryModal';
 
@@ -71,6 +71,9 @@ const UserAdminPage: React.FC = () => {
       title: '名称',
       dataIndex: 'name',
       valueType: 'text',
+      fieldProps: {
+        width: 168,
+      },
       formItemProps: {
         rules: [{ required: true, message: '请输入名称' }],
       },
@@ -117,8 +120,12 @@ const UserAdminPage: React.FC = () => {
     },
     {
       title: '操作',
+      fixed: 'right',
       dataIndex: 'option',
       valueType: 'option',
+      fieldProps: {
+        width: 168,
+      },
       render: (_, record) => (
         <Space size="middle">
           <Typography.Link

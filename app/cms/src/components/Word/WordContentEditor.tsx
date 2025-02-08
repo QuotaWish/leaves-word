@@ -77,13 +77,13 @@ const RateScoreView = ({ score, maxScore }: { score: number; maxScore: number })
     const rate = score / maxScore;
     const mappedRate = rate * 100;
 
-    setPercent(mappedRate);
+    setPercent(Math.max(mappedRate, maxScore));
   }, [score, maxScore]);
 
   return (
     <Progress
       type="circle"
-      format={() => `${percent.toFixed(1)}分`}
+      format={() => `${percent.toFixed(1)}%`}
       status={status}
       percent={percent}
       size={80}
@@ -445,6 +445,7 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, rate, editable, onChan
                   percent={score}
                   success={{ percent: 60, strokeColor: '#FFD35C' }}
                   type="dashboard"
+                  format={() => `${score}分`}
                 />
               ) : (
                 <Progress
