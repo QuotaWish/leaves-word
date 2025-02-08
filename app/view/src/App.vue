@@ -7,22 +7,24 @@ import Splash from '~/modules/splash/index.vue'
 </script>
 
 <template>
-  <Splash>
-    <template #main>
-      <router-view v-slot="{ Component }">
-        <TransitionPage>
-          <keep-alive :exclude="['DictionaryPage']">
-            <component :is="Component" />
-          </keep-alive>
-        </TransitionPage>
-        <!-- <transition mode="out-in" :name="router.transition.name">
+  <el-config-provider :z-index="10000000">
+    <Splash>
+      <template #main>
+        <router-view v-slot="{ Component }">
+          <TransitionPage>
+            <keep-alive :exclude="['DictionaryPage']">
+              <component :is="Component" />
+            </keep-alive>
+          </TransitionPage>
+          <!-- <transition mode="out-in" :name="router.transition.name">
 
         </transition> -->
-      </router-view>
-      <!-- <RouterView /> -->
+        </router-view>
+        <!-- <RouterView /> -->
 
-      <Auth />
-      <Core />
-    </template>
-  </Splash>
+        <Auth />
+        <Core />
+      </template>
+    </Splash>
+  </el-config-provider>
 </template>

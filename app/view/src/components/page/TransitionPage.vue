@@ -37,8 +37,8 @@ function onBeforeEnter(tempEl: Element) {
   if (levels === 1) {
     Object.assign(el.style, {
       transition: 'none !important',
-      transform: 'scale(0.95)',
-      borderRadius: '25px',
+      transform: 'scale(0.9)',
+      borderRadius: '35px',
     })
   }
   else {
@@ -146,15 +146,15 @@ async function onLeave(tempEl: Element, done: any) {
   if (levels === 1) {
     Object.assign(el.style, {
       transition: '0.3s !important',
-      transform: 'scale(0.95)',
-      borderRadius: '25px',
+      transform: 'scale(0.9)',
+      borderRadius: '35px',
     })
   }
   else {
     Object.assign(el.style, {
       transition: '0.3s !important',
       transform: 'translateX(120%)',
-      borderRadius: '25px',
+      borderRadius: '35px',
     })
   }
 

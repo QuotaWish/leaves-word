@@ -69,6 +69,16 @@ defineProps<{
   &.mock {
     opacity: 1;
   }
+
+  .iPhone16 & {
+    padding: 12px 40px !important;
+    padding-top: 21px !important;
+
+    height: 54px;
+    .SplashStatusbar-DynamicIsland {
+      opacity: 0;
+    }
+  }
 }
 
 .SplashStatusbar-DynamicIsland {

@@ -16,6 +16,7 @@ export const MOCK_DEVICES = {
     value: 'iPhone12',
     label: 'iPhone 12',
     size: '390:844',
+    mask: null,
   },
   iPhone16: {
     value: 'iPhone16',
@@ -30,7 +31,7 @@ export const useGlobalSplashState = createGlobalState(
     const screenMode = ref(0)
     const mockStatusbar = ref(false)
     const footerVisible = ref(true)
-    const mockDevice = ref(MOCK_DEVICES.iPhone12.value)
+    const mockDevice = ref(MOCK_DEVICES.iPhone16.value)
 
     return { screenMode, mockStatusbar, footerVisible, mockDevice }
   },

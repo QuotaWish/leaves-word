@@ -47,7 +47,7 @@ defineProps<{
   /* padding-bottom: var(--safe-area-inset-bottom); */
   height: var(--safe-area-inset-bottom);
 
-  background-color: var(--el-fill-color-light);
+  background-color: var(--el-bg-color);
 
   &.mock {
     --safe-area-inset-bottom: 12px;

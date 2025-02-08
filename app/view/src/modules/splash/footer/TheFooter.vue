@@ -9,7 +9,7 @@ const { active, activeNav, navs } = useFooterNav()
 <template>
   <nav
     :class="{ shrink: !active }"
-    class="fake-background Application-Footer transition-cubic" inline-flex gap-2 text-xl
+    class="Application-Footer transition-cubic" inline-flex gap-2 text-xl
   >
     <ul w-full flex justify-between>
       <li
@@ -112,7 +112,7 @@ const { active, activeNav, navs } = useFooterNav()
   flex: 1 0 64px;
   // border-top: 1px solid var(--el-border-color);
 
-  --fake-opacity: 0.85;
-  backdrop-filter: blur(18px) saturate(180%) brightness(120%);
+  // --fake-opacity: 0.85;
+  // backdrop-filter: blur(18px) saturate(180%) brightness(120%);
 }
 </style>

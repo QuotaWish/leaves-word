@@ -2,6 +2,7 @@
 import { ScreenMode, useGlobalSplashState } from '.'
 import SplashSafeArea from './SplashSafeArea.vue'
 import SplashStatusbar from './SplashStatusbar.vue'
+import SplashWrapper from './SplashWrapper.vue'
 
 const spalshState = useGlobalSplashState()
 
@@ -15,11 +16,11 @@ const mockStatusbar = computed(() => spalshState.mockStatusbar.value)
       <slot name="menu" />
     </div>
 
-    <div id="rootApp" relative h-full w-full flex flex-col class="SplashContainer-Main">
+    <SplashWrapper id="rootApp" relative h-full w-full flex flex-col class="SplashContainer-Main">
       <SplashStatusbar :mock="mockStatusbar" />
       <slot />
       <SplashSafeArea :mock="!isMobile" />
-    </div>
+    </SplashWrapper>
   </div>
 </template>
 
@@ -39,17 +40,6 @@ const mockStatusbar = computed(() => spalshState.mockStatusbar.value)
   }
 
   &.wrapped-box {
-    .SplashContainer-Main {
-      // iPhone 12 Pro
-      width: 390px;
-      height: 844px;
-
-      overflow: hidden;
-      border-radius: 38px;
-      box-shadow: var(--el-box-shadow);
-      border: 5px solid var(--el-text-color-primary);
-    }
-
     display: flex;
 
     align-items: center;
