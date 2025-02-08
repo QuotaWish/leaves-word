@@ -22,6 +22,7 @@ declare module 'vue' {
     LeafBackground: typeof import('./src/components/display/LeafBackground.vue')['default']
     LeafButton: typeof import('./src/components/button/LeafButton.vue')['default']
     LeafCard: typeof import('./src/components/display/LeafCard.vue')['default']
+    LeafSpeedButton: typeof import('./src/components/button/LeafSpeedButton.vue')['default']
     LineArrow: typeof import('./src/components/LineArrow.vue')['default']
     LineLoading: typeof import('./src/components/chore/LineLoading.vue')['default']
     Loading: typeof import('./src/components/chore/Loading.vue')['default']

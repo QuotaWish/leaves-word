@@ -2,6 +2,7 @@
 import PlanSelector from '~/components/words/PlanSelector.vue'
 import { calendarManager, globalData, useTargetData } from '~/composables/words'
 
+import LeafSpeedButton from '../button/LeafSpeedButton.vue'
 import WordSignInfoCard from './card/WordSignInfoCard.vue'
 import Cat from '/svg/cat.svg'
 import Checked from '/svg/complete.svg'
@@ -134,9 +135,12 @@ function selectPlan() {
       </div>
 
       <template v-if="!todayData?.signed">
-        <LeafButton animated w-full @click="emits('sign')">
+        <LeafSpeedButton w-full @click="emits('sign')">
           <span>开始背单词吧</span>
-        </LeafButton>
+        </LeafSpeedButton>
+        <!-- <LeafButton animated w-full @click="emits('sign')">
+          <span>开始背单词吧</span>
+        </LeafButton> -->
 
         <div my-2 flex items-center justify-center gap-1 text-sm op-75>
           <div i-carbon-time />预计用时 {{ calculateTime(globalData.amount) }} 分钟
@@ -222,7 +226,7 @@ function selectPlan() {
     inset: 0;
     opacity: 0.2;
     border-radius: 12px;
-    background-color: var(--theme-color);
+    background-color: var(--el-color-success);
     overflow: hidden;
 
     &::after {
@@ -238,8 +242,8 @@ function selectPlan() {
     width: var(--p);
     height: 100%;
     border-radius: 12px;
-    background: linear-gradient(90deg, var(--theme-color), var(--theme-color-dark));
-    box-shadow: 0 0 10px var(--theme-color);
+    background: linear-gradient(90deg, var(--el-color-success), var(--el-color-success-dark-2));
+    box-shadow: 0 0 10px var(--el-color-success);
     transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
 
