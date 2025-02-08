@@ -1,30 +1,42 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Segmented, Input, Upload, Alert, type UploadProps, Modal, Button, Spin } from 'antd';
 import { ExclamationCircleFilled, InboxOutlined, IssuesCloseOutlined, LoadingOutlined } from '@ant-design/icons';
 import { ProTable, type ActionType, type ProColumns } from '@ant-design/pro-components';
 import InfoComponent from './InfoComponent';
-import { addEnglishWordBatchUsingPost } from '@/services/backend/englishWords';
+import { getEnglishWordBatchUsingPost } from '@/services/backend/englishWords';
+import { addDictionaryWordBatchUsingPost } from '@/services/backend/dictionaryWord';
 
 type SegementOptionsRenderProp = {
   onChange: (value: API.EnglishWord[]) => void
 }
 
 const TextImport = ({ onChange }: SegementOptionsRenderProp) => {
-  const handleChange = (value: string) => {
+  let value = ''
+  const handleValueChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    value = e.target.value;
+  };
+
+  const handleChange = () => {
     const lines = value.split('\n');
     const words = lines.map((line) => {
+      if (!line?.length || line.trim() === '') return null
+      if (!line.includes(":")) return {
+        word_head: line.trim(),
+        info: ''
+      }
+
       const [word_head, info] = line.split(':');
       return {
         word_head,
         info,
       };
-    });
+    }).filter(item => item) as API.EnglishWord[]
 
-    onChange(words as API.EnglishWord[]);
+    onChange(words);
   }
 
   return (
-    <>
+    <div className='flex flex-col gap-3'>
       <Alert
         message="⚠️ 注意"
         description="文本导入无法导入每个单词信息"
@@ -33,10 +45,11 @@ const TextImport = ({ onChange }: SegementOptionsRenderProp) => {
       />
       <Input.TextArea
         rows={8}
-        onChange={(e) => handleChange(e.target.value)}
+        onChange={handleValueChange}
         placeholder="请一排输入一个单词"
       />
-    </>
+      <Button variant='solid' color='primary' onClick={handleChange}>关联</Button>
+    </div>
   );
 };
 
@@ -46,18 +59,6 @@ const FileImport = ({ onChange }: SegementOptionsRenderProp) => {
     accept: '.txt,.json',
     name: 'file',
     maxCount: 1,
-    // // action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
-    // onChange(info) {
-    //   const { status } = info.file;
-    //   if (status !== 'uploading') {
-    //     console.log(info.file, info.fileList);
-    //   }
-    //   if (status === 'done') {
-    //     message.success(`${info.file.name} file uploaded successfully.`);
-    //   } else if (status === 'error') {
-    //     message.error(`${info.file.name} file upload failed.`);
-    //   }
-    // },
     onDrop(e) {
       const [file] = e.dataTransfer.files
 
@@ -175,18 +176,24 @@ export const BatchImportDisplayer: React.FC<{ data: API.EnglishWord[], onSubmit:
     },
   ];
 
-  const startImport = () => {
+  useEffect(() => {
+    actionRef?.current?.reload();
+  }, [data])
+
+  const startImport = useCallback(() => {
+    console.log(data)
+
     Modal.confirm({
-      title: '确认上传',
+      title: '确认关联',
       icon: <ExclamationCircleFilled />,
-      content: `是否确认上传 ${data.length} 个单词到数据库.`,
+      content: `是否确认关联 ${data.length} 个单词到数据库.`,
       onOk() {
         return onSubmit()
       },
       onCancel() { },
     });
 
-  };
+  }, [data, onSubmit])
 
   return (
     <>
@@ -209,7 +216,7 @@ export const BatchImportDisplayer: React.FC<{ data: API.EnglishWord[], onSubmit:
               color='volcano'
               onClick={startImport}
             >
-              一键上传
+              一键关联
             </Button>,
           ],
         }}
@@ -250,10 +257,11 @@ export const BatchImportDisplayer: React.FC<{ data: API.EnglishWord[], onSubmit:
 }
 
 type BatchImporterProps = {
+  dictionaryId: number
   onDone: () => void
 }
 
-const BatchImporter = ({ onDone }: BatchImporterProps) => {
+const BatchImporter = ({ dictionaryId, onDone }: BatchImporterProps) => {
   const [spinning, setSpinning] = React.useState(false);
   const [percent, setPercent] = React.useState<number | string>(0);
 
@@ -279,11 +287,42 @@ const BatchImporter = ({ onDone }: BatchImporterProps) => {
   }, [importType])
 
   const handleSubmit = () => {
-    setModalVisible(false)
+
+    const words = importedData.map(item => item.word_head!)
 
     setTimeout(async () => {
-      const res = await addEnglishWordBatchUsingPost({
-        words: importedData
+      const preRes = await getEnglishWordBatchUsingPost({
+        words
+      })
+
+      if (preRes.code !== 0) {
+        Modal.error({
+          title: '获取单词失败',
+          icon: <IssuesCloseOutlined />,
+          content: "未知原因无法完成关联,请稍候重试!"
+        })
+        return
+      }
+
+      if (preRes.data?.length !== words.length) {
+        Modal.error({
+          title: '获取单词数据失败',
+          icon: <IssuesCloseOutlined />,
+          content: "部分单词不在单词列表，请先导入单词后重试。"
+        })
+        return
+      }
+
+      setPercent('auto')
+      setSpinning(true);
+
+      setModalVisible(false)
+
+      const wordIdList = preRes.data || []
+
+      const res = await addDictionaryWordBatchUsingPost({
+        dictionary_id: dictionaryId,
+        words: wordIdList
       })
 
       setPercent('')
@@ -293,24 +332,22 @@ const BatchImporter = ({ onDone }: BatchImporterProps) => {
         const [successAmo, repeatAmo, failedAmo] = res.data || [-1, -1, -1]
 
         Modal.info({
-          title: '上传完毕',
+          title: '关联完毕',
           icon: <ExclamationCircleFilled />,
-          content: `成功上传 ${successAmo} 个单词,有 ${repeatAmo} 个单词因为重复上传而被忽略, ${failedAmo} 个单词上传失败!`,
+          content: `成功关联 ${successAmo} 个单词,有 ${repeatAmo} 个单词因为重复关联而被忽略, ${failedAmo} 个单词关联失败!`,
           onOk() {
             onDone?.()
           }
         });
       } else {
         Modal.error({
-          title: '上传失败',
+          title: '关联失败',
           icon: <IssuesCloseOutlined />,
-          content: "未知原因无法完成上传,请稍候重试!"
+          content: "未知原因无法完成关联,请稍候重试!"
         })
       }
     })
 
-    setPercent('auto')
-    setSpinning(true);
   }
 
   return (
@@ -336,7 +373,18 @@ const BatchImporter = ({ onDone }: BatchImporterProps) => {
         }} data={importedData} />
       </Modal>
 
-      <Spin indicator={<LoadingOutlined spin />} spinning={spinning} size="large" percent={percent} fullscreen />
+      <Spin
+        indicator={<LoadingOutlined spin />}
+        spinning={spinning}
+        size="large"
+        fullscreen
+      />
+      <Alert
+        message="⚠️ 注意"
+        description="单词无论任何状态都可以关联词典，但是只有 已发布 的单词才会纳入词典训练，只有 已审核 的单词才会纳入词典单词列表。"
+        type="error"
+        closable
+      />
     </div>
   );
 };

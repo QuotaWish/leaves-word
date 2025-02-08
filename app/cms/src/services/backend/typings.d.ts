@@ -114,6 +114,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseIPageDictionaryWordWithWordVO_ = {
+    code?: number;
+    data?: IPageDictionaryWordWithWordVO_;
+    message?: string;
+  };
+
   type BaseResponseListCategory_ = {
     code?: number;
     data?: Category[];
@@ -361,6 +367,14 @@ declare namespace API {
     word_id?: number;
   };
 
+  type DictionaryWordWithWordVO = {
+    create_at?: string;
+    dictionary_id?: number;
+    id?: number;
+    word?: EnglishWord;
+    word_id?: number;
+  };
+
   type EnglishDictionary = {
     author?: string;
     create_time?: string;
@@ -507,6 +521,19 @@ declare namespace API {
     words?: string[];
   };
 
+  type EnglishWordQueryDictRequest = {
+    current?: number;
+    dict_id?: number;
+    id?: number;
+    notId?: number;
+    pageSize?: number;
+    searchText?: string;
+    sortField?: string;
+    sortOrder?: string;
+    status?: string;
+    userId?: number;
+  };
+
   type EnglishWordQueryRequest = {
     current?: number;
     id?: number;
@@ -611,6 +638,14 @@ declare namespace API {
   type getUserVOByIdUsingGETParams = {
     /** id */
     id?: number;
+  };
+
+  type IPageDictionaryWordWithWordVO_ = {
+    current?: number;
+    pages?: number;
+    records?: DictionaryWordWithWordVO[];
+    size?: number;
+    total?: number;
   };
 
   type listRecordUsingGETParams = {

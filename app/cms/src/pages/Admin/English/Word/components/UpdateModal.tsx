@@ -1,8 +1,7 @@
-import { updateEnglishWordUsingPost } from '@/services/backend/englishWordController';
-import { ProColumns, ProTable } from '@ant-design/pro-components';
+import { updateEnglishWordUsingPost } from '@/services/backend/englishWords';
+import { ProColumns } from '@ant-design/pro-components';
 import '@umijs/max';
 import React, { useMemo } from 'react';
-import { Drawer } from 'antd';
 import InnerModal from './InnerModal';
 
 interface Props {

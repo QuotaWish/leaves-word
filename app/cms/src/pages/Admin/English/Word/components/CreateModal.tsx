@@ -1,4 +1,4 @@
-import { addEnglishWordUsingPost } from '@/services/backend/englishWordController';
+import { addEnglishWordUsingPost } from '@/services/backend/englishWords';
 import { ProColumns } from '@ant-design/pro-components';
 import '@umijs/max';
 import React from 'react';

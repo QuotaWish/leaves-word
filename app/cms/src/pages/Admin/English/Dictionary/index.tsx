@@ -11,6 +11,7 @@ import '@umijs/max';
 import { Button, message, Space, Tooltip, Typography } from 'antd';
 import React, { useRef, useState } from 'react';
 import CategoryModal from './components/CategoryModal';
+import RelativeModal from './components/RelativeModal';
 
 /**
  * 英语词典管理页面
@@ -24,6 +25,8 @@ const UserAdminPage: React.FC = () => {
   const [updateModalVisible, setUpdateModalVisible] = useState<boolean>(false);
   // 是否显示分类管理窗口
   const [categoryModalVisible, setCategoryModalVisible] = useState<boolean>(false);
+  // 是否显示单词管理窗口
+  const [relativeModalVisible, setRelativeModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   // 当前用户点击的数据
   const [currentRow, setCurrentRow] = useState<API.EnglishDictionary>();
@@ -136,14 +139,14 @@ const UserAdminPage: React.FC = () => {
           >
             修改
           </Typography.Link>
-          {/* <Typography.Link
+          <Typography.Link
             onClick={() => {
               setCurrentRow(record);
-              setUpdateModalVisible(true);
+              setRelativeModalVisible(true);
             }}
           >
             单词管理
-          </Typography.Link> */}
+          </Typography.Link>
           <Typography.Link
             onClick={() => {
               setCurrentRow(record);
@@ -232,6 +235,13 @@ const UserAdminPage: React.FC = () => {
         }}
         onCancel={() => {
           setCategoryModalVisible(false);
+        }}
+      />
+      <RelativeModal
+        visible={relativeModalVisible}
+        dictionary={currentRow!}
+        onCancel={() => {
+          setRelativeModalVisible(false);
         }}
       />
     </PageContainer>

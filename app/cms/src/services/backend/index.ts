@@ -6,9 +6,9 @@ import * as wxMpController from './wxMpController';
 import * as audioFileController from './audioFileController';
 import * as categoryController from './categoryController';
 import * as dictionaryCategoryController from './dictionaryCategoryController';
-import * as cididanciguanlianbiao from './cididanciguanlianbiao';
+import * as dictionaryWord from './dictionaryWord';
 import * as englishDictionaryController from './englishDictionaryController';
-import * as englishWordController from './englishWordController';
+import * as englishWords from './englishWords';
 import * as englishWordChangeLogController from './englishWordChangeLogController';
 import * as fileController from './fileController';
 import * as mediaCreatorController from './mediaCreatorController';
@@ -22,9 +22,9 @@ export default {
   audioFileController,
   categoryController,
   dictionaryCategoryController,
-  cididanciguanlianbiao,
+  dictionaryWord,
   englishDictionaryController,
-  englishWordController,
+  englishWords,
   englishWordChangeLogController,
   fileController,
   mediaCreatorController,

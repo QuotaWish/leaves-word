@@ -40,7 +40,7 @@ import { AIButton } from '../common/AIButton';
 import { useLeavesWordAI } from '@/composables/aigc';
 import { ChatEventType } from '@coze/api';
 import { ExclamationCircleFilled, LoadingOutlined } from '@ant-design/icons';
-import { getScoreEnglishWordUsingGet, scoreEnglishWordUsingPost } from '@/services/backend/englishWordController';
+import { getScoreEnglishWordUsingGet, scoreEnglishWordUsingPost } from '@/services/backend/englishWords';
 
 export type Prop = {
   data: API.EnglishWord;

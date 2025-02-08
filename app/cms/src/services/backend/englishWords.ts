@@ -47,8 +47,8 @@ export async function deleteEnglishWordUsingPost(
   });
 }
 
-/** addEnglishWordBatch POST /api/english_word/get/batch */
-export async function addEnglishWordBatchUsingPost1(
+/** 批量获取英语单词Id POST /api/english_word/get/batch */
+export async function getEnglishWordBatchUsingPost(
   body: API.EnglishWordGetBatchRequest,
   options?: { [key: string]: any },
 ) {
@@ -77,8 +77,8 @@ export async function getEnglishWordVoByIdUsingGet(
   });
 }
 
-/** listEnglishWordByPage POST /api/english_word/list/page */
-export async function listEnglishWordByPageUsingPost(
+/** 分页获取英语单词列表 POST /api/english_word/list/page */
+export async function listEnglishWordByPageUsingPost1(
   body: API.EnglishWordQueryRequest,
   options?: { [key: string]: any },
 ) {
@@ -92,7 +92,25 @@ export async function listEnglishWordByPageUsingPost(
   });
 }
 
-/** listEnglishWordVOByPage POST /api/english_word/list/page/vo */
+/** 分页获取指定词典英语单词列表 POST /api/english_word/list/page/dict */
+export async function listEnglishWordByPageUsingPost(
+  body: API.EnglishWordQueryDictRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseIPageDictionaryWordWithWordVO_>(
+    '/api/english_word/list/page/dict',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
+    },
+  );
+}
+
+/** 分页获取封装英语单词列表 POST /api/english_word/list/page/vo */
 export async function listEnglishWordVoByPageUsingPost(
   body: API.EnglishWordQueryRequest,
   options?: { [key: string]: any },

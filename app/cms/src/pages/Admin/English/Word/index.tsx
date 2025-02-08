@@ -1,13 +1,13 @@
 import WordContentEditor from '@/components/Word/WordContentEditor';
 import CreateModal from '@/pages/Admin/English/Word/components/CreateModal';
 import UpdateModal from '@/pages/Admin/English/Word/components/UpdateModal';
-import { deleteEnglishWordUsingPost, listEnglishWordByPageUsingPost } from '@/services/backend/englishWordController';
+import { deleteEnglishWordUsingPost, listEnglishWordByPageUsingPost, listEnglishWordByPageUsingPost1 } from '@/services/backend/englishWords';
 import { ExclamationCircleOutlined, ImportOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import '@umijs/max';
 import { Button, message, Modal, Popconfirm, Space, Typography } from 'antd';
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { Tag } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined, CloudUploadOutlined, FileOutlined, LoadingOutlined, MinusCircleOutlined, QuestionCircleOutlined, SyncOutlined } from '@ant-design/icons';
 import BatchImporter from '@/components/Word/BatchImporter';
@@ -23,12 +23,16 @@ type StatusActionsType = {
   [K in RowActionType]: (props: { record: API.EnglishWord }) => JSX.Element;
 };
 
+type EnglishWordPageProps = {
+  dictionaryId?: number;
+}
+
 /**
  * 英语词典管理页面
  *
  * @constructor
  */
-const EnglishWordPage: React.FC = () => {
+const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
   // 是否显示新建窗口
   const [createModalVisible, setCreateModalVisible] = useState<boolean>(false);
   // 是否显示更新窗口
@@ -241,55 +245,75 @@ const EnglishWordPage: React.FC = () => {
       },
     },
   ];
-  return (
-    <PageContainer>
-      <ProTable<API.EnglishWord>
-        headerTitle={'查询表格'}
-        actionRef={actionRef}
-        rowKey="key"
-        search={{
-          labelWidth: 120,
-        }}
-        toolBarRender={() => [
-          <Button
-            variant="dashed"
-            color="geekblue"
-            key="primary"
-            onClick={() => {
-              setBatchImportModalVisible(true);
-            }}
-          >
-            <ImportOutlined /> 批量导入
-          </Button>,
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              setCreateModalVisible(true);
-            }}
-          >
-            <PlusOutlined /> 新建
-          </Button>,
-        ]}
-        request={async (params, sort, filter) => {
-          const sortField = Object.keys(sort)?.[0];
-          const sortOrder = sort?.[sortField] ?? undefined;
 
+  const renderInner = useMemo(() => {
+    return <ProTable<API.EnglishWord>
+      headerTitle={'查询表格'}
+      actionRef={actionRef}
+      rowKey="key"
+      search={{
+        labelWidth: 120,
+      }}
+      toolBarRender={() => [
+        dictionaryId ? <></> : <Button
+          variant="dashed"
+          color="geekblue"
+          key="primary"
+          onClick={() => {
+            setBatchImportModalVisible(true);
+          }}
+        >
+          <ImportOutlined /> 批量导入
+        </Button>,
+        <Button
+          type="primary"
+          key="primary"
+          onClick={() => {
+            setCreateModalVisible(true);
+          }}
+        >
+          <PlusOutlined /> 新建
+        </Button>,
+      ]}
+      request={async (params, sort, filter) => {
+        const sortField = Object.keys(sort)?.[0];
+        const sortOrder = sort?.[sortField] ?? undefined;
+
+        if (dictionaryId) {
           const { data, code } = await listEnglishWordByPageUsingPost({
             ...params,
             sortField,
             sortOrder,
             ...filter,
-          } as API.EnglishWordQueryRequest);
+            dict_id: dictionaryId,
+          } as API.EnglishWordQueryDictRequest);
 
           return {
             success: code === 0,
             data: data?.records || [],
             total: Number(data?.total) || 0,
           };
-        }}
-        columns={columns}
-      />
+        }
+
+        const { data, code } = await listEnglishWordByPageUsingPost1({
+          ...params,
+          sortField,
+          sortOrder,
+          ...filter,
+        } as API.EnglishWordQueryRequest);
+
+        return {
+          success: code === 0,
+          data: data?.records || [],
+          total: Number(data?.total) || 0,
+        };
+      }}
+      columns={columns}
+    />
+  }, [dictionaryId, columns, actionRef, createModalVisible, updateModalVisible, currentRow, batchImportModalVisible, statusActions, handleDelete])
+
+  const renderModal = useMemo(() => {
+    return <>
       <CreateModal
         visible={createModalVisible}
         columns={columns.filter(column => column.dataIndex !== 'update_time' && column.dataIndex !== 'create_time')}
@@ -328,6 +352,22 @@ const EnglishWordPage: React.FC = () => {
           actionRef.current?.reload();
         }} />
       </Modal>
+    </>
+  }, [createModalVisible, updateModalVisible, currentRow, batchImportModalVisible, actionRef, columns, statusActions, handleDelete, setCreateModalVisible, setUpdateModalVisible, setCurrentRow, setBatchImportModalVisible])
+
+  if (dictionaryId) {
+    return (
+      <>
+        {renderInner}
+        {renderModal}
+      </>
+    )
+  }
+
+  return (
+    <PageContainer>
+      {renderInner}
+      {renderModal}
     </PageContainer>
   );
 };
