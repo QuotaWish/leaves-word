@@ -1,6 +1,5 @@
 <!-- 圆形搜索框组件 -->
 <script setup lang="ts">
-import { Search } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 
 defineProps<{
@@ -50,9 +49,7 @@ function handleClear() {
       @keyup.enter="handleSearch"
     >
       <template #prefix>
-        <el-icon>
-          <Search />
-        </el-icon>
+        <div i-carbon-search />
       </template>
       <template #suffix>
         <el-button class="search-button" type="primary" :loading="isLoading" @click="handleSearch">
