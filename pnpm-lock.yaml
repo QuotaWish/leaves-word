@@ -6,7 +6,11 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    dependencies:
+      dayjs:
+        specifier: ^1.11.11
+        version: 1.11.13
 
   app/cms:
     dependencies:
