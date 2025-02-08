@@ -1,9 +1,9 @@
 <script setup lang="ts">
-
+import WithPage from '~/components/page/WithPage.vue'
 </script>
 
 <template>
-  <div class="PlanLayout">
+  <WithPage class="PlanLayout">
     <div class="PlanLayout-Header">
       <slot name="header" />
     </div>
@@ -15,7 +15,7 @@
     <div class="PlanLayout-Cover absolute-layout z-0">
       <slot name="cover" />
     </div>
-  </div>
+  </WithPage>
 </template>
 
 <style lang="scss">
@@ -23,7 +23,6 @@
   position: relative;
 
   width: 100%;
-  height: calc(100% - 88px);
 }
 
 .PlanLayout {
@@ -39,11 +38,11 @@
 
     justify-content: space-between;
 
-    .statusbar & {
-      padding-top: calc(1rem + 24px);
+    // .statusbar & {
+    //   padding-top: calc(1rem + 24px);
 
-      height: 88px;
-    }
+    //   height: 88px;
+    // }
   }
   position: relative;
 

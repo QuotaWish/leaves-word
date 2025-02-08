@@ -23,5 +23,9 @@
   .statusbar & {
     padding-top: 28px;
   }
+
+  .statusbar .iPhone16 & {
+    padding-top: 44px;
+  }
 }
 </style>
