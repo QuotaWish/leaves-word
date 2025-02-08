@@ -539,11 +539,10 @@ declare namespace API {
     id?: number;
     notId?: number;
     pageSize?: number;
-    searchText?: string;
     sortField?: string;
     sortOrder?: string;
     status?: string;
-    userId?: number;
+    word_head?: string;
   };
 
   type EnglishWordRelativeBatchRequest = {

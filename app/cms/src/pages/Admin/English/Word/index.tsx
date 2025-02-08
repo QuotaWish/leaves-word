@@ -205,6 +205,20 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
       },
     },
     {
+      title: '修改时间',
+      dataIndex: 'update_time',
+      valueType: 'dateTime',
+      hideInSearch: true,
+      sorter: true,
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'create_time',
+      valueType: 'dateTime',
+      hideInSearch: true,
+      sorter: true,
+    },
+    {
       title: '信息',
       dataIndex: 'info',
       hideInSearch: true,
