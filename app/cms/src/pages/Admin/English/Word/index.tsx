@@ -209,6 +209,7 @@ const EnglishWordPage: React.FC = () => {
         if (data.status === 'PROCESSED') return <Tag icon={<ExclamationCircleOutlined />} color="#E1BB88">等待AI评分审核</Tag>
         if (data.status === 'UPLOADED') return <WordContentEditor rate data={data} value={value as any} />;
         if (data.status === 'APPROVED') return <WordContentEditor rate data={data} value={value as any} />;
+        if (data.status === 'REJECTED') return <WordContentEditor rate data={data} value={value as any} />;
 
         return <WordContentEditor data={data} value={value as any} />;
       },

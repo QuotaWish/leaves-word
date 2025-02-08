@@ -47,11 +47,11 @@ const WordTransformEditor: React.FC<WordTransformEditorProps> = ({
     {
       title: '描述',
       dataIndex: 'description',
-      formItemProps: () => {
-        return {
-          rules: [{ required: true, message: '此项为必填项' }],
-        };
-      },
+      // formItemProps: () => {
+      //   return {
+      //     rules: [{ required: true, message: '此项为必填项' }],
+      //   };
+      // },
     },
     {
       title: '示例',
@@ -115,21 +115,21 @@ const WordTransformEditor: React.FC<WordTransformEditorProps> = ({
           readonly
             ? false
             : {
-                newRecordType: 'dataSource',
-                record: () => {
-                  return {
-                    id: Date.now(), // 假设使用当前时间戳作为唯一标识
-                    type: TransformType.NONE,
+              newRecordType: 'dataSource',
+              record: () => {
+                return {
+                  id: Date.now(), // 假设使用当前时间戳作为唯一标识
+                  type: TransformType.NONE,
+                  content: '',
+                  data: {},
+                  example: {
+                    // 假设 example 是一个对象，需要根据实际情况定义
+                    id: 0,
                     content: '',
-                    data: {},
-                    example: {
-                      // 假设 example 是一个对象，需要根据实际情况定义
-                      id: 0,
-                      content: '',
-                    },
-                  };
-                },
-              }
+                  },
+                };
+              },
+            }
         }
         toolBarRender={false}
         pagination={false}
