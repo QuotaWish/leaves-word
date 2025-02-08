@@ -1,7 +1,9 @@
 import WordContentEditor from '@/components/Word/WordContentEditor';
 import '@umijs/max';
-import { Button, Drawer, Form, Input, message, type FormProps } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { Button, Checkbox, Drawer, Form, Input, message, Typography, type FormProps } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
+
+const { Title, Paragraph, Text, Link } = Typography;
 
 type Request = API.EnglishWordAddRequest | API.EnglishWordUpdateRequest;
 
@@ -40,12 +42,14 @@ const InnerModal: React.FC<Props> = (props) => {
   const { visible, oldData, onCancel } = props;
 
   const [word, setWord] = useState('');
+  const [draft, setDraft] = useState(true);
   // const [info, setInfo] = useState("")
 
-  const onFinish: FormProps<Request>['onFinish'] = (values) => {
-    console.log('Success:', values);
-    handleSubmit(values, props);
-  };
+  const onFinish = useCallback((values: FormProps<Request>['onFinish']) => {
+    const newValues = { ...values, draft }
+    console.log('Success:', draft, newValues);
+    handleSubmit(newValues, props);
+  }, [draft]);
 
   const onFinishFailed: FormProps<Request>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo);
@@ -90,14 +94,35 @@ const InnerModal: React.FC<Props> = (props) => {
             <WordContentEditor editable data={oldData} />
           </Form.Item>
         )}
+        <Form.Item<Request>
+          label="草稿模式"
+          name="draft"
+        >
+          <Checkbox checked={draft} onChange={(e) => setDraft(e.target.checked)}>是否保存为草稿</Checkbox>
+          <Typography>
+            <Paragraph>
+              使用草稿模式有助于你快速保存数据的同时节省服务器资源。
+              <Text strong>
+                当且仅当你非常确定已经完成编辑需要提交评审时再取消草稿模式！
+              </Text>
+              放心，草稿模式提交的数据你可以随时查看，随时继续编辑，它们不会丢失。
+            </Paragraph>
+          </Typography>
+        </Form.Item>
         <Form.Item label={null}>
-          <Button type="primary" htmlType="submit">
+          <Button htmlType='submit' variant='dashed' >
             提交
           </Button>
+          {/* <div className='flex items-center gap-2'>
+            <Button onClick={handleSaveDraft} type="primary" >
+              保存为草稿（推荐）
+            </Button>
+
+          </div> */}
         </Form.Item>
       </Form>
 
-      {/* 
+      {/*
 
       <Button htmlType='submit' onClick={async () => {
         const success = await handleAdd({

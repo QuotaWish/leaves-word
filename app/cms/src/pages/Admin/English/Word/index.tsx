@@ -87,7 +87,7 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
       </Typography.Link>
     },
     RE_PROCESS_SUPPLY({ record }) {
-      if (record.status === 'PROCESSED') {
+      if (record.status === 'PROCESSED' || record.status === 'DRAFT') {
         return <Typography.Link
           onClick={() => {
             setCurrentRow(record);
@@ -199,6 +199,9 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
         UNPUBLISHED: {
           text: <Tag icon={<CloseCircleOutlined />} color="red">未发布</Tag>,
         },
+        DRAFT: {
+          text: <Tag icon={<MinusCircleOutlined />} color="#222222">草稿</Tag>,
+        },
       },
     },
     {
@@ -206,6 +209,7 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
       dataIndex: 'info',
       hideInSearch: true,
       render: (value, data/* , _data, _row, _action */) => {
+        if (data.status === 'DRAFT') return <Tag icon={<MinusCircleOutlined />} color="#222222">暂时以草稿模式存储</Tag>
         if (data.status === 'PROCESSING') return <Tag icon={<SyncOutlined />} color="blue">等待处理完成</Tag>
 
         if (data.status === 'UNKNOWN') return <Tag icon={<ExclamationCircleOutlined />} color="#DD001BE0">导入后等待扩充处理</Tag>
