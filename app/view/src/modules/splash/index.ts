@@ -1,3 +1,5 @@
+import iPhone16Mock from '/mock/iPhone16.png'
+
 /**
  * SpalshModule 是负责APP加载的入口
  * 此Module会在APP加载时进行初始化，并加载APP的配置文件，决定环境信息
@@ -9,12 +11,27 @@ export enum ScreenMode {
   WRAPPED,
 }
 
+export const MOCK_DEVICES = {
+  iPhone12: {
+    value: 'iPhone12',
+    label: 'iPhone 12',
+    size: '390:844',
+  },
+  iPhone16: {
+    value: 'iPhone16',
+    label: 'iPhone 16',
+    size: '402:874',
+    mask: iPhone16Mock,
+  },
+} as const
+
 export const useGlobalSplashState = createGlobalState(
   () => {
     const screenMode = ref(0)
     const mockStatusbar = ref(false)
     const footerVisible = ref(true)
+    const mockDevice = ref(MOCK_DEVICES.iPhone12.value)
 
-    return { screenMode, mockStatusbar, footerVisible }
+    return { screenMode, mockStatusbar, footerVisible, mockDevice }
   },
 )

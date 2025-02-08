@@ -11,6 +11,10 @@ const mockStatusbar = computed(() => spalshState.mockStatusbar.value)
 
 <template>
   <div class="SplashContainer" :class="{ 'statusbar': mockStatusbar, 'fullscreen': isMobile, 'wrapped-box': !isMobile }">
+    <div class="SplashMenu transition-cubic">
+      <slot name="menu" />
+    </div>
+
     <div id="rootApp" relative h-full w-full flex flex-col class="SplashContainer-Main">
       <SplashStatusbar :mock="mockStatusbar" />
       <slot />
@@ -21,6 +25,19 @@ const mockStatusbar = computed(() => spalshState.mockStatusbar.value)
 
 <style lang="scss" scoped>
 .SplashContainer {
+  .SplashMenu {
+    z-index: 10000;
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    height: 44px;
+    width: 100%;
+
+    background-color: var(--el-fill-color-lighter);
+  }
+
   &.wrapped-box {
     .SplashContainer-Main {
       // iPhone 12 Pro

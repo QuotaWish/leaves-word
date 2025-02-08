@@ -4,6 +4,7 @@ import SplashLoading from '~/modules/splash/SplashLoading.vue'
 import { ScreenMode, useGlobalSplashState } from '.'
 import TheFooter from './footer/TheFooter.vue'
 import SplashLayout from './SplashLayout.vue'
+import SplashMenu from './SplashMenu.vue'
 import { useDeviceUaParser } from './ua-parser'
 
 const spalshState = useGlobalSplashState()
@@ -38,6 +39,10 @@ onMounted(() => {
 
 <template>
   <SpalshContainer>
+    <template #menu>
+      <SplashMenu />
+    </template>
+
     <SplashLoading>
       <SplashLayout>
         <template #content>
