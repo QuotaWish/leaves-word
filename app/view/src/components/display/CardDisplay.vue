@@ -46,7 +46,7 @@ const hasIcon = computed(() => ins?.slots?.icon)
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  background: #fff;
+  background: var(--el-fill-color);
   transition: all 0.3s ease;
   backdrop-filter: blur(8px);
   isolation: isolate;
@@ -54,7 +54,7 @@ const hasIcon = computed(() => ins?.slots?.icon)
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    background: rgba(255, 255, 255, 0.98);
+    background: var(--el-fill-color-light);
   }
 }
 
@@ -117,6 +117,7 @@ const hasIcon = computed(() => ins?.slots?.icon)
     -webkit-mask-image: linear-gradient(to bottom, #000, transparent);
     mask-image: linear-gradient(to bottom, #000, transparent);
   }
+
   z-index: 1;
   position: relative;
   padding: 1rem;
@@ -126,13 +127,13 @@ const hasIcon = computed(() => ins?.slots?.icon)
   gap: 8px;
 
   height: 40px;
-  color: #262626;
+  color: var(--el-text-color-primary);
   font-weight: 600;
 }
 
 .card-main {
   line-height: 1.6;
-  color: var(--text-color, #666);
+  color: var(--el-text-color-secondary);
 
   transition: transform 0.3s ease;
 

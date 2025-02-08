@@ -96,19 +96,19 @@ watch(() => route.params.id, fetchDictionaryData, { immediate: true })
 </script>
 
 <template>
-  <PageNavHolder :loading="loading" title="词典">
+  <PageNavHolder :content-padding="false" :loading="loading" title="词典">
     <div v-if="dict" class="dictionary-container">
       <!-- 顶部信息区域 -->
-      <div class="info-section mb-3 rounded-lg bg-white">
+      <div class="info-section rounded-lg p-4">
         <div class="flex items-center gap-4">
           <div class="relative w-[100px] flex-shrink-0">
             <DictionaryBookDisplay only-image :border="false" :model-value="dict" />
           </div>
           <div class="min-w-0 flex-1">
-            <h1 class="mb-2 truncate text-lg text-gray-900 font-bold">
+            <h1 class="mb-2 truncate text-lg text-[color:var(--el-text-color-primary)] font-bold">
               {{ dict.name }}
             </h1>
-            <div class="relative text-sm text-gray-600">
+            <div class="relative text-sm text-[color:var(--el-text-color-secondary)]">
               <MultiTextDisplay :custom-click="() => showDetailsDialog = true">
                 {{ dict.description }}
               </MultiTextDisplay>
@@ -118,7 +118,7 @@ watch(() => route.params.id, fetchDictionaryData, { immediate: true })
       </div>
 
       <!-- 标签页 -->
-      <div class="rounded-lg bg-white">
+      <div class="rounded-lg">
         <Tabs v-model:active="active" sticky>
           <Tab title="学习">
             <div class="p-4">
@@ -139,12 +139,15 @@ watch(() => route.params.id, fetchDictionaryData, { immediate: true })
                   </template>
                   <div class="card-content">
                     <div class="text-content">
-                      <p class="feature-desc line-clamp-2 text-xs text-gray-600">
+                      <p class="feature-desc line-clamp-2 text-xs text-[color:var(--el-text-color-secondary)]">
                         {{ card.desc }}
                       </p>
                     </div>
                     <div class="action-area">
-                      <button class="rounded-full px-3 py-1 text-xs text-white" :style="{ background: `linear-gradient(to right, ${card.colors[0]}, ${card.colors[1]})` }">
+                      <button
+                        class="rounded-full px-3 py-2 text-xs text-white font-medium"
+                        :style="{ background: `linear-gradient(to right, ${card.colors[0]}, ${card.colors[1]})` }"
+                      >
                         {{ card.action }}
                       </button>
                     </div>
@@ -212,5 +215,19 @@ watch(() => route.params.id, fetchDictionaryData, { immediate: true })
 
 .feature-desc {
   margin-bottom: 0.5rem;
+}
+
+.info-section {
+  background-color: var(--el-fill-color);
+}
+
+.dictionary-container {
+  :deep(.van-tabs__nav) {
+    span {
+      color: var(--el-text-color-primary) !important;
+    }
+
+    background-color: #000000 !important;
+  }
 }
 </style>
