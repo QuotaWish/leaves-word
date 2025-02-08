@@ -23,12 +23,17 @@ defineProps<{
     opacity: 1;
     transform: translate(-50%, -50%);
   }
+
+  .dark & {
+    background-color: var(--el-fill-color-darker);
+  }
+
   position: absolute;
 
   top: 50%;
   left: 50%;
 
-  width: 40%;
+  width: 35%;
   height: 5px;
 
   opacity: 0;

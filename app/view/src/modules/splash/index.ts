@@ -21,7 +21,7 @@ export const MOCK_DEVICES = {
   iPhone16: {
     value: 'iPhone16',
     label: 'iPhone 16',
-    size: '402:874',
+    size: '420:874', // 18px是左右侧按键的增加 一侧9px 数出来的
     mask: iPhone16Mock,
   },
 } as const

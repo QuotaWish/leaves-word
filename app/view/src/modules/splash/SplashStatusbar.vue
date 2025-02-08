@@ -72,7 +72,7 @@ defineProps<{
 
   .iPhone16 & {
     padding: 12px 40px !important;
-    padding-top: 21px !important;
+    padding-top: 26px !important;
 
     height: 54px;
     .SplashStatusbar-DynamicIsland {

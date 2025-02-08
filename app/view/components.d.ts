@@ -13,6 +13,7 @@ declare module 'vue' {
     CircleLoader: typeof import('./src/components/icon/CircleLoader.vue')['default']
     ComprehensiveWord: typeof import('./src/components/words/mode/ComprehensiveWord.vue')['default']
     copy: typeof import('./src/components/page/holder/PageNavHolder.vue')['default']
+    DarkModeSwitch: typeof import('./src/components/button/DarkModeSwitch.vue')['default']
     DictionaryBookDisplay: typeof import('./src/components/display/DictionaryBookDisplay.vue')['default']
     DictionaryDisplay: typeof import('./src/components/display/DictionaryDisplay.vue')['default']
     DictSelector: typeof import('./src/components/words/DictSelector.vue')['default']

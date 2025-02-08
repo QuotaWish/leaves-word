@@ -9,13 +9,13 @@ import {
   ElTooltip,
 } from 'element-plus'
 import { MOCK_DEVICES, useGlobalSplashState } from '.'
+import DarkModeSwitch from '~/components/button/DarkModeSwitch.vue'
 
 const splashState = useGlobalSplashState()
 
 const mockDevice = computed(() => splashState.mockDevice)
 const devices = Object.values(MOCK_DEVICES)
 
-const isResponsive = ref(true)
 const { pixelRatio } = useDevicePixelRatio()
 
 // 工具菜单选项
@@ -31,7 +31,7 @@ const tools = [
 
 <template>
   <div class="SplashMenu h-full w-full px-4">
-    <div class="SplashMenu-Left flex items-center gap-4">
+    <div class="SplashMenu-Left w-[30%] justify-start flex items-center gap-4">
       <div class="SplashMenu-Icon flex items-center gap-2">
         <Logo class="h-6 w-6" />
         <span class="text-14px font-medium">Leaf<b>Developer</b></span>
@@ -55,7 +55,7 @@ const tools = [
       </ElDropdown>
     </div>
 
-    <div class="SplashMenu-Center flex items-center gap-4">
+    <div class="SplashMenu-Center w-[30%] justify-center flex items-center gap-4">
       <div class="device-selector flex items-center gap-3">
         <ElSelect v-model="mockDevice.value" class="min-w-[120px]" size="small">
           <ElOption
@@ -90,10 +90,8 @@ const tools = [
       </div>
     </div>
 
-    <div class="SplashMenu-Right flex items-center gap-3">
-      <ElTooltip content="响应式模式">
-        <ElSwitch v-model="isResponsive" size="small" />
-      </ElTooltip>
+    <div class="SplashMenu-Right w-[30%] justify-end flex items-center gap-3">
+      <DarkModeSwitch />
 
       <div class="tools-bar flex items-center gap-2">
         <!-- <ElTooltip

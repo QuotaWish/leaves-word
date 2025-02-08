@@ -68,7 +68,7 @@ function handleMockChange() {
     background-position: center;
 
     pointer-events: none;
-    transform: scale(1.05);
+    transform: scale(1.06);
   }
 
   &-Clip {
