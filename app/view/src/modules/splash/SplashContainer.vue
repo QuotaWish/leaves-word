@@ -39,6 +39,10 @@ const mockStatusbar = computed(() => spalshState.mockStatusbar.value)
     background-color: var(--el-fill-color-lighter);
   }
 
+  &.fullscreen .SplashMenu {
+    display: none;
+  }
+
   &.wrapped-box {
     display: flex;
 

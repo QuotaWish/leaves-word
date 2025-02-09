@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MOCK_DEVICES, useGlobalSplashState } from '.'
+import { MOCK_DEVICES, ScreenMode, useGlobalSplashState } from '.'
 
 const dom = ref<HTMLDivElement>()
 const splashState = useGlobalSplashState()
@@ -14,6 +14,14 @@ watch(currentMock, nextTick.bind(null, handleMockChange), { immediate: true })
 function handleMockChange() {
   const el = dom.value
   if (!el || !currentMock.value) {
+    return
+  }
+
+  if (splashState.screenMode.value === ScreenMode.MOBILE) {
+    Object.assign(el.style, {
+      width: '100%',
+      height: '100%',
+    })
     return
   }
 
@@ -76,6 +84,20 @@ function handleMockChange() {
 
     border-radius: 48px !important;
     overflow: hidden !important;
+  }
+}
+
+.SplashContainer.fullscreen {
+  .SplashWrapper {
+    &::before {
+      display: none;
+    }
+    border-radius: 0 !important;
+
+    &-Clip {
+      padding-bottom: 0;
+      border-radius: 0 !important;
+    }
   }
 }
 </style>
