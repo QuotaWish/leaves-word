@@ -32,9 +32,9 @@ defineProps<{
   font-weight: 600;
   border-radius: 16px;
   color: var(--c);
-  --fake-opacity: 0.125;
+  --fake-opacity: 0.25;
   --fake-color: var(--c, var(--el-fill-color-lighter));
 
-  backdrop-filter: blur(18px) saturate(180%) brightness(120%) contrast(120%);
+  backdrop-filter: blur(18px) saturate(180%) brightness(95%);
 }
 </style>
