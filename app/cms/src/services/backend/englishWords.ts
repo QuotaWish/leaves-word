@@ -155,12 +155,12 @@ export async function getScoreEnglishWordUsingGet(
   });
 }
 
-/** scoreEnglishWord POST /api/english_word/score */
+/** 对某个英语单词评分 POST /api/english_word/score */
 export async function scoreEnglishWordUsingPost(
   body: API.EnglishWordScoreRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.BaseResponseBoolean_>('/api/english_word/score', {
+  return request<API.BaseResponseObject_>('/api/english_word/score', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

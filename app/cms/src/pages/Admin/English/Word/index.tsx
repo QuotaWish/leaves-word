@@ -202,6 +202,18 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
         DRAFT: {
           text: <Tag icon={<MinusCircleOutlined />} color="#222222">草稿</Tag>,
         },
+        SUPPLYING: {
+          text: <Tag icon={<SyncOutlined />} color="blue">扩充中</Tag>,
+        },
+        SUPPLIED: {
+          text: <Tag icon={<CheckCircleOutlined />} color="#519375">扩充完成</Tag>,
+        },
+        STRUCTURE_FIXING: {
+          text: <Tag icon={<SyncOutlined />} color="blue">结构化中</Tag>,
+        },
+        STRUCTURE_FIXED: {
+          text: <Tag icon={<CheckCircleOutlined />} color="#519375">结构化完成</Tag>,
+        },
       },
     },
     {

@@ -156,6 +156,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseObject_ = {
+    code?: number;
+    data?: Record<string, any>;
+    message?: string;
+  };
+
   type BaseResponsePageAudioFile_ = {
     code?: number;
     data?: PageAudioFile_;
@@ -464,10 +470,13 @@ declare namespace API {
   };
 
   type EnglishWord = {
+    ai_score?: number;
     create_time?: string;
     id?: number;
     info?: string;
     is_delete?: number;
+    manual_score?: number;
+    reviewer?: number;
     status?: string;
     update_time?: string;
     word_head?: string;
@@ -551,8 +560,6 @@ declare namespace API {
   };
 
   type EnglishWordScoreRequest = {
-    aiContent?: string;
-    aiScore?: number;
     id?: number;
     score?: number;
   };
@@ -1135,22 +1142,28 @@ declare namespace API {
       | 'UNKNOWN'
       | 'DRAFT'
       | 'CREATED'
-      | 'UPLOADING'
       | 'UPLOADED'
+      | 'PROCESSING'
+      | 'SUPPLYING'
+      | 'SUPPLIED'
+      | 'STRUCTURE_FIXING'
+      | 'STRUCTURED'
+      | 'IMAGING'
+      | 'PROCESSED'
+      | 'WAIT_FOR_MANUAL_REVIEW'
+      | 'REVIEWING'
+      | 'DATA_FORMAT_ERROR'
+      | 'REJECTED'
+      | 'FAILED'
+      | 'PUBLISHED'
+      | 'UNPUBLISHED'
+      | 'APPROVED'
+      | 'UPLOADING'
       | 'IMPORTING'
       | 'EXPORTING'
       | 'EXPORTED'
-      | 'PROCESSING'
-      | 'PROCESSED'
-      | 'REVIEWING'
-      | 'APPROVED'
-      | 'REJECTED'
-      | 'FAILED'
-      | 'DATA_FORMAT_ERROR'
       | 'DELETED'
-      | 'IN_QUEUE'
-      | 'PUBLISHED'
-      | 'UNPUBLISHED';
+      | 'IN_QUEUE';
     updateTime?: string;
     wordId?: number;
     word_head?: string;
