@@ -11,6 +11,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { Tag } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined, CloudUploadOutlined, FileOutlined, LoadingOutlined, MinusCircleOutlined, QuestionCircleOutlined, SyncOutlined } from '@ant-design/icons';
 import BatchImporter from '@/components/Word/BatchImporter';
+import StatusHistoryModal from '../WordStatus/components/StatusHistoryModal';
 
 enum RowActionType {
   DELETE = 'DELETE',
@@ -40,6 +41,8 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
   const [updateModalVisible, setUpdateModalVisible] = useState<boolean>(false);
   // 是否显示批量导入窗口
   const [batchImportModalVisible, setBatchImportModalVisible] = useState<boolean>(false);
+  // 是否显示状态变动记录弹窗
+  const [statusHistoryModalVisible, setStatusHistoryModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   // 当前用户点击的数据
   const [currentRow, setCurrentRow] = useState<API.EnglishWord>();
@@ -126,7 +129,7 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
         type='warning'
         onClick={() => {
           setCurrentRow(record);
-          setUpdateModalVisible(true);
+          setStatusHistoryModalVisible(true);
         }}
       >
         状态变动记录
@@ -395,6 +398,13 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
           actionRef.current?.reload();
         }} />
       </Modal>
+      <StatusHistoryModal
+        visible={statusHistoryModalVisible}
+        onClose={() => {
+          setStatusHistoryModalVisible(false);
+        }}
+        wordId={currentRow?.id}
+      />
     </>
   }, [createModalVisible, updateModalVisible, currentRow, batchImportModalVisible, actionRef, columns, statusActions, handleDelete, setCreateModalVisible, setUpdateModalVisible, setCurrentRow, setBatchImportModalVisible])
 
