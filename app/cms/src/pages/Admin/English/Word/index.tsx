@@ -16,6 +16,7 @@ enum RowActionType {
   DELETE = 'DELETE',
   RE_PROCESS_SUPPLY = 'RE_PROCESS_SUPPLY',
   PROCESS_SUPPLY = 'PROCESS_SUPPLY',
+  CHANGE_HISTORY = 'CHANGE_HISTORY',
 }
 
 // 3. 定义 StatusActions 的类型
@@ -119,6 +120,17 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
           重新扩充处理
         </Typography.Link>
       </Popconfirm>
+    },
+    CHANGE_HISTORY({ record }) {
+      return <Typography.Link
+        type='warning'
+        onClick={() => {
+          setCurrentRow(record);
+          setUpdateModalVisible(true);
+        }}
+      >
+        状态变动记录
+      </Typography.Link>
     }
   }
 
@@ -269,6 +281,7 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
         return (
           <Space size="middle">
             {statusActions.RE_PROCESS_SUPPLY({ record })}
+            {statusActions.CHANGE_HISTORY({ record })}
             {statusActions.DELETE({ record })}
           </Space>
         )
