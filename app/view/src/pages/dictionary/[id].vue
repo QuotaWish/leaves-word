@@ -227,7 +227,7 @@ watch(() => route.params.id, fetchDictionaryData, { immediate: true })
       color: var(--el-text-color-primary) !important;
     }
 
-    background-color: #000000 !important;
+    background-color: #00000000 !important;
   }
 }
 </style>

@@ -90,6 +90,21 @@ const UserAdminPage: React.FC = () => {
       },
     },
     {
+      title: '已关联单词数量',
+      dataIndex: 'total_words',
+      hideInForm: true,
+    },
+    {
+      title: '已发布单词数量',
+      dataIndex: 'published_words',
+      hideInForm: true,
+    },
+    {
+      title: '已通过单词数量',
+      dataIndex: 'approved_words',
+      hideInForm: true,
+    },
+    {
       title: '作者',
       dataIndex: 'author',
       valueType: 'text',

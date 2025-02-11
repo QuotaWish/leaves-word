@@ -59,7 +59,7 @@ function handleMockChange() {
   height: 844px;
 
   box-shadow: var(--el-box-shadow);
-  border-radius: 38px !important;
+  border-radius: 55px !important;
   border: 5px solid var(--el-text-color-primary);
 }
 

@@ -382,6 +382,7 @@ declare namespace API {
   };
 
   type EnglishDictionary = {
+    approved_words?: number;
     author?: string;
     create_time?: string;
     description?: string;
@@ -391,7 +392,9 @@ declare namespace API {
     isbn?: string;
     name?: string;
     publication_date?: string;
+    published_words?: number;
     publisher?: string;
+    total_words?: number;
     update_time?: string;
   };
 
@@ -1142,7 +1145,6 @@ declare namespace API {
       | 'UNKNOWN'
       | 'DRAFT'
       | 'CREATED'
-      | 'UPLOADED'
       | 'PROCESSING'
       | 'SUPPLYING'
       | 'SUPPLIED'
@@ -1158,6 +1160,7 @@ declare namespace API {
       | 'PUBLISHED'
       | 'UNPUBLISHED'
       | 'APPROVED'
+      | 'UPLOADED'
       | 'UPLOADING'
       | 'IMPORTING'
       | 'EXPORTING'
