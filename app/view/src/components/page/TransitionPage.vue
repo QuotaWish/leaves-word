@@ -116,7 +116,7 @@ function onBeforeLeave(tempEl: Element) {
   const { meta } = route
   const { transition } = meta
 
-  if (transition === 'nav') {
+  if (transitionData?.name === 'nav' && transition === 'nav') {
     console.warn(`Nav transition not support yet.`)
     return
   }
@@ -158,7 +158,7 @@ async function onLeave(tempEl: Element, done: any) {
     })
   }
 
-  await sleep(300)
+  await sleep(2000)
 
   done()
 }

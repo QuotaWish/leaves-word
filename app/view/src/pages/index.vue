@@ -1,14 +1,12 @@
 <script setup lang="ts" generic="T extends any, O extends any">
+import type { DictStorage } from '~/composables/words/storage'
 import { modeManager, ModeType } from '~/composables/words/mode'
 import { ComprehensiveMode } from '~/composables/words/mode/comprehensive'
 import { DictWordMode } from '~/composables/words/mode/dict-word'
 import { PunchMode } from '~/composables/words/mode/punch'
 import { SoundMode } from '~/composables/words/mode/sound'
-import type { DictStorage } from '~/composables/words/storage'
 import Plan from '~/modules/plan/index.vue'
 import PlanCover from '~/modules/plan/PlanCover.vue'
-import { useGlobalSplashState } from '~/modules/splash'
-import prewords from './prewords.vue'
 
 defineOptions({
   name: 'IndexPage',
@@ -18,29 +16,6 @@ modeManager.set(ModeType.COMPREHENSIVE, (dictionaryStorage: DictStorage) => new 
 modeManager.set(ModeType.PUNCH, (dictionaryStorage: DictStorage) => new PunchMode(dictionaryStorage))
 modeManager.set(ModeType.LISTENING, (dictionaryStorage: DictStorage) => new SoundMode(dictionaryStorage))
 modeManager.set(ModeType.READING, (dictionaryStorage: DictStorage) => new DictWordMode(dictionaryStorage))
-
-const prewordsVisible = ref(false)
-const globalSplashState = useGlobalSplashState()
-watch(prewordsVisible, visible => globalSplashState.footerVisible.value = !visible)
-
-function handleSign() {
-  prewordsVisible.value = true
-}
-
-onMounted(() => {
-  globalSplashState.footerVisible.value = true
-})
-
-useRouter().beforeEach((_to, _from, next) => {
-  if (prewordsVisible.value) {
-    next(false)
-
-    prewordsVisible.value = false
-    return
-  }
-
-  next(true)
-})
 </script>
 
 <template>
@@ -50,44 +25,14 @@ useRouter().beforeEach((_to, _from, next) => {
     </template>
 
     <template #main>
-      <div id="sign-info" :class="{ expand: prewordsVisible }" mx-auto class="IndexPage-Card z-1">
-        <WordSignInfo @sign="handleSign" />
-
-        <teleport to="#rootMain">
-          <div :class="{ visible: prewordsVisible }" class="IndexPage-PreWords">
-            <prewords @exit="prewordsVisible = false" />
-          </div>
-        </teleport>
+      <div id="sign-info" mx-auto class="IndexPage-Card z-1">
+        <WordSignInfo />
       </div>
     </template>
   </Plan>
 </template>
 
 <style lang="scss">
-.IndexPage-PreWords {
-  &.visible {
-    opacity: 1;
-    pointer-events: auto;
-
-    transform: scale(1);
-    transition: 0.25s 0.1s;
-  }
-
-  z-index: 2;
-  position: absolute;
-
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100%;
-
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(1.05);
-  background-color: var(--el-bg-color);
-}
-
 .IndexPage-Card {
   &::before {
     z-index: 1;
@@ -107,16 +52,6 @@ useRouter().beforeEach((_to, _from, next) => {
     transform: scale(1);
 
     transition: 0.25s 0.05s;
-  }
-
-  &.expand {
-    &::before {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    z-index: 2;
-    transform: scale(1.25);
   }
 
   p.title {

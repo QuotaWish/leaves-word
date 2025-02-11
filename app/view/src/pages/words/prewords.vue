@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import type { PrepareWord } from '~/composables/words/mode'
 import NumberFlow from '@number-flow/vue'
 import DictSelector from '~/components/words/DictSelector.vue'
 import ModeSelector from '~/components/words/ModeSelector.vue'
 import PlanSelector from '~/components/words/PlanSelector.vue'
 import { globalData, useTargetData } from '~/composables/words'
-import type { PrepareWord } from '~/composables/words/mode'
 
-const emits = defineEmits(['exit'])
+const router = useRouter()
 const { targetDict, targetSignMode } = useTargetData()
 
 const loadingOptions = reactive<{
@@ -123,12 +123,16 @@ async function handleDone() {
 
   await sleep(200)
 
-  emits('exit')
+  handleBack()
+}
+
+function handleBack() {
+  router.back()
 }
 </script>
 
 <template>
-  <WithPage :class="{ wordVisible: loadingOptions.start, loading: loadingOptions.loading }" class="PreWordsPage">
+  <RoutePage :class="{ wordVisible: loadingOptions.start, loading: loadingOptions.loading }" class="PreWordsPage">
     <template #bg>
       <LeafBackground />
     </template>
@@ -191,7 +195,7 @@ async function handleDone() {
         开始打卡
       </el-button> -->
 
-      <p mt-6 cursor-pointer text-center @click="emits('exit')">
+      <p mt-6 cursor-pointer text-center @click="handleBack">
         <el-text active:op-50>
           退出
         </el-text>
@@ -235,7 +239,7 @@ async function handleDone() {
         <component :is="dialogOptions.component" v-if="dialogOptions.component" />
       </template>
     </TouchDialog>
-  </WithPage>
+  </RoutePage>
 </template>
 
 <style lang="scss">
@@ -321,6 +325,8 @@ async function handleDone() {
 
   position: relative;
   margin: auto;
+
+  top: 10%;
 
   width: 85%;
 }
@@ -428,7 +434,7 @@ async function handleDone() {
     // border-radius: 0 0 200px 200px;
     background-color: var(--theme-color);
 
-    transform: translateY(-24px);
+    transform: translateY(-54px);
   }
 
   // &::after {

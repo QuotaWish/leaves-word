@@ -31,6 +31,10 @@ defineProps<{
         <Loading />
       </div>
     </div>
+
+    <template #bg>
+      <slot name="bg" />
+    </template>
   </WithPage>
 </template>
 

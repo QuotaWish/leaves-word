@@ -33,8 +33,8 @@ declare module 'vue-router/auto-routes' {
     '/old': RouteRecordInfo<'/old', '/old', Record<never, never>, Record<never, never>>,
     '/personal/': RouteRecordInfo<'/personal/', '/personal', Record<never, never>, Record<never, never>>,
     '/personal/settings': RouteRecordInfo<'/personal/settings', '/personal/settings', Record<never, never>, Record<never, never>>,
-    '/prewords': RouteRecordInfo<'/prewords', '/prewords', Record<never, never>, Record<never, never>>,
     '/words/': RouteRecordInfo<'/words/', '/words', Record<never, never>, Record<never, never>>,
     '/words/dict-select-page': RouteRecordInfo<'/words/dict-select-page', '/words/dict-select-page', Record<never, never>, Record<never, never>>,
+    '/words/prewords': RouteRecordInfo<'/words/prewords', '/words/prewords', Record<never, never>, Record<never, never>>,
   }
 }

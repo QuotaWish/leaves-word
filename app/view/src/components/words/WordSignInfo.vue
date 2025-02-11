@@ -7,8 +7,6 @@ import WordSignInfoCard from './card/WordSignInfoCard.vue'
 import Cat from '/svg/cat.svg'
 import Checked from '/svg/complete.svg'
 
-const emits = defineEmits(['sign'])
-
 const router = useRouter()
 
 const { targetDict, targetSignMode } = useTargetData()
@@ -48,6 +46,10 @@ function selectPlan() {
     visible: true,
     component: PlanSelector,
   })
+}
+
+function handleCheckSign() {
+  router.push('/words/prewords')
 }
 </script>
 
@@ -135,7 +137,7 @@ function selectPlan() {
       </div>
 
       <template v-if="!todayData?.signed">
-        <LeafSpeedButton w-full @click="emits('sign')">
+        <LeafSpeedButton w-full @click="handleCheckSign">
           <span>开始背单词吧</span>
         </LeafSpeedButton>
         <!-- <LeafButton animated w-full @click="emits('sign')">
@@ -221,8 +223,8 @@ function selectPlan() {
   height: 8px;
   // margin: 8px 0;
 
-  --progress-color:  #028D81;
-  --progress-color-dark: #179BC2;
+  --progress-color: #028d81;
+  --progress-color-dark: #179bc2;
 
   .WordSignInfo-Content-Progress-Bg {
     position: absolute;
@@ -236,7 +238,12 @@ function selectPlan() {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.05)
+      );
     }
   }
 
