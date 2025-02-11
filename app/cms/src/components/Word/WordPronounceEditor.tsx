@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Modal, Input, Form, message } from 'antd';
 import { emptyWordPronounce, WordPronounce } from './types/WordPronounce';
 import AudioSelect from '../Audio/AudioSelect';
@@ -121,9 +121,14 @@ export const WordPronounceEditorInner: React.FC<WordPronounceEditorProps> = ({
 };
 
 const WordPronounceEditor: React.FC<WordPronounceEditorProps> = ({ value, onChange, readonly }) => {
-  const [pronounce, setPronounce] = useState(value ?? emptyWordPronounce());
+  const [pronounce, setPronounce] = useState(emptyWordPronounce());
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (value)
+      setPronounce(value)
+  }, [value, isModalVisible])
 
   const handleSave = () => {
     form
@@ -217,14 +222,14 @@ const WordPronounceEditor: React.FC<WordPronounceEditorProps> = ({ value, onChan
           <Form.Item
             name="content"
             label="发音内容"
-            rules={[{ required: !readonly, message: '请输入发音内容!' }]}
+          // rules={[{ required: !readonly, message: '请输入发音内容!' }]}
           >
             <Input type="text" placeholder="内容" disabled={readonly} />
           </Form.Item>
           <Form.Item
             name="audio"
             label="音频地址"
-            rules={[{ required: !readonly, message: '请输入音频地址!' }]}
+          // rules={[{ required: !readonly, message: '请输入音频地址!' }]}
           >
             <Input type="text" placeholder="音频地址" allowClear disabled={readonly} />
           </Form.Item>

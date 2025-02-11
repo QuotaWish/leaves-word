@@ -182,6 +182,7 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
   }, []);
 
   const getActionItems = useCallback((record: API.EnglishWord) => {
+    if (record.status === 'APPROVED') return
     if (record.status === 'UNKNOWN' || record.status === 'CREATED') {
       return (
         <>

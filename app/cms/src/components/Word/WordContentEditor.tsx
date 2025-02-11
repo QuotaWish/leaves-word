@@ -106,7 +106,6 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, rate, editable, onChan
 
   const [aiSupplying, setAISupplying] = useState(false);
   const [validateInfo, setValidateInfo] = useState('');
-  const [aiScore, setAiScore] = useState<number>(-1);
   const [scoreInfo, setScoreInfo] = useState<number>(60);
 
   const autoGetScore = useCallback(async () => {
@@ -127,7 +126,6 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, rate, editable, onChan
       const json = JSON.parse(infoData?.info || '{}')
 
       setValidateInfo(json['info'])
-      setAiScore(json.score ?? 0)
     } catch (e) {
       console.error(e)
       message.error('获取评分失败：评分数据格式错误')
@@ -177,16 +175,15 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, rate, editable, onChan
   const validateForms = useCallback(() => {
     return new Promise<[boolean, any, string | null]>((resolve) => {
       form.validateFields().then((values) => {
+        // if (!isValidPronounce(currentContent.britishPronounce)) {
+        //   resolve([false, values, '英式发音未通过检验']);
+        //   return;
+        // }
 
-        if (!isValidPronounce(currentContent.britishPronounce)) {
-          resolve([false, values, '英式发音未通过检验']);
-          return;
-        }
-
-        if (!isValidPronounce(currentContent.americanPronounce)) {
-          resolve([false, values, '美式发音未通过检验']);
-          return;
-        }
+        // if (!isValidPronounce(currentContent.americanPronounce)) {
+        //   resolve([false, values, '美式发音未通过检验']);
+        //   return;
+        // }
 
         if (!currentContent.img.length) {
           resolve([false, values, '图片列表未通过检验']);
@@ -554,7 +551,7 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, rate, editable, onChan
 
   const renderEditorRateAction = useMemo(() => {
     if (data.status === 'APPROVED') return null;
-    if (aiScore !== -1) return <>
+    if (data.ai_score !== -1) return <>
       <Form.Item label="操作">
         <div className="flex items-center gap-2">
           <InputNumber
@@ -573,7 +570,7 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, rate, editable, onChan
               重新提交人工评分
             </Button>
             <span>
-              当前单词已被AI审阅，您可以重新提交人工评分。
+              上轮人工评分：{data.manual_score} - 当前单词已被AI审阅，您可以重新提交人工评分。
             </span>
           </div>
         </div>
@@ -605,7 +602,7 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, rate, editable, onChan
         </div>
       </Form.Item>
     </>
-  }, [data, aiScore, handleScore])
+  }, [data, handleScore])
 
   const renderWordEditor = useMemo(
     () => (

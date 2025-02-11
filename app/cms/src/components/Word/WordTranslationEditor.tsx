@@ -2,11 +2,10 @@ import React, { useMemo, useState } from 'react';
 import { EditableProTable } from '@ant-design/pro-components';
 import type { ProColumns } from '@ant-design/pro-components';
 import { emptyWordPronounce } from './types/WordPronounce';
-import { WordTranslation, WordType } from './types/WordTranslation';
-import WordPronounceEditor from './WordPronounceEditor';
-import WordImageEditor from './WordImageEditor';
-import { emptyExample } from './types';
+import { WordCodeType, WordTranslation, WordType } from './types/WordTranslation';
+import { emptyExample, useFormatExample } from './types';
 import WordExampleEditor from './WordExampleEditor';
+import { Button } from 'antd';
 
 interface WordTranslationEditorProps {
   readonly?: boolean;
@@ -93,7 +92,7 @@ const WordTranslationEditor: React.FC<WordTranslationEditorProps> = ({
       title: '示例',
       dataIndex: 'example',
       renderFormItem: () => <WordExampleEditor />,
-      render: () => <WordExampleEditor readonly />,
+      render: (_, record) => <WordExampleEditor readonly value={record.example} />,
     },
     // {
     //   title: '音频',
@@ -156,6 +155,33 @@ const WordTranslationEditor: React.FC<WordTranslationEditorProps> = ({
     [translations],
   );
 
+  const { format } = useFormatExample()
+
+  const formatConfig = () => {
+    const formattedTranslations = translations.map((translation) => {
+      if (!translation.type) {
+        translation.type = (WordCodeType[translation.typeText as keyof typeof WordCodeType] || WordType.NOUN) as unknown as WordType
+      }
+
+      if (translation.example && !translation.example.audio?.content) {
+        translation.example.audio.content = translation.example.sentence
+      }
+
+      const formattedExample = format(translation.example)
+
+      if (formattedExample) {
+        return {
+          ...translation,
+          example: formattedExample,
+        }
+      }
+
+      return translation
+    });
+
+    setTranslations(formattedTranslations);
+  }
+
   return (
     <div>
       <EditableProTable<WordTranslation>
@@ -167,23 +193,23 @@ const WordTranslationEditor: React.FC<WordTranslationEditorProps> = ({
           readonly
             ? false
             : {
-                newRecordType: 'dataSource',
-                record: () => {
-                  const targetType = remainingTypeTexts?.[0] || WordType.NOUN;
+              newRecordType: 'dataSource',
+              record: () => {
+                const targetType = remainingTypeTexts?.[0] || WordType.NOUN;
 
-                  return {
-                    id: translations.length,
-                    type: WordType[targetType as keyof typeof WordType],
-                    typeText: `${targetType}`,
-                    translation: '',
-                    definition: '',
-                    example: emptyExample(),
-                    phonetic: '',
-                    audio: emptyWordPronounce(),
-                    frequency: 0,
-                  };
-                },
-              }
+                return {
+                  id: translations.length,
+                  type: WordType[targetType as keyof typeof WordType],
+                  typeText: `${targetType}`,
+                  translation: '',
+                  definition: '',
+                  example: emptyExample(),
+                  phonetic: '',
+                  audio: emptyWordPronounce(),
+                  frequency: 0,
+                };
+              },
+            }
         }
         toolBarRender={false}
         pagination={false}
@@ -198,6 +224,16 @@ const WordTranslationEditor: React.FC<WordTranslationEditorProps> = ({
           onChange: setEditableRowKeys,
         }}
       />
+      <div className='flex flex-col justify-center gap-2'>
+        <p className='font-bold'>快速操作区域</p>
+        <Button onClick={formatConfig} variant='outlined' color='gold' className='w-[120px]'>格式化配置</Button>
+        <p>
+          格式化配置将自动根据单词类型和翻译内容，选择合适的示例类型，自动根据单词类型和翻译内容，录入合适的音频。
+          <strong>
+            注意：格式化配置中，若原音频不为空，则不会重新生成音频。
+          </strong>
+        </p>
+      </div>
     </div>
   );
 };

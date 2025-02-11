@@ -1,3 +1,4 @@
+import { useRemoteAudio } from '@/composables/common';
 import { emptyWordPronounce, type WordPronounce } from './WordPronounce';
 
 export enum WordExampleTypeEnum {
@@ -23,4 +24,26 @@ export function emptyExample() {
     translation: '',
     audio: emptyWordPronounce(),
   } as WordExample;
+}
+
+export function useFormatExample() {
+  const { generate } = useRemoteAudio();
+
+  return {
+    format: (example: WordExample) => {
+      const { audio } = example
+
+      if (audio.audio) return
+
+      if (!audio.content) {
+        audio.content = example.sentence
+      }
+
+      if (audio.content) {
+        audio.audio = generate(audio.content)
+      }
+
+      return example
+    }
+  }
 }

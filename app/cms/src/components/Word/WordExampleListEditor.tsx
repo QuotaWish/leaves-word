@@ -2,7 +2,8 @@ import React, { useMemo, useState } from 'react';
 import { EditableProTable } from '@ant-design/pro-components';
 import type { ProColumns } from '@ant-design/pro-components';
 import WordExampleEditor from './WordExampleEditor';
-import { WordExample, emptyExample } from './types/WordExample';
+import { WordExample, WordExampleTypeEnum, emptyExample, useFormatExample } from './types/WordExample';
+import { Button } from 'antd';
 
 interface WordExampleListEditorProps {
   value?: WordExample[];
@@ -61,6 +62,29 @@ const WordExampleListEditor: React.FC<WordExampleListEditorProps> = ({ value, re
     },
   ];
 
+  const { format } = useFormatExample()
+
+  const formatConfig = () => {
+    const formattedExamples = exampleList.map((example) => {
+      if (example.example.type !== WordExampleTypeEnum.PHRASE) {
+        example.example.type = WordExampleTypeEnum.SENTENCE
+      }
+
+      const formattedExample = format(example.example)
+
+      if (formattedExample) {
+        return {
+          ...example,
+          example: formattedExample,
+        }
+      }
+
+      return example
+    });
+
+    setExampleList([...formattedExamples]);
+  }
+
   return (
     <div>
       <EditableProTable<{ id: number, example: WordExample }>
@@ -89,6 +113,16 @@ const WordExampleListEditor: React.FC<WordExampleListEditorProps> = ({ value, re
           onChange: setEditableRowKeys,
         }}
       />
+      <div className='flex flex-col justify-center gap-2'>
+        <p className='font-bold'>快速操作区域</p>
+        <Button onClick={formatConfig} variant='outlined' color='gold' className='w-[120px]'>格式化配置</Button>
+        <p>
+          格式化配置将自动根据单词类型和翻译内容，选择合适的示例类型，自动根据单词类型和翻译内容，录入合适的音频。
+          <strong>
+            注意：格式化配置中，若原音频不为空，则不会重新生成音频。
+          </strong>
+        </p>
+      </div>
     </div>
   );
 };

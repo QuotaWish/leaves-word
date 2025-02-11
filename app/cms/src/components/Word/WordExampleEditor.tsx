@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Modal, Input, Form, message } from 'antd';
 import Segmented from 'antd/es/segmented'; // 添加 Segmented 组件的导入
 import { emptyExample, WordExample, WordExampleTypeEnum } from './types/WordExample';
@@ -11,9 +11,14 @@ interface WordExampleEditorProps {
 }
 
 const WordExampleEditor: React.FC<WordExampleEditorProps> = ({ value, onChange, readonly }) => {
-  const [example, setExample] = useState(value ?? emptyExample());
+  const [example, setExample] = useState(emptyExample());
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (value)
+      setExample(value)
+  }, [value, isModalVisible])
 
   const handleSave = () => {
     form
@@ -96,13 +101,16 @@ const WordExampleEditor: React.FC<WordExampleEditorProps> = ({ value, onChange, 
           <Form.Item
             name={['audio', 'content']}
             label="音频"
-            rules={[{ required: !readonly, message: '请配置音频!' }]}
+          // rules={[{ required: !readonly, message: '请配置音频!' }]}
           >
             <WordPronounceEditor
               value={example.audio}
               onChange={(audio) => setExample({ ...example, audio })}
               readonly={readonly}
             />
+            <div className='hidden'>
+              {JSON.stringify(example.audio)}
+            </div>
           </Form.Item>
         </Form>
       </Modal>
