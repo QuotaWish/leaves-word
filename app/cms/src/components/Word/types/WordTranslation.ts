@@ -38,6 +38,8 @@ export enum WordCodeType {
 
 
 export const VERBS_TEXT = ["TRANSITIVE_VERB", "INTRANSITIVE_VERB"]
+// TRANSITIVE_VERB 及物动词
+// INTRANSITIVE_VERB 不及物动词
 
 export function isValidTranslation(translation: WordTranslation): boolean {
   if (!translation) {

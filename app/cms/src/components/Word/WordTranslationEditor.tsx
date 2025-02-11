@@ -226,7 +226,7 @@ const WordTranslationEditor: React.FC<WordTranslationEditorProps> = ({
       />
       <div className='flex flex-col justify-center gap-2'>
         <p className='font-bold'>快速操作区域</p>
-        <Button onClick={formatConfig} variant='outlined' color='gold' className='w-[120px]'>格式化配置</Button>
+        <Button disabled={readonly} onClick={formatConfig} variant='outlined' color='gold' className='w-[120px]'>格式化配置</Button>
         <p>
           格式化配置将自动根据单词类型和翻译内容，选择合适的示例类型，自动根据单词类型和翻译内容，录入合适的音频。
           <strong>

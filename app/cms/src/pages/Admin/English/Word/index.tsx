@@ -298,6 +298,9 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
         STRUCTURED: {
           text: <Tag icon={<CheckCircleOutlined />} color="#519375">结构化完成</Tag>,
         },
+        WAIT_FOR_AI_REVIEW: {
+          text: <Tag icon={<SyncOutlined />} color="#A5E5E5">等待AI评分审核</Tag>,
+        }
       },
     },
     {
@@ -324,7 +327,7 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
 
         if (data.status === 'UNKNOWN') return <Tag icon={<ExclamationCircleOutlined />} color="#DD001BE0">导入后等待扩充处理</Tag>
         if (data.status === 'CREATED') return <Tag icon={<ExclamationCircleOutlined />} color="#DD001B80">新建后等待扩充处理</Tag>
-        if (data.status === 'WAIT_FOR_AI_REVIEW') return <Tag icon={<ExclamationCircleOutlined />} color="#E1BB88">等待AI评分审核</Tag>
+        // if (data.status === 'WAIT_FOR_AI_REVIEW') return '-'
         if (data.status === 'UPLOADED') return <WordContentEditor rate data={data} value={value as any} />;
         if (data.status === 'APPROVED') return <WordContentEditor rate data={data} value={value as any} />;
         if (data.status === 'REJECTED') return <WordContentEditor rate data={data} value={value as any} />;

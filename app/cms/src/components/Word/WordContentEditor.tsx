@@ -175,15 +175,16 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, rate, editable, onChan
   const validateForms = useCallback(() => {
     return new Promise<[boolean, any, string | null]>((resolve) => {
       form.validateFields().then((values) => {
-        // if (!isValidPronounce(currentContent.britishPronounce)) {
-        //   resolve([false, values, '英式发音未通过检验']);
-        //   return;
-        // }
+        console.log(values, currentContent)
+        if (!isValidPronounce(currentContent.britishPronounce)) {
+          resolve([false, values, '英式发音未通过检验']);
+          return;
+        }
 
-        // if (!isValidPronounce(currentContent.americanPronounce)) {
-        //   resolve([false, values, '美式发音未通过检验']);
-        //   return;
-        // }
+        if (!isValidPronounce(currentContent.americanPronounce)) {
+          resolve([false, values, '美式发音未通过检验']);
+          return;
+        }
 
         if (!currentContent.img.length) {
           resolve([false, values, '图片列表未通过检验']);
@@ -321,67 +322,16 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, rate, editable, onChan
     setAISupplying(false);
   }, [infoData]);
 
-  const handleScore = () => {
+  const handleScore = async () => {
     if (scoreInfo < 60) {
       message.error('人工评分不得低于60分！');
       return;
     }
 
-    form.validateFields().then(async () => {
-      message.loading('正在检验配置...');
+    message.loading('正在检验配置...');
+    const [success, _values, errMsg] = await validateForms()
 
-      if (!isValidPronounce(currentContent.britishPronounce)) {
-        message.error('英式发音未通过检验！');
-        return;
-      }
-
-      if (!isValidPronounce(currentContent.americanPronounce)) {
-        message.error('美式发音未通过检验！');
-        return;
-      }
-
-      if (!currentContent.img.length) {
-        message.error('图片列表未通过检验！');
-        return;
-      }
-
-      if (isValidTranslationList(currentContent.translation)) {
-        message.error('翻译列表未通过检验！');
-        return;
-      }
-
-      if (!currentContent.examplePhrases.length) {
-        message.error('短语列表未通过检验：列表为空！');
-        return;
-      }
-
-      for (let i = 0; i < currentContent.examplePhrases.length; i++) {
-        const example = currentContent.examplePhrases[i];
-        if (example.type !== WordExampleTypeEnum.PHRASE) {
-          message.error(`短语列表未通过检验：第${i + 1}个短语类型错误！`);
-          return;
-        }
-        if (!example.translation) {
-          message.error(`短语列表未通过检验：第${i + 1}个短语缺少翻译！`);
-          return;
-        }
-      }
-
-      if (!isValidWordDerivedList(currentContent.derived)) {
-        message.error('单词网络列表未通过检验！');
-        return;
-      }
-
-      if (!isValidWordTransformList(currentContent.transform)) {
-        message.error('词形变化列表未通过检验！');
-        return;
-      }
-
-      if (!isValidWordAffixPartList(currentContent.parts)) {
-        message.error('单词组成列表未通过检验！');
-        return;
-      }
-
+    async function save() {
       message.success('检验通过！');
       message.loading('正在提交分数...');
 
@@ -398,7 +348,18 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, rate, editable, onChan
       message.success('提交分数成功！');
 
       setDrawerVisible(false);
-    });
+    }
+
+    if (!success) {
+      Modal.confirm({
+        title: '检验失败',
+        content: errMsg + ', 是否强行保存？',
+        onOk: save,
+      })
+    } else {
+      save()
+    }
+
   };
 
   const renderValidateReview = useMemo(() => {

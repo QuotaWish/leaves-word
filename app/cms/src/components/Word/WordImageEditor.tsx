@@ -9,7 +9,7 @@ import { MediaCreatorSelect } from '@/pages/Admin/MediaCreator/components/MediaC
 interface WordImageEditorProps {
   value: string[];
   readonly?: boolean;
-  onChange?: (translations: string[]) => void;
+  onChange?: (images: string[]) => void;
 }
 
 type ImageType = {
@@ -68,7 +68,7 @@ const WordImageEditor: React.FC<WordImageEditorProps> = ({ value, readonly, onCh
             setEditableRowKeys(editableKeys.filter((key) => key !== index));
             const updatedImageList = imageList.filter((_, i) => i !== index);
             setImageList(updatedImageList);
-            onChange(updatedImageList.map(item => item.url));
+            onChange?.(updatedImageList.map(item => item.url));
           }}
         >
           删除
@@ -78,7 +78,9 @@ const WordImageEditor: React.FC<WordImageEditorProps> = ({ value, readonly, onCh
   ];
 
   const handleSave = () => {
-    onChange(imageList.map(item => item.url));
+    const result = imageList.map(item => item.url);
+
+    onChange?.(result);
   };
 
   return (
@@ -151,8 +153,6 @@ export const WordImageCreator = ({ wordId, onSubmit }: WordImageCreatorProp) => 
 
   const [modalVisible, setModalVisible] = useState(false)
   const handleSelect = useCallback(async (url: string[]) => {
-    console.log("select", url)
-
     onSubmit(url)
 
     setModalVisible(false)
@@ -194,9 +194,7 @@ export const WordImageCreator = ({ wordId, onSubmit }: WordImageCreatorProp) => 
           lockType='IMAGE'
           lockWordId={wordId}
           onChange={(values) => {
-            console.log(values)
-
-            handleSelect(values.map(item =>item.media_url!))
+            handleSelect(values.map(item => item.media_url!))
           }}
         />
       </Modal>
