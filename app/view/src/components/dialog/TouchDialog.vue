@@ -25,8 +25,8 @@ watch(visible, (val) => {
       if (main) {
         Object.assign(main.style, {
           transition: '0.35s',
-          transform: 'scale(0.95)',
-          borderRadius: '25px',
+          transform: 'scale(0.9)',
+          borderRadius: '35px',
         })
       }
     })
