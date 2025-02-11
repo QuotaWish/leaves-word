@@ -12,7 +12,7 @@ import { Tag } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined, CloudUploadOutlined, FileOutlined, LoadingOutlined, MinusCircleOutlined, QuestionCircleOutlined, SyncOutlined } from '@ant-design/icons';
 import BatchImporter from '@/components/Word/BatchImporter';
 import StatusHistoryModal from '../WordStatus/components/StatusHistoryModal';
-import { css } from '@emotion/css';
+import Styles from './style.css';
 
 enum RowActionType {
   DELETE = 'DELETE',
@@ -29,22 +29,6 @@ type StatusActionsType = {
 type EnglishWordPageProps = {
   dictionaryId?: number;
 }
-
-const errorRowStyle = css`
-  background-color: #fff2f0;
-
-  &:hover {
-    background-color: #fff1ef !important;
-  }
-`;
-
-const mentionRowStyle = css`
-  background-color: #f0f5ff;
-
-  &:hover {
-    background-color: #e0e8ff !important;
-  }
-`;
 
 /**
  * 英语词典管理页面
@@ -368,10 +352,10 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
       rowKey="key"
       rowClassName={(record) => {
         if (record.status === 'FAILED' || record.status === 'REJECTED' || record.status === 'DATA_FORMAT_ERROR') {
-          return errorRowStyle;
+          return Styles.errorRow;
         }
         if (record.status === 'PROCESSED') {
-          return mentionRowStyle;
+          return Styles.mentionRow;
         }
         return '';
       }}
