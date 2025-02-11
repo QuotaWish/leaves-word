@@ -284,6 +284,9 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
         },
         WAIT_FOR_AI_REVIEW: {
           text: <Tag icon={<SyncOutlined />} color="#A5E5E5">等待AI评分审核</Tag>,
+        },
+        IMAGING: {
+          text: <Tag icon={<SyncOutlined />} color="#A5E5E5">图片生成中</Tag>,
         }
       },
     },
