@@ -2,25 +2,26 @@ import WordContentEditor from '@/components/Word/WordContentEditor';
 import CreateModal from '@/pages/Admin/English/Word/components/CreateModal';
 import UpdateModal from '@/pages/Admin/English/Word/components/UpdateModal';
 import { deleteEnglishWordUsingPost, listEnglishWordByPageUsingPost, listEnglishWordByPageUsingPost1 } from '@/services/backend/englishWords';
-import { ExclamationCircleOutlined, ImportOutlined, PlusOutlined } from '@ant-design/icons';
+import { DownOutlined, ExclamationCircleOutlined, ImportOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import '@umijs/max';
-import { Button, message, Modal, Popconfirm, Space, Typography } from 'antd';
-import React, { useMemo, useRef, useState } from 'react';
+import { Button, Dropdown, message, Modal, Popconfirm, Space, Typography, type MenuProps } from 'antd';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Tag } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined, CloudUploadOutlined, FileOutlined, LoadingOutlined, MinusCircleOutlined, QuestionCircleOutlined, SyncOutlined } from '@ant-design/icons';
 import BatchImporter from '@/components/Word/BatchImporter';
 import StatusHistoryModal from '../WordStatus/components/StatusHistoryModal';
+import { css } from '@emotion/css';
 
 enum RowActionType {
   DELETE = 'DELETE',
   RE_PROCESS_SUPPLY = 'RE_PROCESS_SUPPLY',
   PROCESS_SUPPLY = 'PROCESS_SUPPLY',
   CHANGE_HISTORY = 'CHANGE_HISTORY',
+  RE_EDIT = 'RE_EDIT',
 }
 
-// 3. 定义 StatusActions 的类型
 type StatusActionsType = {
   [K in RowActionType]: (props: { record: API.EnglishWord }) => JSX.Element;
 };
@@ -28,6 +29,22 @@ type StatusActionsType = {
 type EnglishWordPageProps = {
   dictionaryId?: number;
 }
+
+const errorRowStyle = css`
+  background-color: #fff2f0;
+
+  &:hover {
+    background-color: #fff1ef !important;
+  }
+`;
+
+const mentionRowStyle = css`
+  background-color: #f0f5ff;
+
+  &:hover {
+    background-color: #e0e8ff !important;
+  }
+`;
 
 /**
  * 英语词典管理页面
@@ -90,6 +107,16 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
         扩充处理
       </Typography.Link>
     },
+    RE_EDIT({ record }) {
+      return <Typography.Link
+        onClick={() => {
+          setCurrentRow(record);
+          setUpdateModalVisible(true);
+        }}
+      >
+        重新编辑
+      </Typography.Link>
+    },
     RE_PROCESS_SUPPLY({ record }) {
       if (record.status === 'PROCESSED' || record.status === 'DRAFT') {
         return <Typography.Link
@@ -116,9 +143,9 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
       return <Popconfirm onConfirm={() => {
         setCurrentRow(record);
         setUpdateModalVisible(true);
-      }} title="重新扩充处理将会导致状态重新变为 已处理">
+      }} title="重新扩充处理将会导致单词重新进入流程">
         <Typography.Link
-
+          type="secondary"
         >
           重新扩充处理
         </Typography.Link>
@@ -136,6 +163,47 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
       </Typography.Link>
     }
   }
+
+  const getDropdownItems = useCallback((record: API.EnglishWord): MenuProps['items'] => {
+    return [
+      {
+        key: 'CHANGE_HISTORY',
+        label: statusActions.CHANGE_HISTORY({ record }),
+      },
+      {
+        type: 'divider',
+      },
+      {
+        key: 'DELETE',
+        label: statusActions.DELETE({ record }),
+        danger: true,
+      },
+    ]
+  }, []);
+
+  const getActionItems = useCallback((record: API.EnglishWord) => {
+    if (record.status === 'UNKNOWN' || record.status === 'CREATED') {
+      return (
+        <>
+          {statusActions.PROCESS_SUPPLY({ record })}
+        </>
+      )
+    }
+
+    if (record.status === 'FAILED' || record.status === 'UPLOADED') {
+      return (
+        <>
+          {statusActions.RE_EDIT({ record })}
+        </>
+      )
+    }
+
+    return (
+      <>
+        {statusActions.RE_PROCESS_SUPPLY({ record })}
+      </>
+    )
+  }, [statusActions])
 
   /**
    * 表格列配置
@@ -185,7 +253,7 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
           text: <Tag icon={<SyncOutlined />} color="blue">处理中</Tag>,
         },
         PROCESSED: {
-          text: <Tag icon={<CheckCircleOutlined />} color="magenta">已处理</Tag>,
+          text: <Tag icon={<CheckCircleOutlined />} color="magenta">已处理（等待人工评分审核）</Tag>,
         },
         REVIEWING: {
           text: <Tag icon={<SyncOutlined />} color="blue">审核中</Tag>,
@@ -226,7 +294,7 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
         STRUCTURE_FIXING: {
           text: <Tag icon={<SyncOutlined />} color="blue">结构化中</Tag>,
         },
-        STRUCTURE_FIXED: {
+        STRUCTURED: {
           text: <Tag icon={<CheckCircleOutlined />} color="#519375">结构化完成</Tag>,
         },
       },
@@ -255,12 +323,13 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
 
         if (data.status === 'UNKNOWN') return <Tag icon={<ExclamationCircleOutlined />} color="#DD001BE0">导入后等待扩充处理</Tag>
         if (data.status === 'CREATED') return <Tag icon={<ExclamationCircleOutlined />} color="#DD001B80">新建后等待扩充处理</Tag>
-        if (data.status === 'PROCESSED') return <Tag icon={<ExclamationCircleOutlined />} color="#E1BB88">等待AI评分审核</Tag>
+        if (data.status === 'WAIT_FOR_AI_REVIEW') return <Tag icon={<ExclamationCircleOutlined />} color="#E1BB88">等待AI评分审核</Tag>
         if (data.status === 'UPLOADED') return <WordContentEditor rate data={data} value={value as any} />;
         if (data.status === 'APPROVED') return <WordContentEditor rate data={data} value={value as any} />;
         if (data.status === 'REJECTED') return <WordContentEditor rate data={data} value={value as any} />;
+        if (data.status === 'PROCESSED') return <WordContentEditor rate data={data} value={value as any} />;
 
-        return <WordContentEditor data={data} value={value as any} />;
+        return '-' // <WordContentEditor data={data} value={value as any} />;
       },
       // renderFormItem: () => {
       //   return <WordContentEditor editable />;
@@ -271,21 +340,17 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => {
-
-        if (record.status === 'UNKNOWN' || record.status === 'CREATED') {
-          return (
-            <Space size="middle">
-              {statusActions.PROCESS_SUPPLY({ record })}
-              {statusActions.DELETE({ record })}
-            </Space>
-          )
-        }
-
         return (
           <Space size="middle">
-            {statusActions.RE_PROCESS_SUPPLY({ record })}
-            {statusActions.CHANGE_HISTORY({ record })}
-            {statusActions.DELETE({ record })}
+            {getActionItems(record)}
+            <Dropdown menu={{ items: getDropdownItems(record) }}>
+              <a onClick={(e) => e.preventDefault()}>
+                <Space>
+                  更多
+                  <DownOutlined />
+                </Space>
+              </a>
+            </Dropdown>
           </Space>
         )
       },
@@ -297,6 +362,15 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
       headerTitle={'查询表格'}
       actionRef={actionRef}
       rowKey="key"
+      rowClassName={(record) => {
+        if (record.status === 'FAILED' || record.status === 'REJECTED' || record.status === 'DATA_FORMAT_ERROR') {
+          return errorRowStyle;
+        }
+        if (record.status === 'PROCESSED') {
+          return mentionRowStyle;
+        }
+        return '';
+      }}
       search={{
         labelWidth: 120,
       }}

@@ -1150,7 +1150,7 @@ declare namespace API {
       | 'STRUCTURED'
       | 'IMAGING'
       | 'PROCESSED'
-      | 'WAIT_FOR_MANUAL_REVIEW'
+      | 'WAIT_FOR_AI_REVIEW'
       | 'REVIEWING'
       | 'DATA_FORMAT_ERROR'
       | 'REJECTED'
