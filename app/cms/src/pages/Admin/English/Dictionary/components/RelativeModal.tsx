@@ -1,7 +1,6 @@
-import { addEnglishDictionaryUsingPost } from '@/services/backend/englishDictionaryController';
 import '@umijs/max';
-import { Drawer, message, Modal, Tabs, type TabsProps } from 'antd';
-import React, { useState } from 'react';
+import { Drawer, Tabs, type TabsProps } from 'antd';
+import React from 'react';
 import Word from './../../Word/index'
 import BatchImporterRelative from '@/components/Word/BatchImporterRelative';
 

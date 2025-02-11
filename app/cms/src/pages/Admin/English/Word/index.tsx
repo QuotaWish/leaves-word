@@ -396,9 +396,11 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
             dict_id: dictionaryId,
           } as API.EnglishWordQueryDictRequest);
 
+          console.log(data?.records)
+
           return {
             success: code === 0,
-            data: data?.records || [],
+            data: data?.records?.map(item => item.word!) || [],
             total: Number(data?.total) || 0,
           };
         }
