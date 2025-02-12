@@ -24,7 +24,6 @@ const loadingOptions = reactive<{
 })
 
 const dialogOptions = reactive<any>({
-  done: false,
   visible: false,
   component: null,
 })
@@ -115,19 +114,11 @@ useRouter().beforeEach((_to, _from, next) => {
 })
 
 async function handleDone() {
-  dialogOptions.done = true
-
-  await sleep(200)
-
-  loadingOptions.start = false
-
-  await sleep(200)
-
-  handleBack()
+  router.push('/words/signed')
 }
 
 function handleBack() {
-  router.back()
+  router.push('/')
 }
 </script>
 
@@ -145,10 +136,10 @@ function handleBack() {
         <span class="prewords-headword-item item-5">S</span>
       </div>
 
-      <p text-black class="transition-cubic head-title">
+      <p text-white class="transition-cubic head-title">
         准备打卡
       </p>
-      <p text-black class="transition-cubic head-title next">
+      <p text-white class="transition-cubic head-title next">
         稍等片刻
       </p>
 
@@ -228,10 +219,6 @@ function handleBack() {
           @quit="loadingOptions.start = false" @done="handleDone"
         />
       </div>
-    </teleport>
-
-    <teleport to="#rootMain">
-      <WordSigned v-model="dialogOptions.done" />
     </teleport>
 
     <TouchDialog v-model="dialogOptions.visible">

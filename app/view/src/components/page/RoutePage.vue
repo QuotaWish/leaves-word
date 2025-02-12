@@ -18,7 +18,7 @@ defineProps<{
 
 <template>
   <!-- :class="{ visible }" -->
-  <WithPage :class="{ loading }" class="RoutePage transition-cubic absolute-layout flex flex-col">
+  <WithPage :class="{ pageLoading: loading }" class="RoutePage transition-cubic absolute-layout flex flex-col">
     <div class="RoutePage-Header">
       <slot name="header" />
     </div>
@@ -40,7 +40,7 @@ defineProps<{
 
 <style lang="scss" scoped>
 .RoutePage-Loading {
-  .RoutePage.loading & {
+  .RoutePage.pageLoading & {
     opacity: 1;
     pointer-events: all;
   }
