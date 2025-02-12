@@ -48,13 +48,15 @@ function selectPlan() {
   })
 }
 
-function handleCheckSign() {
+async function handleCheckSign() {
+  await sleep(300)
+
   router.push('/words/prewords')
 }
 </script>
 
 <template>
-  <WordSignInfoCard :class="{ signed: todayData?.signed }" text-black class="transition-cubic WordSignInfo-Wrapper">
+  <WordSignInfoCard :class="{ signed: todayData?.signed }" text-black class="transition-cubic WordSignInfo-Wrapper transition-duration-500">
     <div class="leaf-decoration top-left" />
     <div class="leaf-decoration bottom-right" />
 

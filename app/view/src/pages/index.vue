@@ -55,8 +55,6 @@ defineOptions({
   padding: 0.5rem 0;
 
   top: 0%;
-
-  transition: 0.25s;
 }
 </style>
 

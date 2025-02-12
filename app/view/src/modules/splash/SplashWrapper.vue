@@ -92,6 +92,9 @@ function handleMockChange() {
     &::before {
       display: none;
     }
+    width: 100% !important;
+    height: 100% !important;
+
     border-radius: 0 !important;
 
     &-Clip {

@@ -79,13 +79,15 @@ const cozeWebSDK = new CozeWebSDK.WebChatClient({
         />
 
         <div class="Immersive-Wrapper absolute-layout">
-          <div class="Immersive-Decoration transition-cubic top-left absolute" />
-          <div class="Immersive-Decoration transition-cubic bottom-right absolute" />
+          <div class="Immersive-Decoration transition-cubic top-left absolute transition-duration-500" />
+          <div class="Immersive-Decoration transition-cubic bottom-right absolute transition-duration-500" />
 
-          <div class="Immersive-Footer transition-cubic absolute">
+          <div class="Immersive-Footer transition-cubic absolute transition-duration-500">
             <div class="Immersive-Footer-Inner flex flex-col">
               <Logo />
-              <p>千叶单词 - 每日一言</p>
+              <p class="text-white">
+                千叶单词 - 每日一言
+              </p>
             </div>
           </div>
         </div>

@@ -226,8 +226,8 @@
 .button:hover svg.icon {
   fill: transparent;
   animation:
-    dasharray 1s linear forwards,
-    filled 0.1s linear forwards 0.95s;
+    dasharray 0.35s linear forwards,
+    filled 0.1s linear forwards 0.25s;
 }
 @keyframes dasharray {
   from {
