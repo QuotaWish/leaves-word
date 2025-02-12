@@ -1,21 +1,10 @@
 <script setup lang="ts" generic="T extends any, O extends any">
-import type { DictStorage } from '~/composables/words/storage'
-import { modeManager, ModeType } from '~/composables/words/mode'
-import { ComprehensiveMode } from '~/composables/words/mode/comprehensive'
-import { DictWordMode } from '~/composables/words/mode/dict-word'
-import { PunchMode } from '~/composables/words/mode/punch'
-import { SoundMode } from '~/composables/words/mode/sound'
 import Plan from '~/modules/plan/index.vue'
 import PlanCover from '~/modules/plan/PlanCover.vue'
 
 defineOptions({
   name: 'IndexPage',
 })
-
-modeManager.set(ModeType.COMPREHENSIVE, (dictionaryStorage: DictStorage) => new ComprehensiveMode(dictionaryStorage))
-modeManager.set(ModeType.PUNCH, (dictionaryStorage: DictStorage) => new PunchMode(dictionaryStorage))
-modeManager.set(ModeType.LISTENING, (dictionaryStorage: DictStorage) => new SoundMode(dictionaryStorage))
-modeManager.set(ModeType.READING, (dictionaryStorage: DictStorage) => new DictWordMode(dictionaryStorage))
 </script>
 
 <template>
