@@ -14,7 +14,7 @@ defineOptions({
     </template>
 
     <template #main>
-      <div id="sign-info" mx-auto class="IndexPage-Card z-1">
+      <div id="sign-info" mx-auto class="IndexPage-Card transition-cubic z-1">
         <WordSignInfo />
       </div>
     </template>

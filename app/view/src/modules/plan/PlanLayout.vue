@@ -4,7 +4,7 @@ import WithPage from '~/components/page/WithPage.vue'
 
 <template>
   <WithPage class="PlanLayout">
-    <div class="PlanLayout-Header">
+    <div class="PlanLayout-Header transition-cubic">
       <slot name="header" />
     </div>
 
@@ -12,7 +12,7 @@ import WithPage from '~/components/page/WithPage.vue'
       <slot name="main" />
     </div>
 
-    <div class="PlanLayout-Cover absolute-layout z-0">
+    <div class="PlanLayout-Cover transition-cubic absolute-layout z-0">
       <slot name="cover" />
     </div>
   </WithPage>

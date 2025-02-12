@@ -25,6 +25,7 @@ defineProps<{
 section {
   position: relative;
   overflow: hidden;
+  user-select: none;
   transition: all 0.3s ease;
 
   &:hover {

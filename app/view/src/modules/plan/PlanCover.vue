@@ -20,6 +20,11 @@ $api.utils.getDailyQuote().then((res: any) => {
     poster: origin_img_urls?.[0],
   })
 })
+
+// 根据内容长度获取基准字体大小
+const baseFontSize = computed(() => {
+  return data.content.length > 100 ? '1.2rem' : '1.5rem'
+})
 </script>
 
 <template>
@@ -31,16 +36,18 @@ $api.utils.getDailyQuote().then((res: any) => {
     <!-- <div class="card-placeholder">
       <slot name="card" />
     </div> -->
-    <div v-if="data?.content" class="fake-background PlanCover-Main absolute-layout flex flex-col items-start justify-end">
-      <p class="content-text">
-        {{ data.content }}
-      </p>
-      <p class="translation-text">
-        {{ data.translation }}
-      </p>
-      <p v-if="data.author" class="author-text">
-        —— {{ data.author }}
-      </p>
+    <div v-if="data?.content" class="fake-background PlanCover-Main absolute-layout">
+      <div class="PlanCover-Main-Inner transition-cubic absolute bottom-4 left-1/2 w-full flex flex-col items-start justify-end px-8 -translate-x-1/2">
+        <p class="content-text transition-cubic">
+          {{ data.content }}
+        </p>
+        <p class="translation-text transition-cubic">
+          {{ data.translation }}
+        </p>
+        <p v-if="data.author" class="author-text transition-cubic">
+          —— {{ data.author }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -69,7 +76,7 @@ $api.utils.getDailyQuote().then((res: any) => {
     background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
 
     .content-text {
-      font-size: 1.5rem;
+      font-size: v-bind(baseFontSize);
       font-weight: 600;
       color: #ffffff;
       margin-bottom: 0.5rem;
