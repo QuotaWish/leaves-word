@@ -313,7 +313,7 @@ function handleBack() {
   position: relative;
   margin: auto;
 
-  top: 10%;
+  top: 20%;
 
   width: 85%;
 }

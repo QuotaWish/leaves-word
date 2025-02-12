@@ -66,6 +66,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseArrayLong_ = {
+    code?: number;
+    data?: number[];
+    message?: string;
+  };
+
   type BaseResponseAudioFileVO_ = {
     code?: number;
     data?: AudioFileVO;
@@ -90,6 +96,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseEnglishWord_ = {
+    code?: number;
+    data?: EnglishWord;
+    message?: string;
+  };
+
   type BaseResponseEnglishWordChangeLogVO_ = {
     code?: number;
     data?: EnglishWordChangeLogVO;
@@ -108,9 +120,21 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseIPageDictionaryWordWithWordVO_ = {
+    code?: number;
+    data?: IPageDictionaryWordWithWordVO_;
+    message?: string;
+  };
+
   type BaseResponseListCategory_ = {
     code?: number;
     data?: Category[];
+    message?: string;
+  };
+
+  type BaseResponseListDictionaryWord_ = {
+    code?: number;
+    data?: DictionaryWord[];
     message?: string;
   };
 
@@ -135,6 +159,12 @@ declare namespace API {
   type BaseResponseMediaCreatorVO_ = {
     code?: number;
     data?: MediaCreatorVO;
+    message?: string;
+  };
+
+  type BaseResponseObject_ = {
+    code?: number;
+    data?: Record<string, any>;
     message?: string;
   };
 
@@ -240,6 +270,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponsePageWordStatusChangeVO_ = {
+    code?: number;
+    data?: PageWordStatusChangeVO_;
+    message?: string;
+  };
+
   type BaseResponsePostVO_ = {
     code?: number;
     data?: PostVO;
@@ -261,6 +297,12 @@ declare namespace API {
   type BaseResponseUserVO_ = {
     code?: number;
     data?: UserVO;
+    message?: string;
+  };
+
+  type BaseResponseWordStatusChange_ = {
+    code?: number;
+    data?: WordStatusChange;
     message?: string;
   };
 
@@ -337,7 +379,16 @@ declare namespace API {
     word_id?: number;
   };
 
+  type DictionaryWordWithWordVO = {
+    create_at?: string;
+    dictionary_id?: number;
+    id?: number;
+    word?: EnglishWord;
+    word_id?: number;
+  };
+
   type EnglishDictionary = {
+    approved_words?: number;
     author?: string;
     create_time?: string;
     description?: string;
@@ -347,7 +398,9 @@ declare namespace API {
     isbn?: string;
     name?: string;
     publication_date?: string;
+    published_words?: number;
     publisher?: string;
+    total_words?: number;
     update_time?: string;
   };
 
@@ -426,10 +479,13 @@ declare namespace API {
   };
 
   type EnglishWord = {
+    ai_score?: number;
     create_time?: string;
     id?: number;
     info?: string;
     is_delete?: number;
+    manual_score?: number;
+    reviewer?: number;
     status?: string;
     update_time?: string;
     word_head?: string;
@@ -479,8 +535,13 @@ declare namespace API {
     userId?: number;
   };
 
-  type EnglishWordQueryRequest = {
+  type EnglishWordGetBatchRequest = {
+    words?: string[];
+  };
+
+  type EnglishWordQueryDictRequest = {
     current?: number;
+    dict_id?: number;
     id?: number;
     notId?: number;
     pageSize?: number;
@@ -491,14 +552,38 @@ declare namespace API {
     userId?: number;
   };
 
+  type EnglishWordQueryRequest = {
+    current?: number;
+    id?: number;
+    notId?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+    status?: string;
+    word_head?: string;
+  };
+
+  type EnglishWordRelativeBatchRequest = {
+    dictionary_id?: number;
+    words?: number[];
+  };
+
   type EnglishWordScoreRequest = {
-    aiContent?: string;
-    aiScore?: number;
     id?: number;
     score?: number;
   };
 
+  type EnglishWordStatusChangeQueryRequest = {
+    comment?: string;
+    current?: number;
+    id?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+  };
+
   type EnglishWordUpdateRequest = {
+    draft?: boolean;
     id?: number;
     info?: string;
     word_head?: string;
@@ -540,6 +625,11 @@ declare namespace API {
     id?: number;
   };
 
+  type getEnglishWordDetailUsingGETParams = {
+    /** word */
+    word: string;
+  };
+
   type getEnglishWordVOByIdUsingGETParams = {
     /** id */
     id?: number;
@@ -555,6 +645,11 @@ declare namespace API {
     id?: number;
   };
 
+  type getScoreEnglishWordUsingGETParams = {
+    /** id */
+    id: number;
+  };
+
   type getUserByIdUsingGETParams = {
     /** id */
     id?: number;
@@ -563,6 +658,21 @@ declare namespace API {
   type getUserVOByIdUsingGETParams = {
     /** id */
     id?: number;
+  };
+
+  type IPageDictionaryWordWithWordVO_ = {
+    current?: number;
+    pages?: number;
+    records?: DictionaryWordWithWordVO[];
+    size?: number;
+    total?: number;
+  };
+
+  type listRecordUsingGETParams = {
+    /** lastId */
+    lastId?: number;
+    /** wordId */
+    wordId: number;
   };
 
   type LoginUserVO = {
@@ -840,6 +950,19 @@ declare namespace API {
     total?: number;
   };
 
+  type PageWordStatusChangeVO_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: WordStatusChangeVO[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
   type Post = {
     content?: string;
     createTime?: string;
@@ -919,6 +1042,11 @@ declare namespace API {
     updateTime?: string;
     user?: UserVO;
     userId?: number;
+  };
+
+  type selectOneUsingGET1Params = {
+    /** id */
+    id?: number;
   };
 
   type selectOneUsingGETParams = {
@@ -1006,5 +1134,52 @@ declare namespace API {
     userName?: string;
     userProfile?: string;
     userRole?: string;
+  };
+
+  type WordStatusChange = {
+    comment?: string;
+    createTime?: string;
+    id?: number;
+    info?: string;
+    isDelete?: number;
+    status?: string;
+    updateTime?: string;
+    wordId?: number;
+  };
+
+  type WordStatusChangeVO = {
+    comment?: string;
+    createTime?: string;
+    id?: number;
+    info?: string;
+    status?:
+      | "UNKNOWN"
+      | "DRAFT"
+      | "CREATED"
+      | "PROCESSING"
+      | "SUPPLYING"
+      | "SUPPLIED"
+      | "STRUCTURE_FIXING"
+      | "STRUCTURED"
+      | "IMAGING"
+      | "PROCESSED"
+      | "WAIT_FOR_AI_REVIEW"
+      | "REVIEWING"
+      | "DATA_FORMAT_ERROR"
+      | "REJECTED"
+      | "FAILED"
+      | "PUBLISHED"
+      | "UNPUBLISHED"
+      | "APPROVED"
+      | "UPLOADED"
+      | "UPLOADING"
+      | "IMPORTING"
+      | "EXPORTING"
+      | "EXPORTED"
+      | "DELETED"
+      | "IN_QUEUE";
+    updateTime?: string;
+    wordId?: number;
+    word_head?: string;
   };
 }

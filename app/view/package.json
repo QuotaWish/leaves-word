@@ -12,7 +12,8 @@
     "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview",
     "test": "vitest",
-    "up": "taze major -I"
+    "up": "taze major -I",
+    "openapi": "openapi2ts"
   },
   "dependencies": {
     "@number-flow/vue": "^0.3.2",

@@ -47,6 +47,36 @@ export async function deleteEnglishWordUsingPost(
   });
 }
 
+/** 根据单词获取单词数据详情 非登录状态获取的数据不完整，登录后每位用户限制频繁查询。（TODO） GET /api/english_word/detail */
+export async function getEnglishWordDetailUsingGet(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getEnglishWordDetailUsingGETParams,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseEnglishWord_>("/api/english_word/detail", {
+    method: "GET",
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
+/** 批量获取英语单词Id POST /api/english_word/get/batch */
+export async function getEnglishWordBatchUsingPost(
+  body: API.EnglishWordGetBatchRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseArrayLong_>("/api/english_word/get/batch", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** getEnglishWordVOById GET /api/english_word/get/vo */
 export async function getEnglishWordVoByIdUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -62,8 +92,8 @@ export async function getEnglishWordVoByIdUsingGet(
   });
 }
 
-/** listEnglishWordByPage POST /api/english_word/list/page */
-export async function listEnglishWordByPageUsingPost(
+/** 分页获取英语单词列表 POST /api/english_word/list/page */
+export async function listEnglishWordByPageUsingPost1(
   body: API.EnglishWordQueryRequest,
   options?: { [key: string]: any }
 ) {
@@ -80,7 +110,25 @@ export async function listEnglishWordByPageUsingPost(
   );
 }
 
-/** listEnglishWordVOByPage POST /api/english_word/list/page/vo */
+/** 分页获取指定词典英语单词列表 POST /api/english_word/list/page/dict */
+export async function listEnglishWordByPageUsingPost(
+  body: API.EnglishWordQueryDictRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseIPageDictionaryWordWithWordVO_>(
+    "/api/english_word/list/page/dict",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: body,
+      ...(options || {}),
+    }
+  );
+}
+
+/** 分页获取封装英语单词列表 POST /api/english_word/list/page/vo */
 export async function listEnglishWordVoByPageUsingPost(
   body: API.EnglishWordQueryRequest,
   options?: { [key: string]: any }
@@ -116,12 +164,27 @@ export async function listMyEnglishWordVoByPageUsingPost(
   );
 }
 
-/** scoreEnglishWord POST /api/english_word/score */
+/** getScoreEnglishWord GET /api/english_word/score */
+export async function getScoreEnglishWordUsingGet(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getScoreEnglishWordUsingGETParams,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseWordStatusChange_>("/api/english_word/score", {
+    method: "GET",
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
+/** 对某个英语单词评分 POST /api/english_word/score */
 export async function scoreEnglishWordUsingPost(
   body: API.EnglishWordScoreRequest,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseBoolean_>("/api/english_word/score", {
+  return request<API.BaseResponseObject_>("/api/english_word/score", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

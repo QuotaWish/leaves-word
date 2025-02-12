@@ -47,6 +47,7 @@
     "*": ""
   },
   "dependencies": {
+    "@umijs/openapi": "^1.13.0",
     "dayjs": "^1.11.11"
   }
 }

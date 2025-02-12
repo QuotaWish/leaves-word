@@ -36,6 +36,7 @@ declare module 'vue-router/auto-routes' {
     '/words/': RouteRecordInfo<'/words/', '/words', Record<never, never>, Record<never, never>>,
     '/words/dict-select-page': RouteRecordInfo<'/words/dict-select-page', '/words/dict-select-page', Record<never, never>, Record<never, never>>,
     '/words/prewords': RouteRecordInfo<'/words/prewords', '/words/prewords', Record<never, never>, Record<never, never>>,
+    '/words/search/[word]': RouteRecordInfo<'/words/search/[word]', '/words/search/:word', { word: ParamValue<true> }, { word: ParamValue<false> }>,
     '/words/signed': RouteRecordInfo<'/words/signed', '/words/signed', Record<never, never>, Record<never, never>>,
   }
 }
