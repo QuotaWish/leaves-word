@@ -1,4 +1,4 @@
-import { WordAffixPart, WordDerived, WordExample, WordPronounce, WordTransform, WordTranslation } from './index';
+import type { WordAffixPart, WordDerived, WordExample, WordPronounce, WordTransform, WordTranslation } from './index';
 import { emptyWordPronounce } from './WordPronounce';
 
 export interface WordContent {
