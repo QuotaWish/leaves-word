@@ -50,19 +50,150 @@ const currentHintText = computed(() => {
 // 添加新的响应式变量
 const exampleQueue = ref<ISoundWordItem[]>([]); // 例句队列
 
-// 修改 refreshData 函数
+// 保留这些变量声明
+let lastAudio: HTMLAudioElement | null = null;
+// 添加音频锁，防止同时播放多个音频
+const isPlayingAudio = ref(false);
+// 添加节流计时器引用
+let audioThrottleTimer: number | null = null;
+// 添加待执行的音频源
+let pendingAudioSource: string | null = null;
+
+// 封装后的音频播放核心函数
+async function playAudioCore(audioSource: string) {
+  // 停止之前的音频（彻底清理）
+  if (lastAudio) {
+    lastAudio.pause();
+    lastAudio.currentTime = 0;
+    lastAudio.onended = null;
+    lastAudio.onerror = null;
+    lastAudio.onabort = null;
+    lastAudio.oncanplay = null;
+    lastAudio.onplaying = null;
+    lastAudio = null;
+  }
+
+  // 重置音频状态
+  isPlayingAudio.value = true;
+  wordState.value = WordState.PLAYING;
+  audioFinished.value = false;
+  showInputContainer.value = false;
+
+  try {
+    // 使用封装好的函数获取音频
+    lastAudio = await useWordSound(audioSource);
+    
+    if (!lastAudio) return false;
+    
+    // 播放音频完成后的处理
+    lastAudio.onended = () => {
+      if (lastAudio) {  // 安全检查
+        isPlayingAudio.value = false;
+        wordState.value = WordState.WAITING;
+        
+        // 播放结束后设置状态
+        setTimeout(() => {
+          audioFinished.value = true;
+          showInputContainer.value = true;
+        }, 300);
+      }
+    };
+    
+    // 错误处理
+    lastAudio.onerror = () => {
+      isPlayingAudio.value = false;
+      wordState.value = WordState.WAITING;
+      audioFinished.value = true;
+      showInputContainer.value = true;
+    };
+    
+    // 确保音频加载完成再播放
+    try {
+      // 直接播放
+      const playPromise = lastAudio.play();
+      
+      if (playPromise !== undefined) {
+        await playPromise.catch(() => {
+          // 播放失败时重置状态
+          isPlayingAudio.value = false;
+          wordState.value = WordState.WAITING;
+          audioFinished.value = true;
+          showInputContainer.value = true;
+          return false;
+        });
+      }
+    } catch (playError) {
+      // 出错时重置状态
+      isPlayingAudio.value = false;
+      wordState.value = WordState.WAITING;
+      audioFinished.value = true;
+      showInputContainer.value = true;
+      return false;
+    }
+    
+    return true;
+  } catch (error) {
+    // 出错时重置状态
+    isPlayingAudio.value = false;
+    wordState.value = WordState.WAITING;
+    audioFinished.value = true;
+    showInputContainer.value = true;
+    return false;
+  }
+}
+
+// 带节流的音频播放函数
+function playAudio() {
+  // 获取音频源
+  const word = currentWord.value?.word.mainWord;
+  if (!word) return;
+
+  // 根据不同模式决定播放内容
+  let audioSource = '';
+  
+  if (currentWord.value?.type === SoundWordType.EXAMPLE) {
+    // 例句模式
+    const exampleDisplay = prepareData.getExampleDisplay();
+    if (exampleDisplay && exampleDisplay.trim()) {
+      audioSource = exampleDisplay;
+    } else {
+      const examples = word.examples || [];
+      if (examples.length > 0 && examples[0].sentence) {
+        audioSource = examples[0].sentence;
+      } else {
+        audioSource = word.word;
+      }
+    }
+  } else {
+    // 听写模式
+    audioSource = word.word;
+  }
+  
+  // 更新待执行的音频源
+  pendingAudioSource = audioSource;
+  
+  // 如果已经有计时器在运行，则不再设置新计时器
+  if (audioThrottleTimer !== null) {
+    return;
+  }
+  
+  // 设置节流计时器
+  audioThrottleTimer = window.setTimeout(() => {
+    // 计时器到期，执行最后一次待执行的音频播放
+    if (pendingAudioSource) {
+      playAudioCore(pendingAudioSource);
+      pendingAudioSource = null;
+    }
+    // 清除计时器引用
+    audioThrottleTimer = null;
+  }, 300);
+}
+
+// 修改 refreshData 函数，确保每次都播放音频
 async function refreshData() {
   // 优先从例句队列中获取
   if (exampleQueue.value.length > 0) {
     currentWord.value = exampleQueue.value.shift() || null;
-    console.warn(
-      `%c切换到例句模式: ${currentWord.value?.type === SoundWordType.EXAMPLE}`,
-      "color: #2196F3; font-weight: bold; font-size: 12px;"
-    );
-    console.warn(
-      `%c当前例句内容: ${prepareData.getExampleDisplay()}`,
-      "color: #2196F3; font-weight: bold; font-size: 12px;"
-    );
   } else {
     currentWord.value = prepareData.currentWord;
     // 如果当前是听写模式且有例句，将例句加入队列
@@ -75,10 +206,6 @@ async function refreshData() {
           exampleStage: ExampleStage.PLUS_ONE,
         };
         exampleQueue.value.push(exampleWord);
-        console.warn(
-          `%c添加例句到队列，当前队列长度: ${exampleQueue.value.length}`,
-          "color: #2196F3; font-weight: bold; font-size: 12px;"
-        );
       }
     }
   }
@@ -95,195 +222,23 @@ async function refreshData() {
   wordState.value = WordState.PLAYING;
   await sleep(300);
 
-  wordState.value = WordState.WAITING;
-}
-
-watch(currentWord, () => {
-  if (!currentWord.value) {
-    return;
-  }
-
-  if (currentWord.value.type === SoundWordType.EXAMPLE) {
-    const examples = currentWord.value.word.mainWord?.examples || [];
-    if (examples.length === 0) {
-      // 没有例句，跳到下一个
-      console.warn("没有例句，跳过此单词");
-      nextData(true);
-      return;
+  // 确保切换到WordState.WAITING状态的逻辑在playAudio内部处理
+  if (currentWord.value) {
+    const wordType = currentWord.value.type;
+    if (wordType === SoundWordType.EXAMPLE) {
+      const examples = currentWord.value.word.mainWord?.examples || [];
+      if (examples.length === 0) {
+        // 没有例句，跳到下一个
+        nextData(true);
+        return;
+      }
     }
+    
+    // 始终播放音频
+    playAudio();
+  } else {
+    wordState.value = WordState.WAITING;
   }
-
-  playAudio();
-});
-
-let lastAudio: HTMLAudioElement | null = null;
-// 添加音频锁，防止同时播放多个音频
-const isPlayingAudio = ref(false);
-
-// 播放音频
-async function playAudio() {
-  // 如果已经在播放音频，则忽略此次请求
-  if (isPlayingAudio.value) {
-    console.warn(`%c已有音频正在播放，忽略此次播放请求`, 'color: #FF9800; font-weight: bold; font-size: 14px;');
-    return;
-  }
-
-  // 设置正在播放标志
-  isPlayingAudio.value = true;
-  wordState.value = WordState.PLAYING;
-  // 设置音频未完成标志，保持圆球在中心
-  audioFinished.value = false;
-  // 确保在播放时不显示输入框
-  showInputContainer.value = false;
-
-  // 添加重试逻辑
-  let retryCount = 0;
-  const maxRetries = 2;
-  
-  const attemptPlayAudio = async () => {
-    try {
-      // 确保暂停任何正在播放的音频
-      if (lastAudio) {
-        console.warn(`%c停止之前的音频`, 'color: #607D8B; font-weight: bold; font-size: 12px;');
-        lastAudio.pause();
-        lastAudio.currentTime = 0;
-        lastAudio = null; // 清空lastAudio引用，避免潜在问题
-      }
-
-      const word = currentWord.value?.word.mainWord;
-      if (!word) {
-        console.error(`%c没有找到单词数据`, 'color: #F44336; font-weight: bold; font-size: 14px;');
-        return false;
-      }
-
-      // 根据不同模式决定播放内容
-      let audioSource = '';
-      let audioType = '';
-      
-      if (currentWord.value?.type === SoundWordType.EXAMPLE) {
-        // 例句模式，优先使用当前需要输入的部分
-        const exampleDisplay = prepareData.getExampleDisplay();
-        if (exampleDisplay && exampleDisplay.trim()) {
-          audioSource = exampleDisplay;
-          audioType = '例句片段';
-        } else {
-          // 如果没有获取到需要输入的部分，尝试使用完整例句
-          const examples = word.examples || [];
-          if (examples.length > 0 && examples[0].sentence) {
-            audioSource = examples[0].sentence;
-            audioType = '完整例句';
-          } else {
-            // 都没有则使用单词本身
-            audioSource = word.word;
-            audioType = '降级单词';
-          }
-        }
-      } else {
-        // 听写模式，使用单词音频
-        audioSource = word.word;
-        audioType = '单词';
-      }
-      
-      // 记录详细的音频加载信息
-      console.warn(`%c尝试播放${audioType}音频: "${audioSource}" (尝试次数: ${retryCount + 1})`, 'color: #4CAF50; font-weight: bold; font-size: 12px;');
-      
-      // 获取音频对象
-      lastAudio = await useWordSound(audioSource);
-      
-      if (!lastAudio) {
-        console.error(`%c获取${audioType}音频失败，尝试重试或降级`, 'color: #F44336; font-weight: bold; font-size: 14px;');
-        return false;
-      }
-      
-      // 使用Promise等待音频播放完成
-      await new Promise<void>((resolve) => {
-        if (!lastAudio) {
-          resolve();
-          return;
-        }
-        
-        // 添加超时保护，防止音频加载超时
-        const timeoutId = setTimeout(() => {
-          console.error(`%c${audioType}音频播放超时`, 'color: #F44336; font-weight: bold; font-size: 14px;');
-          if (lastAudio) {
-            lastAudio.pause();
-            lastAudio.currentTime = 0;
-          }
-          resolve();
-        }, 10000); // 10秒超时
-        
-        // 确保各种音频事件都能正确处理
-        const audioEventHandler = (eventType: string, color: string, error?: any) => {
-          console.warn(`%c${audioType}音频${eventType}`, `color: ${color}; font-weight: bold; font-size: 12px;`, error || '');
-          clearTimeout(timeoutId);
-          resolve();
-        };
-        
-        // 设置各种音频事件处理
-        lastAudio.onended = () => audioEventHandler('播放完成', '#4CAF50');
-        lastAudio.onerror = (e) => audioEventHandler('播放错误', '#F44336', e);
-        lastAudio.onabort = (e) => audioEventHandler('播放中止', '#F44336', e);
-        
-        lastAudio.onstalled = (e) => {
-          console.error(`%c${audioType}音频播放停滞`, 'color: #F44336; font-weight: bold; font-size: 12px;', e);
-          // 对于停滞的情况，尝试重新加载并播放
-          if (lastAudio) {
-            console.warn(`%c尝试重新加载音频`, 'color: #FF9800; font-weight: bold; font-size: 12px;');
-            lastAudio.load();
-            lastAudio.play().catch(err => {
-              console.error(`%c重新加载后播放失败:`, 'color: #F44336; font-weight: bold; font-size: 12px;', err);
-              clearTimeout(timeoutId);
-              resolve();
-            });
-          }
-        };
-        
-        // 播放音频并处理错误
-        lastAudio.play()
-          .then(() => {
-            console.warn(`%c开始播放${audioType}音频`, 'color: #4CAF50; font-weight: bold; font-size: 12px;');
-          })
-          .catch((err) => {
-            console.error(`%c${audioType}音频播放错误:`, 'color: #F44336; font-weight: bold; font-size: 12px;', err);
-            clearTimeout(timeoutId);
-            resolve();
-          });
-      });
-      
-      // 如果到达这里，音频应该已经播放过了（不管成功与否）
-      return true;
-    } catch (error) {
-      console.error(`%c音频播放失败:`, 'color: #F44336; font-weight: bold; font-size: 14px;', error);
-      return false;
-    }
-  };
-  
-  // 尝试播放音频，如果失败则重试
-  let playSuccess = await attemptPlayAudio();
-  
-  // 如果播放失败且尚未达到最大重试次数，则重试
-  while (!playSuccess && retryCount < maxRetries) {
-    retryCount++;
-    console.warn(`%c音频播放失败，第${retryCount}次重试`, 'color: #FF9800; font-weight: bold; font-size: 14px;');
-    // 添加延迟再重试
-    await sleep(500);
-    playSuccess = await attemptPlayAudio();
-  }
-  
-  if (!playSuccess) {
-    console.error(`%c多次尝试后音频播放仍然失败`, 'color: #F44336; font-weight: bold; font-size: 14px;');
-  }
-  
-  // 无论是否成功，都重置状态
-  isPlayingAudio.value = false;
-  wordState.value = WordState.WAITING;
-  
-  // 添加延迟，确保音频完全播放结束后再改变圆球位置
-  setTimeout(() => {
-    // 设置音频已完成标志，允许圆球移动到顶部
-    audioFinished.value = true;
-    showInputContainer.value = true; // 播放结束后显示输入框
-  }, 500);
 }
 
 // 彻底重写nextData函数，确保阶段进度不会丢失
