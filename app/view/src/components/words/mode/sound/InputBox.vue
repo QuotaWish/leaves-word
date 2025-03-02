@@ -208,7 +208,7 @@ async function handleKeyDown(e: KeyboardEvent) {
     <div
       v-for="(item, ind) in displayText.displayChars"
       :key="ind"
-      class="text-3xl font-bold text-center relative transition-all duration-300 min-w-[1em] h-[1.5em] leading-[1.5em]"
+      class="text-3xl font-bold text-center relative transition-all duration-300 min-w-[0.75em] h-[1.5em] leading-[1.5em]"
       :class="[
         {
           'text-theme-primary': item.isInput || item.isEmpty,
@@ -242,32 +242,6 @@ async function handleKeyDown(e: KeyboardEvent) {
     </div>
     <div v-if="props.state === WordState.ERROR" class="w-full text-center mt-2 text-lg text-theme-error animate-fadeIn">
       <span class="font-bold">× 不正确，请重试</span>
-    </div>
-
-    <!-- 添加调试信息 -->
-    <div v-if="props.type === 'example'" class="w-full text-center mt-4 text-sm text-theme-secondary animate-fadeIn">
-      <template v-if="props.exampleStage === 0">
-        正在学习：单词前置+目标单词 (阶段1/3)
-      </template>
-      <template v-else-if="props.exampleStage === 1">
-        正在学习：部分例句+目标单词 (阶段2/3)
-      </template>
-      <template v-else-if="props.exampleStage === 2">
-        正在学习：完整例句 (阶段3/3)
-      </template>
-      <div v-if="state === WordState.CORRECT" class="text-theme-success font-bold mt-1 animate-fadeIn">
-        太棒了！正确掌握了这个阶段
-      </div>
-      <div v-if="state === WordState.ERROR" class="text-theme-error font-bold mt-1 animate-fadeIn">
-        再试一次，你能做到的！
-      </div>
-    </div>
-
-    <!-- 调试信息 -->
-    <div class="w-full text-xs text-gray-500 mt-2 text-center">
-      类型: {{ props.type || '未设置' }} |
-      阶段: {{ props.exampleStage === undefined ? '未设置' : props.exampleStage }} |
-      状态: {{ props.state }}
     </div>
   </div>
 </template>

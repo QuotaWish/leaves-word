@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ISoundWordItem, SoundPrepareWord } from "~/composables/words/mode/sound";
-import { useSuccessAudio, useWordSound } from "~/composables/words";
+import { useSuccessAudio, useErrorAudio, useWordSound } from "~/composables/words";
 import { ExampleStage, SoundWordType, WordState } from "~/composables/words/mode/sound";
 import SoundLayout from "./SoundLayout.vue";
 
@@ -19,8 +19,12 @@ const wordState = ref<WordState>(WordState.INIT);
 const errorCount = ref(0); // 错误计数器
 const showHint = ref(false); // 是否显示提示
 
+// 添加音频完成标志，控制圆球位置
+const audioFinished = ref(true);
+
+// 修改audioPosition计算属性，增加对audioFinished的判断
 const audioPosition = computed(() =>
-  wordState.value === WordState.PLAYING ? "center" : "top"
+  wordState.value === WordState.PLAYING || !audioFinished.value ? "center" : "top"
 );
 
 const showInputContainer = ref(false);
@@ -127,196 +131,324 @@ async function playAudio() {
   // 设置正在播放标志
   isPlayingAudio.value = true;
   wordState.value = WordState.PLAYING;
+  // 设置音频未完成标志，保持圆球在中心
+  audioFinished.value = false;
+  // 确保在播放时不显示输入框
+  showInputContainer.value = false;
 
-  try {
-    // 确保暂停任何正在播放的音频
-    if (lastAudio) {
-      console.warn(`%c停止之前的音频`, 'color: #607D8B; font-weight: bold; font-size: 12px;');
-      lastAudio.pause();
-      lastAudio.currentTime = 0;
-    }
-
-    const word = currentWord.value?.word.mainWord;
-    if (!word) {
-      isPlayingAudio.value = false;
-      return;
-    }
-
-    // 清晰区分不同模式的音频播放
-    if (currentWord.value?.type === SoundWordType.EXAMPLE) {
-      // 例句模式，优先使用当前需要输入的部分
-      const exampleDisplay = prepareData.getExampleDisplay();
-      console.warn(`%c播放例句音频: "${exampleDisplay}"`, 'color: #2196F3; font-weight: bold; font-size: 12px;');
-
-      // 确保在播放前获取到有效的例句文本
-      if (exampleDisplay && exampleDisplay.trim()) {
-        try {
-          // 尝试播放例句片段
-          lastAudio = await useWordSound(exampleDisplay);
-          if (lastAudio) {
-            await new Promise<void>((resolve) => {
-              if (lastAudio) {
-                lastAudio.onended = () => resolve();
-                lastAudio.onerror = () => {
-                  console.error(`%c例句片段音频播放失败，尝试播放完整例句`, 'color: #F44336; font-weight: bold; font-size: 12px;');
-                  resolve();
-                };
-                lastAudio.play().catch((err) => {
-                  console.error(`%c例句音频播放错误:`, 'color: #F44336; font-weight: bold; font-size: 12px;', err);
-                  resolve();
-                });
-              } else {
-                resolve();
-              }
-            });
-            return;
-          }
-        } catch (err) {
-          console.error(`%c获取例句片段音频失败:`, 'color: #F44336; font-weight: bold; font-size: 12px;', err);
-        }
+  // 添加重试逻辑
+  let retryCount = 0;
+  const maxRetries = 2;
+  
+  const attemptPlayAudio = async () => {
+    try {
+      // 确保暂停任何正在播放的音频
+      if (lastAudio) {
+        console.warn(`%c停止之前的音频`, 'color: #607D8B; font-weight: bold; font-size: 12px;');
+        lastAudio.pause();
+        lastAudio.currentTime = 0;
+        lastAudio = null; // 清空lastAudio引用，避免潜在问题
       }
 
-      // 如果没有获取到当前需要输入的部分，尝试使用完整例句
-      const examples = word.examples || [];
-      if (examples.length > 0) {
-        const example = examples[0].sentence || "";
-        if (example && example.trim()) {
-          console.warn(`%c播放完整例句: "${example}"`, 'color: #9C27B0; font-weight: bold; font-size: 12px;');
-          try {
-            lastAudio = await useWordSound(example);
-            if (lastAudio) {
-              await new Promise<void>((resolve) => {
-                if (lastAudio) {
-                  lastAudio.onended = () => resolve();
-                  lastAudio.onerror = () => {
-                    console.error(`%c完整例句音频播放失败，降级到单词音频`, 'color: #F44336; font-weight: bold; font-size: 12px;');
-                    resolve();
-                  };
-                  lastAudio.play().catch((err) => {
-                    console.error(`%c完整例句音频播放错误:`, 'color: #F44336; font-weight: bold; font-size: 12px;', err);
-                    resolve();
-                  });
-                } else {
-                  resolve();
-                }
-              });
-              return;
-            }
-          } catch (err) {
-            console.error(`%c获取完整例句音频失败:`, 'color: #F44336; font-weight: bold; font-size: 12px;', err);
+      const word = currentWord.value?.word.mainWord;
+      if (!word) {
+        console.error(`%c没有找到单词数据`, 'color: #F44336; font-weight: bold; font-size: 14px;');
+        return false;
+      }
+
+      // 根据不同模式决定播放内容
+      let audioSource = '';
+      let audioType = '';
+      
+      if (currentWord.value?.type === SoundWordType.EXAMPLE) {
+        // 例句模式，优先使用当前需要输入的部分
+        const exampleDisplay = prepareData.getExampleDisplay();
+        if (exampleDisplay && exampleDisplay.trim()) {
+          audioSource = exampleDisplay;
+          audioType = '例句片段';
+        } else {
+          // 如果没有获取到需要输入的部分，尝试使用完整例句
+          const examples = word.examples || [];
+          if (examples.length > 0 && examples[0].sentence) {
+            audioSource = examples[0].sentence;
+            audioType = '完整例句';
+          } else {
+            // 都没有则使用单词本身
+            audioSource = word.word;
+            audioType = '降级单词';
           }
         }
+      } else {
+        // 听写模式，使用单词音频
+        audioSource = word.word;
+        audioType = '单词';
       }
-      // 都没有则降级到单词音频
-      console.warn(`%c降级为单词音频: "${word.word}"`, 'color: #F44336; font-weight: bold; font-size: 12px;');
-      lastAudio = await useWordSound(word.word);
-    } else {
-      // 听写模式，使用单词音频
-      console.warn(`%c播放单词音频: "${word.word}"`, 'color: #4CAF50; font-weight: bold; font-size: 12px;');
-      lastAudio = await useWordSound(word.word);
-    }
-
-    if (lastAudio) {
+      
+      // 记录详细的音频加载信息
+      console.warn(`%c尝试播放${audioType}音频: "${audioSource}" (尝试次数: ${retryCount + 1})`, 'color: #4CAF50; font-weight: bold; font-size: 12px;');
+      
+      // 获取音频对象
+      lastAudio = await useWordSound(audioSource);
+      
+      if (!lastAudio) {
+        console.error(`%c获取${audioType}音频失败，尝试重试或降级`, 'color: #F44336; font-weight: bold; font-size: 14px;');
+        return false;
+      }
+      
       // 使用Promise等待音频播放完成
       await new Promise<void>((resolve) => {
-        if (lastAudio) {
-          lastAudio.onended = () => resolve();
-          lastAudio.onerror = () => resolve();
-          lastAudio.play().catch(() => resolve());
-        } else {
+        if (!lastAudio) {
           resolve();
+          return;
         }
+        
+        // 添加超时保护，防止音频加载超时
+        const timeoutId = setTimeout(() => {
+          console.error(`%c${audioType}音频播放超时`, 'color: #F44336; font-weight: bold; font-size: 14px;');
+          if (lastAudio) {
+            lastAudio.pause();
+            lastAudio.currentTime = 0;
+          }
+          resolve();
+        }, 10000); // 10秒超时
+        
+        // 确保各种音频事件都能正确处理
+        const audioEventHandler = (eventType: string, color: string, error?: any) => {
+          console.warn(`%c${audioType}音频${eventType}`, `color: ${color}; font-weight: bold; font-size: 12px;`, error || '');
+          clearTimeout(timeoutId);
+          resolve();
+        };
+        
+        // 设置各种音频事件处理
+        lastAudio.onended = () => audioEventHandler('播放完成', '#4CAF50');
+        lastAudio.onerror = (e) => audioEventHandler('播放错误', '#F44336', e);
+        lastAudio.onabort = (e) => audioEventHandler('播放中止', '#F44336', e);
+        
+        lastAudio.onstalled = (e) => {
+          console.error(`%c${audioType}音频播放停滞`, 'color: #F44336; font-weight: bold; font-size: 12px;', e);
+          // 对于停滞的情况，尝试重新加载并播放
+          if (lastAudio) {
+            console.warn(`%c尝试重新加载音频`, 'color: #FF9800; font-weight: bold; font-size: 12px;');
+            lastAudio.load();
+            lastAudio.play().catch(err => {
+              console.error(`%c重新加载后播放失败:`, 'color: #F44336; font-weight: bold; font-size: 12px;', err);
+              clearTimeout(timeoutId);
+              resolve();
+            });
+          }
+        };
+        
+        // 播放音频并处理错误
+        lastAudio.play()
+          .then(() => {
+            console.warn(`%c开始播放${audioType}音频`, 'color: #4CAF50; font-weight: bold; font-size: 12px;');
+          })
+          .catch((err) => {
+            console.error(`%c${audioType}音频播放错误:`, 'color: #F44336; font-weight: bold; font-size: 12px;', err);
+            clearTimeout(timeoutId);
+            resolve();
+          });
       });
+      
+      // 如果到达这里，音频应该已经播放过了（不管成功与否）
+      return true;
+    } catch (error) {
+      console.error(`%c音频播放失败:`, 'color: #F44336; font-weight: bold; font-size: 14px;', error);
+      return false;
     }
-  } catch (error) {
-    console.error('音频播放失败:', error);
-  } finally {
-    // 重置播放状态
-    isPlayingAudio.value = false;
-    wordState.value = WordState.WAITING;
-    // 短暂延迟后触发重新播放，如果当前是例句模式
-    if (currentWord.value?.type === SoundWordType.EXAMPLE && !lastAudio) {
-      setTimeout(() => {
-        console.warn(`%c例句音频播放失败，尝试重新播放单词音频`, 'color: #FF9800; font-weight: bold; font-size: 12px;');
-        playAudio();
-      }, 500);
-    }
+  };
+  
+  // 尝试播放音频，如果失败则重试
+  let playSuccess = await attemptPlayAudio();
+  
+  // 如果播放失败且尚未达到最大重试次数，则重试
+  while (!playSuccess && retryCount < maxRetries) {
+    retryCount++;
+    console.warn(`%c音频播放失败，第${retryCount}次重试`, 'color: #FF9800; font-weight: bold; font-size: 14px;');
+    // 添加延迟再重试
+    await sleep(500);
+    playSuccess = await attemptPlayAudio();
   }
+  
+  if (!playSuccess) {
+    console.error(`%c多次尝试后音频播放仍然失败`, 'color: #F44336; font-weight: bold; font-size: 14px;');
+  }
+  
+  // 无论是否成功，都重置状态
+  isPlayingAudio.value = false;
+  wordState.value = WordState.WAITING;
+  
+  // 添加延迟，确保音频完全播放结束后再改变圆球位置
+  setTimeout(() => {
+    // 设置音频已完成标志，允许圆球移动到顶部
+    audioFinished.value = true;
+    showInputContainer.value = true; // 播放结束后显示输入框
+  }, 500);
 }
 
-// 修改nextData函数，确保阶段推进
+// 彻底重写nextData函数，确保阶段进度不会丢失
 async function nextData(success: boolean) {
   if (wordState.value === WordState.TRANSITIONING) {
     return;
   }
-
-  console.warn(`%c执行 nextData: success=${success}, 当前单词类型=${currentWord.value?.type}, 阶段=${currentWord.value?.exampleStage}`, "color: #FF9800; font-weight: bold; font-size: 14px;");
-
+  
+  // 保存当前状态详情
+  const prevWordType = currentWord.value?.type;
+  const prevStage = currentWord.value?.exampleStage;
+  let targetWordType = prevWordType; // 默认保持当前类型
+  let targetStage = prevStage; // 默认保持当前阶段
+  
+  // 详细记录转换前后的状态
+  console.warn(`%c状态转换开始 - 当前类型:${prevWordType}, 阶段:${prevStage}, 成功:${success}`, "color: #FF9800; font-weight: bold; font-size: 14px;");
+  
+  // 标记过渡状态
   wordState.value = WordState.FADE_OUT;
-  await sleep(700);
-
-  // 如果还有例句在队列中，直接刷新数据
-  if (exampleQueue.value.length > 0) {
-    console.warn(`%c使用队列中的例句: 数量=${exampleQueue.value.length}, 类型=${exampleQueue.value[0]?.type}, 阶段=${exampleQueue.value[0]?.exampleStage}`, "color: #9C27B0; font-weight: bold; font-size: 14px;");
-    refreshData();
+  audioFinished.value = true;
+  await sleep(600);
+  
+  // 根据当前模式和答案正确性确定后续行为
+  if (prevWordType === SoundWordType.DICTATION && success) {
+    // 单词听写正确，需要切换到例句模式
+    console.warn(`%c单词回答正确，准备切换到例句模式`, "color: #9C27B0; font-weight: bold; font-size: 14px;");
+    
+    // 确保队列中有例句
+    if (exampleQueue.value.length === 0 && currentWord.value) {
+      const examples = currentWord.value.word.mainWord?.examples || [];
+      if (examples.length > 0) {
+        // 创建一个新的例句项目
+        const exampleItem: ISoundWordItem = {
+          type: SoundWordType.EXAMPLE,
+          word: currentWord.value.word,
+          exampleStage: ExampleStage.PLUS_ONE, // 明确设置为第一阶段
+        };
+        
+        // 加入队列
+        exampleQueue.value.push(exampleItem);
+        console.warn(`%c强制添加例句到队列`, "color: #4CAF50; font-weight: bold; font-size: 14px;");
+        
+        // 明确设置目标类型为例句模式
+        targetWordType = SoundWordType.EXAMPLE;
+        targetStage = ExampleStage.PLUS_ONE;
+        
+        // 同时强制设置prepareData的模式（双保险）
+        prepareData.debugForceSetWordType(SoundWordType.EXAMPLE);
+        
+        // 确保例句已被处理
+        prepareData.processExampleSentence();
+      } else {
+        console.warn(`%c该单词没有例句，继续下一个单词`, "color: #FF9800; font-weight: bold; font-size: 14px;");
+      }
+    } else if (exampleQueue.value.length > 0) {
+      // 队列中已有例句，保持不变
+      console.warn(`%c例句队列已有内容: ${exampleQueue.value.length}个`, "color: #4CAF50; font-weight: bold; font-size: 14px;");
+      targetWordType = SoundWordType.EXAMPLE;
+      targetStage = ExampleStage.PLUS_ONE;
+    }
+  } else if (prevWordType === SoundWordType.EXAMPLE && success) {
+    // 例句回答正确，可能需要进阶到下一阶段
+    console.warn(`%c例句回答正确，尝试进阶到下一个阶段`, "color: #4CAF50; font-weight: bold; font-size: 14px;");
+    
+    // 保持例句模式不变，但阶段可能需要推进
+    targetWordType = SoundWordType.EXAMPLE;
+    
+    // 例句有可能结束，需要从prepareData.next的结果判断
+  } else if (!success) {
+    // 答案错误，一般保持当前状态，重试
+    console.warn(`%c回答错误，状态不变`, "color: #F44336; font-weight: bold; font-size: 14px;");
+  }
+  
+  // 详细记录预期状态
+  console.warn(`%c预期状态 - 类型:${targetWordType}, 阶段:${targetStage}`, "color: #03A9F4; font-weight: bold; font-size: 14px;");
+  
+  // 处理特殊情况：如果预期是例句模式且当前例句队列有内容
+  if (targetWordType === SoundWordType.EXAMPLE && exampleQueue.value.length > 0) {
+    console.warn(`%c从例句队列获取例句`, "color: #9C27B0; font-weight: bold; font-size: 14px;");
+    refreshData(); // 这将从队列取出例句
     wordState.value = WordState.FADE_IN;
+    
+    // 设置短延迟，确保过渡效果和状态更新
     setTimeout(() => {
       wordState.value = WordState.WAITING;
+      
+      // 检查实际状态是否符合预期
+      setTimeout(() => {
+        const actualType = currentWord.value?.type;
+        const actualStage = currentWord.value?.exampleStage;
+        
+        console.warn(`%c实际状态 - 类型:${actualType}, 阶段:${actualStage}`, "color: #607D8B; font-weight: bold; font-size: 14px;");
+        
+        // 如果不符合预期，尝试修复
+        if (actualType !== targetWordType || (targetStage !== undefined && actualStage !== targetStage)) {
+          console.error(`%c状态不符合预期，尝试修复`, "color: #F44336; font-weight: bold; font-size: 14px;");
+          
+          // 确认是例句模式
+          if (targetWordType === SoundWordType.EXAMPLE) {
+            prepareData.debugForceSetWordType(SoundWordType.EXAMPLE);
+            prepareData.processExampleSentence();
+            refreshData();
+          }
+        }
+      }, 100);
     }, 600);
+    
     return;
   }
-
-  // 检查当前单词类型和阶段
-  const currentType = currentWord.value?.type;
-  const currentStage = currentWord.value?.exampleStage;
-
-  // 如果是例句模式并且答案正确，调用next推进阶段
-  if (currentType === SoundWordType.EXAMPLE && success) {
-    console.warn(`%c例句回答正确，尝试推进阶段: ${currentStage}`, "color: #4CAF50; font-weight: bold; font-size: 14px;");
-
-    // 明确调用next进入下一个阶段
-    const result = await prepareData.next(success);
-
-    if (result) {
-      console.warn(`%c阶段推进成功`, "color: #2196F3; font-weight: bold; font-size: 14px;");
-      refreshData();
-      wordState.value = WordState.FADE_IN;
-      setTimeout(() => {
-        wordState.value = WordState.WAITING;
-      }, 600);
-      return;
-    } else {
-      console.warn(`%c没有更多阶段或单词，完成学习`, "color: #E91E63; font-weight: bold; font-size: 14px;");
-      await prepareData.finish();
-      emits("done");
-      return;
-    }
-  }
-
-  // 听写模式或例句模式答错
-  console.warn(`%c调用 prepareData.next: success=${success}`, "color: #2196F3; font-weight: bold; font-size: 14px;");
+  
+  // 调用next进行常规处理
+  console.warn(`%c调用 prepareData.next: ${success}`, "color: #2196F3; font-weight: bold; font-size: 14px;");
   const result = await prepareData.next(success);
-
+  
   if (!result) {
-    // 如果还有剩余的例句，继续处理
+    // 没有更多内容了
+    console.warn(`%c没有更多内容，结束学习`, "color: #E91E63; font-weight: bold; font-size: 14px;");
+    
+    // 检查例句队列是否有剩余内容
     if (exampleQueue.value.length > 0) {
+      console.warn(`%c但例句队列中还有内容，继续处理`, "color: #4CAF50; font-weight: bold; font-size: 14px;");
       refreshData();
       wordState.value = WordState.FADE_IN;
-      setTimeout(() => {
-        wordState.value = WordState.WAITING;
-      }, 600);
+      setTimeout(() => { wordState.value = WordState.WAITING; }, 600);
       return;
     }
-
+    
+    // 真正结束
     await prepareData.finish();
     emits("done");
     return;
   }
-
+  
+  // 常规刷新
   refreshData();
   wordState.value = WordState.FADE_IN;
+  
+  // 设置短延迟，确保过渡效果
   setTimeout(() => {
     wordState.value = WordState.WAITING;
+    
+    // 检查刷新后的状态是否符合预期
+    setTimeout(() => {
+      const actualType = currentWord.value?.type;
+      const actualStage = currentWord.value?.exampleStage;
+      
+      console.warn(`%c刷新后状态 - 类型:${actualType}, 阶段:${actualStage}`, "color: #607D8B; font-weight: bold; font-size: 14px;");
+      
+      // 如果预期是例句模式但实际不是，尝试修复
+      if (targetWordType === SoundWordType.EXAMPLE && actualType !== SoundWordType.EXAMPLE) {
+        console.error(`%c类型不符合预期，尝试修复为例句模式`, "color: #F44336; font-weight: bold; font-size: 14px;");
+        prepareData.debugForceSetWordType(SoundWordType.EXAMPLE);
+        prepareData.processExampleSentence();
+        refreshData();
+      }
+      // 如果是例句模式但阶段不对，也修复
+      else if (targetWordType === SoundWordType.EXAMPLE && 
+               actualType === SoundWordType.EXAMPLE && 
+               targetStage !== undefined && 
+               actualStage !== targetStage) {
+        console.error(`%c例句阶段不符合预期，尝试修复`, "color: #F44336; font-weight: bold; font-size: 14px;");
+        prepareData.processExampleSentence();
+        refreshData();
+      }
+    }, 100);
   }, 600);
 }
 
@@ -361,55 +493,32 @@ function checkInput() {
     // 播放成功音效
     useSuccessAudio().play();
 
-    // 减少日志输出
+    // 在进入下一阶段前，确保例句队列准备好
+    if (currentWord.value.type === SoundWordType.DICTATION && currentWord.value) {
+      console.warn(`%c单词回答正确，提前准备例句队列`, "color: #673AB7; font-weight: bold; font-size: 14px;");
+      
+      const examples = currentWord.value.word.mainWord?.examples || [];
+      if (examples.length > 0 && exampleQueue.value.length === 0) {
+        const exampleWord: ISoundWordItem = {
+          type: SoundWordType.EXAMPLE,
+          word: currentWord.value.word,
+          exampleStage: ExampleStage.PLUS_ONE,
+        };
+        exampleQueue.value.push(exampleWord);
+        console.warn(`%c提前添加例句到队列完成`, "color: #4CAF50; font-weight: bold; font-size: 14px;");
+      }
+    }
 
     // 等待一会儿让用户看到正确反馈
     setTimeout(() => {
-      // 重要：在调用nextData前记录类型，以便后续检查
-      const prevType = currentWord.value?.type;
-      const prevStage = currentWord.value?.exampleStage;
-      // 保留关键调试信息
-      console.warn(`%c准备切换到下一阶段，当前模式: ${prevType}, 当前阶段: ${prevStage}`, "color: #FF9800; font-weight: bold; font-size: 14px;");
-
-      // 如果是听写模式且回答正确，则强制设置类型为例句模式
-      if (prevType === SoundWordType.DICTATION) {
-        console.warn(`%c单词回答正确，准备切换到例句模式`, "color: #673AB7; font-weight: bold; font-size: 14px;");
-      }
-
       nextData(true);
-
-      // 在下一个tick验证类型是否改变
-      setTimeout(() => {
-        // 获取当前模式和阶段
-        const currentMode = prepareData.getCurrentWordMode();
-        const currentStage = currentWord.value?.exampleStage;
-        console.warn(`%c类型转换检查: 之前[${prevType}:${prevStage}] 之后[${currentMode}:${currentStage}]`, "color: #607D8B; font-weight: bold; font-size: 14px;");
-
-        // 检查转换是否成功
-        if (prevType === SoundWordType.DICTATION && currentMode === SoundWordType.DICTATION) {
-          console.warn(`%c检测到类型未变化，尝试强制设置为例句模式`, "color: #F44336; font-weight: bold; font-size: 14px;");
-
-          // 使用新增的调试方法强制设置类型
-          prepareData.debugForceSetWordType(SoundWordType.EXAMPLE);
-
-          // 强制刷新界面
-          refreshData();
-        } else if (prevType === SoundWordType.DICTATION && currentMode === SoundWordType.EXAMPLE && currentStage !== ExampleStage.PLUS_ONE) {
-          // 检测到类型已变为例句但阶段不是第一阶段
-          console.warn(`%c例句阶段不正确，应为第一阶段(${ExampleStage.PLUS_ONE})，当前为(${currentStage})`, "color: #F44336; font-weight: bold; font-size: 14px;");
-
-          // 重新处理例句分段
-          prepareData.processExampleSentence();
-
-          // 刷新界面
-          refreshData();
-        }
-      }, 500);
-    }, 800); // 将延迟时间从默认改为800毫秒
+    }, 800);
   } else {
     // 标记为错误状态
     wordState.value = WordState.ERROR;
     errorCount.value++;
+
+    useErrorAudio().play();
 
     // 连续错误2次以上显示提示
     if (errorCount.value >= 2) {
@@ -472,6 +581,7 @@ onMounted(refreshData);
         class="word-info h-full flex flex-col justify-between"
       >
         <InputBox
+          v-if="wordState !== WordState.PLAYING && audioFinished"
           v-model:input="userInput"
           :origin="currentWord?.type === SoundWordType.DICTATION
             ? prepareData.getOriginalCase()
@@ -483,6 +593,7 @@ onMounted(refreshData);
         />
 
         <SoundHintDisplay
+          v-if="wordState !== WordState.PLAYING"
           :word="prepareData"
           :display="showHint"
           @update:display="showHint = $event"
@@ -632,5 +743,12 @@ onMounted(refreshData);
   100% {
     box-shadow: 0 0 50px rgba(255, 203, 107, 0.8);
   }
+}
+
+// 添加确保内容在播放时完全隐藏的样式
+.content-hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.3s ease;
 }
 </style>
