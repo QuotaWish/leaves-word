@@ -328,8 +328,4 @@ export class ComprehensiveMode extends SignMode {
   getEstimateCost(amount: number): number {
     return Math.max(Math.ceil(amount / 7), 1)
   }
-
-  constructor(dictionaryStorage: DictStorage) {
-    super(dictionaryStorage)
-  }
 }

@@ -1,5 +1,4 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div text-black class="transition-cubic WordSignInfoCard fake-background">
@@ -38,7 +37,7 @@
   transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1);
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
 
     top: 0;
@@ -94,9 +93,7 @@
     opacity: 0.05;
     background-image: radial-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
       radial-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px);
-    background-position:
-      0 0,
-      25px 25px;
+    background-position: 0 0, 25px 25px;
     background-size: 50px 50px;
     pointer-events: none;
     animation: patternFloat 60s linear infinite;
@@ -115,7 +112,7 @@
   display: flex;
   left: 5%;
   width: 90%;
-  height: 390px;
+  height: 410px;
   flex-direction: column;
   justify-content: center;
   border-radius: 24px;
@@ -140,9 +137,7 @@
   transform: translateY(-1px) scale(0.995);
 
   .card-container {
-    box-shadow:
-      0 2px 12px -4px rgba(0, 0, 0, 0.08),
-      0 8px 24px -12px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 12px -4px rgba(0, 0, 0, 0.08), 0 8px 24px -12px rgba(0, 0, 0, 0.12);
     transform: rotateX(1deg);
   }
 }
@@ -165,7 +160,7 @@
     }
 
     &::after {
-      content: '';
+      content: "";
       position: absolute;
 
       top: 0;

@@ -4,7 +4,7 @@ export default {
   getWordPronounce(word: string) {
     const url = new URL('https://dict.youdao.com/dictvoice')
     url.searchParams.append('type', '2')
-    url.searchParams.append('audio', encodeURIComponent(word.trim()))
+    url.searchParams.append('audio', word.replaceAll(" ", "+"))
     // const url = `?type=2&audio=Hiding`
     // const url = `https://api.quotawish.com/api/aigc/pronounce/word/${word}`
 
