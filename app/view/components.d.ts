@@ -12,7 +12,6 @@ declare module 'vue' {
     CardDisplay: typeof import('./src/components/display/CardDisplay.vue')['default']
     CircleLoader: typeof import('./src/components/icon/CircleLoader.vue')['default']
     ComprehensiveWord: typeof import('./src/components/words/mode/ComprehensiveWord.vue')['default']
-    copy: typeof import('./src/components/page/holder/PageNavHolder.vue')['default']
     DarkModeSwitch: typeof import('./src/components/button/DarkModeSwitch.vue')['default']
     DictionaryBookDisplay: typeof import('./src/components/display/DictionaryBookDisplay.vue')['default']
     DictionaryDisplay: typeof import('./src/components/display/DictionaryDisplay.vue')['default']
@@ -49,7 +48,6 @@ declare module 'vue' {
     Sound: typeof import('./src/components/words/mode/sound/index.vue')['default']
     SoundHintDisplay: typeof import('./src/components/words/mode/sound/SoundHintDisplay.vue')['default']
     SoundLayout: typeof import('./src/components/words/mode/sound/SoundLayout.vue')['default']
-    SoundWord: typeof import('./src/components/words/mode/sound/index.vue')['default']
     TheCounter: typeof import('./src/components/TheCounter.vue')['default']
     TheInput: typeof import('./src/components/TheInput.vue')['default']
     TouchDialog: typeof import('./src/components/dialog/TouchDialog.vue')['default']
@@ -64,7 +62,6 @@ declare module 'vue' {
     WordPlayIcon: typeof import('./src/components/icon/WordPlayIcon.vue')['default']
     WordSection: typeof import('./src/components/words/WordSection.vue')['default']
     WordSelector: typeof import('./src/components/words/WordSelector.vue')['default']
-    WordSigned: typeof import('./src/components/words/page/WordSigned.vue')['default']
     WordSignInfo: typeof import('./src/components/words/WordSignInfo.vue')['default']
     WordSignInfoCard: typeof import('./src/components/words/card/WordSignInfoCard.vue')['default']
   }

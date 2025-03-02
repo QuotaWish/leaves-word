@@ -218,12 +218,15 @@ export class SoundPrepareWord extends PrepareWord<SoundMode, ISoundWordItem> {
 
     const target = parts[stage];
 
+    // 返回对应阶段的例句部分
+    console.warn(`%c[SoundPrepareWord] 返回例句显示内容: "${target.join(" ")}"`, 'color: #2196F3; font-weight: bold; font-size: 12px;');
     return target.join(" ");
   }
 
   // 处理例句，将其分段存储
   processExampleSentence(): void {
     if (!this.currentWord || this.currentWord.type !== SoundWordType.EXAMPLE) {
+      console.warn(`%c[SoundPrepareWord] 处理例句失败: 当前单词不存在或类型不是例句模式`, 'color: #F44336; font-weight: bold; font-size: 14px;');
       return;
     }
 
@@ -235,32 +238,54 @@ export class SoundPrepareWord extends PrepareWord<SoundMode, ISoundWordItem> {
         ? examples[0].sentence
         : this.currentWord.word.mainWord.word;
 
-    const { origin, filter } = this.convertExampleSentenceToWords(example);
+    console.warn(`%c[SoundPrepareWord] 处理例句: "${example}"`, 'color: #9C27B0; font-weight: bold; font-size: 12px;');
+
+    const { origin, filter } = convertExampleSentenceToWords(example);
 
     // 保存分段和初始阶段
     this.currentWord.exampleParts = filter;
     this.currentWord.exampleOrigin = origin;
+
+    // 始终将阶段设置为PLUS_ONE，并记录日志
+    const oldStage = this.currentWord.exampleStage;
     this.currentWord.exampleStage = ExampleStage.PLUS_ONE;
+    console.warn(`%c[SoundPrepareWord] 例句处理完成，设置初始阶段: ${oldStage} -> ${this.currentWord.exampleStage}`, 'color: #FF9800; font-weight: bold; font-size: 12px;');
+    console.warn(`%c[SoundPrepareWord] 例句部分: ${JSON.stringify(filter)}`, 'color: #FF9800; font-weight: bold; font-size: 12px;');
   }
 
   // 推进例句学习阶段
   advanceExampleStage(): boolean {
     if (!this.currentWord || this.currentWord.type !== SoundWordType.EXAMPLE) {
+      console.warn(`%c[SoundPrepareWord] 推进阶段失败: 当前单词不存在或类型不是例句模式`, 'color: #F44336; font-weight: bold; font-size: 14px;');
       return false;
     }
 
+    const currentStage = this.currentWord.exampleStage;
+    console.warn(`%c[SoundPrepareWord] 当前阶段: ${currentStage}`, 'color: #FF9800; font-weight: bold; font-size: 14px;');
+
     if (this.currentWord.exampleStage === undefined) {
+      console.warn(`%c[SoundPrepareWord] 阶段未定义，设置为初始阶段`, 'color: #2196F3; font-weight: bold; font-size: 14px;');
       this.currentWord.exampleStage = ExampleStage.PLUS_ONE;
       return true;
     }
 
     // 如果已经是完整例句，返回false表示已完成
     if (this.currentWord.exampleStage >= ExampleStage.FULL_SENTENCE) {
+      console.warn(`%c[SoundPrepareWord] 已达到最终阶段，无法再推进`, 'color: #E91E63; font-weight: bold; font-size: 14px;');
       return false;
     }
 
-    // 否则推进到下一阶段
-    this.currentWord.exampleStage = this.currentWord.exampleStage + 1;
+    // 记录阶段推进
+    if (this.currentWord.exampleStage === ExampleStage.PLUS_ONE) {
+      console.warn(`%c[SoundPrepareWord] 从第一阶段推进到第二阶段`, 'color: #4CAF50; font-weight: bold; font-size: 14px;');
+    } else if (this.currentWord.exampleStage === ExampleStage.PERCENT_WORD) {
+      console.warn(`%c[SoundPrepareWord] 从第二阶段推进到完整例句`, 'color: #4CAF50; font-weight: bold; font-size: 14px;');
+    }
+
+    // 明确推进到下一阶段
+    const newStage = this.currentWord.exampleStage + 1;
+    this.currentWord.exampleStage = newStage;
+    console.warn(`%c[SoundPrepareWord] 阶段已推进: ${currentStage} -> ${newStage}`, 'color: #4CAF50; font-weight: bold; font-size: 14px;');
     return true;
   }
 
@@ -279,7 +304,7 @@ export class SoundPrepareWord extends PrepareWord<SoundMode, ISoundWordItem> {
         const res = storage.randomUnlearnedWordsWithOptiohns();
 
         if (
-          words.some((item) => item.word.mainWord.word === res.mainWord.word)
+          words.some((item: any) => item.word.mainWord.word === res.mainWord.word)
         ) {
           continue;
         }
@@ -335,6 +360,8 @@ export class SoundPrepareWord extends PrepareWord<SoundMode, ISoundWordItem> {
 
     const currentWord = this.currentWord;
 
+    console.warn(`%c[SoundPrepareWord] next 被调用: success=${success}, 当前类型=${currentWord.type}`, 'color: #FF5722; font-weight: bold; font-size: 14px;');
+
     // 将当前单词添加到已显示的单词列表中
     if (currentWord.type === SoundWordType.DICTATION) {
       this.wordsDisplayed = [
@@ -347,23 +374,34 @@ export class SoundPrepareWord extends PrepareWord<SoundMode, ISoundWordItem> {
       // 根据当前模式处理流程
       if (currentWord.type === SoundWordType.DICTATION) {
         // 如果是听写模式，回答正确后进入例句模式
+        console.warn(`%c[SoundPrepareWord] 单词答对，转换为例句模式: ${currentWord.word.mainWord.word}`, 'color: #4CAF50; font-weight: bold; font-size: 14px;');
+
+        // 重要：这里修改了队列中当前单词的类型，但currentWord引用未更新
         this.wordsQueue[this.wordIndex] = {
           word: currentWord.word,
           type: SoundWordType.EXAMPLE,
-          exampleStage: ExampleStage.FULL_SENTENCE,
+          exampleStage: ExampleStage.PLUS_ONE,
         };
+
+        console.warn(`%c[SoundPrepareWord] 队列中已修改类型，但需要刷新currentWord引用`, 'color: #2196F3; font-weight: bold; font-size: 14px;');
+
         // 初始化例句分段
         this.processExampleSentence();
+
+        // 确保返回true以继续学习流程
         return true;
       }
 
       // 如果是例句模式，检查是否需要推进到下一个阶段
       if (this.advanceExampleStage()) {
         // 还有更多例句阶段，继续学习
+        console.warn(`%c[SoundPrepareWord] 例句阶段推进: ${this.currentWord.exampleStage}`, 'color: #9C27B0; font-weight: bold; font-size: 14px;');
         return true;
       }
 
       // 如果所有例句阶段都完成了，将单词标记为完成
+      console.warn(`%c[SoundPrepareWord] 例句学习完成，单词完成: ${currentWord.word.mainWord.word}`, 'color: #607D8B; font-weight: bold; font-size: 14px;');
+
       this.wordsFinished.push(currentWord.word);
 
       // 从队列中移除当前单词
@@ -384,6 +422,8 @@ export class SoundPrepareWord extends PrepareWord<SoundMode, ISoundWordItem> {
     }
 
     // 回答错误，保持在当前模式，不进行状态转换
+    console.warn(`%c[SoundPrepareWord] 答案错误，保持在当前模式: ${currentWord.type}`, 'color: #F44336; font-weight: bold; font-size: 14px;');
+
     // 记录错误历史
     const obj = currentWord.word;
     const history = obj.wrongHistory || [];
@@ -391,6 +431,24 @@ export class SoundPrepareWord extends PrepareWord<SoundMode, ISoundWordItem> {
     obj.wrongHistory = history;
 
     return true;
+  }
+
+  // 增加调试方法，用于强制切换当前单词的类型（仅用于调试）
+  debugForceSetWordType(type: SoundWordType): void {
+    if (!this.currentWord) {
+      console.warn(`%c[SoundPrepareWord] 没有当前单词，无法设置类型`, 'color: #F44336; font-weight: bold; font-size: 14px;');
+      return;
+    }
+
+    console.warn(`%c[SoundPrepareWord] 强制设置单词类型: ${this.currentWord.type} -> ${type}`, 'color: #FF9800; font-weight: bold; font-size: 14px;');
+
+    // 创建新的对象并替换队列中的元素
+    this.wordsQueue[this.wordIndex] = {
+      ...this.currentWord,
+      type: type,
+    };
+
+    // 刷新后应该会更新currentWord引用
   }
 
   // 返回上一个单词
@@ -450,17 +508,39 @@ export class SoundPrepareWord extends PrepareWord<SoundMode, ISoundWordItem> {
       return false;
     }
 
+    console.warn(`%c[SoundPrepareWord] 检查用户输入: "${input}"`, 'color: #E91E63; font-weight: bold; font-size: 12px;');
+
     if (this.currentWord.type === SoundWordType.DICTATION) {
-      // 听写模式：检查是否与单词匹配
-      return (
-        input.trim().toLowerCase() ===
-        this.currentWord.word.mainWord.word.trim().toLowerCase()
-      );
+      // 听写模式：检查是否与单词匹配，忽略大小写
+      const expected = this.currentWord.word.mainWord.word.trim().toLowerCase();
+      const userInput = input.trim().toLowerCase();
+      const result = userInput === expected;
+      console.warn(`%c[SoundPrepareWord] 听写模式比较: "${userInput}" vs "${expected}", 结果: ${result}`, 'color: #3F51B5; font-weight: bold; font-size: 12px;');
+      return result;
     }
 
     // 例句模式：检查是否与当前阶段例句匹配
-    const expected = this.getExampleDisplay().toLowerCase();
-    return input.trim().toLowerCase() === expected;
+    // 进行清理比较，忽略大小写、标点符号和多余空格
+    const expected = this.getExampleDisplay().toLowerCase().replace(/[.,!?;:'"–—()[\]{}\s]/g, '');
+    const cleaned = input.trim().toLowerCase().replace(/[.,!?;:'"–—()[\]{}\s]/g, '');
+
+    const result = cleaned === expected;
+    console.warn(`%c[SoundPrepareWord] 例句模式比较: "${cleaned}" vs "${expected}", 结果: ${result}`, 'color: #00BCD4; font-weight: bold; font-size: 12px;');
+    return result;
+  }
+
+  // 新增方法：获取原始大小写的单词或例句
+  getOriginalCase(): string {
+    if (!this.currentWord) {
+      return '';
+    }
+
+    if (this.currentWord.type === SoundWordType.DICTATION) {
+      return this.currentWord.word.mainWord.word.trim();
+    }
+
+    // 例句模式返回当前阶段的例句
+    return this.getExampleDisplay();
   }
 }
 

@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { useTargetData } from "~/composables/words";
+import { SoundWordType, ExampleStage } from "~/composables/words/mode/sound";
 
-defineProps<{
+const props = defineProps<{
   newlyWords: number;
   totalWords: number;
   leftWords: number;
   hintText: string;
   contentHidden: boolean;
+  wordType?: SoundWordType;
+  exampleStage?: ExampleStage;
 }>();
 
 const emits = defineEmits<{
@@ -20,61 +23,82 @@ const { targetDict } = useTargetData();
 function goDictionary() {
   router.push(`/dictionary/${targetDict.value.id}`);
 }
+
+const modeHintText = computed(() => {
+  const wordType = props.wordType;
+  const stage = props.exampleStage;
+
+  if (!wordType) return '';
+
+  if (wordType === SoundWordType.DICTATION) {
+    return '听写模式 - 请输入您听到的单词';
+  }
+
+  if (wordType === SoundWordType.EXAMPLE) {
+    if (stage === ExampleStage.PLUS_ONE) {
+      return '例句模式 - 第1阶段 (单词前置+目标单词)';
+    } else if (stage === ExampleStage.PERCENT_WORD) {
+      return '例句模式 - 第2阶段 (部分例句+目标单词)';
+    } else if (stage === ExampleStage.FULL_SENTENCE) {
+      return '例句模式 - 第3阶段 (完整例句)';
+    }
+  }
+
+  return '';
+});
 </script>
 
 <template>
-  <WithPage
-    class="SoundWordPage flex flex-col"
-    style="overflow-y: auto; -webkit-overflow-scrolling: touch"
-  >
-    <div
-      px-4
-      py-2
-      flex
-      items-center
-      justify-between
-      gap-2
-      class="SoundWordPage-Header"
-    >
+  <WithPage class="SoundWordPage flex flex-col" style="overflow-y: auto; -webkit-overflow-scrolling: touch">
+    <div flex items-center justify-between gap-2 px-4 py-2 class="SoundWordPage-Header">
       <div flex items-center gap-2 class="SoundWordPage-Header-Left">
-        <div i-carbon:chevron-left @click="emits('quit')" class="back-btn" />
-        <p class="flex flex-col gap-1">
+        <div cursor-pointer i-carbon:chevron-left class="back-btn" @click="emits('quit')" />
+        <p class="flex font-size-3 op-70 flex-col gap-1">
           <span>需学习 {{ newlyWords }}</span>
           <span>剩余 {{ leftWords }}</span>
         </p>
       </div>
 
       <h1 flex items-center gap-2 text-sm op-75 @click="goDictionary">
-        <el-link class="dictionary-link">{{ targetDict.name }}</el-link>
+        <el-link class="dictionary-link">
+          {{ targetDict.name }}
+        </el-link>
       </h1>
+    </div>
+
+    <div v-if="modeHintText" class="mode-hint-bar">
+      {{ modeHintText }}
     </div>
 
     <div class="progress-container">
       <div class="progress-bar">
         <div
-          class="progress-fill"
-          :style="{
+          class="progress-fill" :style="{
             width: `${(1 - leftWords / totalWords) * 100}%`,
           }"
-        ></div>
+        />
       </div>
     </div>
 
-    <div class="SoundInner relative flex flex-col h-full w-full">
+    <div class="SoundInner relative h-full w-full flex flex-col">
       <div class="SoundWordCard-Container">
         <slot />
 
         <div class="action-area" :class="{ 'content-hidden': contentHidden }">
-          <div @click="emits('playAudio')" class="action-btn replay-btn">
-            <i class="el-icon-headset"></i>
+          <div class="action-btn replay-btn" @click="emits('playAudio')">
+            <i class="el-icon-headset" />
             <span>重听</span>
           </div>
         </div>
       </div>
 
       <div class="bottom-hint-container">
-        <p class="main-hint-text">{{ hintText }}</p>
-        <p class="sub-hint-text">按下键盘输入，内容完整时自动提交</p>
+        <p class="main-hint-text">
+          {{ hintText }}
+        </p>
+        <p class="sub-hint-text">
+          按下键盘输入，内容完整时自动提交
+        </p>
       </div>
     </div>
   </WithPage>
@@ -108,16 +132,16 @@ function goDictionary() {
 }
 
 .SoundWordCard-Container {
-  margin: 0.5rem 1rem 1rem;
-
+  display: flex;
+  margin: 0.25rem 1rem 0.5rem;
   width: calc(100% - 2rem);
-  height: calc(100% - 1.5rem);
-
+  height: calc(100% - 1rem);
+  flex-direction: column;
+  justify-content: space-around;
   border-radius: 16px;
   border: 1px solid var(--theme-border);
 }
 
-// 播放状态时隐藏内容
 .content-hidden {
   opacity: 0;
   pointer-events: none;
@@ -154,162 +178,13 @@ function goDictionary() {
   margin-top: 5px;
 }
 
-// 音频按钮样式优化
-.word-audio {
-  position: absolute;
-  z-index: 999; // 增加z-index确保在最上层
-  font-size: 24px;
-  cursor: pointer;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 203, 107, 0.9) 0%,
-    rgba(255, 180, 78, 0.9) 100%
-  );
-  color: var(--theme-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 20px rgba(255, 203, 107, 0.4),
-    0 0 15px rgba(255, 203, 107, 0.3);
-  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-
-  top: 50%;
-  left: 50%;
-
-  &.position-center {
-    transform: translate(-50%, -50%);
-    width: 100px;
-    height: 100px;
-    font-size: 38px;
-    box-shadow: 0 0 40px rgba(255, 203, 107, 0.6);
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    animation: audioGlow 2s infinite alternate;
-  }
-
-  &.position-top {
-    top: 15%;
-    transform: translate(-50%, -50%);
-  }
-
-  &.playing .sound-wave {
-    opacity: 1;
-    animation: soundWave 2s infinite;
-  }
-}
-
-@keyframes soundWave {
-  0% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-
-  100% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
-}
-
-@keyframes audioGlow {
-  0% {
-    box-shadow: 0 0 20px rgba(255, 203, 107, 0.5);
-  }
-
-  100% {
-    box-shadow: 0 0 50px rgba(255, 203, 107, 0.8);
-  }
-}
-
 .word-info {
   display: flex;
   flex-direction: column;
   align-items: center;
   flex: 1;
-  padding: 1rem 0;
+  padding: 0.5rem 0;
   position: relative;
-
-  top: 180px;
-}
-
-.word-char {
-  font-size: 32px;
-  font-weight: bold;
-  color: var(--theme-text);
-  min-width: 20px;
-  min-height: 50px;
-  text-align: center;
-  margin: 0 2px;
-  position: relative;
-  transition: all 0.3s ease;
-
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: var(--theme-primary);
-    transition: all 0.3s ease;
-  }
-
-  &.char-empty {
-    color: transparent;
-
-    &::after {
-      background: var(--theme-primary);
-      opacity: 0.7;
-      height: 3px;
-    }
-  }
-
-  &.char-input {
-    color: var(--theme-primary);
-
-    &::after {
-      background: var(--theme-primary);
-      height: 3px;
-    }
-  }
-
-  &.char-cursor {
-    animation: blink 1s infinite;
-
-    &::after {
-      background: var(--theme-primary);
-      height: 3px;
-    }
-  }
-
-  &.char-error {
-    color: var(--theme-error);
-    animation: shake 0.5s;
-
-    &::after {
-      background: var(--theme-error);
-    }
-  }
-
-  &.char-correct {
-    color: var(--theme-success);
-    animation: popIn 0.5s;
-
-    &::after {
-      background: var(--theme-success);
-      height: 3px;
-    }
-  }
-
-  &.char-hidden {
-    opacity: 0;
-
-    &::after {
-      opacity: 0;
-    }
-  }
 }
 
 @keyframes popIn {
@@ -343,7 +218,7 @@ function goDictionary() {
 }
 
 .example-container {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -383,7 +258,6 @@ function goDictionary() {
     opacity: 0.9;
     font-weight: 500;
 
-    // 确保标点符号不需要用户输入
     &::after {
       display: none;
     }
@@ -391,7 +265,7 @@ function goDictionary() {
 
   &.char-cursor {
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       bottom: 0;
       right: -2px;
@@ -474,7 +348,7 @@ function goDictionary() {
     border-radius: 12px;
     z-index: -1;
     padding: 15px;
-    border: none; // 移除边框
+    border: none;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   }
 
@@ -495,7 +369,9 @@ function goDictionary() {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s, transform 0.3s;
+  transition:
+    opacity 0.3s,
+    transform 0.3s;
 }
 
 .fade-enter-from,
@@ -561,6 +437,30 @@ function goDictionary() {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.mode-hint-bar {
+  background-color: var(--theme-primary);
+  color: var(--theme-secondary);
+  padding: 8px 15px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 0;
+  margin: 0;
+  position: relative;
+  z-index: 5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease;
+}
+
+.dark .mode-hint-bar {
+  color: #121212;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 // @media (max-height: 700px) {
