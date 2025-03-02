@@ -148,35 +148,63 @@ async function playAudio() {
       const exampleDisplay = prepareData.getExampleDisplay();
       console.warn(`%c播放例句音频: "${exampleDisplay}"`, 'color: #2196F3; font-weight: bold; font-size: 12px;');
 
-      if (exampleDisplay) {
-        lastAudio = await useWordSound(exampleDisplay);
-        await new Promise<void>((resolve) => {
+      // 确保在播放前获取到有效的例句文本
+      if (exampleDisplay && exampleDisplay.trim()) {
+        try {
+          // 尝试播放例句片段
+          lastAudio = await useWordSound(exampleDisplay);
           if (lastAudio) {
-            lastAudio.onended = () => resolve();
-            lastAudio.play().catch(() => resolve());
-          } else {
-            resolve();
+            await new Promise<void>((resolve) => {
+              if (lastAudio) {
+                lastAudio.onended = () => resolve();
+                lastAudio.onerror = () => {
+                  console.error(`%c例句片段音频播放失败，尝试播放完整例句`, 'color: #F44336; font-weight: bold; font-size: 12px;');
+                  resolve();
+                };
+                lastAudio.play().catch((err) => {
+                  console.error(`%c例句音频播放错误:`, 'color: #F44336; font-weight: bold; font-size: 12px;', err);
+                  resolve();
+                });
+              } else {
+                resolve();
+              }
+            });
+            return;
           }
-        });
-        return;
+        } catch (err) {
+          console.error(`%c获取例句片段音频失败:`, 'color: #F44336; font-weight: bold; font-size: 12px;', err);
+        }
       }
 
       // 如果没有获取到当前需要输入的部分，尝试使用完整例句
       const examples = word.examples || [];
       if (examples.length > 0) {
         const example = examples[0].sentence || "";
-        if (example) {
+        if (example && example.trim()) {
           console.warn(`%c播放完整例句: "${example}"`, 'color: #9C27B0; font-weight: bold; font-size: 12px;');
-          lastAudio = await useWordSound(example);
-          await new Promise<void>((resolve) => {
+          try {
+            lastAudio = await useWordSound(example);
             if (lastAudio) {
-              lastAudio.onended = () => resolve();
-              lastAudio.play().catch(() => resolve());
-            } else {
-              resolve();
+              await new Promise<void>((resolve) => {
+                if (lastAudio) {
+                  lastAudio.onended = () => resolve();
+                  lastAudio.onerror = () => {
+                    console.error(`%c完整例句音频播放失败，降级到单词音频`, 'color: #F44336; font-weight: bold; font-size: 12px;');
+                    resolve();
+                  };
+                  lastAudio.play().catch((err) => {
+                    console.error(`%c完整例句音频播放错误:`, 'color: #F44336; font-weight: bold; font-size: 12px;', err);
+                    resolve();
+                  });
+                } else {
+                  resolve();
+                }
+              });
+              return;
             }
-          });
-          return;
+          } catch (err) {
+            console.error(`%c获取完整例句音频失败:`, 'color: #F44336; font-weight: bold; font-size: 12px;', err);
+          }
         }
       }
       // 都没有则降级到单词音频
@@ -193,6 +221,7 @@ async function playAudio() {
       await new Promise<void>((resolve) => {
         if (lastAudio) {
           lastAudio.onended = () => resolve();
+          lastAudio.onerror = () => resolve();
           lastAudio.play().catch(() => resolve());
         } else {
           resolve();
@@ -205,6 +234,13 @@ async function playAudio() {
     // 重置播放状态
     isPlayingAudio.value = false;
     wordState.value = WordState.WAITING;
+    // 短暂延迟后触发重新播放，如果当前是例句模式
+    if (currentWord.value?.type === SoundWordType.EXAMPLE && !lastAudio) {
+      setTimeout(() => {
+        console.warn(`%c例句音频播放失败，尝试重新播放单词音频`, 'color: #FF9800; font-weight: bold; font-size: 12px;');
+        playAudio();
+      }, 500);
+    }
   }
 }
 
@@ -461,13 +497,77 @@ onMounted(refreshData);
   display: flex;
   flex-direction: column;
   padding: 20px;
-  min-height: 50vh;
-  max-height: 70vh;
+  min-height: 40vh; /* 减小最小高度 */
+  max-height: 60vh; /* 减小最大高度 */
   width: 95%;
   height: auto;
-  overflow: visible;
+  overflow: auto; /* 改回auto，让整个卡片可滚动 */
   margin: 0 auto;
   position: relative;
+  
+  /* 自定义滚动条样式 */
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 203, 107, 0.5);
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 180, 78, 0.7);
+  }
+}
+
+// 确保word-info占据足够的空间
+.word-info {
+  min-height: 35vh;
+  padding-bottom: 10px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+// 添加缩小下划线间距的样式
+:deep(.letter-indicator) {
+  letter-spacing: -1px !important;
+  margin: 0 -1px !important;
+  
+  &.underscore {
+    letter-spacing: -3px !important;
+    margin: 0 -2px !important;
+  }
+}
+
+:deep(.input-letter) {
+  letter-spacing: -1px !important;
+  padding: 0 1px !important;
+  margin: 0 -1px !important;
+}
+
+// 优化例句模式标题样式
+:deep(.example-stage-title) {
+  background: linear-gradient(135deg, #ffcb6b 0%, #ffa726 100%);
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-block;
+  margin: 6px 0;
+  box-shadow: 0 2px 8px rgba(255, 167, 38, 0.3);
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 4px 12px rgba(255, 167, 38, 0.5);
+    transform: translateY(-1px);
+  }
 }
 
 .word-audio {
