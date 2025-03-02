@@ -1,238 +1,237 @@
 <script setup lang="ts">
-import { useZIndex } from 'element-plus'
+import { useZIndex } from "element-plus";
 
 const props = defineProps<{
-  modelValue: boolean
-  loading?: boolean
-  header?: boolean
-  footer?: boolean
-  active?: boolean
-}>()
+  modelValue: boolean;
+  loading?: boolean;
+  header?: boolean;
+  footer?: boolean;
+  active?: boolean;
+}>();
 
-const emits = defineEmits(['update:modelValue'])
+const emits = defineEmits(["update:modelValue"]);
 
-const indexManager = useZIndex()
+const indexManager = useZIndex();
 
-const zIndex = ref(indexManager.nextZIndex())
-const visible = useVModel(props, 'modelValue', emits)
+const zIndex = ref(indexManager.nextZIndex());
+const visible = useVModel(props, "modelValue", emits);
 
 watch(visible, (val) => {
   if (val) {
     nextTick(() => {
-      zIndex.value = indexManager.nextZIndex()
+      zIndex.value = indexManager.nextZIndex();
 
-      const main = document.querySelector('#rootLayout') as HTMLElement
+      const main = document.querySelector("#rootLayout") as HTMLElement;
       if (main) {
         Object.assign(main.style, {
-          transition: '0.35s',
-          transform: 'scale(0.9)',
-          borderRadius: '35px',
-        })
+          transition: "0.35s",
+          transform: "scale(0.9)",
+          borderRadius: "35px",
+        });
       }
-    })
-  }
-  else {
+    });
+  } else {
     nextTick(() => {
-      const main = document.querySelector('#rootLayout') as HTMLElement
+      const main = document.querySelector("#rootLayout") as HTMLElement;
       if (main) {
         Object.assign(main.style, {
-          transition: '0.35s',
-          transform: 'scale(1)',
-          borderRadius: '',
-        })
+          transition: "0.35s",
+          transform: "scale(1)",
+          borderRadius: "",
+        });
       }
-    })
+    });
   }
-})
+});
 
 const dialogOptions = reactive({
   forbidden: false,
-})
+});
 
-const dom = ref<HTMLElement>()
+const dom = ref<HTMLElement>();
 
 async function handleShrinkDialog() {
-  const parentEl = dom.value!.parentElement!
+  const parentEl = dom.value!.parentElement!;
 
-  parentEl.style.transition = '0.25s'
-  parentEl.style.transform = 'translateY(0) scaleY(1) translateY(1000px)'
+  parentEl.style.transition = "0.25s";
+  parentEl.style.transform = "translateY(0) scaleY(1) translateY(1000px)";
 
-  await sleep(200)
+  await sleep(200);
 
-  visible.value = false
+  visible.value = false;
 
-  parentEl.style.transform = ''
-  parentEl.style.transition = ''
+  parentEl.style.transform = "";
+  parentEl.style.transition = "";
 }
 
 async function handleClickOutside() {
   if (!props.active) {
-    handleShrinkDialog()
-    return
+    handleShrinkDialog();
+    return;
   }
 
-  dialogOptions.forbidden = true
+  dialogOptions.forbidden = true;
 
-  await sleep(100)
+  await sleep(100);
 
-  dialogOptions.forbidden = false
+  dialogOptions.forbidden = false;
 }
 
 // 允许触控下拉Floater关闭页面
 interface Options {
-  thresholdDistance: number // 触发关闭的阈值距离
-  elasticity: number // 弹性系数
-  elasticityClose: number // 触发关闭的阈值力度
+  thresholdDistance: number; // 触发关闭的阈值距离
+  elasticity: number; // 弹性系数
+  elasticityClose: number; // 触发关闭的阈值力度
 }
 
 function listen(el: HTMLElement, options: Options) {
-  const parentEl = el.parentElement! as HTMLElement
-  const { thresholdDistance, elasticity, elasticityClose } = options
+  const parentEl = el.parentElement! as HTMLElement;
+  const { thresholdDistance, elasticity, elasticityClose } = options;
 
   const _options = {
     touch: false,
     lastY: -1,
     startY: -1,
-  }
+  };
 
   function onTouchStart(e: TouchEvent) {
     // 如果触控点不止一个不触发
-    if (e.touches.length !== 1)
-      return
+    if (e.touches.length !== 1) return;
 
-    const targetElement = e.composedPath()[0] as HTMLElement
+    const targetElement = e.composedPath()[0] as HTMLElement;
 
     if (targetElement !== el) {
-      const scrollbar = parentEl.querySelector('.el-scrollbar .el-scrollbar__wrap')
-      const top = scrollbar?.scrollTop || 0
+      const scrollbar = parentEl.querySelector(".el-scrollbar .el-scrollbar__wrap");
+      const top = scrollbar?.scrollTop || 0;
 
-      if (top !== 0)
-        return
+      if (top !== 0) return;
     }
 
-    e.stopPropagation()
+    e.stopPropagation();
 
-    el.classList.add('active')
+    el.classList.add("active");
 
-    _options.startY = _options.lastY = e.touches[0].clientY
+    _options.startY = _options.lastY = e.touches[0].clientY;
 
-    _options.touch = true
+    _options.touch = true;
 
-    parentEl.style.transition = 'none'
+    parentEl.style.transition = "none";
   }
 
-  el.addEventListener('touchstart', onTouchStart)
-  parentEl.addEventListener('touchstart', onTouchStart)
+  el.addEventListener("touchstart", onTouchStart);
+  parentEl.addEventListener("touchstart", onTouchStart);
 
-  parentEl.addEventListener('touchend', async (e) => {
-    if (!_options.touch)
-      return
+  parentEl.addEventListener("touchend", async (e) => {
+    if (!_options.touch) return;
 
-    e.stopPropagation()
+    e.stopPropagation();
 
-    _options.touch = false
+    _options.touch = false;
 
-    parentEl.style.transition = ''
+    parentEl.style.transition = "";
 
-    el.classList.remove('active')
+    el.classList.remove("active");
 
     if (visible.value) {
       // 根据弹性系数计算回弹距离
-      const diff = _options.lastY - _options.startY
-      const elasticDistance = diff * elasticity
+      const diff = _options.lastY - _options.startY;
+      const elasticDistance = diff * elasticity;
 
       // console.log("end", elasticDistance)
 
       if (elasticDistance > elasticityClose) {
-        parentEl.style.transition = '0.25s'
-        parentEl.style.transform = 'translateY(0) scaleY(1) translateY(1000px)'
+        parentEl.style.transition = "0.25s";
+        parentEl.style.transform = "translateY(0) scaleY(1) translateY(1000px)";
 
-        await sleep(200)
+        await sleep(200);
 
-        visible.value = false
+        visible.value = false;
 
-        parentEl.style.transform = ''
-        parentEl.style.transition = ''
-        return
+        parentEl.style.transform = "";
+        parentEl.style.transition = "";
+        return;
       }
 
-      parentEl.style.transition = '0.25s'
-      parentEl.style.transform = `translateY(0) scaleY(1) translateY(-${elasticDistance}px)`
+      parentEl.style.transition = "0.25s";
+      parentEl.style.transform = `translateY(0) scaleY(1) translateY(-${elasticDistance}px)`;
 
       setTimeout(async () => {
-        parentEl.style.transform = `translateY(0) scaleY(1) translateY(0px)`
+        parentEl.style.transform = `translateY(0) scaleY(1) translateY(0px)`;
 
-        await sleep(200)
+        await sleep(200);
 
-        parentEl.style.transition = ''
-      }, 200)
+        parentEl.style.transition = "";
+      }, 200);
     }
-  })
+  });
 
-  const scaleRange = [1, 0.85]
+  const scaleRange = [1, 0.85];
 
-  parentEl.addEventListener('touchmove', async (e) => {
-    if (!_options.touch)
-      return
+  parentEl.addEventListener("touchmove", async (e) => {
+    if (!_options.touch) return;
 
-    e.stopPropagation()
+    e.stopPropagation();
 
-    const touch = e.touches[0]
+    const touch = e.touches[0];
 
-    const { clientY } = touch
+    const { clientY } = touch;
     // const diff = clientY - _options.lastY
-    _options.lastY = clientY
+    _options.lastY = clientY;
 
-    const totalDiff = clientY - _options.startY
-    if (totalDiff < 0)
-      return
+    const totalDiff = clientY - _options.startY;
+    if (totalDiff < 0) return;
 
     if (totalDiff >= thresholdDistance) {
-      parentEl.style.transition = '0.25s'
-      parentEl.style.transform = 'translateY(0) scaleY(1) translateY(1000px)'
+      parentEl.style.transition = "0.25s";
+      parentEl.style.transform = "translateY(0) scaleY(1) translateY(1000px)";
 
-      await sleep(200)
+      await sleep(200);
 
-      visible.value = false
+      visible.value = false;
 
-      parentEl.style.transform = ''
-      parentEl.style.transition = ''
+      parentEl.style.transform = "";
+      parentEl.style.transition = "";
 
-      return
+      return;
     }
 
     // 将 0 - totalDiff 映射到 scaleRange
-    const scale = (totalDiff / thresholdDistance) * (scaleRange[1] - scaleRange[0]) + scaleRange[0]
+    const scale =
+      (totalDiff / thresholdDistance) * (scaleRange[1] - scaleRange[0]) + scaleRange[0];
 
-    visible.value = true
-    parentEl.style.transform = `translateY(0) scaleY(${scale}) translateY(${totalDiff * (0.9 + elasticity)}px)`
+    visible.value = true;
+    parentEl.style.transform = `translateY(0) scaleY(${scale}) translateY(${
+      totalDiff * (0.9 + elasticity)
+    }px)`;
 
     // console.log("totalDiff", totalDiff, scale)
-  })
+  });
 }
 
 const _options: Options = {
   thresholdDistance: window.innerHeight * 0.8, // 设置阈值距离为100px
   elasticity: 0.1,
   elasticityClose: 20,
-}
+};
 
 onMounted(() => {
-  nextTick(() => listen(dom.value!, _options))
-})
+  nextTick(() => listen(dom.value!, _options));
+});
 </script>
 
 <template>
   <teleport to="#rootMain">
     <div
-      :style="`z-index: ${zIndex}`" :class="{ visible, forbidden: dialogOptions.forbidden, loading }"
-      class="TouchDialog transition-cubic" @click="handleClickOutside"
+      :style="`z-index: ${zIndex}`"
+      :class="{ visible, forbidden: dialogOptions.forbidden, loading }"
+      class="TouchDialog transition-cubic"
+      @click="handleClickOutside"
     >
       <div class="TouchDialog-Main Main" @click.stop="">
         <div class="TouchDialog-Close" @click="visible = false">
           <div i-carbon:close />
         </div>
-        <div ref="dom" class="slider only-pe-display" />
+        <div ref="dom" class="slider" />
 
         <slot name="Main">
           <div v-if="header" class="TouchDialog-Title">
@@ -327,7 +326,7 @@ onMounted(() => {
   &.Main {
     &::before {
       z-index: 1;
-      content: '';
+      content: "";
       position: absolute;
 
       top: 100%;
@@ -490,9 +489,7 @@ onMounted(() => {
 
   &.forbidden {
     div.Main {
-      box-shadow:
-        var(--el-box-shadow),
-        0 0 8px 1px var(--el-color-danger);
+      box-shadow: var(--el-box-shadow), 0 0 8px 1px var(--el-color-danger);
 
       transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.05s;
     }

@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import { globalData, useTargetData } from '~/composables/words'
-import type { ModeType } from '~/composables/words/mode'
-import { modeManager } from '~/composables/words/mode'
+import { globalData, useTargetData } from "~/composables/words";
+import type { ModeType } from "~/composables/words/mode";
+import { modeManager } from "~/composables/words/mode";
 
-const { targetDict } = useTargetData()
-const modes = [...modeManager.keys()]
-const activeIndex = ref(modes.indexOf(globalData.value.mode) ?? 0)
+const { targetDict } = useTargetData();
+const modes = [...modeManager.keys()];
+const activeIndex = ref(modes.indexOf(globalData.value.mode) ?? 0);
 
 // const activeMode = computed(() => modes[activeIndex.value])
 
 function modeIns(modeType: ModeType) {
-  const mode = modeManager.get(modeType)!
+  const mode = modeManager.get(modeType)!;
 
-  const dict = targetDict.value.storage
-  const modeInstance = mode(dict)
+  const dict = targetDict.value.storage;
+  const modeInstance = mode(dict);
 
-  return modeInstance
+  return modeInstance;
 }
 
 function handleSelect(index: number) {
-  activeIndex.value = index
+  activeIndex.value = index;
 
-  const mode = modes[index]
+  const mode = modes[index];
 
-  globalData.value.mode = mode
+  globalData.value.mode = mode;
 }
 </script>
 
@@ -31,11 +31,18 @@ function handleSelect(index: number) {
   <div class="ModeSelector">
     <div class="ModeSelector-Wrapper">
       <el-carousel
-        :initial-index="activeIndex" arrow="never" :autoplay="false" indicator-position="none" type="card"
+        :initial-index="activeIndex"
+        arrow="never"
+        :autoplay="false"
+        indicator-position="none"
+        type="card"
         @change="handleSelect"
       >
         <el-carousel-item v-for="(mode, index) in modes" :key="index">
-          <mode-display :mode="modeIns(mode)" :class="{ select: index === activeIndex }" />
+          <mode-display
+            :mode="modeIns(mode)"
+            :class="{ select: index === activeIndex }"
+          />
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -53,13 +60,14 @@ function handleSelect(index: number) {
     }
     width: 100%;
     &__container {
-      height: 65vmin;
+      height: 300px;
     }
   }
 }
 
 .ModeSelector {
   width: 100%;
+  max-height: 300px;
   overflow: hidden;
 }
 </style>

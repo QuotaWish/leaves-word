@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { ISignMode } from '~/composables/words/mode'
+import type { ISignMode } from "~/composables/words/mode";
 
 const props = defineProps<{
-  mode: ISignMode<any, any>
-}>()
+  mode: ISignMode<any, any>;
+}>();
 
-const mainColor = computed(() => props.mode.getMainColor())
+const mainColor = computed(() => props.mode.getMainColor());
 </script>
 
 <template>
@@ -47,8 +47,8 @@ const mainColor = computed(() => props.mode.getMainColor())
     position: relative;
     display: flex;
 
-    width: 20vmin;
-    height: 20vmin;
+    width: 64px;
+    height: 64px;
 
     font-size: 2rem;
     align-items: center;
@@ -71,7 +71,7 @@ const mainColor = computed(() => props.mode.getMainColor())
 
 .ModeDisplay {
   &::before {
-    content: '';
+    content: "";
     position: absolute;
 
     top: 0;
@@ -95,9 +95,10 @@ const mainColor = computed(() => props.mode.getMainColor())
   margin: auto;
   padding: 1rem;
 
-  width: 45vmin;
-  height: 60vmin;
+  width: 193px;
+  height: 258px;
 
+  overflow: hidden;
   border-radius: 18px;
   background-color: v-bind(mainColor);
 
