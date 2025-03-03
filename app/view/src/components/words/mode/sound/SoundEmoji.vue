@@ -4,6 +4,31 @@ import { WordState } from "~/composables/words/mode/sound";
 defineProps<{
   wordState: WordState;
 }>();
+
+// 用于动态触发按键反馈
+const keyPressCount = ref(0);
+// 按键反馈函数
+function triggerKeyPress() {
+  keyPressCount.value++;
+}
+
+// 监听键盘事件
+onMounted(() => {
+  const handleKeyPress = (e: KeyboardEvent) => {
+    // 只响应正常的按键，不包括功能键和修饰键
+    if (!e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey && 
+        e.key.length === 1) {
+      triggerKeyPress();
+    }
+  };
+  
+  window.addEventListener('keydown', handleKeyPress);
+  
+  // 在组件销毁时解除监听
+  onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeyPress);
+  });
+});
 </script>
 
 <template>
@@ -56,7 +81,8 @@ defineProps<{
     <!-- 默认状态：倾听 (添加待机动画) -->
     <svg v-else class="emoji emoji-listening" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <!-- 呼吸效果的圆圈 -->
-      <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="2" class="emoji-circle">
+      <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="2" class="emoji-circle"
+            :class="{ 'key-pressed': keyPressCount > 0 }">
         <animate attributeName="r" values="40;41;40;39;40" dur="3s" repeatCount="indefinite" />
       </circle>
       
@@ -71,7 +97,8 @@ defineProps<{
       </g>
       
       <!-- 嘴巴，有微微的变化 -->
-      <line x1="35" y1="65" x2="65" y2="65" stroke="currentColor" stroke-width="3" stroke-linecap="round" class="emoji-feature">
+      <line x1="35" y1="65" x2="65" y2="65" stroke="currentColor" stroke-width="3" stroke-linecap="round" 
+            class="emoji-feature emoji-mouth" :class="{ 'key-pressed': keyPressCount > 0 }">
         <animate attributeName="y1" values="65;64;65;66;65" dur="4s" repeatCount="indefinite" />
         <animate attributeName="y2" values="65;66;65;64;65" dur="4s" repeatCount="indefinite" />
       </line>
@@ -141,5 +168,33 @@ defineProps<{
 @keyframes float {
   0% { transform: translateY(0); }
   100% { transform: translateY(-3px); }
+}
+
+.emoji-feature {
+  transition: all 0.2s ease;
+}
+
+.emoji-mouth.key-pressed {
+  stroke-width: 4;
+  animation: mouth-reaction 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.emoji-circle.key-pressed {
+  stroke-width: 3;
+  animation: circle-pulse 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes mouth-reaction {
+  0% { transform: scaleX(1); }
+  40% { transform: scaleX(0.8); }
+  70% { transform: scaleX(1.1); }
+  100% { transform: scaleX(1); }
+}
+
+@keyframes circle-pulse {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08); }
+  70% { transform: scale(0.98); }
+  100% { transform: scale(1); }
 }
 </style> 

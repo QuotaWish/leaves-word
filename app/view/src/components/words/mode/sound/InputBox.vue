@@ -249,8 +249,8 @@ async function handleKeyDown(e: KeyboardEvent) {
   } else if (allowedKeys.test(key)) {
     input.value += key;
     
-    // 每次键入时添加微小振动反馈
-    vibrateDevice(10);
+    // 每次键入时添加更明显的振动反馈
+    vibrateDevice(15);
 
     await sleep(1);
 
@@ -320,7 +320,7 @@ async function handleKeyDown(e: KeyboardEvent) {
       <!-- 主要字符显示区域 -->
       <div class="flex items-center justify-center relative character-wrapper">
         <!-- 显示字符 -->
-        <span class="character-display" :class="{ 'invisible': !item.char }">{{ item.char }}</span>
+        <span class="character-display" :class="{ 'invisible': !item.char, 'key-feedback': item.isInput && item.char === input.charAt(input.length - 1) }">{{ item.char }}</span>
         
         <!-- 下划线元素 - 用div模拟而不是用字符 -->
         <div v-if="item.showUnderline" class="character-underline"
@@ -426,20 +426,20 @@ async function handleKeyDown(e: KeyboardEvent) {
   height: 12px;
   border-radius: 50%;
   background-color: var(--theme-primary, #3b82f6);
-  opacity: 0.7;
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+  opacity: 0.8;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.9);
   animation: cursor-bounce 1.2s infinite cubic-bezier(0.34, 1.56, 0.64, 1);
-  transform: translateY(-5px);
+  transform: translateY(-8px); /* 将光标向上移动 */
 }
 
 @keyframes cursor-bounce {
   0%, 100% {
-    transform: translateY(-5px) scale(1);
-    opacity: 0.7;
+    transform: translateY(-8px) scale(1);
+    opacity: 0.8;
   }
   50% {
-    transform: translateY(-8px) scale(1.2);
-    opacity: 0.9;
+    transform: translateY(-11px) scale(1.3);
+    opacity: 1;
   }
 }
 
@@ -563,15 +563,18 @@ async function handleKeyDown(e: KeyboardEvent) {
 
 /* 键入时的弹跳效果 */
 .emoji-pop {
-  animation: emoji-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: emoji-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes emoji-pop {
   0% {
     transform: scale(1);
   }
-  50% {
-    transform: scale(1.25);
+  40% {
+    transform: scale(1.35);
+  }
+  70% {
+    transform: scale(0.95);
   }
   100% {
     transform: scale(1);
@@ -669,6 +672,31 @@ async function handleKeyDown(e: KeyboardEvent) {
 
 .animate-fadeIn {
   animation: fadeIn 0.5s ease;
+}
+
+/* 输入字符的增强反馈 */
+.key-feedback {
+  animation: key-feedback 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-shadow: 0 0 10px var(--theme-primary, rgba(59, 130, 246, 0.8));
+}
+
+@keyframes key-feedback {
+  0% {
+    transform: scale(1);
+    text-shadow: 0 0 0px var(--theme-primary, rgba(59, 130, 246, 0));
+  }
+  30% {
+    transform: scale(1.3);
+    text-shadow: 0 0 15px var(--theme-primary, rgba(59, 130, 246, 1));
+  }
+  70% {
+    transform: scale(0.95);
+    text-shadow: 0 0 8px var(--theme-primary, rgba(59, 130, 246, 0.6));
+  }
+  100% {
+    transform: scale(1);
+    text-shadow: 0 0 5px var(--theme-primary, rgba(59, 130, 246, 0.3));
+  }
 }
 </style>
 
