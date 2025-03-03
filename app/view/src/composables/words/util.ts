@@ -7,11 +7,33 @@ export function useWordSound(word: string): Promise<HTMLAudioElement> {
   const url = $api.utils.getWordPronounce(word)
 
   const audio = new Audio()
-  audio.src = url
-
+  
+  // 设置音频属性
+  // audio.crossOrigin = "anonymous"
+  audio.preload = "auto"
+  
   return new Promise((resolve, reject) => {
-    audio.oncanplaythrough = () => resolve(audio)
-    audio.onerror = reject
+    // 添加超时处理
+    const timeoutId = setTimeout(() => {
+      console.warn(`音频加载超时: ${word}`)
+      reject(new Error(`音频加载超时: ${word}`))
+    }, 8000)
+    
+    // 添加事件监听器
+    audio.oncanplaythrough = () => {
+      clearTimeout(timeoutId)
+      resolve(audio)
+    }
+    
+    audio.onerror = (e) => {
+      clearTimeout(timeoutId)
+      console.error(`音频加载错误: ${word}`, e)
+      reject(new Error(`音频加载失败: ${word}`))
+    }
+    
+    // 在设置事件后再设置源
+    audio.src = url
+    audio.load()
   })
 }
 

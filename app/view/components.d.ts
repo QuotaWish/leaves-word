@@ -46,6 +46,7 @@ declare module 'vue' {
     SignCalendar: typeof import('./src/components/SignCalendar.vue')['default']
     SignCalendarMonthly: typeof import('./src/components/SignCalendarMonthly.vue')['default']
     Sound: typeof import('./src/components/words/mode/sound/index.vue')['default']
+    SoundEmoji: typeof import('./src/components/words/mode/sound/SoundEmoji.vue')['default']
     SoundHintDisplay: typeof import('./src/components/words/mode/sound/SoundHintDisplay.vue')['default']
     SoundLayout: typeof import('./src/components/words/mode/sound/SoundLayout.vue')['default']
     TheCounter: typeof import('./src/components/TheCounter.vue')['default']

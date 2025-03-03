@@ -569,3 +569,256 @@ export class SoundMode extends SignMode {
     return Math.max(Math.ceil(amount / 7), 1);
   }
 }
+
+// 添加日志工具函数
+export function useLogger(module: string) {
+  return {
+    log: (message: string, data?: any) => {
+      console.log(`%c[${module}] ${message}`, 'color: #2196F3; font-size: 12px;', data || '');
+    },
+    error: (message: string, data?: any) => {
+      console.log(`%c[${module}] ${message}`, 'color: #F44336; font-size: 12px;', data || '');
+    },
+    success: (message: string, data?: any) => {
+      console.log(`%c[${module}] ${message}`, 'color: #4CAF50; font-size: 12px;', data || '');
+    },
+    info: (message: string, data?: any) => {
+      console.log(`%c[${module}] ${message}`, 'color: #9C27B0; font-size: 12px;', data || '');
+    },
+    warn: (message: string, data?: any) => {
+      console.log(`%c[${module}] ${message}`, 'color: #FF9800; font-size: 12px;', data || '');
+    }
+  };
+}
+
+// 音频播放hook
+export function useSoundPlayer() {
+  const logger = useLogger('SoundPlayer');
+  const isPlayingAudio = ref(false);
+  const audioFinished = ref(true);
+  
+  // 添加这些变量
+  let lastAudio: HTMLAudioElement | null = null;
+  let audioThrottleTimer: number | null = null;
+  let pendingAudioSource: string | null = null;
+  
+  // 音频播放核心函数
+  async function playAudioCore(audioSource: string, 
+    onStart: () => void,
+    onFinish: () => void,
+    onError: () => void
+  ) {
+    // 停止之前的音频
+    if (lastAudio) {
+      try {
+        lastAudio.pause();
+        lastAudio.currentTime = 0;
+        lastAudio.onended = null;
+        lastAudio.onerror = null;
+        lastAudio.onabort = null;
+        lastAudio.oncanplay = null;
+        lastAudio.onplaying = null;
+      } catch (e) {
+        logger.error('停止之前的音频出错', e);
+      }
+      lastAudio = null;
+    }
+
+    // 重置音频状态
+    isPlayingAudio.value = true;
+    audioFinished.value = false;
+    onStart();
+
+    try {
+      // 获取音频
+      logger.info(`开始加载音频: ${audioSource}`);
+      lastAudio = await useWordSound(audioSource).catch(error => {
+        logger.error(`获取音频失败: ${audioSource}`, error);
+        throw error; // 重新抛出以便外部捕获
+      });
+      
+      if (!lastAudio) {
+        logger.error(`无法获取音频: ${audioSource}`);
+        throw new Error('无法获取音频');
+      }
+      
+      logger.info(`音频加载成功，准备播放: ${audioSource}`);
+      
+      // 播放完成处理
+      lastAudio.onended = () => {
+        logger.info(`音频播放完成: ${audioSource}`);
+        if (lastAudio) {
+          isPlayingAudio.value = false;
+          
+          // 延迟设置状态
+          setTimeout(() => {
+            audioFinished.value = true;
+            onFinish();
+          }, 300);
+        }
+      };
+      
+      // 错误处理
+      lastAudio.onerror = (e) => {
+        logger.error(`音频播放错误: ${audioSource}`, e);
+        isPlayingAudio.value = false;
+        audioFinished.value = true;
+        onError();
+      };
+      
+      // 播放
+      try {
+        logger.info(`尝试播放音频: ${audioSource}`);
+        const playPromise = lastAudio.play();
+        
+        if (playPromise !== undefined) {
+          await playPromise.catch((error) => {
+            logger.error(`音频播放失败: ${audioSource}`, error);
+            isPlayingAudio.value = false;
+            audioFinished.value = true;
+            onError();
+            throw error;
+          });
+          logger.info(`音频开始播放: ${audioSource}`);
+        } else {
+          logger.warn(`播放方法未返回Promise: ${audioSource}`);
+        }
+      } catch (playError) {
+        logger.error(`音频播放异常: ${audioSource}`, playError);
+        isPlayingAudio.value = false;
+        audioFinished.value = true;
+        onError();
+        throw playError;
+      }
+      
+      return true;
+    } catch (error) {
+      logger.error(`音频处理异常: ${audioSource}`, error);
+      isPlayingAudio.value = false;
+      audioFinished.value = true;
+      onError();
+      return false;
+    }
+  }
+
+  // 节流播放函数
+  function playAudio(
+    audioSource: string, 
+    onStart: () => void,
+    onFinish: () => void,
+    onError: () => void
+  ) {
+    // 更新待执行的音频源
+    pendingAudioSource = audioSource;
+    
+    // 如果已经有计时器在运行，则不再设置新计时器
+    if (audioThrottleTimer !== null) {
+      return;
+    }
+    
+    // 设置节流计时器
+    audioThrottleTimer = window.setTimeout(() => {
+      // 计时器到期，执行最后一次待执行的音频播放
+      if (pendingAudioSource) {
+        playAudioCore(pendingAudioSource, onStart, onFinish, onError);
+        pendingAudioSource = null;
+      }
+      // 清除计时器引用
+      audioThrottleTimer = null;
+    }, 300);
+  }
+
+  return {
+    isPlayingAudio,
+    audioFinished,
+    playAudio
+  };
+}
+
+// 状态管理hook
+export function useWordStateManager() {
+  const logger = useLogger('WordStateManager');
+  const wordState = ref<WordState>(WordState.INIT);
+  
+  function setWordState(newState: WordState) {
+    if (wordState.value === undefined) {
+      logger.error(`尝试从undefined设置状态为${newState}`);
+    }
+    
+    const oldState = wordState.value;
+    wordState.value = newState;
+    
+    logger.log(`状态变化: ${oldState} -> ${newState}`);
+  }
+  
+  return {
+    wordState,
+    setWordState
+  };
+}
+
+// 输入检查hook
+export function useInputChecker(prepareData: SoundPrepareWord) {
+  const logger = useLogger('InputChecker');
+  
+  function checkExampleInput(userInput: string, exampleDisplay: string): boolean {
+    // 例句模式：只比较字母和数字部分，忽略所有标点和空格
+    const cleanUserInput = userInput
+      .replace(/[.,!?;:'"–—()[\]{} ]/g, "")
+      .toLowerCase()
+      .trim();
+    const cleanExpectedText = exampleDisplay
+      .replace(/[.,!?;:'"–—()[\]{} ]/g, "")
+      .toLowerCase()
+      .trim();
+    return cleanUserInput === cleanExpectedText;
+  }
+  
+  function checkDictationInput(userInput: string): boolean {
+    return prepareData.checkUserInput(userInput);
+  }
+  
+  return {
+    checkExampleInput,
+    checkDictationInput
+  };
+}
+
+// 例句队列管理hook
+export function useExampleQueueManager() {
+  const logger = useLogger('ExampleQueueManager');
+  const exampleQueue = ref<ISoundWordItem[]>([]);
+  
+  function addExampleToQueue(wordItem: IWordItem, stage: ExampleStage = ExampleStage.PLUS_ONE) {
+    const exampleWord: ISoundWordItem = {
+      type: SoundWordType.EXAMPLE,
+      word: wordItem,
+      exampleStage: stage,
+    };
+    exampleQueue.value.push(exampleWord);
+    logger.log(`添加例句到队列，当前队列长度: ${exampleQueue.value.length}`);
+  }
+  
+  function getNextExample(): ISoundWordItem | null {
+    if (exampleQueue.value.length === 0) {
+      return null;
+    }
+    return exampleQueue.value.shift() || null;
+  }
+  
+  function hasExamples(): boolean {
+    return exampleQueue.value.length > 0;
+  }
+  
+  function getQueueLength(): number {
+    return exampleQueue.value.length;
+  }
+  
+  return {
+    exampleQueue,
+    addExampleToQueue,
+    getNextExample,
+    hasExamples,
+    getQueueLength
+  };
+}
