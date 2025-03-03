@@ -163,10 +163,23 @@ const displayText = computed(() => {
     return displayText;
   }
 
+  // 规范化处理：确保input不会超过origin长度
+  if (input.value.length > props.origin.length) {
+    // 如果发现输入长度超过原始文本长度，自动截断
+    // 注意：这个操作不会触发视图更新，只是内部计算
+    const validInput = input.value.substring(0, props.origin.length);
+    console.warn(`输入超出长度，自动截断: "${input.value}" -> "${validInput}"`);
+    
+    // 使用nextTick确保视图和数据同步
+    nextTick(() => {
+      input.value = validInput;
+    });
+  }
+
   // 根据 input 和 origin 生成 displayText
   for (let i = 0; i < props.origin.length; i++) {
     const originChar = props.origin.charAt(i);
-    const inputChar = input.value.charAt(i);
+    const inputChar = i < input.value.length ? input.value.charAt(i) : '';
 
     // 如果是 waiting 则用 input 的char
     const isWaiting = WordState.WAITING === props.state;
@@ -195,7 +208,8 @@ const displayText = computed(() => {
     const isInCorrectPart = i < previousCorrectPart.value.length;
 
     // 只在当前输入位置显示光标，确保只有一个光标
-    const showCursor = isWaiting && i === input.value.length;
+    // 修正：确保光标位置正确，不超过文本长度
+    const showCursor = isWaiting && i === input.value.length && i < props.origin.length;
 
     // 确定是否需要显示下划线（非标点和空格）
     const showUnderline = !isPunctuation && !isSpace;
@@ -223,17 +237,37 @@ const displayText = computed(() => {
 });
 
 async function handleKeyDown(e: KeyboardEvent) {
+  // 如果不在等待状态，不处理输入
+  if (props.state !== WordState.WAITING) {
+    return;
+  }
+  
   // 扩展修饰键检查，如果有修饰键按下则返回
   if (e.ctrlKey || e.altKey || e.metaKey || e.shiftKey || index.value === -1) {
     return;
   }
 
+  // 确保不影响其他输入区域
+  if (document.activeElement?.tagName === 'INPUT' || 
+      document.activeElement?.tagName === 'TEXTAREA') {
+    return;
+  }
+
+  // 阻止默认行为，防止与其他输入冲突
   e.preventDefault();
+  e.stopPropagation();
 
   // 扩展允许输入的字符范围
   const allowedKeys = /^[a-z0-9\u4E00-\u9FA5]$/i;
   const key = e.key;
 
+  // 重新检查输入是否有效及输入空间
+  if (input.value.length >= props.origin.length && key !== "Backspace" && key !== "Enter") {
+    // 已经达到最大长度，不再接受输入
+    return;
+  }
+
+  // 处理退格键
   if (key === "Backspace") {
     // 如果最后一个字符是标点或空格，就要删除两个
     const lastChar = input.value.charAt(input.value.length - 1);
@@ -244,27 +278,45 @@ async function handleKeyDown(e: KeyboardEvent) {
     }
     // 删除时添加微小振动反馈
     vibrateDevice(10);
-  } else if (key === "Enter") {
+  } 
+  // 处理回车键
+  else if (key === "Enter") {
     handleCheckInput();
-  } else if (allowedKeys.test(key)) {
+  } 
+  // 处理有效字符键
+  else if (allowedKeys.test(key)) {
+    // 添加前确保输入长度合法
+    if (input.value.length >= props.origin.length) {
+      return;
+    }
+    
+    // 添加字符
     input.value += key;
     
-    // 每次键入时添加更明显的振动反馈
+    // 每次键入时添加振动反馈
     vibrateDevice(15);
 
     await sleep(1);
 
-    // 如果下一个位置存在空格/标点 自动添加
+    // 检查当前输入长度
     const len = input.value.length;
     const totalLen = props.origin.length;
 
-    // 增强自动添加标点和空格的逻辑
-    if (len < totalLen && props.origin) {
-      // 检查下一个和之后的几个字符
+    // 如果输入长度已经达到或超过原始长度，直接提交
+    if (len >= totalLen) {
+      // 截断超长输入
+      input.value = input.value.substring(0, totalLen);
+      // 提交验证
+      handleCheckInput();
+      return;
+    }
+
+    // 处理自动添加标点和空格
+    if (len < totalLen) {
       let nextPosition = len;
       let autoAdded = '';
 
-      // 连续添加标点和空格
+      // 查找接下来的标点和空格
       while (nextPosition < totalLen) {
         const nextChar = props.origin.charAt(nextPosition);
         if (nextChar === " " || /[.,!?;:'"–—()[\]{}，。！？；：「」『』]/.test(nextChar)) {
@@ -275,19 +327,28 @@ async function handleKeyDown(e: KeyboardEvent) {
         }
       }
 
-      if (autoAdded) {
+      // 安全地添加自动内容
+      if (autoAdded && (input.value.length + autoAdded.length) <= totalLen) {
         input.value += autoAdded;
       }
     }
 
-    // 自动提交完整输入
-    if (len >= totalLen || (props.type === 'example' && input.value.length >= props.origin.length * 0.9)) {
-      // 使用规范化后的文本比较长度，避免因空格和标点导致提前提交
+    // 再次检查并处理超长输入
+    if (input.value.length > totalLen) {
+      input.value = input.value.substring(0, totalLen);
+    }
+
+    // 自动提交条件检查
+    if (input.value.length >= totalLen) {
+      // 输入已完成，直接提交
+      handleCheckInput();
+    } else if (props.type === 'example' && input.value.length >= props.origin.length * 0.9) {
+      // 对于示例模式，提前提交条件检查
       const normalizedInput = input.value.toLowerCase().replace(/\s+/g, '').replace(/[.,!?;:'"–—()[\]{}，。！？；：「」『』]/g, '');
       const normalizedOrigin = props.origin.toLowerCase().replace(/\s+/g, '').replace(/[.,!?;:'"–—()[\]{}，。！？；：「」『』]/g, '');
       
       // 只有当有效内容达到原始文本的90%以上时才自动提交
-      const threshold = props.type === 'example' ? 0.9 : 1.0;
+      const threshold = 0.9;
       if (normalizedInput.length >= normalizedOrigin.length * threshold) {
         console.log(`自动提交检查: 输入长度=${normalizedInput.length}, 原始长度=${normalizedOrigin.length}, 阈值=${threshold}`);
         handleCheckInput();
@@ -319,8 +380,12 @@ async function handleKeyDown(e: KeyboardEvent) {
     >
       <!-- 主要字符显示区域 -->
       <div class="flex items-center justify-center relative character-wrapper">
-        <!-- 显示字符 -->
-        <span class="character-display" :class="{ 'invisible': !item.char, 'key-feedback': item.isInput && item.char === input.charAt(input.length - 1) }">{{ item.char }}</span>
+        <!-- 显示字符 - 使用固定宽度容器，防止窄字符问题 -->
+        <span class="character-display" :class="{ 
+          'invisible': !item.char, 
+          'key-feedback': item.isInput && item.char === input.charAt(input.length - 1),
+          'monospace': item.char && item.char.toLowerCase() === 'l', // 为l字符应用等宽字体
+        }">{{ item.char }}</span>
         
         <!-- 下划线元素 - 用div模拟而不是用字符 -->
         <div v-if="item.showUnderline" class="character-underline"
@@ -357,25 +422,38 @@ async function handleKeyDown(e: KeyboardEvent) {
 /* 字符包装器样式 */
 .character-wrapper {
   position: relative;
-  min-width: 0.65em;
+  width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding-bottom: 4px; /* 为下划线留出空间 */
-  margin: 0 1px; /* 减小字符间距，使布局更紧凑 */
+  justify-content: center;
 }
 
 /* 字符显示样式 */
 .character-display {
-  position: relative;
+  display: inline-block;
+  width: 1em; /* 固定宽度，防止字母l等窄字符的布局问题 */
+  text-align: center;
   z-index: 2;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  font-variant-numeric: normal; /* 确保数字显示正常 */
+  font-feature-settings: normal; /* 禁用可能导致字形变化的特性 */
+  letter-spacing: normal; /* 修正可能的字符间距问题 */
+  text-transform: none; /* 防止自动大写变换 */
+  font-variant-ligatures: none; /* 禁用连字 */
+}
+
+/* 防止特殊字符特别是字母l被错误放大 */
+.text-3xl .character-display {
+  transform: none !important; /* 防止意外变换 */
+}
+
+/* 为l字符设置等宽字体，确保宽度一致 */
+.monospace {
+  font-family: 'Courier New', monospace !important;
+  font-size: 0.95em; /* 稍微调整大小 */
+  display: inline-block;
+  text-align: center;
+  width: 1em !important;
 }
 
 /* 下划线样式 */

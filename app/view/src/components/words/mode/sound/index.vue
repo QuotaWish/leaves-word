@@ -49,7 +49,7 @@ onMounted(refreshData);
     :word-type="currentWord?.type"
     :example-stage="currentWord?.exampleStage"
     @quit="emits('quit')"
-    @play-audio="playWord"
+    @play-audio="() => playWord(true)"
   >
     <div class="transition-cubic SoundWordCard-Main learning-card">
       <div
@@ -61,7 +61,7 @@ onMounted(refreshData);
           { 'state-correct': wordState === WordState.CORRECT },
           { 'state-error': wordState === WordState.ERROR },
         ]"
-        @click="playWord"
+        @click="() => playWord(true)"
       >
         <!-- 使用 SoundEmoji 组件 -->
         <SoundEmoji :word-state="wordState" />

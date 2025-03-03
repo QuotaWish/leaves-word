@@ -41,11 +41,20 @@ export function useSoundWordManager(
   const currentWord = ref<ISoundWordItem | null>(null);
   
   // 音频位置计算
-  const audioPosition = computed(() => 
-    wordState.value === WordState.PLAYING || !audioFinished.value 
-      ? 'center' 
-      : 'top'
-  );
+  const audioPosition = computed(() => {
+    // 在播放状态下，圆点应该在中间
+    if (wordState.value === WordState.PLAYING) {
+      return 'center';
+    }
+    
+    // 在音频未完成加载时，也保持圆点在中间
+    if (!audioFinished.value) {
+      return 'center';
+    }
+    
+    // 在任何其他状态下，包括错误状态，圆点应该在顶部
+    return 'top';
+  });
   
   // 当前提示文本计算
   const currentHintText = computed(() => {
@@ -70,7 +79,7 @@ export function useSoundWordManager(
   });
   
   // 播放单词音频
-  function playWord() {
+  function playWord(changeState: boolean = true) {
     if (!currentWord.value) {
       logger.error('没有可播放的单词');
       return;
@@ -80,7 +89,7 @@ export function useSoundWordManager(
       const word = currentWord.value.word.mainWord;
       if (!word) {
         logger.error('单词数据不完整');
-        setWordState(WordState.WAITING);
+        if (changeState) setWordState(WordState.WAITING);
         showInputContainer.value = true;
         return;
       }
@@ -112,17 +121,23 @@ export function useSoundWordManager(
       
       if (!audioSource) {
         logger.error('音频源为空');
-        setWordState(WordState.WAITING);
+        if (changeState) setWordState(WordState.WAITING);
         showInputContainer.value = true;
         return;
       }
       
       logger.info(`正在播放音频: ${audioSource}`);
       
-      // 设置状态为正在播放
-      setWordState(WordState.PLAYING);
-      // 暂时隐藏输入框，但不改变引用
-      showInputContainer.value = false;
+      // 记录当前状态，如果是错误状态且不需要改变状态，则保持错误状态的UI效果
+      const currentStateIsError = wordState.value === WordState.ERROR && !changeState;
+      
+      // 设置状态为正在播放，但只在需要改变状态时
+      if (changeState) setWordState(WordState.PLAYING);
+      
+      // 仅在非错误状态或需要改变状态时隐藏输入框
+      if (!currentStateIsError) {
+        showInputContainer.value = false;
+      }
       
       // 使用基础播放函数
       playAudioBase(
@@ -135,23 +150,30 @@ export function useSoundWordManager(
           // 音频播放完成时的回调
           logger.info('音频播放完成');
           
-          // 先设置状态为等待
-          setWordState(WordState.WAITING);
+          // 先设置状态为等待，但只在需要改变状态时
+          if (changeState) setWordState(WordState.WAITING);
           
-          // 延迟显示输入框，等待音频元素动画过渡回顶部位置
-          setTimeout(() => {
-            // 确保音频元素完成动画过渡后再显示输入框
-            logger.info('动画过渡完成，显示输入框');
+          // 如果是错误状态下重播音频，不需要添加额外动画延迟
+          if (currentStateIsError) {
+            // 直接显示输入框
             showInputContainer.value = true;
-          }, 600); // 增加延迟，给动画足够时间
+          } else {
+            // 延迟显示输入框，等待音频元素动画过渡回顶部位置
+            setTimeout(() => {
+              // 确保音频元素完成动画过渡后再显示输入框
+              logger.info('动画过渡完成，显示输入框');
+              showInputContainer.value = true;
+            }, 600);
+          }
         },
         () => {
           // 音频播放失败时的回调
           logger.error('音频播放失败，设置为等待状态');
-          setWordState(WordState.WAITING);
+          if (changeState) setWordState(WordState.WAITING);
           
-          // 同样延迟显示输入框
-          setTimeout(() => {
+          // 如果是错误状态下重播音频，不需要添加额外动画延迟
+          if (currentStateIsError) {
+            // 直接显示输入框
             showInputContainer.value = true;
             
             // 尝试显示提示作为备选方案
@@ -159,12 +181,23 @@ export function useSoundWordManager(
               showHint.value = true;
               logger.info('由于音频播放失败，自动显示提示');
             }
-          }, 600);
+          } else {
+            // 同样延迟显示输入框
+            setTimeout(() => {
+              showInputContainer.value = true;
+              
+              // 尝试显示提示作为备选方案
+              if (!showHint.value) {
+                showHint.value = true;
+                logger.info('由于音频播放失败，自动显示提示');
+              }
+            }, 600);
+          }
         }
       );
     } catch (error) {
       logger.error('播放单词音频时出错', error);
-      setWordState(WordState.WAITING);
+      if (changeState) setWordState(WordState.WAITING);
       
       // 错误处理也使用延迟显示
       setTimeout(() => {
@@ -224,7 +257,7 @@ export function useSoundWordManager(
       
       // 播放音频
       setTimeout(() => {
-        playWord();
+        playWord(true);
       }, 300);
     } else {
       logger.error('没有有效的单词数据');
@@ -418,7 +451,7 @@ export function useSoundWordManager(
         showHint.value = true;
       }
       
-      // 重置输入
+      // 重置输入，但保持错误状态一段时间
       setTimeout(() => {
         userInput.value = '';
         setWordState(WordState.WAITING);
@@ -427,7 +460,9 @@ export function useSoundWordManager(
       // 重新播放音频
       if (currentWord.value.type === SoundWordType.DICTATION) {
         setTimeout(() => {
-          playWord();
+          // 播放音频但不改变状态，避免触发圆点动画
+          // 确保传递false参数，这样不会改变当前状态
+          playWord(false);
         }, 1200);
       }
     }

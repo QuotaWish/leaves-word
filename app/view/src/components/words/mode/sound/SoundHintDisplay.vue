@@ -63,9 +63,9 @@ const hintContent = computed(() => {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 16px;
-  border: 1px solid rgba(255, 203, 107, 0.5);
+  border: none;
   padding: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 15px rgba(255, 203, 107, 0.2);
+  box-shadow: none;
   text-align: center;
   animation: fadeIn 0.3s ease-in-out;
 }
@@ -76,7 +76,7 @@ const hintContent = computed(() => {
   color: var(--theme-primary);
   margin-bottom: 15px;
   letter-spacing: 1px;
-  text-shadow: 0 2px 10px rgba(255, 203, 107, 0.3);
+  text-shadow: none;
 }
 
 .hint-meaning {
