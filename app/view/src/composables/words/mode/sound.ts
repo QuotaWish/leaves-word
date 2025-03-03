@@ -85,43 +85,71 @@ export interface IDisplayText {
 export function splitExampleSentence(
   sentence: string
 ): [string[], string[], string[]] {
+  // 将句子按空格分词
   const words = sentence.split(/\s+/);
-
-  // 首先获得单词本身 index
-  const wordIndex = Math.floor(Math.random() * words.length);
-  const targetContent = words[wordIndex];
-  const sentenceOne: string[] = [];
-  const sentenceTwo: string[] = [];
-  const percentLen = Math.floor(targetContent.length * 0.7);
-
-  sentenceOne.push(targetContent);
-
-  // 判断 index 越界 + 获取单词本身
-  if (wordIndex === 0) {
-    sentenceOne.push(words[wordIndex + 1]);
-
-    // 将 0 - percentLen 的单词加入到 sentenceTwo
-    sentenceTwo.push(...words.slice(0, percentLen));
-  } else if (wordIndex >= words.length) {
-    sentenceOne.unshift(words[wordIndex - 1]);
-
-    // 将 percentLen - words.length 的单词加入到 sentenceTwo
-    sentenceTwo.push(...words.slice(percentLen));
-  } else {
-    Math.random() > 0.5
-      ? sentenceOne.unshift(words[wordIndex - 1])
-      : sentenceOne.push(words[wordIndex + 1]);
-
-    if (Math.random() > 0.5) {
-      // 将 percentLen - words.length 的单词加入到 sentenceTwo
-      sentenceTwo.push(...words.slice(percentLen));
-    } else {
-      // 将 0 - percentLen 的单词加入到 sentenceTwo
-      sentenceTwo.push(...words.slice(0, percentLen));
-    }
+  
+  // 如果句子为空或只有一个单词，直接返回
+  if (words.length <= 1) {
+    return [words, words, words];
   }
 
-  return [sentenceOne, sentenceTwo, words];
+  // 第一步：找到重点单词
+  // 选择目标单词的索引（首选中间偏后的位置）
+  const wordIndex = Math.floor(words.length / 2);
+  const targetWord = words[wordIndex < words.length ? wordIndex : words.length - 1];
+  
+  console.warn(`%c[分段信息] 原始句子: "${sentence}"`, 'color: #673AB7; font-weight: bold;');
+  console.warn(`%c[分段信息] 目标单词: "${targetWord}", 索引: ${wordIndex}`, 'color: #FF9800; font-weight: bold;');
+  
+  // 第一阶段：重点单词前后一个字符
+  // 如果没有后面就用前面，以此类推
+  const stage1: string[] = [];
+  
+  // 如果有前面的单词，添加前面一个单词
+  if (wordIndex > 0) {
+    stage1.push(words[wordIndex - 1]);
+  }
+  
+  // 添加目标单词
+  stage1.push(targetWord);
+  
+  // 如果有后面的单词，添加后面一个单词
+  if (wordIndex < words.length - 1) {
+    stage1.push(words[wordIndex + 1]);
+  } 
+  // 如果没有后面的单词，但有更前面的单词，添加更前面的单词
+  else if (wordIndex > 1) {
+    stage1.unshift(words[wordIndex - 2]);
+  }
+  
+  // 第二阶段：整个句子的70%部分，从前往后到重点单词或从后往前到重点单词
+  const stage2: string[] = [];
+  const sentenceLength70Percent = Math.ceil(words.length * 0.7);
+  
+  // 确保目标单词在第二阶段中
+  // 计算开始索引，确保目标单词在结果中
+  let startIndex = 0;
+  
+  // 从前向后到目标单词
+  if (wordIndex < words.length / 2) {
+    // 目标单词在前半部分，从头开始取70%的单词
+    startIndex = 0;
+  } else {
+    // 目标单词在后半部分，确保目标单词包含在内，从后向前计算开始位置
+    startIndex = Math.max(0, wordIndex - Math.floor(sentenceLength70Percent / 2));
+  }
+  
+  // 获取70%部分
+  stage2.push(...words.slice(startIndex, Math.min(startIndex + sentenceLength70Percent, words.length)));
+  
+  // 第三阶段：完整句子
+  const stage3 = [...words];
+  
+  console.warn(`%c[分段信息] 阶段1: "${stage1.join(' ')}"`, 'color: #4CAF50; font-weight: bold;');
+  console.warn(`%c[分段信息] 阶段2: "${stage2.join(' ')}"`, 'color: #2196F3; font-weight: bold;');
+  console.warn(`%c[分段信息] 阶段3: "${stage3.join(' ')}"`, 'color: #9C27B0; font-weight: bold;');
+
+  return [stage1, stage2, stage3];
 }
 
 /**
@@ -209,6 +237,7 @@ export class SoundPrepareWord extends PrepareWord<SoundMode, ISoundWordItem> {
       this.processExampleSentence();
     }
 
+    // 获取当前阶段
     const stage = this.currentWord.exampleStage || ExampleStage.PLUS_ONE;
     const parts = this.currentWord.exampleParts || [];
 
@@ -216,7 +245,22 @@ export class SoundPrepareWord extends PrepareWord<SoundMode, ISoundWordItem> {
       return "";
     }
 
-    const target = parts[stage];
+    // 确保阶段索引有效
+    const validStage = Math.min(stage, parts.length - 1);
+    const target = parts[validStage];
+
+    if (!target || target.length === 0) {
+      console.warn(`%c[SoundPrepareWord] 当前阶段 ${stage} 的例句部分为空，尝试使用第一阶段`, 'color: #FF5722; font-weight: bold; font-size: 12px;');
+      
+      // 如果当前阶段没有内容，尝试使用第一阶段
+      if (parts[0] && parts[0].length > 0) {
+        console.warn(`%c[SoundPrepareWord] 使用第一阶段例句: "${parts[0].join(" ")}"`, 'color: #FF9800; font-weight: bold; font-size: 12px;');
+        return parts[0].join(" ");
+      }
+      
+      // 如果仍然没有内容，返回空字符串
+      return "";
+    }
 
     // 返回对应阶段的例句部分
     console.warn(`%c[SoundPrepareWord] 返回例句显示内容: "${target.join(" ")}"`, 'color: #2196F3; font-weight: bold; font-size: 12px;');
@@ -225,9 +269,15 @@ export class SoundPrepareWord extends PrepareWord<SoundMode, ISoundWordItem> {
 
   // 处理例句，将其分段存储
   processExampleSentence(): void {
-    if (!this.currentWord || this.currentWord.type !== SoundWordType.EXAMPLE) {
-      console.warn(`%c[SoundPrepareWord] 处理例句失败: 当前单词不存在或类型不是例句模式`, 'color: #F44336; font-weight: bold; font-size: 14px;');
+    if (!this.currentWord) {
+      console.warn(`%c[SoundPrepareWord] 处理例句失败: 当前单词不存在`, 'color: #F44336; font-weight: bold; font-size: 14px;');
       return;
+    }
+    
+    // 如果当前不是例句模式，先切换到例句模式
+    if (this.currentWord.type !== SoundWordType.EXAMPLE) {
+      console.warn(`%c[SoundPrepareWord] 当前不是例句模式，强制切换: ${this.currentWord.type} -> ${SoundWordType.EXAMPLE}`, 'color: #F44336; font-weight: bold; font-size: 14px;');
+      this.currentWord.type = SoundWordType.EXAMPLE;
     }
 
     // 获取例句，如果没有则用单词本身作为例句
@@ -519,13 +569,120 @@ export class SoundPrepareWord extends PrepareWord<SoundMode, ISoundWordItem> {
       return result;
     }
 
-    // 例句模式：检查是否与当前阶段例句匹配
-    // 进行清理比较，忽略大小写、标点符号和多余空格
-    const expected = this.getExampleDisplay().toLowerCase().replace(/[.,!?;:'"–—()[\]{}\s]/g, '');
-    const cleaned = input.trim().toLowerCase().replace(/[.,!?;:'"–—()[\]{}\s]/g, '');
-
-    const result = cleaned === expected;
-    console.warn(`%c[SoundPrepareWord] 例句模式比较: "${cleaned}" vs "${expected}", 结果: ${result}`, 'color: #00BCD4; font-weight: bold; font-size: 12px;');
+    // 例句模式：改进例句匹配算法
+    const exampleDisplay = this.getExampleDisplay();
+    
+    // 用于记录日志
+    console.warn(`%c[SoundPrepareWord] 例句模式当前阶段: ${this.currentWord.exampleStage}`, 'color: #009688; font-weight: bold; font-size: 12px;');
+    console.warn(`%c[SoundPrepareWord] 例句显示内容: "${exampleDisplay}"`, 'color: #009688; font-weight: bold; font-size: 12px;');
+    console.warn(`%c[SoundPrepareWord] 用户输入内容: "${input}"`, 'color: #009688; font-weight: bold; font-size: 12px;');
+    
+    // 规范化文本处理函数
+    const normalizeText = (text: string): string => {
+      return text
+        .toLowerCase()  // 转为小写
+        .replace(/\s+/g, '') // 移除所有空白字符
+        .replace(/[.,!?;:'"–—()[\]{}<>""'']/g, '') // 移除所有标点符号
+        .trim();
+    };
+    
+    // 计算Levenshtein距离（字符串编辑距离）用于模糊匹配
+    const levenshteinDistance = (a: string, b: string): number => {
+      if (a.length === 0) return b.length;
+      if (b.length === 0) return a.length;
+      
+      const matrix = [];
+      
+      // 初始化矩阵
+      for (let i = 0; i <= b.length; i++) {
+        matrix[i] = [i];
+      }
+      
+      for (let j = 0; j <= a.length; j++) {
+        matrix[0][j] = j;
+      }
+      
+      // 填充矩阵
+      for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+          const cost = a[j - 1] === b[i - 1] ? 0 : 1;
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j] + 1,      // 删除
+            matrix[i][j - 1] + 1,      // 插入
+            matrix[i - 1][j - 1] + cost // 替换
+          );
+        }
+      }
+      
+      return matrix[b.length][a.length];
+    };
+    
+    // 计算相似度
+    const calculateSimilarity = (a: string, b: string): number => {
+      if (a.length === 0 && b.length === 0) return 1;
+      const distance = levenshteinDistance(a, b);
+      const maxLength = Math.max(a.length, b.length);
+      return 1 - (distance / maxLength);
+    };
+    
+    // 清理处理
+    const normalizedExpected = normalizeText(exampleDisplay);
+    const normalizedInput = normalizeText(input);
+    
+    // 记录清理后的内容
+    console.warn(`%c[SoundPrepareWord] 清理后期望: "${normalizedExpected}"`, 'color: #00BCD4; font-weight: bold; font-size: 12px;');
+    console.warn(`%c[SoundPrepareWord] 清理后输入: "${normalizedInput}"`, 'color: #00BCD4; font-weight: bold; font-size: 12px;');
+    
+    // 相似度判断逻辑
+    let result = false;
+    
+    // 1. 精确匹配
+    if (normalizedInput === normalizedExpected) {
+      console.warn(`%c[SoundPrepareWord] 精确匹配成功!`, 'color: #4CAF50; font-weight: bold; font-size: 12px;');
+      result = true;
+    } 
+    // 2. 模糊匹配：计算相似度，达到一定阈值则通过
+    else {
+      const similarity = calculateSimilarity(normalizedInput, normalizedExpected);
+      console.warn(`%c[SoundPrepareWord] 相似度计算结果: ${(similarity * 100).toFixed(2)}%`, 'color: #FF9800; font-weight: bold; font-size: 12px;');
+      
+      // 设置不同的阈值，根据例句长度
+      let similarityThreshold = 0.85; // 默认阈值85%
+      
+      // 对于较短的例句，使用更高的匹配阈值
+      if (normalizedExpected.length < 10) {
+        similarityThreshold = 0.9; // 90%阈值
+      } 
+      // 对于中等长度的例句
+      else if (normalizedExpected.length < 20) {
+        similarityThreshold = 0.85; // 85%阈值
+      }
+      // 对于较长的例句，使用稍低的阈值
+      else {
+        similarityThreshold = 0.8; // 80%阈值
+      }
+      
+      // 短例句的特殊处理：额外检查包含关系
+      if (normalizedExpected.length < 10 && normalizedInput.length < 15) {
+        if (normalizedInput.includes(normalizedExpected) || normalizedExpected.includes(normalizedInput)) {
+          const lengthRatio = Math.min(normalizedInput.length, normalizedExpected.length) / 
+                              Math.max(normalizedInput.length, normalizedExpected.length);
+          
+          if (lengthRatio > 0.7) {
+            console.warn(`%c[SoundPrepareWord] 短例句包含关系匹配，长度比: ${(lengthRatio * 100).toFixed(2)}%`, 'color: #4CAF50; font-weight: bold; font-size: 12px;');
+            result = true;
+          }
+        }
+      }
+      
+      // 应用相似度阈值
+      if (similarity >= similarityThreshold) {
+        console.warn(`%c[SoundPrepareWord] 模糊匹配成功，相似度: ${(similarity * 100).toFixed(2)}% (阈值: ${(similarityThreshold * 100)}%)`, 'color: #4CAF50; font-weight: bold; font-size: 12px;');
+        result = true;
+      }
+    }
+    
+    console.warn(`%c[SoundPrepareWord] 例句模式比较最终结果: ${result}`, 'color: #FF9800; font-weight: bold; font-size: 14px;');
     return result;
   }
 
@@ -762,15 +919,55 @@ export function useInputChecker(prepareData: SoundPrepareWord) {
   const logger = useLogger('InputChecker');
   
   function checkExampleInput(userInput: string, exampleDisplay: string): boolean {
-    // 例句模式：只比较字母和数字部分，忽略所有标点和空格
-    const cleanUserInput = userInput
-      .replace(/[.,!?;:'"–—()[\]{} ]/g, "")
-      .toLowerCase()
-      .trim();
-    const cleanExpectedText = exampleDisplay
-      .replace(/[.,!?;:'"–—()[\]{} ]/g, "")
-      .toLowerCase()
-      .trim();
+    // 如果任一输入为空，直接返回false
+    if (!userInput.trim() || !exampleDisplay.trim()) {
+      logger.error('输入或期望例句为空');
+      return false;
+    }
+    
+    // 增强的清理函数，更好地处理各种标点和空格
+    const cleanText = (text: string): string => {
+      return text
+        .toLowerCase()               // 转小写
+        .replace(/\s+/g, '')         // 移除所有空白字符
+        .replace(/[.,!?;:'"–—()[\]{}<>""'']/g, '') // 移除所有标点符号
+        .trim();                     // 去除首尾空格
+    };
+    
+    // 清理用户输入和期望文本
+    const cleanUserInput = cleanText(userInput);
+    const cleanExpectedText = cleanText(exampleDisplay);
+    
+    // 记录日志以便调试
+    logger.log(`原始用户输入: "${userInput}"`);
+    logger.log(`原始期望文本: "${exampleDisplay}"`);
+    logger.log(`清理后用户输入: "${cleanUserInput}"`);
+    logger.log(`清理后期望文本: "${cleanExpectedText}"`);
+    logger.log(`对比结果: ${cleanUserInput === cleanExpectedText ? '匹配' : '不匹配'}`);
+    
+    // 添加模糊匹配逻辑：如果用户输入包含期望文本的90%以上的字符
+    if (cleanUserInput.length > 0 && cleanExpectedText.length > 0) {
+      // 当两个文本接近但不完全相同时，计算相似度
+      if (cleanUserInput !== cleanExpectedText && 
+          (cleanUserInput.includes(cleanExpectedText) || 
+           cleanExpectedText.includes(cleanUserInput))) {
+        
+        // 计算Levenshtein距离（编辑距离）
+        const maxLength = Math.max(cleanUserInput.length, cleanExpectedText.length);
+        const similarityThreshold = 0.9; // 90%相似度阈值
+        
+        // 如果较长文本包含较短文本，且长度差距不超过总长度的10%，认为是匹配的
+        const lengthDiff = Math.abs(cleanUserInput.length - cleanExpectedText.length);
+        const similarityRatio = 1 - (lengthDiff / maxLength);
+        
+        if (similarityRatio >= similarityThreshold) {
+          logger.log(`模糊匹配成功，相似度: ${similarityRatio}`);
+          return true;
+        }
+      }
+    }
+    
+    // 精确匹配
     return cleanUserInput === cleanExpectedText;
   }
   
