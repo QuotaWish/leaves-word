@@ -37,59 +37,69 @@ const {
 
 // 组件挂载时初始化
 onMounted(refreshData);
+
+const handleKeydown = (event: any) => {
+  console.log('Keyboard input:', event);
+  
+  // 如果是对象格式，说明是来自键盘组件
+  if (typeof event === 'object' && event !== null) {
+    if (event.type === 'backspace') {
+      // 处理回退键
+      if (userInput.value.length > 0) {
+        userInput.value = userInput.value.slice(0, -1);
+      }
+    } else if (event.type === 'key') {
+      // 处理普通按键
+      userInput.value += event.key;
+    }
+  } else if (typeof event === 'string') {
+    // 兼容旧格式（直接传递字符串）
+    userInput.value = event;
+  }
+  // 处理键盘事件对象（来自原生键盘）
+  else if (event instanceof KeyboardEvent) {
+    if (event.key === 'Backspace') {
+      if (userInput.value.length > 0) {
+        userInput.value = userInput.value.slice(0, -1);
+      }
+    } else if (event.key.length === 1) {
+      userInput.value += event.key;
+    }
+  }
+}
 </script>
 
 <template>
-  <SoundLayout
-    :newly-words="prepareData.getNewlyWords()"
-    :total-words="taskAmount"
-    :left-words="prepareData.getLeftWords()"
-    :hint-text="currentHintText"
-    :content-hidden="wordState === WordState.PLAYING"
-    :word-type="currentWord?.type"
-    :example-stage="currentWord?.exampleStage"
-    @quit="emits('quit')"
-    @play-audio="() => playWord(true)"
-  >
+  <SoundLayout :newly-words="prepareData.getNewlyWords()" :total-words="taskAmount"
+    :left-words="prepareData.getLeftWords()" :hint-text="currentHintText"
+    :content-hidden="wordState === WordState.PLAYING" :word-type="currentWord?.type"
+    :example-stage="currentWord?.exampleStage" @quit="emits('quit')" @play-audio="() => playWord(true)">
     <div class="transition-cubic SoundWordCard-Main learning-card">
-      <div
-        class="word-audio"
-        :class="[
-          { playing: wordState === WordState.PLAYING },
-          { 'position-center': audioPosition === 'center' },
-          { 'position-top': audioPosition === 'top' },
-          { 'state-correct': wordState === WordState.CORRECT },
-          { 'state-error': wordState === WordState.ERROR },
-        ]"
-        @click="() => playWord(true)"
-      >
+      <div class="word-audio" :class="[
+        { playing: wordState === WordState.PLAYING },
+        { 'position-center': audioPosition === 'center' },
+        { 'position-top': audioPosition === 'top' },
+        { 'state-correct': wordState === WordState.CORRECT },
+        { 'state-error': wordState === WordState.ERROR },
+      ]" @click="() => playWord(true)">
         <!-- 使用 SoundEmoji 组件 -->
         <SoundEmoji :word-state="wordState" />
         <div class="sound-wave" />
       </div>
 
-      <div
-        :class="{ 'content-hidden': wordState === WordState.PLAYING }"
-        class="word-info h-full flex flex-col justify-between"
-      >
-        <InputBox
-          v-if="wordState !== WordState.PLAYING && audioFinished"
-          v-model:input="userInput"
-          :origin="currentWord?.type === SoundWordType.DICTATION
-            ? prepareData.getOriginalCase()
-            : prepareData.getExampleDisplay()"
-          :state="wordState"
-          :type="currentWord?.type"
-          :example-stage="currentWord?.exampleStage"
-          @check-input="checkInput"
-        />
+      <div :class="{ 'content-hidden': wordState === WordState.PLAYING }"
+        class="word-info h-full flex flex-col justify-between">
+        <InputBox v-if="wordState !== WordState.PLAYING && audioFinished" v-model:input="userInput" :origin="currentWord?.type === SoundWordType.DICTATION
+          ? prepareData.getOriginalCase()
+          : prepareData.getExampleDisplay()" :state="wordState" :type="currentWord?.type"
+          :example-stage="currentWord?.exampleStage" @check-input="checkInput" />
 
-        <SoundHintDisplay
-          v-if="wordState !== WordState.PLAYING"
-          :word="prepareData"
-          :display="showHint"
-          @update:display="showHint = $event"
-        />
+        <SoundHintDisplay v-if="wordState !== WordState.PLAYING" :word="prepareData" :display="showHint"
+          @update:display="showHint = $event" />
+      </div>
+
+      <div class="SoundWordCard-InputMethod">
+        <GlobalInputMethod :visible="wordState === WordState.WAITING" @input="handleKeydown" />
       </div>
     </div>
   </SoundLayout>
@@ -107,21 +117,21 @@ onMounted(refreshData);
   overflow: auto;
   margin: 0 auto;
   position: relative;
-  
+
   &::-webkit-scrollbar {
     width: 4px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.05);
     border-radius: 4px;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: rgba(74, 111, 165, 0.5);
     border-radius: 4px;
   }
-  
+
   &::-webkit-scrollbar-thumb:hover {
     background: rgba(74, 111, 165, 0.7);
   }
@@ -137,7 +147,7 @@ onMounted(refreshData);
 :deep(.letter-indicator) {
   letter-spacing: -1px !important;
   margin: 0 -1px !important;
-  
+
   &.underscore {
     letter-spacing: -3px !important;
     margin: 0 -2px !important;
@@ -162,7 +172,7 @@ onMounted(refreshData);
   box-shadow: 0 2px 8px rgba(74, 111, 165, 0.3);
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
-  
+
   &:hover {
     box-shadow: 0 4px 12px rgba(74, 111, 165, 0.5);
     transform: translateY(-1px);

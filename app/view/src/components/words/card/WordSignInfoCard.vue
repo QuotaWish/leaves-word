@@ -24,12 +24,12 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .WordSignInfo-Detail {
   position: relative;
   padding: 1.5rem;
   width: 100%;
-  height: 260px;
+  height: 300px;
   border-radius: 0 0 24px 24px;
   // border-top: 1px solid rgba(255, 255, 255, 0.12);
   // backdrop-filter: blur(12px);
@@ -81,7 +81,7 @@
   position: relative;
   padding: 0.75rem 1.5rem;
   width: 100%;
-  height: 260px;
+  // height: 260px;
   // background: rgba(var(--theme-color-rgb), 0.95);
   //   backdrop-filter: blur(10px);
   color: var(--el-text-color-primary);

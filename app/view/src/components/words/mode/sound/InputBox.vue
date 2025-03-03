@@ -236,6 +236,70 @@ const displayText = computed(() => {
   return displayText;
 });
 
+// 添加一个函数来处理输入文本的自动处理和长度检查
+const processInputAndCheck = async (newValue: string): Promise<void> => {
+  // 如果不在等待状态，不处理输入
+  if (props.state !== WordState.WAITING) {
+    return;
+  }
+  
+  // 检查当前输入长度
+  let currentValue = newValue;
+  const totalLen = props.origin.length;
+  
+  // 确保输入不超过原始长度
+  if (currentValue.length > totalLen) {
+    currentValue = currentValue.substring(0, totalLen);
+    input.value = currentValue;
+  }
+
+  // 处理自动添加标点和空格
+  if (currentValue.length < totalLen) {
+    let nextPosition = currentValue.length;
+    let autoAdded = '';
+
+    // 查找接下来的标点和空格
+    while (nextPosition < totalLen) {
+      const nextChar = props.origin.charAt(nextPosition);
+      if (nextChar === " " || /[.,!?;:'"–—()[\]{}，。！？；：「」『』]/.test(nextChar)) {
+        autoAdded += nextChar;
+        nextPosition++;
+      } else {
+        break; // 遇到非标点和空格时停止
+      }
+    }
+
+    // 安全地添加自动内容
+    if (autoAdded && (currentValue.length + autoAdded.length) <= totalLen) {
+      currentValue += autoAdded;
+      input.value = currentValue;
+    }
+  }
+
+  // 再次检查并处理超长输入
+  if (currentValue.length > totalLen) {
+    currentValue = currentValue.substring(0, totalLen);
+    input.value = currentValue;
+  }
+
+  // 自动提交条件检查
+  if (currentValue.length >= totalLen) {
+    // 输入已完成，直接提交
+    await handleCheckInput();
+  } else if (props.type === 'example' && currentValue.length >= props.origin.length * 0.9) {
+    // 对于示例模式，提前提交条件检查
+    const normalizedInput = currentValue.toLowerCase().replace(/\s+/g, '').replace(/[.,!?;:'"–—()[\]{}，。！？；：「」『』]/g, '');
+    const normalizedOrigin = props.origin.toLowerCase().replace(/\s+/g, '').replace(/[.,!?;:'"–—()[\]{}，。！？；：「」『』]/g, '');
+    
+    // 只有当有效内容达到原始文本的90%以上时才自动提交
+    const threshold = 0.9;
+    if (normalizedInput.length >= normalizedOrigin.length * threshold) {
+      console.log(`自动提交检查: 输入长度=${normalizedInput.length}, 原始长度=${normalizedOrigin.length}, 阈值=${threshold}`);
+      await handleCheckInput();
+    }
+  }
+};
+
 async function handleKeyDown(e: KeyboardEvent) {
   // 如果不在等待状态，不处理输入
   if (props.state !== WordState.WAITING) {
@@ -281,7 +345,7 @@ async function handleKeyDown(e: KeyboardEvent) {
   } 
   // 处理回车键
   else if (key === "Enter") {
-    handleCheckInput();
+    await handleCheckInput();
   } 
   // 处理有效字符键
   else if (allowedKeys.test(key)) {
@@ -298,64 +362,18 @@ async function handleKeyDown(e: KeyboardEvent) {
 
     await sleep(1);
 
-    // 检查当前输入长度
-    const len = input.value.length;
-    const totalLen = props.origin.length;
-
-    // 如果输入长度已经达到或超过原始长度，直接提交
-    if (len >= totalLen) {
-      // 截断超长输入
-      input.value = input.value.substring(0, totalLen);
-      // 提交验证
-      handleCheckInput();
-      return;
-    }
-
-    // 处理自动添加标点和空格
-    if (len < totalLen) {
-      let nextPosition = len;
-      let autoAdded = '';
-
-      // 查找接下来的标点和空格
-      while (nextPosition < totalLen) {
-        const nextChar = props.origin.charAt(nextPosition);
-        if (nextChar === " " || /[.,!?;:'"–—()[\]{}，。！？；：「」『』]/.test(nextChar)) {
-          autoAdded += nextChar;
-          nextPosition++;
-        } else {
-          break; // 遇到非标点和空格时停止
-        }
-      }
-
-      // 安全地添加自动内容
-      if (autoAdded && (input.value.length + autoAdded.length) <= totalLen) {
-        input.value += autoAdded;
-      }
-    }
-
-    // 再次检查并处理超长输入
-    if (input.value.length > totalLen) {
-      input.value = input.value.substring(0, totalLen);
-    }
-
-    // 自动提交条件检查
-    if (input.value.length >= totalLen) {
-      // 输入已完成，直接提交
-      handleCheckInput();
-    } else if (props.type === 'example' && input.value.length >= props.origin.length * 0.9) {
-      // 对于示例模式，提前提交条件检查
-      const normalizedInput = input.value.toLowerCase().replace(/\s+/g, '').replace(/[.,!?;:'"–—()[\]{}，。！？；：「」『』]/g, '');
-      const normalizedOrigin = props.origin.toLowerCase().replace(/\s+/g, '').replace(/[.,!?;:'"–—()[\]{}，。！？；：「」『』]/g, '');
-      
-      // 只有当有效内容达到原始文本的90%以上时才自动提交
-      const threshold = 0.9;
-      if (normalizedInput.length >= normalizedOrigin.length * threshold) {
-        console.log(`自动提交检查: 输入长度=${normalizedInput.length}, 原始长度=${normalizedOrigin.length}, 阈值=${threshold}`);
-        handleCheckInput();
-      }
-    }
+    // 处理和检查输入
+    await processInputAndCheck(input.value);
   }
 }
+
+// 监听输入框内容变化，进行处理
+watch(input, async (newValue) => {
+  // 调用统一的处理函数
+  if (props.state === WordState.WAITING) {
+    await processInputAndCheck(newValue);
+  }
+})
 </script>
 
 <template>

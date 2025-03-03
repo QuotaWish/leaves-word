@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useZIndex } from "element-plus";
+import ChoreLogo from '~/components/chore/Logo.vue'
+import IconCircleLoader from '~/components/icon/CircleLoader.vue'
 
 const props = defineProps<{
   modelValue: boolean;
