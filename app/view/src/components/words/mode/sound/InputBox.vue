@@ -32,6 +32,13 @@ const stateTransitionDelay = ref(false);
 const previousCorrectPart = ref('');
 const isFirstTyping = ref(true);
 
+// 添加震动反馈函数
+const vibrateDevice = (duration: number) => {
+  if ('vibrate' in navigator) {
+    navigator.vibrate(duration);
+  }
+};
+
 // 监听状态变化，延迟处理
 watch(() => props.state, (newState, oldState) => {
   console.warn(`%c状态变化: ${oldState} -> ${newState}`, 'color: #4CAF50; font-size: 14px; font-weight: bold;');
@@ -42,6 +49,9 @@ watch(() => props.state, (newState, oldState) => {
     const correctPart = findCorrectPart(input.value, props.origin);
     previousCorrectPart.value = correctPart;
     console.warn(`%c保存正确部分: "${correctPart}"`, 'color: #FF9800; font-size: 14px; font-weight: bold;');
+    
+    // 错误状态时添加较强震动反馈
+    vibrateDevice(200);
   }
   
   // 如果是从错误状态变回等待状态，保留之前正确的部分
@@ -52,6 +62,11 @@ watch(() => props.state, (newState, oldState) => {
       input.value = previousCorrectPart.value;
       console.warn(`%c自动填充正确部分: "${previousCorrectPart.value}"`, 'color: #4CAF50; font-size: 14px; font-weight: bold;');
     }, 100);
+  }
+
+  // 如果是正确状态，添加轻微震动反馈
+  if (newState === WordState.CORRECT) {
+    vibrateDevice(50);
   }
 
   // 如果是正确或错误状态，启用延迟过渡
@@ -227,10 +242,15 @@ async function handleKeyDown(e: KeyboardEvent) {
     } else {
       input.value = input.value.slice(0, -1);
     }
+    // 删除时添加微小振动反馈
+    vibrateDevice(10);
   } else if (key === "Enter") {
     handleCheckInput();
   } else if (allowedKeys.test(key)) {
     input.value += key;
+    
+    // 每次键入时添加微小振动反馈
+    vibrateDevice(10);
 
     await sleep(1);
 
@@ -278,21 +298,22 @@ async function handleKeyDown(e: KeyboardEvent) {
 </script>
 
 <template>
-  <div class="my-4 flex flex-row flex-wrap justify-center items-center relative transition-opacity duration-300 min-h-[60px]"
+  <div class="my-3 flex flex-row flex-wrap justify-center items-center relative transition-opacity duration-300 min-h-[50px]"
        :style="{ opacity: stateTransitionDelay || display ? '1' : '0' }">
     <div
       v-for="(item, ind) in displayText.displayChars"
       :key="ind"
-      class="text-3xl font-bold text-center relative transition-all duration-300 min-w-[0.75em] h-[1.5em] leading-[1.5em]"
+      class="text-3xl font-bold text-center relative transition-all duration-300 min-w-[0.65em] h-[1.4em] leading-[1.4em]"
       :class="[
         {
           'text-theme-primary': item.isInput || item.isEmpty,
           'animate-blink': item.isCursor,
           'text-theme-error animate-shake error-effect': item.isError,
           'text-theme-success': item.isCorrect,
-          'animate-bounce-pop': item.isCorrect && props.state === WordState.CORRECT,
+          'animate-elastic-pop': item.isCorrect && props.state === WordState.CORRECT,
           'opacity-0': state !== WordState.WAITING && !stateTransitionDelay,
           'text-2xl': props.type === 'example',
+          'emoji-pop': item.isInput && props.state === WordState.WAITING,
         },
       ]"
     >
@@ -311,24 +332,22 @@ async function handleKeyDown(e: KeyboardEvent) {
         
         <!-- 在上方显示原始字符 - 只在正确状态或部分正确时显示 -->
         <div v-if="item.showOriginal && !item.char" 
-             class="absolute top-[-20px] left-0 w-full text-base text-theme-success character-float-in">
+             class="absolute top-[-18px] left-0 w-full text-base text-theme-success character-float-in">
           {{ item.originalChar }}
         </div>
+        
+        <!-- 将光标放在下划线上方 -->
+        <div v-if="item.isCursor" class="cursor-container">
+          <div class="cursor-indicator"></div>
+        </div>
       </div>
-      
-      <!-- 改进的光标显示 - 使用更现代的设计 -->
-      <div v-if="item.isCursor" class="modern-cursor">
-        <div class="cursor-pulse"></div>
-      </div>
-      
-      <!-- 移除波浪式波动效果，因为现在由下划线元素实现 -->
     </div>
 
     <!-- 状态指示器 - 使用更简洁的设计 -->
-    <div v-if="props.state === WordState.CORRECT" class="w-full text-center mt-4 text-lg text-theme-success animate-fadeIn">
+    <div v-if="props.state === WordState.CORRECT" class="w-full text-center mt-3 text-lg text-theme-success animate-fadeIn">
       <span class="font-bold status-badge correct">✓ 正确!</span>
     </div>
-    <div v-if="props.state === WordState.ERROR" class="w-full text-center mt-4 text-lg text-theme-error animate-fadeIn">
+    <div v-if="props.state === WordState.ERROR" class="w-full text-center mt-3 text-lg text-theme-error animate-fadeIn">
       <span class="font-bold status-badge error">× 不正确，请重试</span>
     </div>
   </div>
@@ -338,13 +357,14 @@ async function handleKeyDown(e: KeyboardEvent) {
 /* 字符包装器样式 */
 .character-wrapper {
   position: relative;
-  min-width: 0.75em;
+  min-width: 0.65em;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-bottom: 5px; /* 为下划线留出空间 */
+  padding-bottom: 4px; /* 为下划线留出空间 */
+  margin: 0 1px; /* 减小字符间距，使布局更紧凑 */
 }
 
 /* 字符显示样式 */
@@ -372,7 +392,7 @@ async function handleKeyDown(e: KeyboardEvent) {
 
 .underline-primary {
   background-color: var(--theme-primary, #3b82f6);
-  animation: wave-motion 2s infinite cubic-bezier(0.42, 0, 0.58, 1);
+  animation: wave-motion 2s infinite cubic-bezier(0.34, 1.56, 0.64, 1);
   height: 3px;
 }
 
@@ -385,38 +405,62 @@ async function handleKeyDown(e: KeyboardEvent) {
 
 .underline-success {
   background-color: var(--theme-success, #48bb78);
-  animation: correct-q-bounce 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  animation: correct-q-bounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
   height: 4px !important;
   box-shadow: 0 0 8px rgba(72, 187, 120, 0.6);
 }
 
-/* 其他样式保持不变 */
+/* 光标容器 */
+.cursor-container {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* 光标指示器 - 放在下划线上方 */
+.cursor-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--theme-primary, #3b82f6);
+  opacity: 0.7;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+  animation: cursor-bounce 1.2s infinite cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: translateY(-5px);
+}
+
+@keyframes cursor-bounce {
+  0%, 100% {
+    transform: translateY(-5px) scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-8px) scale(1.2);
+    opacity: 0.9;
+  }
+}
+
+/* 其他动画效果 */
 @keyframes blink {
-  0%,
-  100% {
+  0%, 100% {
     opacity: 1;
   }
   50% {
-    opacity: 0;
+    opacity: 0.3;
   }
 }
 
 @keyframes shake {
-  0%,
-  100% {
+  0%, 100% {
     transform: translateX(0);
   }
-  10%,
-  30%,
-  50%,
-  70%,
-  90% {
+  10%, 30%, 50%, 70%, 90% {
     transform: translateX(-5px);
   }
-  20%,
-  40%,
-  60%,
-  80% {
+  20%, 40%, 60%, 80% {
     transform: translateX(5px);
   }
 }
@@ -432,31 +476,32 @@ async function handleKeyDown(e: KeyboardEvent) {
   }
 }
 
-@keyframes bounce-pop {
+/* 更Q弹的动画效果 */
+@keyframes elastic-pop {
   0% {
-    transform: translateY(0) scale(1);
+    transform: scale(1);
   }
-  20% {
-    transform: translateY(-25px) scale(1.3);
+  30% {
+    transform: scale(1.35);
   }
-  40% {
-    transform: translateY(-15px) scale(1.15);
+  50% {
+    transform: scale(0.9);
   }
-  60% {
-    transform: translateY(-8px) scale(1.08);
+  70% {
+    transform: scale(1.15);
   }
-  80% {
-    transform: translateY(-3px) scale(1.03);
+  85% {
+    transform: scale(0.95);
   }
   100% {
-    transform: translateY(0) scale(1);
+    transform: scale(1);
   }
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(5px);
   }
   to {
     opacity: 1;
@@ -464,19 +509,19 @@ async function handleKeyDown(e: KeyboardEvent) {
   }
 }
 
-/* 添加波浪动画效果 */
+/* 增强波浪动画效果 */
 @keyframes wave-motion {
   0%, 100% {
-    transform: scaleY(1);
+    transform: scaleY(1) scaleX(0.98);
   }
   25% {
-    transform: scaleY(1.2);
+    transform: scaleY(1.3) scaleX(1.03);
   }
   50% {
-    transform: scaleY(0.8);
+    transform: scaleY(0.8) scaleX(0.96);
   }
   75% {
-    transform: scaleY(1.1);
+    transform: scaleY(1.2) scaleX(1.01);
   }
 }
 
@@ -486,7 +531,7 @@ async function handleKeyDown(e: KeyboardEvent) {
     background-color: var(--theme-error, #dc3545);
   }
   25% {
-    transform: scaleY(1.3);
+    transform: scaleY(1.4);
     background-color: rgba(220, 53, 69, 0.8);
   }
   50% {
@@ -507,47 +552,35 @@ async function handleKeyDown(e: KeyboardEvent) {
   50% {
     transform: scaleX(1.1) scaleY(1.5);
   }
+  70% {
+    transform: scaleX(0.95) scaleY(0.9);
+  }
   100% {
     transform: scaleX(1) scaleY(1);
     opacity: 1;
   }
 }
 
-/* 改进的光标样式 */
-.modern-cursor {
-  position: absolute;
-  right: -4px;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 70%;
-  width: 3px;
-  border-radius: 2px;
-  z-index: 5;
+/* 键入时的弹跳效果 */
+.emoji-pop {
+  animation: emoji-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.cursor-pulse {
-  height: 100%;
-  width: 100%;
-  background-color: var(--theme-primary, #3b82f6);
-  animation: cursor-pulse 1.5s infinite cubic-bezier(0.86, 0, 0.07, 1);
-  border-radius: 2px;
-  box-shadow: 0 0 8px 1px rgba(59, 130, 246, 0.5);
-}
-
-@keyframes cursor-pulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scaleY(1);
+@keyframes emoji-pop {
+  0% {
+    transform: scale(1);
   }
   50% {
-    opacity: 0.6;
-    transform: scaleY(0.7);
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 
 /* 字符浮动动画 */
 .character-float-in {
-  animation: float-in 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  animation: float-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   text-shadow: 0 0 8px rgba(72, 187, 120, 0.5);
   font-weight: bold;
   font-size: 0.75em;
@@ -557,7 +590,10 @@ async function handleKeyDown(e: KeyboardEvent) {
 @keyframes float-in {
   0% {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(5px);
+  }
+  70% {
+    transform: translateY(-2px);
   }
   100% {
     opacity: 1;
@@ -568,10 +604,10 @@ async function handleKeyDown(e: KeyboardEvent) {
 /* 美化状态标志 */
 .status-badge {
   display: inline-block;
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 16px;
-  animation: badge-pop 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  padding: 5px 14px;
+  border-radius: 18px;
+  font-size: 15px;
+  animation: badge-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .status-badge.correct {
@@ -591,6 +627,9 @@ async function handleKeyDown(e: KeyboardEvent) {
     opacity: 0;
     transform: scale(0.8);
   }
+  70% {
+    transform: scale(1.1);
+  }
   100% {
     opacity: 1;
     transform: scale(1);
@@ -598,8 +637,8 @@ async function handleKeyDown(e: KeyboardEvent) {
 }
 
 /* 增强正确状态的动效 */
-.animate-bounce-pop {
-  animation: bounce-pop 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* 更流畅的动画 */
+.animate-elastic-pop {
+  animation: elastic-pop 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); /* 更Q弹的动画曲线 */
   transform-origin: center;
   animation-fill-mode: both;
 }
@@ -619,8 +658,8 @@ async function handleKeyDown(e: KeyboardEvent) {
 
 @keyframes type-pop {
   0% { transform: scale(0.90); }
-  40% { transform: scale(1.12); }
-  70% { transform: scale(0.96); }
+  50% { transform: scale(1.15); }
+  70% { transform: scale(0.95); }
   100% { transform: scale(1); }
 }
 
