@@ -134,35 +134,48 @@ export function useSoundWordManager(
         () => {
           // 音频播放完成时的回调
           logger.info('音频播放完成');
+          
+          // 先设置状态为等待
           setWordState(WordState.WAITING);
-          // 显示输入框
-          showInputContainer.value = true;
+          
+          // 延迟显示输入框，等待音频元素动画过渡回顶部位置
+          setTimeout(() => {
+            // 确保音频元素完成动画过渡后再显示输入框
+            logger.info('动画过渡完成，显示输入框');
+            showInputContainer.value = true;
+          }, 600); // 增加延迟，给动画足够时间
         },
         () => {
           // 音频播放失败时的回调
           logger.error('音频播放失败，设置为等待状态');
           setWordState(WordState.WAITING);
-          // 显示输入框，确保用户可以输入
-          showInputContainer.value = true;
           
-          // 尝试显示提示作为备选方案
-          if (!showHint.value) {
-            showHint.value = true;
-            logger.info('由于音频播放失败，自动显示提示');
-          }
+          // 同样延迟显示输入框
+          setTimeout(() => {
+            showInputContainer.value = true;
+            
+            // 尝试显示提示作为备选方案
+            if (!showHint.value) {
+              showHint.value = true;
+              logger.info('由于音频播放失败，自动显示提示');
+            }
+          }, 600);
         }
       );
     } catch (error) {
       logger.error('播放单词音频时出错', error);
       setWordState(WordState.WAITING);
-      // 确保显示输入框
-      showInputContainer.value = true;
       
-      // 错误处理时也尝试显示提示
-      if (!showHint.value) {
-        showHint.value = true;
-        logger.info('由于音频播放错误，自动显示提示');
-      }
+      // 错误处理也使用延迟显示
+      setTimeout(() => {
+        showInputContainer.value = true;
+        
+        // 错误处理时也尝试显示提示
+        if (!showHint.value) {
+          showHint.value = true;
+          logger.info('由于音频播放错误，自动显示提示');
+        }
+      }, 600);
     }
   }
   

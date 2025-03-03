@@ -67,6 +67,18 @@ export interface IDisplayChar {
    * 是否空格
    */
   isSpace: boolean;
+  /**
+   * 原始字符（用于显示在下划线上方）
+   */
+  originalChar?: string;
+  /**
+   * 是否显示原始字符
+   */
+  showOriginal?: boolean;
+  /**
+   * 是否显示下划线
+   */
+  showUnderline?: boolean;
 }
 
 export interface IDisplayText {

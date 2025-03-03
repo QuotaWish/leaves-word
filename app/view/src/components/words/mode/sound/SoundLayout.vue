@@ -106,11 +106,11 @@ const modeHintText = computed(() => {
 
 <style lang="scss">
 :root {
-  --theme-primary: #ffcb6b;
+  --theme-primary: #4a6fa5;
   --theme-secondary: #ffffff;
   --theme-accent: #7986cb;
   --theme-text: #333333;
-  --theme-border: rgba(255, 203, 107, 0.3);
+  --theme-border: rgba(74, 111, 165, 0.3);
   --theme-card-bg: rgba(255, 255, 255, 0.9);
   --theme-glass: rgba(255, 255, 255, 0.8);
   --theme-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
@@ -119,16 +119,43 @@ const modeHintText = computed(() => {
 }
 
 .dark {
-  --theme-primary: #ffcb6b;
+  --theme-primary: #5b8dd6;
   --theme-secondary: #121212;
   --theme-accent: #7986cb;
   --theme-text: #f5f5f5;
-  --theme-border: rgba(255, 203, 107, 0.3);
+  --theme-border: rgba(91, 141, 214, 0.3);
   --theme-card-bg: rgba(33, 33, 33, 0.75);
   --theme-glass: rgba(18, 18, 18, 0.65);
   --theme-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   --theme-success: #4caf50;
   --theme-error: #f56c6c;
+}
+
+.SoundWordPage-Header {
+  border-radius: 0 0 12px 12px;
+}
+
+.SoundWordPage-Header-Left {
+  .back-btn {
+    font-size: 1.2rem;
+    transition: transform 0.2s ease;
+    
+    &:hover {
+      transform: translateX(-2px);
+    }
+  }
+  
+  p {
+    font-weight: 500;
+  }
+}
+
+.dictionary-link {
+  font-weight: 500;
+  
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .SoundWordCard-Container {
@@ -157,7 +184,7 @@ const modeHintText = computed(() => {
 
 .progress-bar {
   height: 8px;
-  background-color: rgba(255, 203, 107, 0.2);
+  background-color: rgba(74, 111, 165, 0.2);
   border-radius: 4px;
   overflow: hidden;
   position: relative;
@@ -311,7 +338,7 @@ const modeHintText = computed(() => {
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(255, 203, 107, 0.2);
+    box-shadow: 0 8px 15px rgba(74, 111, 165, 0.2);
   }
 
   &:active {
@@ -325,7 +352,7 @@ const modeHintText = computed(() => {
 }
 
 .replay-btn {
-  background: rgba(255, 203, 107, 0.1);
+  background: rgba(74, 111, 165, 0.1);
 }
 
 .bottom-hint-container {
@@ -441,13 +468,12 @@ const modeHintText = computed(() => {
 
 .mode-hint-bar {
   background-color: var(--theme-primary);
-  color: var(--theme-secondary);
   padding: 8px 15px;
   font-size: 14px;
   font-weight: 500;
   text-align: center;
-  border-radius: 0;
-  margin: 0;
+  border-radius: 0 0 12px 12px;
+  margin: 0 0 10px 0;
   position: relative;
   z-index: 5;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);

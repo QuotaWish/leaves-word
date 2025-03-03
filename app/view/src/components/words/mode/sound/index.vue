@@ -118,12 +118,12 @@ onMounted(refreshData);
   }
   
   &::-webkit-scrollbar-thumb {
-    background: rgba(255, 203, 107, 0.5);
+    background: rgba(74, 111, 165, 0.5);
     border-radius: 4px;
   }
   
   &::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 180, 78, 0.7);
+    background: rgba(74, 111, 165, 0.7);
   }
 }
 
@@ -151,7 +151,7 @@ onMounted(refreshData);
 }
 
 :deep(.example-stage-title) {
-  background: linear-gradient(135deg, #ffcb6b 0%, #ffa726 100%);
+  background: linear-gradient(135deg, #4a6fa5 0%, #6c8db7 100%);
   color: #fff;
   padding: 4px 12px;
   border-radius: 16px;
@@ -159,12 +159,12 @@ onMounted(refreshData);
   font-weight: 500;
   display: inline-block;
   margin: 6px 0;
-  box-shadow: 0 2px 8px rgba(255, 167, 38, 0.3);
+  box-shadow: 0 2px 8px rgba(74, 111, 165, 0.3);
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
   
   &:hover {
-    box-shadow: 0 4px 12px rgba(255, 167, 38, 0.5);
+    box-shadow: 0 4px 12px rgba(74, 111, 165, 0.5);
     transform: translateY(-1px);
   }
 }
@@ -176,15 +176,15 @@ onMounted(refreshData);
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(255, 203, 107, 0.9) 0%, rgba(255, 180, 78, 0.9) 100%);
-  color: var(--theme-secondary);
+  background: linear-gradient(135deg, rgba(74, 111, 165, 0.9) 0%, rgba(91, 141, 214, 0.9) 100%);
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 2px solid rgba(255, 255, 255, 0.2);
   box-shadow:
-    0 4px 20px rgba(255, 203, 107, 0.4),
-    0 0 15px rgba(255, 203, 107, 0.3);
+    0 4px 20px rgba(74, 111, 165, 0.4),
+    0 0 15px rgba(74, 111, 165, 0.3);
   transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
   top: 50%;
@@ -196,7 +196,7 @@ onMounted(refreshData);
     width: 100px;
     height: 100px;
     font-size: 38px;
-    box-shadow: 0 0 40px rgba(255, 203, 107, 0.6);
+    box-shadow: 0 0 40px rgba(74, 111, 165, 0.6);
     border: 3px solid rgba(255, 255, 255, 0.3);
     animation: audioGlow 2s infinite alternate;
   }
@@ -240,11 +240,11 @@ onMounted(refreshData);
 
 @keyframes audioGlow {
   0% {
-    box-shadow: 0 0 20px rgba(255, 203, 107, 0.5);
+    box-shadow: 0 0 20px rgba(74, 111, 165, 0.5);
   }
 
   100% {
-    box-shadow: 0 0 50px rgba(255, 203, 107, 0.8);
+    box-shadow: 0 0 50px rgba(74, 111, 165, 0.8);
   }
 }
 
