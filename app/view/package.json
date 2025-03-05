@@ -29,7 +29,9 @@
     "axios": "^1.7.9",
     "codemirror": "5",
     "codemirror-editor-vue3": "^2.8.0",
+    "echarts": "^5.6.0",
     "element-plus": "^2.8.8",
+    "js-confetti": "^0.12.0",
     "markdown-it": "^14.1.0",
     "sass": "^1.81.0",
     "simple-keyboard": "^3.8.38",
@@ -38,6 +40,7 @@
     "vant": "^4.9.9",
     "vite-plugin-version-date-mark": "^0.1.0",
     "vue": "^3.5.3",
+    "vue-echarts": "^7.0.3",
     "vue-router": "^4.4.3",
     "wc-waterfall": "^0.1.3"
   },

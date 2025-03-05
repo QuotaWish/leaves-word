@@ -1,6 +1,7 @@
 import ComprehensiveWord from '~/components/words/mode/ComprehensiveWord.vue'
 import { PrepareWord, SignMode } from '.'
 import { calendarManager, globalData, type IWord, type IWordItem, Statistics, useWordSound } from '..'
+import ComprehensiveStat from '~/components/words/mode/ComprehensiveStat.vue'
 
 // 定义常量
 const PRELOAD_WORD_AMO = 5 // 提前加载的单词数量
@@ -45,7 +46,11 @@ interface IComprehensiveStatData /* extends Record<string, any>  */{
 export class ComprehensiveStatistics extends Statistics<Partial<IComprehensiveStatData>> {
   constructor(mode: ComprehensivePrepareWord) {
     // storage: CalendarData, startTime: number, endTime: number, cost: number, data: IComprehensiveStatData
-    super(/* mode.calendarData!, */ mode.startTime, mode.endTime, mode.endTime - mode.startTime, {})
+    super(/* mode.calendarData!, */'COMPREHENSIVE', mode.startTime, mode.endTime, mode.endTime - mode.startTime, {})
+  }
+
+  getDisplayComponent(): Component {
+    return ComprehensiveStat
   }
 }
 
@@ -321,8 +326,6 @@ export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, ICo
         optionsClicks: []
       })
     }
-
-    this.statistics?.addData('wordsDetails', wordsDetails)
 
     // 更新会话统计数据
     this.updateSessionStatistics()

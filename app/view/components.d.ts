@@ -7,10 +7,13 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AIWordAnalysis: typeof import('./src/components/words/mode/AIWordAnalysis.vue')['default']
     AnimateIcon: typeof import('./src/components/icon/AnimateIcon.vue')['default']
     BookLoading: typeof import('./src/components/icon/BookLoading.vue')['default']
     CardDisplay: typeof import('./src/components/display/CardDisplay.vue')['default']
     CircleLoader: typeof import('./src/components/icon/CircleLoader.vue')['default']
+    CoffettiParticle: typeof import('./src/components/chore/CoffettiParticle.vue')['default']
+    ComprehensiveStat: typeof import('./src/components/words/mode/ComprehensiveStat.vue')['default']
     ComprehensiveWord: typeof import('./src/components/words/mode/ComprehensiveWord.vue')['default']
     copy: typeof import('./src/components/page/holder/PageNavHolder.vue')['default']
     DarkModeSwitch: typeof import('./src/components/button/DarkModeSwitch.vue')['default']

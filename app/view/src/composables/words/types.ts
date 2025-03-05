@@ -1,5 +1,6 @@
 import { DictStorage } from './storage'
 import type { CalendarData, IWord } from '.'
+import { ModeType } from './mode'
 
 export interface IDict {
   id: string
@@ -43,6 +44,7 @@ export interface IStatistics<T extends Record<string, any>> {
   endTime: number
   cost: number
   data: T
+  type: keyof typeof ModeType
 
   addData(data: keyof T, value: T[keyof T]): void
   removeData(data: keyof T): void
@@ -53,18 +55,22 @@ export interface IStatistics<T extends Record<string, any>> {
 
   getCost(): number
   getCostString(): string
+
+  getDisplayComponent(): Component
 }
 
-export class Statistics<T extends Record<string, any>> implements IStatistics<T> {
+export abstract class Statistics<T extends Record<string, any>> implements IStatistics<T> {
   startTime: number
   endTime: number
   cost: number
   data: T
+  type: keyof typeof ModeType
 
   // storage: CalendarData
 
-  constructor(/* storage: CalendarData, */ startTime: number, endTime: number, cost: number, data: T) {
+  constructor(/* storage: CalendarData, */ type: keyof typeof ModeType, startTime: number, endTime: number, cost: number, data: T) {
     // this.storage = storage
+    this.type = type
     this.startTime = startTime
     this.endTime = endTime
     this.cost = cost
@@ -109,4 +115,6 @@ export class Statistics<T extends Record<string, any>> implements IStatistics<T>
     const seconds = this.cost % 60
     return `${hours}:${minutes}:${seconds}`
   }
+
+  abstract getDisplayComponent(): Component
 }
