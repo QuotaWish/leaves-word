@@ -1,26 +1,19 @@
 <script setup lang="ts">
 import NumberFlow from '@number-flow/vue'
 import { dayjs } from 'element-plus'
-import { CalendarData, calendarManager, Statistics } from '~/composables/words'
+import { calendarManager, Statistics } from '~/composables/words'
 import { useGlobalSplashState } from '~/modules/splash'
 import Astronaut from '/svg/astronaut.svg'
 import Mello from '/svg/mello.svg'
-import RoutePage from '~/components/page/RoutePage.vue'
 import CoffettiParticle from '~/components/chore/CoffettiParticle.vue'
 import ComprehensiveStat from '~/components/words/mode/ComprehensiveStat.vue'
-import { ModeType } from '~/composables/words/mode'
 import DrawerPage from '~/components/page/DrawerPage.vue'
-
-interface ExtendedStatistics extends Statistics<any> {
-  correctRate?: number
-  averageTimePerWord?: number
-}
 
 const num = ref(0)
 const score = ref(0)
 const days = ref(0)
 const timeText = ref('')
-const data = ref<ExtendedStatistics>()
+const data = ref<Statistics<any>>()
 const displayComponent = ref<Component>()
 
 const router = useRouter()
@@ -78,10 +71,6 @@ setTimeout(async () => {
 
   score.value = todaySubData.words.length * 1.5
 }, 800)
-
-const toggleDrawer = () => {
-  isDrawerExpanded.value = !isDrawerExpanded.value
-}
 </script>
 
 <template>
@@ -144,20 +133,6 @@ const toggleDrawer = () => {
     </template>
 
     <template #drawer>
-      <div class="drawer-header">
-        <span>AI 学习分析</span>
-        <div class="preview-stats">
-          <div class="preview-stat-item">
-            <span class="label">正确率</span>
-            <span class="value">{{ ((data?.correctRate || 0) * 100).toFixed(1) }}%</span>
-          </div>
-          <div class="preview-stat-item">
-            <span class="label">平均用时</span>
-            <span class="value">{{ Math.round(data?.averageTimePerWord || 0) }}ms</span>
-          </div>
-        </div>
-      </div>
-
       <div class="drawer-content">
         <component :is="displayComponent" :data="data" />
       </div>

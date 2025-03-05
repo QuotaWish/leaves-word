@@ -1,42 +1,70 @@
 <template>
   <div class="ai-word-analysis">
-    <div class="analysis-header">
-      <h2>AI 辅助学习分析</h2>
-      <div class="analysis-summary">
-        <div class="summary-item">
-          <div class="label">平均响应时间</div>
-          <div class="value">{{ formatTime(averageTimePerWord) }}ms</div>
-        </div>
-        <div class="summary-item">
-          <div class="label">正确率</div>
-          <div class="value">{{ (correctRate * 100).toFixed(1) }}%</div>
-        </div>
-        <div class="summary-item">
-          <div class="label">学习时长</div>
-          <div class="value">{{ formatDuration(sessionDuration) }}</div>
+    <template v-if="isLoading">
+      <div class="loading-skeleton">
+        <el-skeleton :rows="3" animated>
+          <template #template>
+            <el-skeleton-item variant="h3" style="width: 30%" />
+            <div style="padding: 14px">
+              <el-skeleton-item variant="h3" style="width: 50%" />
+              <div style="display: f  lex; justify-content: space-between; align-items: center; margin-top: 16px">
+                <div style="display: flex; gap: 16px">
+                  <el-skeleton-item variant="text" style="margin-right: 16px" />
+                  <el-skeleton-item variant="text" style="width: 30%" />
+                </div>
+              </div>
+            </div>
+          </template>
+        </el-skeleton>
+      </div>
+    </template>
+
+    <template v-else>
+      <div class="analysis-header">
+        <h2>AI 辅助学习分析</h2>
+        <div class="analysis-summary">
+          <div class="summary-item">
+            <div class="label">平均响应时间</div>
+            <div class="value">{{ formatTime(averageTimePerWord) }}ms</div>
+          </div>
+          <div class="summary-item">
+            <div class="label">正确率</div>
+            <div class="value">{{ (correctRate * 100).toFixed(1) }}%</div>
+          </div>
+          <div class="summary-item">
+            <div class="label">学习时长</div>
+            <div class="value">{{ formatDuration(sessionDuration) }}</div>
+          </div>
         </div>
       </div>
-    </div>
-    
-    <div class="charts-container">
-      <div ref="learningPatternChart" class="chart"></div>
-      <div ref="timeDistributionChart" class="chart"></div>
-      <div ref="performanceRadarChart" class="chart"></div>
-    </div>
+      
+      <div class="charts-container">
+        <div ref="learningPatternChart" class="chart"></div>
+        <div ref="timeDistributionChart" class="chart"></div>
+        <div ref="performanceRadarChart" class="chart"></div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import * as echarts from 'echarts'
 import type { EChartsOption } from 'echarts'
+import { ComprehensiveStatistics } from '~/composables/words/mode/comprehensive';
+import { Statistics } from '~/composables/words';
+import { ElSkeleton, ElSkeletonItem } from 'element-plus'
 
 const props = defineProps<{
-  wordsDetails: any[]
-  averageTimePerWord: number
-  correctRate: number
-  sessionDuration: number
+  data: Statistics<any>
 }>()
+
+const stat = computed(() => ComprehensiveStatistics.parseStatistics(props.data))
+
+const correctRate = computed(() => stat.value.data.correctRate || 0)
+const averageTimePerWord = computed(() => stat.value.data.averageTimePerWord || 0)
+const sessionDuration = computed(() => stat.value.data.sessionDuration || 0)
+const isLoading = computed(() => !stat.value.data.wordsDetails?.length)
 
 const learningPatternChart = ref<HTMLElement | null>(null)
 const timeDistributionChart = ref<HTMLElement | null>(null)
@@ -53,8 +81,8 @@ const initLearningPatternChart = () => {
   if (!learningPatternChart.value) return
   const chart = echarts.init(learningPatternChart.value)
   
-  const timeData = props.wordsDetails?.map(word => word.timeSpent)
-  const wordLabels = props.wordsDetails.map(word => word.word)
+  const timeData = stat.value.data.wordsDetails?.map(word => word.timeSpent)
+  const wordLabels = stat.value.data.wordsDetails?.map(word => word.word)
   
   const option: EChartsOption = {
     title: {
@@ -101,7 +129,7 @@ const initTimeDistributionChart = () => {
     '0-5s', '5-10s', '10-20s', '20s+'
   ]
   
-  const timeData = props.wordsDetails.reduce((acc: number[], word) => {
+  const timeData = stat.value.data.wordsDetails?.reduce((acc: number[], word) => {
     const seconds = word.timeSpent / 1000
     if (seconds <= 5) acc[0]++
     else if (seconds <= 10) acc[1]++
@@ -161,11 +189,11 @@ const initPerformanceRadarChart = () => {
       type: 'radar',
       data: [{
         value: [
-          props.correctRate * 100,
-          Math.min(100, 10000 / props.averageTimePerWord),
-          props.correctRate * 100,
-          Math.min(100, props.wordsDetails.length / (props.sessionDuration / 60000) * 10),
-          Math.min(100, props.wordsDetails.filter(w => w.attempts === 1).length / props.wordsDetails.length * 100)
+          stat.value.correctRate * 100,
+          Math.min(100, 10000 / stat.value.averageTimePerWord),
+          stat.value.correctRate * 100,
+          Math.min(100, stat.value.data.wordsDetails.length / (stat.value.data.sessionDuration / 60000) * 10),
+          Math.min(100, stat.value.data.wordsDetails.filter(w => w.attempts === 1).length / stat.value.data.wordsDetails.length * 100)
         ],
         name: '能力评估',
         areaStyle: {
@@ -187,7 +215,7 @@ onMounted(() => {
   initPerformanceRadarChart()
 })
 
-watch(() => props.wordsDetails, () => {
+watch(() => props.data, () => {
   initLearningPatternChart()
   initTimeDistributionChart()
   initPerformanceRadarChart()
@@ -206,7 +234,7 @@ watch(() => props.wordsDetails, () => {
 
 .analysis-header h2 {
   text-align: center;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--el-text-color-primary);
   margin-bottom: 20px;
   font-size: 18px;
   font-weight: 600;
@@ -230,7 +258,7 @@ watch(() => props.wordsDetails, () => {
 
 .summary-item .label {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--el-text-color-regular);
   margin-bottom: 4px;
 }
 
@@ -256,5 +284,25 @@ watch(() => props.wordsDetails, () => {
   padding: 16px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.loading-skeleton {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:deep(.el-skeleton__item) {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+:deep(.el-skeleton__h3) {
+  height: 24px !important;
+}
+
+:deep(.el-skeleton__text) {
+  height: 16px !important;
 }
 </style> 
