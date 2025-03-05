@@ -53,7 +53,7 @@ const initLearningPatternChart = () => {
   if (!learningPatternChart.value) return
   const chart = echarts.init(learningPatternChart.value)
   
-  const timeData = props.wordsDetails.map(word => word.timeSpent)
+  const timeData = props.wordsDetails?.map(word => word.timeSpent)
   const wordLabels = props.wordsDetails.map(word => word.word)
   
   const option: EChartsOption = {
@@ -196,62 +196,65 @@ watch(() => props.wordsDetails, () => {
 
 <style scoped>
 .ai-word-analysis {
-  padding: 20px;
-  background: #f5f5f5;
+  padding: 20px 0;
   border-radius: 12px;
 }
 
 .analysis-header {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .analysis-header h2 {
   text-align: center;
-  color: #333;
+  color: rgba(255, 255, 255, 0.9);
   margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .analysis-summary {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 30px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
 }
 
 .summary-item {
   text-align: center;
-  padding: 15px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .summary-item .label {
   font-size: 14px;
-  color: #666;
-  margin-bottom: 5px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 4px;
 }
 
 .summary-item .value {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
-  color: #7e57c2;
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .charts-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .chart {
-  height: 300px;
-  background: white;
-  border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.chart:last-child {
-  grid-column: span 2;
+  height: 280px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 </style> 

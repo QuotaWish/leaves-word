@@ -21,6 +21,7 @@ declare module 'vue' {
     DictionaryBookDisplay: typeof import('./src/components/display/DictionaryBookDisplay.vue')['default']
     DictionaryDisplay: typeof import('./src/components/display/DictionaryDisplay.vue')['default']
     DictSelector: typeof import('./src/components/words/DictSelector.vue')['default']
+    DrawerPage: typeof import('./src/components/page/DrawerPage.vue')['default']
     ExitButton: typeof import('./src/components/ExitButton.vue')['default']
     FlexLayout: typeof import('./src/components/display/FlexLayout.vue')['default']
     GlobalInputMethod: typeof import('./src/components/input/GlobalInputMethod.vue')['default']

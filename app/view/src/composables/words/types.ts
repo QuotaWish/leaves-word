@@ -1,5 +1,5 @@
 import { DictStorage } from './storage'
-import type { CalendarData, IWord } from '.'
+import type { IWord } from '.'
 import { ModeType } from './mode'
 
 export interface IDict {

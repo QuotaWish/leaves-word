@@ -1,6 +1,6 @@
 import ComprehensiveWord from '~/components/words/mode/ComprehensiveWord.vue'
 import { PrepareWord, SignMode } from '.'
-import { calendarManager, globalData, type IWord, type IWordItem, Statistics, useWordSound } from '..'
+import { calendarManager, globalData, IStatistics, type IWord, type IWordItem, Statistics, useWordSound } from '..'
 import ComprehensiveStat from '~/components/words/mode/ComprehensiveStat.vue'
 
 // 定义常量
@@ -44,13 +44,26 @@ interface IComprehensiveStatData /* extends Record<string, any>  */{
 }
 
 export class ComprehensiveStatistics extends Statistics<Partial<IComprehensiveStatData>> {
-  constructor(mode: ComprehensivePrepareWord) {
-    // storage: CalendarData, startTime: number, endTime: number, cost: number, data: IComprehensiveStatData
-    super(/* mode.calendarData!, */'COMPREHENSIVE', mode.startTime, mode.endTime, mode.endTime - mode.startTime, {})
+  constructor(mode?: ComprehensivePrepareWord, statistics?: IStatistics<any>) {
+    if ( statistics ) {
+      if ( statistics.type !== 'COMPREHENSIVE' )
+        throw new Error(`Statistics type is not comprehensive - ${statistics.type}`)
+
+      super('COMPREHENSIVE', statistics.startTime, statistics.endTime, statistics.cost, statistics.data)
+      Object.assign(this.data, statistics.data)
+    } else if (mode) {
+      super(/* mode.calendarData!, */'COMPREHENSIVE', mode.startTime, mode.endTime, mode.endTime - mode.startTime, {})
+    } else {
+      throw new Error('ComprehensiveStatistics constructor must be provided with either a mode or a statistics')
+    }
   }
 
   getDisplayComponent(): Component {
     return ComprehensiveStat
+  }
+
+  static parseStatistics(statistics: IStatistics<any>) {
+    return new ComprehensiveStatistics(undefined, statistics)
   }
 }
 

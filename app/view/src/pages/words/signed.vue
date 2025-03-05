@@ -1,22 +1,43 @@
 <script setup lang="ts">
 import NumberFlow from '@number-flow/vue'
 import { dayjs } from 'element-plus'
-import { CalendarData, calendarManager, Statistics, useTargetData } from '~/composables/words'
+import { CalendarData, calendarManager, Statistics } from '~/composables/words'
 import { useGlobalSplashState } from '~/modules/splash'
 import Astronaut from '/svg/astronaut.svg'
 import Mello from '/svg/mello.svg'
 import RoutePage from '~/components/page/RoutePage.vue'
 import CoffettiParticle from '~/components/chore/CoffettiParticle.vue'
+import ComprehensiveStat from '~/components/words/mode/ComprehensiveStat.vue'
+import { ModeType } from '~/composables/words/mode'
+import DrawerPage from '~/components/page/DrawerPage.vue'
+
+interface ExtendedStatistics extends Statistics<any> {
+  correctRate?: number
+  averageTimePerWord?: number
+}
 
 const num = ref(0)
 const score = ref(0)
 const days = ref(0)
 const timeText = ref('')
-const data = ref<CalendarData<Statistics<any>>>()
+const data = ref<ExtendedStatistics>()
+const displayComponent = ref<Component>()
 
 const router = useRouter()
 
 const globalSplashState = useGlobalSplashState()
+
+const statCompMapper = {
+  ['COMPREHENSIVE']: ComprehensiveStat,
+}
+
+const isDrawerExpanded = ref(false)
+
+onMounted(() => {
+  setTimeout(() => {
+    isDrawerExpanded.value = true
+  }, 5000)
+})
 
 setTimeout(async () => {
   const todayData = calendarManager.getTodayData()!
@@ -26,7 +47,7 @@ setTimeout(async () => {
 
     return
   }
-  
+
   // process todayData
   const originDataList = todayData.origin.data
   const todaySubData = originDataList.at(-1)
@@ -36,6 +57,10 @@ setTimeout(async () => {
 
     return
   }
+
+  const statistics = todaySubData.statistics
+  displayComponent.value = statCompMapper[statistics!.type as keyof typeof statCompMapper]
+  data.value = statistics
 
   console.log(todaySubData)
 
@@ -53,77 +78,97 @@ setTimeout(async () => {
 
   score.value = todaySubData.words.length * 1.5
 }, 800)
+
+const toggleDrawer = () => {
+  isDrawerExpanded.value = !isDrawerExpanded.value
+}
 </script>
 
 <template>
-  <RoutePage class="Signed transition-cubic">
-    <div class="Signed-Header">
-      <h1>今日已完成!</h1>
-      <div class="Signed-Header-Time">
-        {{ timeText }}
-      </div>
-    </div>
-
-    <div class="Signed-MainCard fake-background">
-      <div class="Signed-MainCard-Svg">
-        <img :src="Astronaut">
-      </div>
-      <div class="Signed-MainCard-SuccessSvg">
-        <img :src="Mello">
-      </div>
-      <p>你已连续学习</p>
-
-      <h1>
-        <div class="number-flow-container">
-          <NumberFlow :prefix="days < 10 ? '0' : ''" :continuous="true" :will-change="true" :animated="true"
-            :value="days" />
+  <DrawerPage class="Signed transition-cubic" @close="router.push('/')">
+    <template #main>
+      <div class="Signed-Header">
+        <h1>今日已完成!</h1>
+        <div class="Signed-Header-Time">
+          {{ timeText }}
         </div>
-        <span>天</span>
-      </h1>
-
-      <div mt-8 w-full flex items-center justify-between>
-        挑战 7 天不断电
-        <span class="challenge-count" font-bold>1/7</span>
       </div>
 
-      <div style="--p: 14.2%" class="Signed-MainCard-Progress">
-        <div class="Signed-MainCard-Progress-Bar" />
-        <div class="Signed-MainCard-Progress-Inner" />
-      </div>
-    </div>
+      <div class="Signed-MainCard fake-background">
+        <div class="Signed-MainCard-Svg">
+          <img :src="Astronaut">
+        </div>
+        <div class="Signed-MainCard-SuccessSvg">
+          <img :src="Mello">
+        </div>
+        <p>你已连续学习</p>
 
-    <div class="Signed-SubCard">
-      <div class="fake-background Signed-SubCardItem">
-        <p>过招单词</p>
-        <p class="amo">
+        <h1>
+          <div class="number-flow-container">
+            <NumberFlow :prefix="days < 10 ? '0' : ''" :continuous="true" :will-change="true" :animated="true"
+              :value="days" />
+          </div>
+          <span>天</span>
+        </h1>
+
+        <div mt-8 w-full flex items-center justify-between>
+          挑战 7 天不断电
+          <span class="challenge-count" font-bold>1/7</span>
+        </div>
+
+        <div style="--p: 14.2%" class="Signed-MainCard-Progress">
+          <div class="Signed-MainCard-Progress-Bar" />
+          <div class="Signed-MainCard-Progress-Inner" />
+        </div>
+      </div>
+
+      <div class="Signed-SubCard">
+        <div class="fake-background Signed-SubCardItem">
+          <p>过招单词</p>
+          <p class="amo">
           <div class="number-flow-container">
             <NumberFlow :continuous="true" :will-change="true" :animated="true" :value="num" />
           </div>
-        </p>
-      </div>
+          </p>
+        </div>
 
-      <div class="Signed-SubCardItem fake-background">
-        <p>学分</p>
-        <p class="amo">
+        <div class="Signed-SubCardItem fake-background">
+          <p>学分</p>
+          <p class="amo">
           <div class="number-flow-container">
             <NumberFlow :continuous="true" :will-change="true" :animated="true" :value="score" />
           </div>
-        </p>
+          </p>
+        </div>
       </div>
-    </div>
+    </template>
 
-    <div class="fake-background Signed-CheckIn">
-      <el-button w-full size="large" type="primary" @click="router.push('/')">
-        关闭
-      </el-button>
-    </div>
+    <template #drawer>
+      <div class="drawer-header">
+        <span>AI 学习分析</span>
+        <div class="preview-stats">
+          <div class="preview-stat-item">
+            <span class="label">正确率</span>
+            <span class="value">{{ ((data?.correctRate || 0) * 100).toFixed(1) }}%</span>
+          </div>
+          <div class="preview-stat-item">
+            <span class="label">平均用时</span>
+            <span class="value">{{ Math.round(data?.averageTimePerWord || 0) }}ms</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="drawer-content">
+        <component :is="displayComponent" :data="data" />
+      </div>
+    </template>
 
     <template #bg>
       <div class="Signed-Particles">
         <CoffettiParticle />
       </div>
     </template>
-  </RoutePage>
+  </DrawerPage>
 </template>
 
 <style lang="scss">
@@ -134,10 +179,10 @@ setTimeout(async () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
   display: flex;
   flex-direction: column;
-  
+
   &::before {
     content: '';
     position: fixed;
@@ -198,7 +243,7 @@ setTimeout(async () => {
   min-height: 220px;
   flex-shrink: 0;
   border-radius: 28px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08));
   backdrop-filter: blur(20px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -222,7 +267,7 @@ setTimeout(async () => {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    
+
     .number-flow-container {
       display: block;
       font-size: 72px;
@@ -230,7 +275,7 @@ setTimeout(async () => {
       color: var(--el-text-color-regular);
     }
 
-    & > span {
+    &>span {
       font-size: 24px;
       font-weight: 600;
       background-image: linear-gradient(45deg, #ffffff, #e0e0e0);
@@ -286,7 +331,7 @@ setTimeout(async () => {
     padding: 1.5rem;
     width: 48%;
     border-radius: 24px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
     backdrop-filter: blur(20px);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -315,7 +360,7 @@ setTimeout(async () => {
 
     .amo {
       margin-top: 1rem;
-      
+
       .number-flow-container {
         font-size: 48px;
         font-weight: 700;
@@ -325,22 +370,100 @@ setTimeout(async () => {
   }
 }
 
-.Signed-CheckIn {
-  z-index: 1;
-  position: sticky;
-  padding: 1.5rem;
-  margin-top: auto;
+.Signed-Drawer {
+  position: relative;
+  bottom: 0;
   left: 0;
   width: 100%;
-  border-radius: 28px 28px 0 0;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transform: translateY(100%);
-  animation: slideUp 0.6s ease-out forwards;
-  animation-delay: 1s;
-  flex-shrink: 0;
+  height: 520px;
+  z-index: 100;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.is-expanded {
+    transform: translateY(0);
+  }
+
+  &-Handle {
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 20px;
+    cursor: pointer;
+    position: relative;
+
+    .handle-line {
+      width: 36px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 2px;
+      margin-bottom: 16px;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+
+  &-Preview {
+    width: 100%;
+
+    &>span {
+      display: block;
+      font-size: 16px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 12px;
+    }
+
+    .preview-stats {
+      display: flex;
+      gap: 20px;
+    }
+
+    .preview-stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .label {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .value {
+        font-size: 16px;
+        font-weight: 600;
+        background: linear-gradient(45deg, #00c6ff, #0072ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+    }
+  }
+
+  &-Content {
+    padding: 0 20px;
+    margin-bottom: 100px;
+  }
+}
+
+.Signed-CheckIn {
+  display: none;
 }
 
 @keyframes fadeInDown {
@@ -348,6 +471,7 @@ setTimeout(async () => {
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -359,6 +483,7 @@ setTimeout(async () => {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -369,6 +494,7 @@ setTimeout(async () => {
   from {
     transform: translateX(-100%);
   }
+
   to {
     transform: translateX(0);
   }
@@ -436,5 +562,85 @@ setTimeout(async () => {
   font-size: 20px !important;
   font-weight: 700;
   color: var(--el-color-primary) !important;
+}
+
+.preview-content {
+  width: 100%;
+
+  & > span {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 12px;
+  }
+
+  .preview-stats {
+    display: flex;
+    gap: 20px;
+  }
+
+  .preview-stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .value {
+      font-size: 16px;
+      font-weight: 600;
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+  }
+}
+
+.drawer-header {
+  padding: 0 20px;
+  margin-bottom: 20px;
+
+  & > span {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 12px;
+  }
+
+  .preview-stats {
+    display: flex;
+    gap: 20px;
+  }
+
+  .preview-stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .value {
+      font-size: 16px;
+      font-weight: 600;
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+  }
+}
+
+.drawer-content {
+  padding: 0 20px;
+  margin-bottom: 100px;
 }
 </style>
