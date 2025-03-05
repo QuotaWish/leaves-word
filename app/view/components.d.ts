@@ -53,6 +53,7 @@ declare module 'vue' {
     SoundHintDisplay: typeof import('./src/components/words/mode/sound/SoundHintDisplay.vue')['default']
     SoundInputMethodDemo: typeof import('./src/components/input/SoundInputMethodDemo.vue')['default']
     SoundLayout: typeof import('./src/components/words/mode/sound/SoundLayout.vue')['default']
+    Statistics: typeof import('./src/components/Statistics.vue')['default']
     TheCounter: typeof import('./src/components/TheCounter.vue')['default']
     TheInput: typeof import('./src/components/TheInput.vue')['default']
     TouchDialog: typeof import('./src/components/dialog/TouchDialog.vue')['default']
