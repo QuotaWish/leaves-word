@@ -1,5 +1,5 @@
 import { DictStorage } from './storage'
-import type { CalendarData, IWord, IWordItem } from '.'
+import type { CalendarData, IWord } from '.'
 
 export interface IDict {
   id: string
@@ -48,8 +48,8 @@ export interface IStatistics<T extends Record<string, any>> {
   removeData(data: keyof T): void
   clearData(): void
   getStatistics(): T
-  getData(data: keyof T): T[keyof T]
-  getDataDefault(data: keyof T, defaultValue: T[keyof T]): T[keyof T]
+  getData(data: keyof T): T[keyof T] | undefined
+  getDataDefault(data: keyof T, defaultValue: T[keyof T]): NonNullable<T[keyof T]>
 
   getCost(): number
   getCostString(): string
@@ -61,17 +61,17 @@ export class Statistics<T extends Record<string, any>> implements IStatistics<T>
   cost: number
   data: T
 
-  storage: CalendarData
+  // storage: CalendarData
 
-  constructor(storage: CalendarData, startTime: number, endTime: number, cost: number, data: T) {
-    this.storage = storage
+  constructor(/* storage: CalendarData, */ startTime: number, endTime: number, cost: number, data: T) {
+    // this.storage = storage
     this.startTime = startTime
     this.endTime = endTime
     this.cost = cost
     this.data = data
   }
 
-  addData(data: keyof T, value: T[keyof T]): void {
+  addData<K extends keyof T>(data: K, value: T[K]): void {
     this.data[data] = value
   }
 
@@ -87,11 +87,15 @@ export class Statistics<T extends Record<string, any>> implements IStatistics<T>
     return this.data
   }
 
-  getData(data: keyof T): T[keyof T] {
-    return this.data[data]
+  getData<K extends keyof T>(data: K): T[K] | undefined {
+    if (data in this.data) {
+      return this.data[data]
+    }
+
+    return undefined
   }
 
-  getDataDefault(data: keyof T, defaultValue: T[keyof T]): T[keyof T] {
+  getDataDefault<K extends keyof T, D extends T[K]>(data: K, defaultValue: D): NonNullable<T[K] | D> {
     return this.data[data] ?? defaultValue
   }
 

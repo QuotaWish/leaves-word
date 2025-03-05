@@ -1,6 +1,6 @@
 import ComprehensiveWord from '~/components/words/mode/ComprehensiveWord.vue'
 import { PrepareWord, SignMode } from '.'
-import { CalendarData, calendarManager, globalData, IStatistics, type IWord, type IWordItem, Statistics, useWordSound } from '..'
+import { calendarManager, globalData, type IWord, type IWordItem, Statistics, useWordSound } from '..'
 
 // 定义常量
 const PRELOAD_WORD_AMO = 5 // 提前加载的单词数量
@@ -12,20 +12,45 @@ export interface IComprehensiveWordItem {
   type: 'new' | 'review'
 }
 
-interface IComprehensiveStatData extends Record<string, any> {
-  newWords: number
-  reviewWords: number
+interface ComprehensiveWordDetail {
+  word: string // 单词
+  isNew: boolean // 是否为新单词
+  attempts: number // 尝试次数
+  isCorrect: boolean // 是否回答正确
+  timeSpent: number // 花费时间（毫秒）
+  wrongHistory?: number[] // 错误历史时间戳
+
+  // 选项点击记录
+  optionsClicks?: Array<{
+    optionText: string // 选项文本
+    clickTime: number // 点击时间戳
+    isCorrect: boolean // 是否是正确选项
+  }>
 }
 
-export class ComprehensiveStatistics extends Statistics<IComprehensiveStatData> {
+interface IComprehensiveStatData /* extends Record<string, any>  */{
+  // 基础统计数据
+  newWords: number
+  reviewWords: number
+
+  // 单词学习详情记录
+  wordsDetails: Array<ComprehensiveWordDetail>
+
+  // 会话统计
+  sessionDuration: number // 整个学习会话持续时间
+  averageTimePerWord: number // 平均每个单词花费的时间
+  correctRate: number // 正确率
+}
+
+export class ComprehensiveStatistics extends Statistics<Partial<IComprehensiveStatData>> {
   constructor(mode: ComprehensivePrepareWord) {
     // storage: CalendarData, startTime: number, endTime: number, cost: number, data: IComprehensiveStatData
-    super(storage, startTime, endTime, cost, data)
+    super(/* mode.calendarData!, */ mode.startTime, mode.endTime, mode.endTime - mode.startTime, {})
   }
 }
 
-export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, IComprehensiveWordItem, IComprehensiveStatData> {
-  getStatistics(): IStatistics<IComprehensiveStatData> {
+export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, IComprehensiveWordItem, ComprehensiveStatistics> {
+  getStatistics() {
     return new ComprehensiveStatistics(this);
   }
 
@@ -36,7 +61,6 @@ export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, ICo
     const amo = Math.min(globalAmo, unlearedWords.length)
 
     this.taskAmount = amo
-    this.calendarData = calendarManager.createTodayData([], 0, false)
   }
 
   wordsQueue: IComprehensiveWordItem[] = []
@@ -44,7 +68,6 @@ export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, ICo
   wordsFinished: IWordItem[] = []
 
   amo: number = 0
-  calendarData: CalendarData | null = null
 
   // 加载单词的图片和音频
   async preloadWordData(word: {
@@ -115,63 +138,33 @@ export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, ICo
    * @returns Promise<boolean> - 返回一个 Promise，指示是否成功处理下一个单词
    */
   async next(success: boolean): Promise<boolean> {
-    // 开始处理下一个单词
-    // console.group('开始处理下一个单词')
-
-    // 输出当前剩余单词数量
-    // console.log('当前剩余单词数量:', this.getLeftWords())
-
-    // 输出当前单词
-    // console.log('当前单词:', this.currentWord)
-
-    // 输出已显示的单词列表
-    // console.log('已显示的单词列表:', this.wordsDispalyed)
-
-    // 输出当前学习的单词数量
-    // console.log('当前学习的单词数量:', this.amo)
-
-    // 输出单词队列
-    // console.log('单词队列:', this.wordsQueue)
-
-    // 输出已完成的单词列表
-    // console.log('已完成的单词列表:', this.wordsFinished)
-
     // 如果没有剩余单词，返回 false
     if (this.getLeftWords() === 0) {
-      // console.group('没有剩余单词')
-      // console.log('单词队列:', this.wordsQueue)
-      // console.groupEnd()
       return false
     }
 
     // 如果当前单词不存在，抛出错误
     if (!this.currentWord) {
-      // console.group('当前单词不存在，无法获取下一个单词')
-      // console.error('当前单词不存在，无法获取下一个单词')
-      // console.groupEnd()
       throw new Error('当前单词不存在，无法获取下一个单词')
     }
 
     const currentWord = this.currentWord
+    const startTime = this.wordStartTime || Date.now()
+    const timeSpent = Date.now() - startTime
 
-    // console.group('处理当前单词')
-    // console.log('当前单词:', this.currentWord.word.mainWord.word)
-    // console.groupEnd()
+    // 记录单词学习数据
+    this.recordWordLearningData(currentWord, success, timeSpent)
 
     // 将当前单词添加到已显示的单词列表中
-    this.wordsDispalyed = [...new Set([...this.wordsDispalyed, this.currentWord!.word.mainWord.word])]
+    this.wordsDispalyed = [...new Set([...this.wordsDispalyed, this.currentWord.word.mainWord.word])]
 
     // 如果回答正确
     if (success) {
-      // console.group('回答正确')
-      // console.log('当前单词:', this.currentWord!.word.mainWord.word)
-      // console.groupEnd()
-
       if (currentWord.type === 'new') {
         // 增加已学习的单词数量
         this.amo += 1
 
-        // 如果当前单词是复习单词，将其从复习队列中移除
+        // 如果当前单词是新单词，将其添加到复习队列
         this.wordsQueue.push({ word: currentWord.word, type: 'review' })
       }
       else {
@@ -180,20 +173,15 @@ export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, ICo
 
         if (this.wordsQueue.length === 1) {
           this.wordsQueue.length = 0
-
           return false
         }
       }
     }
     else {
-      console.group('回答错误')
-      console.log('当前单词:', this.currentWord.word.mainWord.word)
-      console.groupEnd()
-
       // 将当前单词添加到复习队列中
-      this.wordsQueue.push({ word: this.currentWord!.word, type: 'review' })
+      this.wordsQueue.push({ word: this.currentWord.word, type: 'review' })
 
-      const obj = this.currentWord!.word
+      const obj = this.currentWord.word
 
       const history = obj.wrongHistory || []
       history.push(Date.now())
@@ -222,49 +210,17 @@ export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, ICo
         }
       })
 
-      // while (reviewWords.length < REVIEW_WORDS_PER_SESSION && this.wordsQueue.length) {
-      //   // 如果queue中没有复习单词 跳出
-      //   if (this.getReviewWords() === 0) break
-
-      //   // 从队列中取出一个复习单词
-      //   const word = this.wordsQueue.pop()
-      //   if ()
-      // }
-
-      // 在队列中找到所有复习单词
-      // const reviewWords = this.wordsQueue.filter(item => item.type === 'review')
-
-      // // 从queue中删除
-      // this.wordsQueue = this.wordsQueue.filter(item => item.type !== 'review')
-
-      // // 如果复习的单词过多 裁切
-      // if (reviewWords.length > REVIEW_WORDS_PER_SESSION) {
-      //   reviewWords.splice(REVIEW_WORDS_PER_SESSION)
-      // }
-
       // 加到队列前面
       this.wordsQueue.unshift(...reviewWords)
-
-      // console.log('c', this.wordsQueue, reviewWords.map(item => item.word.mainWord.word))
     }
-
-    // console.group('更新后的单词队列')
-    // console.log('单词队列:', this.wordsQueue.map(item => item.word.mainWord.word))
-    // console.groupEnd()
-
-    // console.group('复习队列')
-    // console.log('复习队列:', this.wordsQueue.filter(item => item.type === 'review').map(item => item.word.mainWord.word))
-    // console.groupEnd()
 
     // 预备加载下5个单词
     const nextIndex = this.wordIndex + PRELOAD_WORD_AMO
     if (nextIndex < this.wordsQueue.length)
       this.preloadWordData(this.wordsQueue[nextIndex].word)
 
-    // console.group('处理下一个单词结束')
-    // console.log('单词队列:', this.wordsQueue)
-    // console.log('已完成的单词列表:', this.wordsFinished)
-    // console.groupEnd()
+    // 重置单词开始学习时间
+    this.wordStartTime = Date.now()
 
     return true
   }
@@ -295,11 +251,17 @@ export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, ICo
 
     const words = this.wordsFinished.map(i => i.mainWord.word)
 
-    if ( !this.calendarData ) {
+    if (!this.calendarData) {
       this.calendarData = calendarManager.createTodayData(words, duration, true)
+    } else {
+      this.calendarData.addData(this.calendarData.createSignData(words, duration, true))
     }
 
-    this.calendarData.addData(this.calendarData.createSignData(words, duration, true))
+    const lastData = this.calendarData.data.at(-1)
+
+    if (lastData) {
+      lastData.statistics = this.statistics
+    }
 
     return true
   }
@@ -323,6 +285,106 @@ export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, ICo
   getTargetComponent(): Component {
     return ComprehensiveWord
   }
+
+  // 记录单词学习数据
+  private recordWordLearningData(currentWord: IComprehensiveWordItem, success: boolean, timeSpent: number): void {
+    const stat = this.statistics
+    if ( !stat ) {
+      throw new Error(`Comprehensive statics not init yet - ${JSON.stringify(currentWord)} with ${success} #${timeSpent}`)
+    }
+
+    const wordsDetails = stat.getDataDefault('wordsDetails', new Array<ComprehensiveWordDetail>())
+    const wordDetail = wordsDetails.find(
+      detail => detail.word === currentWord.word.mainWord.word
+    )
+
+    if (wordDetail) {
+      // 更新现有记录
+      wordDetail.attempts += 1
+      wordDetail.isCorrect = success
+      wordDetail.timeSpent += timeSpent
+      if (!success && !wordDetail.wrongHistory) {
+        wordDetail.wrongHistory = []
+      }
+      if (!success) {
+        wordDetail.wrongHistory!.push(Date.now())
+      }
+    } else {
+      // 创建新记录
+      wordsDetails.push({
+        word: currentWord.word.mainWord.word,
+        isNew: currentWord.type === 'new',
+        attempts: 1,
+        isCorrect: success,
+        timeSpent: timeSpent,
+        wrongHistory: success ? undefined : [Date.now()],
+        optionsClicks: []
+      })
+    }
+
+    this.statistics?.addData('wordsDetails', wordsDetails)
+
+    // 更新会话统计数据
+    this.updateSessionStatistics()
+  }
+
+  // 更新会话统计数据
+  private updateSessionStatistics(): void {
+    const details = this.statistics?.data.wordsDetails || []
+
+    if (details.length === 0) return
+
+    // 计算总时间和正确率
+    let totalTime = 0
+    let correctCount = 0
+
+    details.forEach((detail: ComprehensiveWordDetail) => {
+      totalTime += detail.timeSpent
+      if (detail.isCorrect) correctCount++
+    })
+
+    const stat = this.statistics
+    if (stat && stat.data) {
+      stat.data.sessionDuration = Date.now() - this.startTime
+      stat.data.averageTimePerWord = totalTime / details.length
+      stat.data.correctRate = correctCount / details.length
+    }
+  }
+
+  // 记录选项点击数据
+  public recordOptionClick(optionText: string, isCorrect: boolean): void {
+    if (!this.currentWord) {
+      return
+    }
+
+    const stat = this.statistics
+    if (!stat || !stat.data) return
+
+    if (!stat.data.wordsDetails) {
+      stat.data.wordsDetails = []
+    }
+
+    const wordDetail = stat.data.wordsDetails.find(
+      (detail: ComprehensiveWordDetail) => detail.word === this.currentWord!.word.mainWord.word
+    )
+
+    if (wordDetail) {
+      if (!wordDetail.optionsClicks) {
+        wordDetail.optionsClicks = []
+      }
+
+      wordDetail.optionsClicks.push({
+        optionText,
+        clickTime: Date.now(),
+        isCorrect
+      })
+    }
+
+    stat.addData('wordsDetails', stat.data.wordsDetails)
+  }
+
+  // 用于存储单词开始学习的时间
+  private wordStartTime: number = 0
 }
 
 export class ComprehensiveMode extends SignMode {

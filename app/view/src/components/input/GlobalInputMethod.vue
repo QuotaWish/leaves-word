@@ -386,18 +386,25 @@ const onDocumentClick = (e: MouseEvent) => {
 
 // 组件挂载后初始化键盘
 onMounted(() => {
-  // 使用 nextTick 确保 teleport 的内容已经渲染到 DOM 中
-  nextTick(() => {
-    // 确保 simple-keyboard 元素已存在
+  let amo = 0
+
+  function tryInit() {
+    if ( amo >= 100 ) {
+      throw new Error(`Keyboard element not found more than 100 times, this is a heavy err.`)
+    }
+
     const keyboardElement = document.querySelector('.simple-keyboard')
     if (!keyboardElement) {
-      console.warn('Keyboard element not found, retry in 100ms')
+      console.warn('Keyboard element not found, retry in 1000ms')
       // 如果元素还没准备好，设置一个短暂的延迟再尝试
-      setTimeout(initKeyboard, 100)
+      amo += 1
+      setTimeout(tryInit, amo * 100)
     } else {
       initKeyboard()
     }
-  })
+  }
+
+  nextTick(tryInit)
 })
 
 // 分离键盘初始化逻辑到一个独立函数
