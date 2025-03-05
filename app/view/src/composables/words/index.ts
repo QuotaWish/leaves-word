@@ -94,7 +94,7 @@ export interface ISignData {
   done: boolean
 }
 
-export interface CalendarData {
+export interface ICalendarData {
   year: number
   month: number
 
@@ -103,8 +103,46 @@ export interface CalendarData {
   data: ISignData[]
 
   statistics?: IStatistics<any>
+
+  addData(data: ISignData): void
+
+  createSignData(words: string[], cost: number, done: boolean): ISignData
 }
 
+export class CalendarData implements ICalendarData {
+  year: number
+  month: number
+
+  day: string
+
+  data: ISignData[] = []
+
+  statistics?: IStatistics<any>
+
+  constructor(year: number, month: number, day: string) {
+    this.year = year
+    this.month = month
+    this.day = day
+  }
+
+  addData(data: ISignData): void {
+    this.data.push(data)
+  }
+
+  createSignData(words: string[], cost: number, done: boolean): ISignData {
+    const [, , day] = calendarManager.getToday()
+
+    const data: ISignData = {
+      day,
+      date: Date.now(),
+      words,
+      cost,
+      done,
+    }
+
+    return data
+  }
+}
 if (localStorage.getItem('calendarData') === '{}')
   localStorage.removeItem('calendarData')
 
@@ -142,12 +180,7 @@ export class CalendarManager {
 
     const [year, month, day] = this.getToday()
     if (!calendar) {
-      calendar = reactive({
-        year,
-        month,
-        day: '',
-        data: [],
-      })
+      calendar = new CalendarData(year, month, '')
 
       calendarData.value.push(calendar)
     }
@@ -155,13 +188,7 @@ export class CalendarManager {
       calendar = reactive(calendar)
     }
 
-    const data: ISignData = {
-      day,
-      date: Date.now(),
-      words,
-      cost,
-      done,
-    }
+    const data = calendar.createSignData(words, cost, done)
 
     calendar.data.push(data)
 

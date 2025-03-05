@@ -1,7 +1,7 @@
-import type { IWordItem } from '..'
 import type { DictStorage } from '../storage'
+import { IStatistics } from '../types'
 
-export abstract class PrepareWord<T, W> {
+export abstract class PrepareWord<T, W, S extends Record<string, any>> {
   mode: T
   wordsQueue: Array<W>
 
@@ -20,6 +20,7 @@ export abstract class PrepareWord<T, W> {
 
   abstract onCreated(): void
   abstract getTargetComponent(): Component
+  abstract getStatistics(): IStatistics<S>
 
   abstract preload(callback: (progress: number) => void): Promise<boolean>
 

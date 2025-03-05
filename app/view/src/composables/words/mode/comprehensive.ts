@@ -1,7 +1,6 @@
 import ComprehensiveWord from '~/components/words/mode/ComprehensiveWord.vue'
 import { PrepareWord, SignMode } from '.'
-import { calendarManager, globalData, type IWord, type IWordItem, useWordSound } from '..'
-import type { DictStorage } from '../storage'
+import { CalendarData, calendarManager, globalData, IStatistics, type IWord, type IWordItem, Statistics, useWordSound } from '..'
 
 // 定义常量
 const PRELOAD_WORD_AMO = 5 // 提前加载的单词数量
@@ -13,7 +12,23 @@ export interface IComprehensiveWordItem {
   type: 'new' | 'review'
 }
 
-export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, IComprehensiveWordItem> {
+interface IComprehensiveStatData extends Record<string, any> {
+  newWords: number
+  reviewWords: number
+}
+
+export class ComprehensiveStatistics extends Statistics<IComprehensiveStatData> {
+  constructor(mode: ComprehensivePrepareWord) {
+    // storage: CalendarData, startTime: number, endTime: number, cost: number, data: IComprehensiveStatData
+    super(storage, startTime, endTime, cost, data)
+  }
+}
+
+export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, IComprehensiveWordItem, IComprehensiveStatData> {
+  getStatistics(): IStatistics<IComprehensiveStatData> {
+    return new ComprehensiveStatistics(this);
+  }
+
   onCreated(): void {
     const globalAmo = globalData.value.amount
     const storage = this.mode.dictionaryStorage
@@ -21,6 +36,7 @@ export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, ICo
     const amo = Math.min(globalAmo, unlearedWords.length)
 
     this.taskAmount = amo
+    this.calendarData = calendarManager.createTodayData([], 0, false)
   }
 
   wordsQueue: IComprehensiveWordItem[] = []
@@ -28,6 +44,7 @@ export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, ICo
   wordsFinished: IWordItem[] = []
 
   amo: number = 0
+  calendarData: CalendarData | null = null
 
   // 加载单词的图片和音频
   async preloadWordData(word: {
@@ -278,7 +295,11 @@ export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, ICo
 
     const words = this.wordsFinished.map(i => i.mainWord.word)
 
-    calendarManager.createTodayData(words, duration, true)
+    if ( !this.calendarData ) {
+      this.calendarData = calendarManager.createTodayData(words, duration, true)
+    }
+
+    this.calendarData.addData(this.calendarData.createSignData(words, duration, true))
 
     return true
   }
