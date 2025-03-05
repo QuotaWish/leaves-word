@@ -4,7 +4,7 @@ import high from './high'
 import ielts from './ielts'
 import { modeManager, ModeType } from './mode'
 import postGraduate from './post-graduate'
-import type { IDict } from './types'
+import type { IDict, IStatistics } from './types'
 
 export * from './types'
 export * from './util'
@@ -101,6 +101,8 @@ export interface CalendarData {
   day: string
 
   data: ISignData[]
+
+  statistics?: IStatistics<any>
 }
 
 if (localStorage.getItem('calendarData') === '{}')
