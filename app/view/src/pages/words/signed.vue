@@ -6,7 +6,7 @@ import { useGlobalSplashState } from '~/modules/splash'
 import Astronaut from '/svg/astronaut.svg'
 import Mello from '/svg/mello.svg'
 import CoffettiParticle from '~/components/chore/CoffettiParticle.vue'
-import ComprehensiveStat from '~/components/words/mode/ComprehensiveStat.vue'
+import ComprehensiveStat from '~/components/words/mode/comprehensive/index.vue'
 import DrawerPage from '~/components/page/DrawerPage.vue'
 
 const num = ref(0)

@@ -4,6 +4,7 @@ import { ref, provide, onMounted, onUnmounted, watch, reactive } from 'vue'
 const isExpanded = ref(false)
 const drawerRef = ref<HTMLElement | null>(null)
 const drawerContentRef = ref<HTMLElement | null>(null)
+const decorationBarRef = ref<HTMLElement | null>(null)
 
 const toggleDrawer = () => {
   isExpanded.value = !isExpanded.value
@@ -21,14 +22,29 @@ const touchState = reactive({
   touching: false,
   startY: 0,
   lastY: 0,
-  currentTranslateY: 0
+  currentTranslateY: 0,
+  isDecorationBarTouch: false // 新增：是否是点击小白条
 })
 
 // 配置参数
 const options = {
   threshold: window.innerHeight * 0.3, // 展开/收起的阈值
-  defaultPeekHeight: 100, // 默认露出的高度
-  elasticity: 0.5 // 拖动的弹性系数
+  defaultPeekHeight: 25, // 默认露出的高度（从50减半）
+  elasticity: 0.5, // 拖动的弹性系数
+  topReservedSpace: 48, // 新增：顶部保留空间，确保不会完全覆盖导航栏
+  collapsedPosition: window.innerHeight * 0.75 // 收起时的位置，修改为稍微露出一点
+}
+
+// 检查内容是否滚动到顶部
+function isContentScrolledToTop() {
+  if (!drawerContentRef.value) return true
+  
+  // 获取内部内容的滚动容器
+  const innerContent = drawerContentRef.value.querySelector('.DrawerPage-Drawer-ContentInner')
+  if (!innerContent) return true
+  
+  // 检查scrollTop是否为0（即滚动到顶部）
+  return innerContent.scrollTop <= 0
 }
 
 // 处理触摸开始
@@ -36,6 +52,17 @@ function handleTouchStart(e: TouchEvent) {
   if (e.touches.length !== 1) return
   
   const touch = e.touches[0]
+  
+  // 判断触摸点是否在小白条上
+  const target = e.target as HTMLElement
+  touchState.isDecorationBarTouch = target.classList.contains('drawer-decoration-bar') ||
+                                    target.closest('.drawer-decoration-bar') !== null
+  
+  // 如果不是点击小白条，且内容没有滚动到顶部，则不允许拉伸
+  if (!touchState.isDecorationBarTouch && !isContentScrolledToTop()) {
+    return
+  }
+  
   touchState.touching = true
   touchState.startY = touch.clientY
   touchState.lastY = touch.clientY
@@ -49,14 +76,20 @@ function handleTouchStart(e: TouchEvent) {
 function handleTouchMove(e: TouchEvent) {
   if (!touchState.touching || !drawerRef.value) return
   
+  // 如果不是小白条触摸，且内容未滚动到顶部，阻止拖拽
+  if (!touchState.isDecorationBarTouch && !isContentScrolledToTop()) {
+    touchState.touching = false
+    return
+  }
+  
   const touch = e.touches[0]
   const deltaY = touch.clientY - touchState.lastY
   touchState.lastY = touch.clientY
   
   const totalDeltaY = touch.clientY - touchState.startY
   
-  // 计算新的位置，加入弹性
-  const newTranslateY = Math.max(0, touchState.currentTranslateY + deltaY * options.elasticity)
+  // 计算新的位置，加入弹性，并且确保不会小于顶部保留空间
+  const newTranslateY = Math.max(options.topReservedSpace, touchState.currentTranslateY + deltaY * options.elasticity)
   touchState.currentTranslateY = newTranslateY
   
   // 更新抽屉位置
@@ -73,10 +106,12 @@ function handleTouchEnd() {
   if (!touchState.touching || !drawerRef.value) return
   
   touchState.touching = false
+  touchState.isDecorationBarTouch = false // 重置小白条触摸状态
+  
   drawerRef.value.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
   
-  // 根据当前展开状态设置最终位置
-  const finalPosition = isExpanded.value ? 0 : window.innerHeight * 0.7
+  // 根据当前展开状态设置最终位置，确保展开时保留顶部空间
+  const finalPosition = isExpanded.value ? options.topReservedSpace : options.collapsedPosition
   touchState.currentTranslateY = finalPosition
   drawerRef.value.style.transform = `translateY(${finalPosition}px)`
 }
@@ -86,7 +121,7 @@ watch(isExpanded, (newValue) => {
   if (!drawerRef.value) return
   
   drawerRef.value.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-  const finalPosition = newValue ? 0 : window.innerHeight * 0.7
+  const finalPosition = newValue ? options.topReservedSpace : options.collapsedPosition
   touchState.currentTranslateY = finalPosition
   drawerRef.value.style.transform = `translateY(${finalPosition}px)`
 })
@@ -95,8 +130,8 @@ onMounted(() => {
   if (!drawerRef.value) return
   
   // 初始化位置
-  touchState.currentTranslateY = window.innerHeight * 0.7
-  drawerRef.value.style.transform = `translateY(${window.innerHeight * 0.7}px)`
+  touchState.currentTranslateY = options.collapsedPosition
+  drawerRef.value.style.transform = `translateY(${options.collapsedPosition}px)`
   
   // 添加触摸事件监听
   drawerRef.value.addEventListener('touchstart', handleTouchStart)
@@ -121,7 +156,7 @@ onUnmounted(() => {
     </div>
     <div ref="drawerRef" class="DrawerPage-Drawer" :class="{ expanded: isExpanded }">
       <div ref="drawerContentRef" class="DrawerPage-Drawer-Content transition-cubic fake-background">
-        <div class="drawer-decoration-bar" />
+        <div ref="decorationBarRef" class="drawer-decoration-bar" />
         <div class="DrawerPage-Drawer-ContentInner">
           <slot name="drawer" />
         </div>
@@ -167,7 +202,7 @@ onUnmounted(() => {
   &-Drawer {
     &.expanded {
       .DrawerPage-Drawer-Content {
-        border-radius: 0;
+        border-radius: 12px 12px 0 0; // 当展开时，修改上方圆角，保持美观
       }
     }
   
@@ -181,7 +216,7 @@ onUnmounted(() => {
         transform: translateX(-50%);
         width: 80px;
         height: 6px;
-        background: var(--el-bg-color);
+        background: var(--el-text-color-regular);
         border-radius: 4px;
         cursor: grab;
         
@@ -220,8 +255,7 @@ onUnmounted(() => {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
-    transform: translateY(70%);
+    height: 100%;
     will-change: transform;
     touch-action: none;
   }

@@ -1,4 +1,4 @@
-import DictWordWord from '~/components/words/mode/ComprehensiveWord.vue'
+import DictWordWord from '~/components/words/mode/comprehensive/Word.vue'
 import { PrepareWord, SignMode } from '.'
 import { calendarManager, globalData, type IWord, type IWordItem, useWordSound } from '..'
 import type { DictStorage } from '../storage'

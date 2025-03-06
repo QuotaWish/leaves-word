@@ -248,26 +248,11 @@ onMounted(() => {
       font-size: 12px;
       flex-direction: column;
       color: var(--el-text-color-secondary);
-      border-right: 1px solid var(--el-border-color);
     }
-    margin: 1rem 0;
+
+    &-Left {
+      align-self: flex-start;
+    }
   }
-
-  h1.title {
-    font-size: 24px;
-    font-weight: 600;
-  }
-
-  z-index: 1;
-  position: relative;
-  display: flex;
-  padding: 1rem;
-
-  width: 100%;
-  height: 100%;
-
-  flex-direction: column;
-
-  background-color: var(--el-fill-color);
 }
-</style>
+</style> 
