@@ -1,0 +1,18 @@
+{
+  "name": "@leaves-word/test",
+  "version": "100.0.0",
+  "description": "LeavesWord series test",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "coverage": "vitest --coverage"
+  },
+  "author": "TalexDreamSoul",
+  "license": "ISC",
+  "dependencies": {
+    "@leaves-word/utils": "workspace:^1.0.0",
+    "ts-node": "^10.9.2",
+    "vitest": "^1.3.1"
+  }
+}

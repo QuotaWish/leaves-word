@@ -1,0 +1,83 @@
+apiVersion: oam.coding.net/v1alpha1
+kind: Trait
+metadata:
+  annotations:
+    name: 标签
+  name: label
+spec:
+  available: true
+  contextVariables:
+  - description: 目标对象命名空间
+    name: 目标对象命名空间
+    required: true
+    type: STRING
+    variable: namespace
+  - description: 目标对象
+    name: 目标对象
+    required: true
+    type: STRING
+    variable: src
+  - description: 目标对象名称
+    name: 目标对象名称
+    required: true
+    type: STRING
+    variable: name
+  customVariables:
+  - description: 注入到K8S对象的额外标签的键，通常用于外部系统查找或控制
+    id: 386049360696360
+    name: 标签键
+    required: true
+    type: STRING
+    variable: label_key
+  - description: 注入到K8S对象的额外标签的值，通常用于外部系统查找或控制
+    id: 386049360696361
+    name: 标签值
+    required: true
+    type: STRING
+    variable: label_value
+  description: 把额外的元信息打到服务标签上，用于外部系统查找或控制
+  strategy: PATCH
+  targetGVK:
+    apiVersion: apps/v1
+    kind: Deployment
+  trait:
+    apiVersion: apps/v1
+    avatar: label
+    content: |-
+      #运维插件的定义
+      #假设运维插件的 id 和 name 都是 label
+      # patch 类型的插件，作用对象类型 Deployment
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: {{.name}}
+        namespace: {{.namespace}}
+        labels:
+          coding.oam.trait/label: "true"
+          {{.label_key}}: {{.label_value}}
+    createTime: 2024-08-17T09:57:36.543Z
+    creatorId: 9152296
+    deleted: false
+    description: 把额外的元信息打到服务标签上，用于外部系统查找或控制
+    id: 0
+    name: 标签
+    pattern: PATCH
+    seq: label
+    status: ENABLE
+    targetType: Deployment
+    teamId: 4211598
+    updateTime: 2024-08-17T09:57:36.543Z
+  traitDefinition:
+    kube:
+      template: |-
+        #运维插件的定义
+        #假设运维插件的 id 和 name 都是 label
+        # patch 类型的插件，作用对象类型 Deployment
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: {{.name}}
+          namespace: {{.namespace}}
+          labels:
+            coding.oam.trait/label: "true"
+            {{.label_key}}: {{.label_value}}

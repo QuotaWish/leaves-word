@@ -1,0 +1,85 @@
+apiVersion: oam.coding.net/v1alpha1
+kind: Trait
+metadata:
+  annotations:
+    name: 注解
+  name: annotation
+spec:
+  available: true
+  contextVariables:
+  - description: 目标对象命名空间
+    name: 目标对象命名空间
+    required: true
+    type: STRING
+    variable: namespace
+  - description: 目标对象
+    name: 目标对象
+    required: true
+    type: STRING
+    variable: src
+  - description: 目标对象名称
+    name: 目标对象名称
+    required: true
+    type: STRING
+    variable: name
+  customVariables:
+  - description: 注入到K8S对象的额外属性的键
+    id: 386043450922024
+    name: 标注键
+    required: true
+    type: STRING
+    variable: anno_key
+  - description: 注入到K8S对象的额外属性的值
+    id: 386043450922025
+    name: 标注值
+    required: true
+    type: STRING
+    variable: anno_value
+  description: 把额外的元信息打到服务注解上，用于外部系统查找或控制
+  strategy: PATCH
+  targetGVK:
+    apiVersion: apps/v1
+    kind: Deployment
+  trait:
+    apiVersion: apps/v1
+    avatar: annotation
+    content: |-
+      #运维插件的定义
+      #假设运维插件的 id 和 name 都是 annotation
+      # patch 类型的插件，作用对象类型 Deployment
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: {{.name}}
+        namespace: {{.namespace}}
+        labels:
+          coding.oam.trait/annotation: "true"
+        annotations:
+          {{.anno_key}}: {{.anno_value}}
+    createTime: 2024-08-17T09:57:35.134Z
+    creatorId: 9152296
+    deleted: false
+    description: 把额外的元信息打到服务注解上，用于外部系统查找或控制
+    id: 0
+    name: 注解
+    pattern: PATCH
+    seq: annotation
+    status: ENABLE
+    targetType: Deployment
+    teamId: 4211598
+    updateTime: 2024-08-17T09:57:35.134Z
+  traitDefinition:
+    kube:
+      template: |-
+        #运维插件的定义
+        #假设运维插件的 id 和 name 都是 annotation
+        # patch 类型的插件，作用对象类型 Deployment
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: {{.name}}
+          namespace: {{.namespace}}
+          labels:
+            coding.oam.trait/annotation: "true"
+          annotations:
+            {{.anno_key}}: {{.anno_value}}

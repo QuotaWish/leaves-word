@@ -1,0 +1,26 @@
+{
+  "main": "./index.ts",
+  "name": "@leaves-word/utils",
+  "author": "TalexDreamSoul",
+  "module": "./index.ts",
+  "license": "MPL-2.0",
+  "private": false,
+  "version": "1.0.14",
+  "scripts": {
+    "publish": "npm publish --access public"
+  },
+  "keywords": [
+    "vue",
+    "electron",
+    "leaves-word"
+  ],
+  "repository": {
+    "url": "https://github.com/quotawish/leaves-word.git",
+    "type": "git"
+  },
+  "description": "LeavesWord series utils",
+  "dependencies": {
+    "path-browserify": "^1.0.1"
+  },
+  "peerDependencies": {}
+}

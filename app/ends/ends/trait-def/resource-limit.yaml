@@ -1,0 +1,122 @@
+apiVersion: oam.coding.net/v1alpha1
+kind: Trait
+metadata:
+  annotations:
+    name: 资源限制
+  name: resource-limit
+spec:
+  available: true
+  contextVariables:
+  - description: 目标对象命名空间
+    name: 目标对象命名空间
+    required: true
+    type: STRING
+    variable: namespace
+  - description: 目标对象
+    name: 目标对象
+    required: true
+    type: STRING
+    variable: src
+  - description: 目标对象名称
+    name: 目标对象名称
+    required: true
+    type: STRING
+    variable: name
+  customVariables:
+  - description: 此容器允许使用的 CPU 上限，以千分之一CPU核为单位
+    id: 386059078898728
+    name: cpu 资源上限
+    param1: '0'
+    required: true
+    type: INT
+    variable: cpu_limit
+  - description: CPU 请求值定义的是该容器在节点中的 CPU 资源占用权重，“资源请求值”必须小于等于“资源上限”
+    id: 386059078898729
+    name: cpu 资源请求
+    param1: '0'
+    required: true
+    type: INT
+    variable: cpu_request
+  - description: 此容器允许使用的内存上限，若运行中的容器使用了超过内存资源上限的内存，则 Linux 内核的内存不足处理子系统会被激活，并停止尝试分配内存的容器中的某个进程。
+      如果该进程在容器中 PID 为 1，而容器被标记为可重新启动，则 Kubernetes 会重新启动该容器。
+    id: 386059078898730
+    name: 内存资源上限
+    param1: '0'
+    required: true
+    type: INT
+    variable: mem_limit
+  - description: K8S 会保障容器启动时能分配到“内存资源请求”数量的内存
+    id: 386059078898731
+    name: 内存资源请求
+    param1: '0'
+    required: true
+    type: INT
+    variable: mem_request
+  description: 资源限制
+  strategy: PATCH
+  targetGVK:
+    apiVersion: apps/v1
+    kind: Deployment
+  trait:
+    apiVersion: apps/v1
+    avatar: resource-limit
+    content: |-
+      #运维插件的定义
+      #假设运维插件的 id 和 name 都是 res-limit
+      # patch 类型的插件，作用对象类型 Deployment
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: {{.name}}
+        namespace: {{.namespace}}
+        labels:
+          coding.oam.trait/res-limit: "true"
+      spec:
+        template:
+          spec:
+            containers:
+            - name: {{.name}}
+              resources:
+                limits:
+                  cpu: {{.cpu_limit}}m
+                  memory: {{.mem_limit}}Mi
+                requests:
+                  cpu: {{.cpu_request}}m
+                  memory: {{.mem_request}}Mi
+    createTime: 2024-08-17T09:57:38.858Z
+    creatorId: 9152296
+    deleted: false
+    description: 资源限制
+    id: 0
+    name: 资源限制
+    pattern: PATCH
+    seq: resource-limit
+    status: ENABLE
+    targetType: Deployment
+    teamId: 4211598
+    updateTime: 2024-08-17T09:57:38.858Z
+  traitDefinition:
+    kube:
+      template: |-
+        #运维插件的定义
+        #假设运维插件的 id 和 name 都是 res-limit
+        # patch 类型的插件，作用对象类型 Deployment
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: {{.name}}
+          namespace: {{.namespace}}
+          labels:
+            coding.oam.trait/res-limit: "true"
+        spec:
+          template:
+            spec:
+              containers:
+              - name: {{.name}}
+                resources:
+                  limits:
+                    cpu: {{.cpu_limit}}m
+                    memory: {{.mem_limit}}Mi
+                  requests:
+                    cpu: {{.cpu_request}}m
+                    memory: {{.mem_request}}Mi

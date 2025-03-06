@@ -1,0 +1,82 @@
+apiVersion: oam.coding.net/v1alpha2
+kind: ComponentDefinition
+metadata:
+  name: JobTemplate
+spec:
+  available: true
+  customVariables:
+  - description: 参数
+    name: 参数
+    param1: STRING
+    required: false
+    type: ARRAY
+    variable: args
+  - description: 容器的镜像
+    name: 镜像
+    required: true
+    type: IMAGE
+    variable: image
+  - description: 重启策略
+    name: 重启策略
+    required: false
+    type: STRING
+    variable: restart
+  - description: 并发数
+    name: 并发数
+    required: false
+    type: INT
+    variable: parallel
+  - description: 任务名称
+    name: 任务名称
+    param1: '1'
+    param2: '64'
+    required: true
+    type: STRING
+    variable: name
+  - description: 启动命令
+    name: 启动命令
+    required: false
+    type: STRING
+    variable: cmd
+  description: 系统内置的Job服务模板
+  serviceTemplate:
+    createTime: 2024-08-17T09:57:40.431Z
+    creatorId: 9152296
+    description: 系统内置的Job服务模板
+    id: 386065638790184
+    name: 内置的Job服务模板
+    seq: JobTemplate
+    status: ENABLE
+    teamId: 4211598
+    type: JOB
+    updateTime: 2024-08-17T09:57:40.431Z
+  type: JOB
+  workload:
+    kube:
+      template: |-
+        apiVersion: batch/v1
+        kind: Job
+        metadata:
+          name: {{.name}}
+        spec:
+          template:
+            spec:
+              containers:
+              - name: {{.name}}
+                image: {{.image}}
+                {{- if .cmd}}
+                command:
+                - {{.cmd}}
+                {{- end}}
+                {{- if .args}}
+                args:
+                {{- range .args}}
+                - {{.}}
+                {{- end}}
+                {{- end}}
+              restartPolicy: {{.restart}}
+          backoffLimit: 3
+          {{- if .parallel}}
+          parallelism: {{.parallel}}
+          completions: {{.parallel}}
+          {{- end }}

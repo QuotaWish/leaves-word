@@ -1,0 +1,55 @@
+.AIButton .flex {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.AIButton .outer-cont {
+  padding: 6px 20px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  position: relative;
+  background: linear-gradient(90deg, #5bfcc4, #f593e4, #71a4f0);
+  border-radius: 12px;
+  color: #fff;
+  transition: all 0.3s ease;
+  box-shadow: inset 0px 0px 5px #ffffffa9, inset 0px 35px 30px #000, 0px 2px 10px #000000cc;
+  text-shadow: 1px 1px 1px #000;
+}
+
+.AIButton .outer-cont::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  border-radius: 12px;
+  overflow: hidden;
+  filter: blur(0);
+  z-index: -1;
+  box-shadow: none;
+  background: conic-gradient(#00000000 80deg, #40baf7, #f34ad7, #5bfcc4, #00000000 280deg);
+  transition: all 0.3s ease;
+}
+
+.AIButton:hover .outer-cont::before {
+  filter: blur(15px);
+}
+
+.AIButton .outer-cont:active::before {
+  filter: blur(5px);
+  transform: translateY(1px);
+}
+
+.AIButton .outer-cont:active {
+  box-shadow: inset 0px 0px 5px #ffffffa9, inset 0px 35px 30px #000;
+  /* margin-top: 3px; */
+}
+
+.AIButton {
+  z-index: 1;
+  position: relative;
+
+  border: none;
+  background: none !important;
+}

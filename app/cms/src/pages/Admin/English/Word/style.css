@@ -1,0 +1,15 @@
+.errorRow {
+  background-color: #fff2f0;
+
+  &:hover {
+    background-color: #fff1ef !important;
+  }
+}
+
+.mentionRow {
+  background-color: #f0f5ff;
+
+  &:hover {
+    background-color: #e0e8ff !important;
+  }
+}

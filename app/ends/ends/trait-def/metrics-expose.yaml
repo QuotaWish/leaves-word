@@ -1,0 +1,94 @@
+apiVersion: oam.coding.net/v1alpha1
+kind: Trait
+metadata:
+  annotations:
+    name: 监控暴露
+  name: metrics-expose
+spec:
+  available: true
+  contextVariables:
+  - description: 目标对象命名空间
+    name: 目标对象命名空间
+    required: true
+    type: STRING
+    variable: namespace
+  - description: 目标对象
+    name: 目标对象
+    required: true
+    type: STRING
+    variable: src
+  - description: 目标对象名称
+    name: 目标对象名称
+    required: true
+    type: STRING
+    variable: name
+  customVariables:
+  - description: 容器暴露 prometheus 指标的路径，默认路径是 “/metrics”
+    id: 386053227844648
+    name: 监控路径
+    required: false
+    type: STRING
+    variable: prom_path
+  - description: 容器暴露 prometheus 指标的端口
+    id: 386053227844649
+    name: 监控端口
+    param1: '0'
+    required: true
+    type: INT
+    variable: prom_port
+  description: 监控暴露
+  strategy: PATCH
+  targetGVK:
+    apiVersion: apps/v1
+    kind: Deployment
+  trait:
+    apiVersion: apps/v1
+    avatar: metrics-expose
+    content: |-
+      #运维插件的定义
+      #假设运维插件的 id 和 name 都是 metrics-expose
+      # patch 类型的插件，作用对象类型 Deployment
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: {{.name}}
+        namespace: {{.namespace}}
+        labels:
+          coding.oam.trait/metrics-expose: "true"
+        annotations:
+          prometheus.io/port: {{.prom_port|quote}}
+          prometheus.io/scrape: "true"
+          {{- if .prom_path}}
+          prometheus.io/path: {{.prom_path}}
+          {{end -}}
+    createTime: 2024-08-17T09:57:37.464Z
+    creatorId: 9152296
+    deleted: false
+    description: 监控暴露
+    id: 0
+    name: 监控暴露
+    pattern: PATCH
+    seq: metrics-expose
+    status: ENABLE
+    targetType: Deployment
+    teamId: 4211598
+    updateTime: 2024-08-17T09:57:37.464Z
+  traitDefinition:
+    kube:
+      template: |-
+        #运维插件的定义
+        #假设运维插件的 id 和 name 都是 metrics-expose
+        # patch 类型的插件，作用对象类型 Deployment
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: {{.name}}
+          namespace: {{.namespace}}
+          labels:
+            coding.oam.trait/metrics-expose: "true"
+          annotations:
+            prometheus.io/port: {{.prom_port|quote}}
+            prometheus.io/scrape: "true"
+            {{- if .prom_path}}
+            prometheus.io/path: {{.prom_path}}
+            {{end -}}
