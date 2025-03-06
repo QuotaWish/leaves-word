@@ -2,7 +2,6 @@
 import NumberFlow from '@number-flow/vue'
 import { dayjs } from 'element-plus'
 import { calendarManager, Statistics } from '~/composables/words'
-import { useGlobalSplashState } from '~/modules/splash'
 import Astronaut from '/svg/astronaut.svg'
 import Mello from '/svg/mello.svg'
 import CoffettiParticle from '~/components/chore/CoffettiParticle.vue'
@@ -15,66 +14,68 @@ const days = ref(0)
 const timeText = ref('')
 const data = ref<Statistics<any>>()
 const displayComponent = ref<Component>()
+const drawerPage = useInstanceRef(DrawerPage)
 
 const router = useRouter()
-
-const globalSplashState = useGlobalSplashState()
+// const globalSplashState = useGlobalSplashState()
 
 const statCompMapper = {
   ['COMPREHENSIVE']: ComprehensiveStat,
 }
 
-const isDrawerExpanded = ref(false)
+setTimeout(() => {
+  drawerPage.value?.drawerControl.show()
+}, 1000)
+
+setTimeout(() => {
+  drawerPage.value?.drawerControl.expand()
+}, 3000)
 
 onMounted(() => {
-  setTimeout(() => {
-    isDrawerExpanded.value = true
-  }, 5000)
+
+  // 其他逻辑...
+  setTimeout(async () => {
+    const todayData = calendarManager.getTodayData()!
+
+    if (!todayData?.signed) {
+      router.push('/')
+      return
+    }
+
+    // process todayData
+    const originDataList = todayData.origin.data
+    const todaySubData = originDataList.at(-1)
+
+    if (!todaySubData) {
+      router.push('/')
+      return
+    }
+
+    const statistics = todaySubData.statistics
+    displayComponent.value = statCompMapper[statistics!.type as keyof typeof statCompMapper]
+    data.value = statistics
+
+    console.log(todaySubData)
+
+    timeText.value = dayjs(new Date(todayData.data!.date)).format('YYYY-MM-DD')
+
+    await sleep(100)
+
+    days.value = 1
+
+    await sleep(300)
+
+    num.value = todaySubData.words.length
+
+    await sleep(100)
+
+    score.value = todaySubData.words.length * 1.5
+  }, 800)
 })
-
-setTimeout(async () => {
-  const todayData = calendarManager.getTodayData()!
-
-  if (!todayData?.signed) {
-    router.push('/')
-
-    return
-  }
-
-  // process todayData
-  const originDataList = todayData.origin.data
-  const todaySubData = originDataList.at(-1)
-
-  if (!todaySubData) {
-    router.push('/')
-
-    return
-  }
-
-  const statistics = todaySubData.statistics
-  displayComponent.value = statCompMapper[statistics!.type as keyof typeof statCompMapper]
-  data.value = statistics
-
-  console.log(todaySubData)
-
-  timeText.value = dayjs(new Date(todayData.data!.date)).format('YYYY-MM-DD')
-
-  await sleep(100)
-
-  days.value = 1
-
-  await sleep(300)
-
-  num.value = todaySubData.words.length
-
-  await sleep(100)
-
-  score.value = todaySubData.words.length * 1.5
-}, 800)
 </script>
 
 <template>
-  <DrawerPage class="Signed transition-cubic" @close="router.push('/')">
+  <DrawerPage ref="drawerPage" class="Signed transition-cubic" @close="router.push('/')">
     <template #main>
       <div class="Signed-Header">
         <h1>今日已完成!</h1>
@@ -542,7 +543,7 @@ setTimeout(async () => {
 .preview-content {
   width: 100%;
 
-  & > span {
+  &>span {
     display: block;
     font-size: 16px;
     font-weight: 500;
@@ -580,7 +581,7 @@ setTimeout(async () => {
   padding: 0 20px;
   margin-bottom: 20px;
 
-  & > span {
+  &>span {
     display: block;
     font-size: 16px;
     font-weight: 500;

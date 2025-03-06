@@ -65,3 +65,7 @@ export function useAutoVibrate(duration: number[]) {
   if (typeof window !== 'undefined' && window.navigator.vibrate)
     window.navigator.vibrate(duration)
 }
+
+export function useInstanceRef<T extends abstract new (...args: any) => any>(_instance: Component) {
+  return ref<InstanceType<T>>()
+}

@@ -14,7 +14,7 @@ const loadingOptions = reactive<{
   progress: number
   start: boolean
   component: Component | null
-  prepare: PrepareWord<any, any> | null
+  prepare: PrepareWord<any, any, any> | null
 }>({
   loading: false,
   progress: -1,
@@ -114,10 +114,8 @@ async function handleStart() {
 // })
 
 async function handleDone() {
-  console.log("here")
-  await router.push('/words/signed')
-  await sleep(1)
-  await router.push('/words/signed')
+  loadingOptions.start = false
+  await router.replace('/words/signed')
 }
 
 function handleBack() {

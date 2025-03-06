@@ -61,7 +61,10 @@ export function useCharts(props: ChartProps) {
     const option: EChartsOption = {
       title: {
         text: 'AI 学习进度分析',
-        left: 'center'
+        left: 'center',
+        textStyle: {
+          color: 'var(--el-text-color-primary)'
+        }
       },
       tooltip: {
         trigger: 'axis',
@@ -75,12 +78,29 @@ export function useCharts(props: ChartProps) {
         data: wordLabels,
         axisLabel: {
           interval: 0,
-          rotate: 45
+          rotate: 45,
+          color: 'var(--el-text-color-regular)'
+        },
+        axisLine: {
+          lineStyle: {
+            color: 'var(--el-border-color)'
+          }
         }
       },
       yAxis: {
         type: 'value',
-        name: '响应时间 (秒)'
+        name: '响应时间 (秒)',
+        nameTextStyle: {
+          color: 'var(--el-text-color-regular)'
+        },
+        axisLabel: {
+          color: 'var(--el-text-color-regular)'
+        },
+        splitLine: {
+          lineStyle: {
+            color: 'var(--el-border-color-lighter)'
+          }
+        }
       },
       series: [{
         name: '响应时间',
@@ -135,7 +155,10 @@ export function useCharts(props: ChartProps) {
     const option: EChartsOption = {
       title: {
         text: 'AI 反应时间分布',
-        left: 'center'
+        left: 'center',
+        textStyle: {
+          color: 'var(--el-text-color-primary)'
+        }
       },
       tooltip: {
         trigger: 'item',
@@ -144,7 +167,10 @@ export function useCharts(props: ChartProps) {
       legend: {
         orient: 'vertical',
         left: 'left',
-        top: 'middle'
+        top: 'middle',
+        textStyle: {
+          color: 'var(--el-text-color-regular)'
+        }
       },
       series: [{
         name: '反应时间分布',
@@ -163,7 +189,8 @@ export function useCharts(props: ChartProps) {
         },
         label: {
           show: true,
-          formatter: '{b}: {d}%'
+          formatter: '{b}: {d}%',
+          color: 'var(--el-text-color-regular)'
         }
       }]
     }
@@ -195,7 +222,10 @@ export function useCharts(props: ChartProps) {
     const option: EChartsOption = {
       title: {
         text: 'AI 学习能力评估',
-        left: 'center'
+        left: 'center',
+        textStyle: {
+          color: 'var(--el-text-color-primary)'
+        }
       },
       radar: {
         indicator: [
@@ -208,6 +238,19 @@ export function useCharts(props: ChartProps) {
         splitArea: {
           areaStyle: {
             color: ['rgba(126,87,194,0.1)', 'rgba(126,87,194,0.2)', 'rgba(126,87,194,0.3)', 'rgba(126,87,194,0.4)', 'rgba(126,87,194,0.5)']
+          }
+        },
+        axisName: {
+          color: 'var(--el-text-color-regular)'
+        },
+        axisLine: {
+          lineStyle: {
+            color: 'var(--el-border-color)'
+          }
+        },
+        splitLine: {
+          lineStyle: {
+            color: 'var(--el-border-color-lighter)'
           }
         }
       },

@@ -144,6 +144,24 @@ export class CalendarData<S extends Statistics<any>> implements ICalendarData<S>
     return data
   }
 
+  signDay(day: number) {
+    const days = this.day.split('')
+
+    while (days.length < day) {
+      days.push('0')
+    }
+
+    days[day] = '1'
+
+    this.day = days.join('')
+  }
+
+  signToday() {
+    const [, , day] = calendarManager.getToday()
+
+    this.signDay(day)
+  }
+
   static fromData<S extends Statistics<any>>(data: CalendarData<S>) {
     const calendar = new CalendarData(data.year, data.month, data.day)
 
@@ -198,21 +216,20 @@ export class CalendarManager {
       calendar = reactive(CalendarData.fromData(calendar))
     }
 
-    console.log(calendar)
-
     const data = calendar.createSignData(words, cost, done)
 
     calendar.data.push(data)
 
-    const days = calendar.day.split('')
+    calendar.signDay(day)
+    // const days = calendar.day.split('')
 
-    while (days.length < day) {
-      days.push('0')
-    }
+    // while (days.length < day) {
+    //   days.push('0')
+    // }
 
-    days[day] = '1'
+    // days[day] = '1'
 
-    calendar.day = days.join('')
+    // calendar.day = days.join('')
 
     return calendar
   }

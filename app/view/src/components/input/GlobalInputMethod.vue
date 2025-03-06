@@ -395,7 +395,7 @@ onMounted(() => {
 
     const keyboardElement = document.querySelector('.simple-keyboard')
     if (!keyboardElement) {
-      console.warn('Keyboard element not found, retry in 1000ms')
+      // console.warn('Keyboard element not found, retry in 1000ms')
       // 如果元素还没准备好，设置一个短暂的延迟再尝试
       amo += 1
       setTimeout(tryInit, amo * 100)
@@ -479,7 +479,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <teleport to="#rootMain">
+  <teleport defer to="#rootMain">
     <div class="global-input-method" :class="{ visible }">
       <!-- 标题条 -->
       <div class="keyboard-title">

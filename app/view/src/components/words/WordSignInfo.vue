@@ -152,7 +152,7 @@ async function handleCheckSign() {
       </template>
 
       <template v-else>
-        <el-button w="30%" size="large" type="primary" @click="router.replace({ query: { signed: 'true' } })">
+        <el-button w="30%" size="large" type="primary" @click="router.push('/words/signed')">
           <span>打卡</span>
         </el-button>
 

@@ -42,92 +42,113 @@ function refreshData() {
   data.current = prepareData.currentWord
   Object.assign(prepareData, props.prepare)
 
-  spokenWord(data.current!.word.mainWord)
+  if (data.current) {
+    spokenWord(data.current.word.mainWord)
+  }
 }
 
-async function handlePrevious() {
+/**
+ * 执行滑动动画
+ * @param direction 滑动方向：'left' - 向左滑动，'right' - 向右滑动
+ * @param nextCardData 下一张卡片的数据
+ */
+async function slideCard(direction: 'left' | 'right', nextCardData: IComprehensiveWordItem) {
   const currentDom = mainCard.value!.$el
   const nextDom = moveCard.value!.$el
 
-  data.next = data.current
+  // 准备下一卡片数据（但不更新当前卡片）
+  data.next = nextCardData
 
+  // 1. 重置两张卡片的过渡效果
+  currentDom.style.transition = 'none'
+  nextDom.style.transition = 'none'
+
+  // 2. 设置初始位置
+  if (direction === 'left') {
+    // 向左滑动：当前卡片在中央，下一张卡片在右边
+    currentDom.style.transform = 'translateX(0)'
+    nextDom.style.transform = 'translateX(100%)'
+  } else {
+    // 向右滑动：当前卡片在中央，下一张卡片在左边
+    currentDom.style.transform = 'translateX(0)'
+    nextDom.style.transform = 'translateX(-100%)'
+  }
+  
+  // 显示下一张卡片
+  nextDom.style.visibility = 'visible'
+  
+  // 等待DOM更新
+  await sleep(10)
+  
+  // 3. 设置过渡动画样式
+  const transitionStyle = 'transform 0.4s cubic-bezier(0.33, 1, 0.68, 1)'
+  currentDom.style.transition = transitionStyle
+  nextDom.style.transition = transitionStyle
+  
+  // 4. 执行同步滑动动画
+  if (direction === 'left') {
+    // 向左滑动：当前卡片滑出左侧，下一张卡片滑入中央
+    currentDom.style.transform = 'translateX(-100%)'
+    nextDom.style.transform = 'translateX(0)'
+  } else {
+    // 向右滑动：当前卡片滑出右侧，下一张卡片滑入中央
+    currentDom.style.transform = 'translateX(100%)'
+    nextDom.style.transform = 'translateX(0)'
+  }
+  
+  // 5. 等待动画完成
+  await sleep(400)
+  
+  // 6. 更新当前卡片数据
+  data.current = nextCardData
+  
+  // 7. 重置当前卡片位置（为下次动画做准备）
+  currentDom.style.transition = 'none'
+  currentDom.style.transform = 'translateX(0)'
+  nextDom.style.visibility = ''
+  
+  // 8. 朗读新单词
+  if (data.current) {
+    spokenWord(data.current.word.mainWord)
+  }
+}
+
+async function handlePrevious() {
+  // 先获取上一个单词数据，但不立即更新界面
   const result = await prepareData.previous()
   if (!result) {
     return
   }
 
-  refreshData()
+  // 获取但不立即应用的下一个单词数据
+  const nextWordData = prepareData.currentWord
+  if (!nextWordData) {
+    return
+  }
 
-  currentDom.style.transition = 'none'
-  currentDom.style.transform = 'translateX(-120%)'
-
-  nextDom.style.transition = 'none'
-  nextDom.style.transform = 'translateX(0)'
-
-  await sleep(10)
-
-  nextDom.style.visibility = 'visible'
-  nextDom.style.transition = ''
-  nextDom.style.transform = 'translateX(0%)'
-
-  await sleep(20)
-
-  nextDom.style.transform = 'translateX(120%)'
-
-  await sleep(200)
-
-  currentDom.style.transition = ''
-  currentDom.style.transform = 'translateX(0)'
-
-  await sleep(200)
-
-  currentDom.style.transform = 'translateX(0)'
-  nextDom.style.visibility = ''
+  // 执行滑动动画，动画完成后会自动更新数据
+  await slideCard('right', nextWordData)
 }
 
 async function nextData(success: boolean) {
-  const currentDom = mainCard.value!.$el
-  const nextDom = moveCard.value!.$el
-
-  data.next = data.current
-
+  // 先获取下一个单词数据，但不立即更新界面
   const result = await prepareData.next(success)
 
   if (!result) {
     await prepareData.finish()
-
     emits('done')
-
+    console.log('finish')
     return
   }
 
-  refreshData()
+  // 获取但不立即应用的下一个单词数据
+  const nextWordData = prepareData.currentWord
+  if (!nextWordData) {
+    return
+  }
 
-  currentDom.style.transition = 'none'
-  currentDom.style.transform = 'translateX(120%)'
-
-  nextDom.style.transition = 'none'
-  nextDom.style.transform = 'translateX(0)'
-
-  await sleep(10)
-
-  nextDom.style.visibility = 'visible'
-  nextDom.style.transition = ''
-  nextDom.style.transform = 'translateX(0%)'
-
-  await sleep(20)
-
-  nextDom.style.transform = 'translateX(-120%)'
-
-  await sleep(200)
-
-  currentDom.style.transition = ''
-  currentDom.style.transform = 'translateX(0)'
-
-  await sleep(200)
-
-  currentDom.style.transform = 'translateX(0)'
-  nextDom.style.visibility = ''
+  // 执行滑动动画，动画完成后会自动更新数据
+  await slideCard('left', nextWordData)
 }
 
 const { targetDict } = useTargetData()
@@ -151,29 +172,27 @@ onMounted(() => {
 
 <template>
   <WithPage class="WordsPage">
-    <div flex items-center justify-between gap-2 class="WordsPage-Header">
-      <div flex items-center gap-2 class="WordsPage-Header-Left">
-        <div i-carbon:chevron-left @click="emits('quit')" />
-        <p class="WordsPage-Header-Title">
-          <span>需新学 {{ prepareData.getNewlyWords() }}</span>
-          <span>需复习 {{ prepareData.getReviewWords() }}</span>
-        </p>
+    <div p-4 flex flex-col h-full>
+      <div flex items-center justify-between gap-2 class="WordsPage-Header">
+        <div flex items-center gap-2 class="WordsPage-Header-Left">
+          <div i-carbon:chevron-left @click="emits('quit')" />
+          <p class="WordsPage-Header-Title">
+            <span>需新学 {{ prepareData.getNewlyWords() }}</span>
+            <span>需复习 {{ prepareData.getReviewWords() }}</span>
+          </p>
+        </div>
+
+        <h1 flex items-center gap-2 text-sm op-75 @click="goDictionary">
+          <el-link>{{ targetDict.name }}</el-link>
+        </h1>
       </div>
 
-      <h1 flex items-center gap-2 text-sm op-75 @click="goDictionary">
-        <el-link>{{ targetDict.name }}</el-link>
-      </h1>
-    </div>
-
-    <div v-if="data.current" class="WordCard-Container">
-      <WordCard
-        ref="mainCard" :right="data.current" class="transition-cubic WordCard WordCard-Main"
-        :data="data.current!" @choose="handleChoose" @previous="handlePrevious"
-      />
-      <WordCard
-        ref="moveCard" pointer-events-none :right="data.current"
-        class="WordCard transition-cubic WordCard-Next" :data="data.next!"
-      />
+      <div v-if="data.current" class="WordCard-Container">
+        <WordCard ref="mainCard" :right="data.current" class="transition-cubic WordCard WordCard-Main"
+          :data="data.current!" @choose="handleChoose" @previous="handlePrevious" />
+        <WordCard ref="moveCard" pointer-events-none :right="data.current"
+          class="WordCard transition-cubic WordCard-Next" :data="data.next!" />
+      </div>
     </div>
   </WithPage>
 </template>
@@ -255,4 +274,4 @@ onMounted(() => {
     }
   }
 }
-</style> 
+</style>
