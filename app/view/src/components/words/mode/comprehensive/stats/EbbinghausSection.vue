@@ -1,11 +1,11 @@
 <template>
   <div class="w-full mb-6 bg-purple-100/8 rounded-4 backdrop-blur-sm border border-white/8 p-4 transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg hover:shadow-black/5 overflow-hidden">
-    <h3 class="text-center text-base m-0 mb-5 text-gray-700 font-semibold tracking-wider relative pb-2.5 after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:transform after:-translate-x-1/2 after:w-10 after:h-0.5 after:bg-gradient-to-r after:from-purple-500 after:to-blue-500 after:rounded-1">艾宾浩斯记忆曲线</h3>
+    <h3 class="text-center text-base m-0 mb-5 text-gray-700 dark:text-gray-300 font-semibold tracking-wider relative pb-2.5 after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:transform after:-translate-x-1/2 after:w-10 after:h-0.5 after:bg-gradient-to-r after:from-purple-500 after:to-blue-500 after:rounded-1">艾宾浩斯记忆曲线</h3>
     <div class="grid grid-cols-1 md:grid-cols-[55%_45%] gap-6 w-full max-w-full overflow-x-hidden">
       <div ref="ebbinghausChart" class="h-[260px] min-h-[200px] w-full max-w-full overflow-visible"></div>
       <div class="flex flex-col gap-5 w-full max-w-full overflow-visible">
-        <div class="p-5 w-full bg-purple-100/8 rounded-3 shadow-sm shadow-black/3 border border-white/10">
-          <div class="flex justify-between items-center mb-4 text-gray-500 text-sm">
+        <div class="p-5 w-full bg-purple-100/8 dark:bg-purple-900/15 rounded-3 shadow-sm shadow-black/3 border border-white/10">
+          <div class="flex justify-between items-center mb-4 text-gray-500 dark:text-gray-300 text-sm">
             <span>记忆保留率</span>
             <span class="font-semibold text-lg bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">{{ memoryRetention }}%</span>
           </div>
@@ -31,6 +31,8 @@ import ReviewSchedule from './ReviewSchedule.vue'
 
 const ebbinghausChart = ref<HTMLElement | null>(null)
 const memoryRetention = ref(78)
+let chart: echarts.ECharts | null = null
+
 const memoryRetentionColor = computed(() => {
   if (memoryRetention.value < 50) return 'linear-gradient(90deg, #f56c6c, #fa9393)'
   if (memoryRetention.value < 70) return 'linear-gradient(90deg, #e6a23c, #f3d19e)'
@@ -39,7 +41,13 @@ const memoryRetentionColor = computed(() => {
 
 const initEbbinghausChart = () => {
   if (!ebbinghausChart.value) return
-  const chart = echarts.init(ebbinghausChart.value, null, {
+  
+  // 如果已有图表实例，先销毁
+  if (chart) {
+    chart.dispose()
+  }
+  
+  chart = echarts.init(ebbinghausChart.value, null, {
     renderer: 'canvas',
     useDirtyRect: true
   })
@@ -63,7 +71,7 @@ const initEbbinghausChart = () => {
       textStyle: {
         fontSize: 14,
         fontWeight: 'normal',
-        color: '#606266'
+        color: 'var(--el-text-color-primary)'
       }
     },
     tooltip: {
@@ -88,7 +96,8 @@ const initEbbinghausChart = () => {
       data: ['标准记忆曲线', '你的记忆曲线'],
       bottom: 0,
       textStyle: {
-        fontSize: 12
+        fontSize: 12,
+        color: 'var(--el-text-color-regular)'
       }
     },
     grid: {
@@ -111,7 +120,13 @@ const initEbbinghausChart = () => {
         },
         fontSize: 10,
         hideOverlap: true,
-        interval: 'auto'
+        interval: 'auto',
+        color: 'var(--el-text-color-regular)'
+      },
+      axisLine: {
+        lineStyle: {
+          color: 'var(--el-border-color)'
+        }
       }
     },
     yAxis: {
@@ -120,7 +135,13 @@ const initEbbinghausChart = () => {
       max: 100,
       axisLabel: {
         formatter: '{value}%',
-        fontSize: 10
+        fontSize: 10,
+        color: 'var(--el-text-color-regular)'
+      },
+      splitLine: {
+        lineStyle: {
+          color: 'var(--el-border-color-lighter)'
+        }
       }
     },
     series: [
@@ -182,7 +203,7 @@ const initEbbinghausChart = () => {
 
   // 响应式调整
   const resizeHandler = () => {
-    chart.resize()
+    if (chart) chart.resize()
   }
 
   window.addEventListener('resize', resizeHandler)
@@ -190,7 +211,7 @@ const initEbbinghausChart = () => {
   // 添加清理函数
   onUnmounted(() => {
     window.removeEventListener('resize', resizeHandler)
-    chart.dispose()
+    if (chart) chart.dispose()
   })
 
   // 初始化后立即调整大小确保填充容器
@@ -200,16 +221,16 @@ const initEbbinghausChart = () => {
 }
 
 onMounted(() => {
-  initEbbinghausChart()
+  // 延迟初始化确保DOM已渲染
+  setTimeout(() => {
+    initEbbinghausChart()
+  }, 300)
 
   // 添加ResizeObserver监听容器大小变化
   if (ebbinghausChart.value && window.ResizeObserver) {
     const resizeObserver = new ResizeObserver(() => {
-      if (ebbinghausChart.value) {
-        const chart = echarts.getInstanceByDom(ebbinghausChart.value)
-        if (chart) {
-          chart.resize()
-        }
+      if (ebbinghausChart.value && chart) {
+        chart.resize()
       }
     })
 
@@ -225,16 +246,6 @@ onMounted(() => {
       resizeObserver.disconnect()
     })
   }
-
-  // 立即触发一次resize确保图表正确绘制
-  setTimeout(() => {
-    if (ebbinghausChart.value) {
-      const chart = echarts.getInstanceByDom(ebbinghausChart.value)
-      if (chart) {
-        chart.resize()
-      }
-    }
-  }, 300)
 })
 </script>
 
@@ -246,5 +257,11 @@ onMounted(() => {
   100% {
     transform: translateX(100%) rotate(25deg);
   }
+}
+
+/* 黑暗模式适配 */
+:root[data-theme='dark'] .w-full {
+  background-color: rgba(126, 87, 194, 0.15);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 </style>

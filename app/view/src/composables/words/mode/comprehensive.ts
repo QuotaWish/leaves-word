@@ -69,6 +69,7 @@ export class ComprehensiveStatistics extends Statistics<Partial<IComprehensiveSt
 
 export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, IComprehensiveWordItem, ComprehensiveStatistics> {
   getStatistics() {
+    console.log('getStatistics', this)
     return new ComprehensiveStatistics(this);
   }
 
@@ -282,6 +283,8 @@ export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, ICo
       lastData.statistics = this.statistics
     }
 
+    console.log(this.statistics, this.calendarData, this.calendarData.data)
+
     return true
   }
 
@@ -340,6 +343,8 @@ export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, ICo
         optionsClicks: []
       })
     }
+
+    stat.addData('wordsDetails', wordsDetails)
 
     // 更新会话统计数据
     this.updateSessionStatistics()

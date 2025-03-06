@@ -1,8 +1,9 @@
 <template>
   <div class="charts-carousel-container">
     <div class="chart-slider">
-      <transition name="chart-fade" mode="out-in">
-        <div v-if="currentIndex === 0" key="chart1" class="chart-wrapper">
+      <div class="charts-container">
+        <!-- 使用v-show而非v-if，保留DOM -->
+        <div v-show="currentIndex === 0" key="chart1" class="chart-wrapper" :class="{'active': currentIndex === 0}">
           <div v-if="hasData" ref="learningPatternChart" class="chart"></div>
           <div v-else class="empty-chart">
             <div class="empty-chart-icon">
@@ -17,7 +18,7 @@
           </div>
         </div>
         
-        <div v-else-if="currentIndex === 1" key="chart2" class="chart-wrapper">
+        <div v-show="currentIndex === 1" key="chart2" class="chart-wrapper" :class="{'active': currentIndex === 1}">
           <div v-if="hasData" ref="timeDistributionChart" class="chart"></div>
           <div v-else class="empty-chart">
             <div class="empty-chart-icon">
@@ -33,7 +34,7 @@
           </div>
         </div>
         
-        <div v-else-if="currentIndex === 2" key="chart3" class="chart-wrapper">
+        <div v-show="currentIndex === 2" key="chart3" class="chart-wrapper" :class="{'active': currentIndex === 2}">
           <div v-if="hasData" ref="performanceRadarChart" class="chart"></div>
           <div v-else class="empty-chart">
             <div class="empty-chart-icon">
@@ -50,7 +51,7 @@
             <p>能力评估分析：{{ getPerformanceAnalysis() }}</p>
           </div>
         </div>
-      </transition>
+      </div>
     </div>
 
     <div class="carousel-tab-container">
@@ -79,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, onBeforeUnmount, computed } from 'vue'
+import { ref, onMounted, watch, onBeforeUnmount, computed, nextTick } from 'vue'
 import * as echarts from 'echarts'
 import { useCharts } from '~/composables/words/mode/comprehensive/charts'
 
@@ -97,6 +98,8 @@ const performanceRadarChart = ref<HTMLElement | null>(null)
 const currentIndex = ref(0)
 const chartTitles = ['学习进度分析', '反应时间分布', '学习能力评估']
 let autoplayTimer: number | null = null
+let charts: echarts.ECharts[] = []
+let allChartsInitialized = false
 
 // 判断是否有数据
 const hasData = computed(() => {
@@ -135,6 +138,43 @@ const prevChart = () => {
   currentIndex.value = (currentIndex.value - 1 + chartTitles.length) % chartTitles.length
 }
 
+// 初始化所有图表
+const initAllCharts = () => {
+  if (!hasData.value || allChartsInitialized) return
+  
+  // 初始化所有图表
+  setTimeout(() => {
+    // 依次初始化三个图表
+    if (learningPatternChart.value) {
+      const chart = initLearningPatternChart(learningPatternChart.value)
+      if (chart) charts[0] = chart
+    }
+    
+    if (timeDistributionChart.value) {
+      const chart = initTimeDistributionChart(timeDistributionChart.value)
+      if (chart) charts[1] = chart
+    }
+    
+    if (performanceRadarChart.value) {
+      const chart = initPerformanceRadarChart(performanceRadarChart.value)
+      if (chart) charts[2] = chart
+    }
+    
+    allChartsInitialized = true
+    
+    // 初始化后，resize当前显示的图表
+    resizeCurrentChart()
+  }, 500)
+}
+
+// 重设当前图表大小
+const resizeCurrentChart = () => {
+  const index = currentIndex.value
+  if (charts[index]) {
+    charts[index].resize()
+  }
+}
+
 // 自动轮播
 const startAutoplay = () => {
   stopAutoplay()
@@ -152,22 +192,46 @@ const stopAutoplay = () => {
 
 // 监听图表激活状态
 watch(currentIndex, (index) => {
-  if (!hasData.value) return
-  
-  // 当前展示的图表初始化
-  if (index === 0) initLearningPatternChart(learningPatternChart.value)
-  if (index === 1) initTimeDistributionChart(timeDistributionChart.value)
-  if (index === 2) initPerformanceRadarChart(performanceRadarChart.value)
-  
   // 重启自动轮播
   startAutoplay()
+  
+  // 如果图表已经初始化，只需resize当前图表
+  if (allChartsInitialized) {
+    nextTick(() => {
+      resizeCurrentChart()
+    })
+  }
 })
 
+// 监听数据变化
+watch(() => props.wordsDetails, () => {
+  if (!hasData.value) return
+  
+  // 数据变化时重新初始化所有图表
+  allChartsInitialized = false
+  
+  // 清理旧图表
+  charts.forEach(chart => {
+    if (chart) chart.dispose()
+  })
+  charts = [null, null, null] as any
+  
+  // 重新初始化
+  nextTick(() => {
+    initAllCharts()
+  })
+}, { deep: true })
+
 onMounted(() => {
-  // 只有在有数据的情况下初始化图表
-  if (hasData.value) {
-    initLearningPatternChart(learningPatternChart.value)
-  }
+  // 初始化图表数组
+  charts = [null, null, null] as any
+  
+  // 延迟初始化，确保DOM已经渲染
+  nextTick(() => {
+    if (hasData.value) {
+      initAllCharts()
+    }
+  })
   
   // 开始自动轮播
   startAutoplay()
@@ -178,10 +242,33 @@ onMounted(() => {
     container.addEventListener('mouseenter', stopAutoplay)
     container.addEventListener('mouseleave', startAutoplay)
   }
+  
+  // 添加ResizeObserver监听容器大小变化
+  if (window.ResizeObserver) {
+    const resizeObserver = new ResizeObserver(() => {
+      if (allChartsInitialized) {
+        resizeCurrentChart()
+      }
+    })
+    
+    const chartSlider = document.querySelector('.chart-slider')
+    if (chartSlider) {
+      resizeObserver.observe(chartSlider)
+    }
+    
+    onBeforeUnmount(() => {
+      resizeObserver.disconnect()
+    })
+  }
 })
 
 onBeforeUnmount(() => {
   stopAutoplay()
+  
+  // 销毁所有图表实例，避免内存泄漏
+  charts.forEach(chart => {
+    if (chart) chart.dispose()
+  })
   
   // 移除事件监听
   const container = document.querySelector('.charts-carousel-container')
@@ -190,15 +277,6 @@ onBeforeUnmount(() => {
     container.removeEventListener('mouseleave', startAutoplay)
   }
 })
-
-watch(() => props.wordsDetails, () => {
-  if (!hasData.value) return
-  
-  // 当数据变化时重新初始化当前图表
-  if (currentIndex.value === 0) initLearningPatternChart(learningPatternChart.value)
-  if (currentIndex.value === 1) initTimeDistributionChart(timeDistributionChart.value)
-  if (currentIndex.value === 2) initPerformanceRadarChart(performanceRadarChart.value)
-}, { deep: true })
 </script>
 
 <style scoped>
@@ -209,10 +287,16 @@ watch(() => props.wordsDetails, () => {
 }
 
 .chart-slider {
-  height: 350px;
+  height: 320px;
   border-radius: 16px;
   overflow: hidden;
   position: relative;
+}
+
+.charts-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
 
 .chart-wrapper {
@@ -225,7 +309,17 @@ watch(() => props.wordsDetails, () => {
   display: flex;
   flex-direction: column;
   width: 100%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: opacity 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chart-wrapper.active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .chart-wrapper:hover {
@@ -235,7 +329,9 @@ watch(() => props.wordsDetails, () => {
 
 .chart {
   flex: 1;
-  min-height: 280px;
+  min-height: 220px;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 .empty-chart {
@@ -268,13 +364,13 @@ watch(() => props.wordsDetails, () => {
 }
 
 .chart-analysis {
-  margin-top: 12px;
   padding: 12px 16px;
   background: rgba(126,87,194,0.08);
   border-radius: 12px;
   font-size: 14px;
   color: var(--el-text-color-regular);
   line-height: 1.5;
+  margin-top: auto; /* 将分析固定在底部 */
 }
 
 .chart-analysis p {
@@ -363,19 +459,24 @@ watch(() => props.wordsDetails, () => {
   font-weight: 500;
 }
 
-/* 淡入淡出过渡效果 */
-.chart-fade-enter-active,
-.chart-fade-leave-active {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+/* 媒体查询，确保在不同屏幕大小下正常显示 */
+@media (max-width: 768px) {
+  .chart-slider {
+    height: 300px;
+  }
+  
+  .chart {
+    min-height: 200px;
+  }
 }
 
-.chart-fade-enter-from {
-  opacity: 0;
-  transform: translateY(10px);
+/* 暗黑模式适配 */
+:root[data-theme='dark'] .chart-wrapper {
+  background: rgba(126, 87, 194, 0.15);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
-.chart-fade-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
+:root[data-theme='dark'] .chart-analysis {
+  background: rgba(126, 87, 194, 0.1);
 }
 </style> 

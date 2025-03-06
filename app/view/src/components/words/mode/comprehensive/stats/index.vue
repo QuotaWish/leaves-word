@@ -93,6 +93,8 @@ const props = defineProps<{
   data: Statistics<any>
 }>()
 
+console.log(props.data)
+
 const stat = computed(() => {
   if (!props.data) return { data: { correctRate: 0, averageTimePerWord: 0, sessionDuration: 0, wordsDetails: [] } }
   return ComprehensiveStatistics.parseStatistics(props.data)

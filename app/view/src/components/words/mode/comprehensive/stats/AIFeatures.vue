@@ -555,4 +555,23 @@ const askAI = () => {
 :deep(.el-input__inner::placeholder) {
   color: var(--el-text-color-secondary);
 }
+
+/* 黑暗模式适配 */
+:root[data-theme='dark'] .ai-feature-card {
+  background: rgba(126, 87, 194, 0.15);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:root[data-theme='dark'] .ai-feature-header {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+:root[data-theme='dark'] .ai-difficulty-analysis,
+:root[data-theme='dark'] .ai-learning-path-section {
+  background: rgba(126, 87, 194, 0.1);
+}
+
+:root[data-theme='dark'] .ai-feature-graph {
+  background: rgba(126, 87, 194, 0.05);
+}
 </style> 
