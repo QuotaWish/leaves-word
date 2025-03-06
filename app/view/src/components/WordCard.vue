@@ -248,7 +248,7 @@ async function handleChooseWord(word: IWord) {
     user-select: none;
     border-radius: 12px;
     color: var(--el-text-color-secondary);
-    background-color: var(--el-bg-color);
+    background-color: var(--el-fill-color-lighter);
     border: 1px solid #0000;
 
     &.right {

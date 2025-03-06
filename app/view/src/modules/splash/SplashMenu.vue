@@ -5,7 +5,6 @@ import {
   ElDropdownMenu,
   ElOption,
   ElSelect,
-  ElSwitch,
   ElTooltip,
 } from 'element-plus'
 import { MOCK_DEVICES, useGlobalSplashState } from '.'
@@ -46,7 +45,7 @@ const tools = [
           <ElDropdownMenu>
             <ElDropdownItem v-for="tool in tools" :key="tool.label">
               <div class="flex items-center gap-2">
-                <Icon :name="tool.icon" />
+                <div :class="tool.icon" />
                 <span>{{ tool.label }}</span>
               </div>
             </ElDropdownItem>

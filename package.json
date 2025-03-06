@@ -8,7 +8,7 @@
     "openapi:cms": "pnpm -F @leaves-word/app-cms openapi",
     "openapi:ends": "pnpm -F @leaves-word/app-ends openapi",
     "dev:cms": "pnpm -F @leaves-word/app-cms dev",
-    "dev:view": "pnpm -F @leaves-word/app-view dev",
+    "dev:view": "pnpm -F @leaves-word/app-view dev --host",
     "dev:ends": "pnpm -F @leaves-word/app-ends dev",
     "build:cms": "pnpm -F @leaves-word/app-cms build",
     "build:view": "pnpm -F @leaves-word/app-view build",

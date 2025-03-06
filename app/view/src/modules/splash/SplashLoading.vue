@@ -23,9 +23,6 @@ const loading = ref(true)
           <p>Leave words, Embrace worlds!</p>
         </div>
       </div>
-      <div class="progress-container">
-        <progress-bar :progress="0" />
-      </div>
       <div flex flex-col items-center class="powered-by">
         <p><VersionBar /></p>
         <p>Powered by QuotaWish.</p>
@@ -141,11 +138,6 @@ const loading = ref(true)
   }
 
   animation: enterView 0.5s ease-in-out;
-}
-
-.progress-container {
-  margin-bottom: 20px;
-  /* 根据需要调整间距 */
 }
 
 .powered-by {

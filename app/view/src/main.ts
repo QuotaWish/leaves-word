@@ -10,7 +10,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from 'vue-router/auto-routes'
 import App from './App.vue'
 import transitionRouter from './router-transition'
-import GlobalInputMethod from './modules/globalInputMethod'
 import '@unocss/reset/tailwind.css'
 
 import './styles/main.css'
@@ -58,6 +57,4 @@ app.use(Particles, {
     await loadSlim(engine)
   },
 })
-// 注册全局输入法
-app.use(GlobalInputMethod)
 app.mount('#app')

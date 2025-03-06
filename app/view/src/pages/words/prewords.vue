@@ -114,10 +114,7 @@ async function handleStart() {
 // })
 
 async function handleDone() {
-  console.log("here")
-  await router.push('/words/signed')
-  await sleep(1)
-  await router.push('/words/signed')
+  await router.replace('/words/signed')
 }
 
 function handleBack() {

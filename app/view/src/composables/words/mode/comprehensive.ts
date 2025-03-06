@@ -273,6 +273,7 @@ export class ComprehensivePrepareWord extends PrepareWord<ComprehensiveMode, ICo
       this.calendarData = calendarManager.createTodayData(words, duration, true)
     } else {
       this.calendarData.addData(this.calendarData.createSignData(words, duration, true))
+      this.calendarData.signToday()
     }
 
     const lastData = this.calendarData.data.at(-1)
