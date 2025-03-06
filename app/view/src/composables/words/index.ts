@@ -4,7 +4,7 @@ import high from './high'
 import ielts from './ielts'
 import { modeManager, ModeType } from './mode'
 import postGraduate from './post-graduate'
-import type { IDict } from './types'
+import type { IDict, IStatistics, Statistics } from './types'
 
 export * from './types'
 export * from './util'
@@ -68,13 +68,13 @@ export interface IWordItem {
 
 export interface IGlobalData {
   dict: string
-  mode: ModeType
+  mode: keyof typeof ModeType
   amount: number
 }
 
 const obj: IGlobalData = {
   dict: 'CET-4',
-  mode: ModeType.COMPREHENSIVE,
+  mode: 'COMPREHENSIVE',
   amount: 10,
 }
 
@@ -86,28 +86,78 @@ export const dictionaries = reactive<IDict[]>([
   ielts,
 ])
 
-export interface ISignData {
+export interface ISignData<S extends Statistics<any>> {
   day: number
   date: number
   words: string[]
   cost: number
   done: boolean
+  statistics?: S
 }
 
-export interface CalendarData {
+export interface ICalendarData<S extends Statistics<any>> {
   year: number
   month: number
 
   day: string
 
-  data: ISignData[]
+  data: ISignData<S>[]
+
+  // statistics?: IStatistics<any>
+
+  addData(data: ISignData<S>): void
+
+  createSignData(words: string[], cost: number, done: boolean): ISignData<S>
 }
 
+export class CalendarData<S extends Statistics<any>> implements ICalendarData<S> {
+  year: number
+  month: number
+
+  day: string
+
+  data: ISignData<S>[] = []
+
+  // statistics?: S
+
+  constructor(year: number, month: number, day: string) {
+    this.year = year
+    this.month = month
+    this.day = day
+  }
+
+  addData(data: ISignData<S>): void {
+    this.data.push(data)
+  }
+
+  createSignData(words: string[], cost: number, done: boolean): ISignData<S> {
+    const [, , day] = calendarManager.getToday()
+
+    const data: ISignData<S> = {
+      day,
+      date: Date.now(),
+      words,
+      cost,
+      done,
+    }
+
+    return data
+  }
+
+  static fromData<S extends Statistics<any>>(data: CalendarData<S>) {
+    const calendar = new CalendarData(data.year, data.month, data.day)
+
+    calendar.data = data.data
+    // calendar.statistics = data.statistics
+
+    return calendar
+  }
+}
 if (localStorage.getItem('calendarData') === '{}')
   localStorage.removeItem('calendarData')
 
 export const globalData = useLocalStorage<IGlobalData>('globalData', JSON.parse(JSON.stringify(obj)))
-export const calendarData = useLocalStorage<CalendarData[]>('calendarData', [])
+export const calendarData = useLocalStorage<CalendarData<Statistics<any>>[]>('calendarData', [])
 
 export const useTargetData = createGlobalState(() => {
   const targetDict = computed(() => dictionaries.find(item => item.id === globalData.value.dict) || dictionaries[0])
@@ -135,31 +185,22 @@ export const useTargetData = createGlobalState(() => {
 })
 
 export class CalendarManager {
-  createTodayData(words: string[], cost: number, done: boolean) {
-    let calendar: CalendarData | undefined = this.getTodayData()?.origin
+  createTodayData<S extends Statistics<any>>(words: string[], cost: number, done: boolean) {
+    let calendar = this.getTodayData()?.origin
 
     const [year, month, day] = this.getToday()
     if (!calendar) {
-      calendar = reactive({
-        year,
-        month,
-        day: '',
-        data: [],
-      })
+      calendar = new CalendarData<S>(year, month, '')
 
       calendarData.value.push(calendar)
     }
     else {
-      calendar = reactive(calendar)
+      calendar = reactive(CalendarData.fromData(calendar))
     }
 
-    const data: ISignData = {
-      day,
-      date: Date.now(),
-      words,
-      cost,
-      done,
-    }
+    console.log(calendar)
+
+    const data = calendar.createSignData(words, cost, done)
 
     calendar.data.push(data)
 
@@ -176,7 +217,7 @@ export class CalendarManager {
     return calendar
   }
 
-  getTodayData() {
+  getTodayData<S extends Statistics<any>>() {
     return this.getDayData(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate())
   }
 
@@ -188,11 +229,13 @@ export class CalendarManager {
     return this.getDayData(year, month, day)?.signed
   }
 
-  getDayData(year: number, month: number, day: number) {
-    const data = calendarData.value.find(item => item.year === year && item.month === month)
+  getDayData<S extends Statistics<any>>(year: number, month: number, day: number) {
+    const _data = calendarData.value.find(item => item.year === year && item.month === month)
 
-    if (!data)
+    if (!_data)
       return null
+
+    const data = _data as CalendarData<S>
 
     const dayData = data.day
     const days = dayData.split('')

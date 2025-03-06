@@ -1,51 +1,38 @@
 <script setup lang="ts">
 import NumberFlow from '@number-flow/vue'
 import { dayjs } from 'element-plus'
-import { calendarManager } from '~/composables/words'
+import { calendarManager, Statistics } from '~/composables/words'
 import { useGlobalSplashState } from '~/modules/splash'
 import Astronaut from '/svg/astronaut.svg'
 import Mello from '/svg/mello.svg'
-
-const props = defineProps<{
-  modelValue: boolean
-}>()
-
-const emits = defineEmits<{
-  (e: 'update:modelValue', value: boolean): void
-}>()
+import CoffettiParticle from '~/components/chore/CoffettiParticle.vue'
+import ComprehensiveStat from '~/components/words/mode/comprehensive/index.vue'
+import DrawerPage from '~/components/page/DrawerPage.vue'
 
 const num = ref(0)
 const score = ref(0)
 const days = ref(0)
 const timeText = ref('')
+const data = ref<Statistics<any>>()
+const displayComponent = ref<Component>()
 
 const router = useRouter()
-const route = useRoute()
-
-const visible = useVModel(props, 'modelValue', emits)
-
-watchEffect(() => {
-  if (route.query.signed) {
-    visible.value = true
-  }
-})
 
 const globalSplashState = useGlobalSplashState()
-watch(visible, visible => globalSplashState.footerVisible.value = !visible)
 
-watch(visible, async (visible) => {
-  if (!visible) {
-    num.value = score.value = days.value = 0
+const statCompMapper = {
+  ['COMPREHENSIVE']: ComprehensiveStat,
+}
 
-    router.replace({
-      query: {
-        ...route.query,
-        signed: undefined,
-      },
-    })
-    return
-  }
+const isDrawerExpanded = ref(false)
 
+onMounted(() => {
+  setTimeout(() => {
+    isDrawerExpanded.value = true
+  }, 5000)
+})
+
+setTimeout(async () => {
   const todayData = calendarManager.getTodayData()!
 
   if (!todayData?.signed) {
@@ -53,6 +40,22 @@ watch(visible, async (visible) => {
 
     return
   }
+
+  // process todayData
+  const originDataList = todayData.origin.data
+  const todaySubData = originDataList.at(-1)
+
+  if (!todaySubData) {
+    router.push('/')
+
+    return
+  }
+
+  const statistics = todaySubData.statistics
+  displayComponent.value = statCompMapper[statistics!.type as keyof typeof statCompMapper]
+  data.value = statistics
+
+  console.log(todaySubData)
 
   timeText.value = dayjs(new Date(todayData.data!.date)).format('YYYY-MM-DD')
 
@@ -62,375 +65,557 @@ watch(visible, async (visible) => {
 
   await sleep(300)
 
-  num.value = todayData.data!.words.length
+  num.value = todaySubData.words.length
 
   await sleep(100)
 
-  score.value = todayData.data!.words.length * 1.5
-})
+  score.value = todaySubData.words.length * 1.5
+}, 800)
 </script>
 
 <template>
-  <div :class="{ visible }" class="Signed transition-cubic">
-    <div class="Signed-Header">
-      <h1>今日已完成!</h1>
-      <div class="Signed-Header-Time">
-        {{ timeText }}
-      </div>
-    </div>
-
-    <div class="Signed-MainCard fake-background">
-      <div class="Signed-MainCard-Svg">
-        <img :src="Astronaut">
-      </div>
-      <div class="Signed-MainCard-SuccessSvg">
-        <img :src="Mello">
-      </div>
-      <p>你已连续学习</p>
-
-      <h1>
-        <span font-bold>
-          <NumberFlow :prefix="days < 10 ? '0' : ''" :continuous="true" :will-change="true" :animated="true" :value="days" />
-        </span>天
-      </h1>
-
-      <div mt-8 w-full flex items-center justify-between>
-        挑战 7 天不断电
-        <span font-bold op-75>1/7</span>
+  <DrawerPage class="Signed transition-cubic" @close="router.push('/')">
+    <template #main>
+      <div class="Signed-Header">
+        <h1>今日已完成!</h1>
+        <div class="Signed-Header-Time">
+          {{ timeText }}
+        </div>
       </div>
 
-      <div style="--p: 14.2%" class="Signed-MainCard-Progress">
-        <div class="Signed-MainCard-Progress-Bar" />
-        <div class="Signed-MainCard-Progress-Inner" />
+      <div class="Signed-MainCard fake-background">
+        <div class="Signed-MainCard-Svg">
+          <img :src="Astronaut">
+        </div>
+        <div class="Signed-MainCard-SuccessSvg">
+          <img :src="Mello">
+        </div>
+        <p>你已连续学习</p>
+
+        <h1>
+          <div class="number-flow-container">
+            <NumberFlow :prefix="days < 10 ? '0' : ''" :continuous="true" :will-change="true" :animated="true"
+              :value="days" />
+          </div>
+          <span>天</span>
+        </h1>
+
+        <div mt-8 w-full flex items-center justify-between>
+          挑战 7 天不断电
+          <span class="challenge-count" font-bold>1/7</span>
+        </div>
+
+        <div style="--p: 14.2%" class="Signed-MainCard-Progress">
+          <div class="Signed-MainCard-Progress-Bar" />
+          <div class="Signed-MainCard-Progress-Inner" />
+        </div>
       </div>
-    </div>
 
-    <div class="Signed-SubCard">
-      <div class="fake-background Signed-SubCardItem">
-        <p>过招单词</p>
-        <p class="amo">
-          <NumberFlow :continuous="true" :will-change="true" :animated="true" :value="num" />
-        </p>
+      <div class="Signed-SubCard">
+        <div class="fake-background Signed-SubCardItem">
+          <p>过招单词</p>
+          <p class="amo">
+          <div class="number-flow-container">
+            <NumberFlow :continuous="true" :will-change="true" :animated="true" :value="num" />
+          </div>
+          </p>
+        </div>
+
+        <div class="Signed-SubCardItem fake-background">
+          <p>学分</p>
+          <p class="amo">
+          <div class="number-flow-container">
+            <NumberFlow :continuous="true" :will-change="true" :animated="true" :value="score" />
+          </div>
+          </p>
+        </div>
       </div>
+    </template>
 
-      <div class="Signed-SubCardItem fake-background">
-        <p>学分</p>
-        <p class="amo">
-          <NumberFlow :continuous="true" :will-change="true" :animated="true" :value="score" />
-        </p>
+    <template #drawer>
+      <div class="drawer-content">
+        <component :is="displayComponent" :data="data" />
       </div>
-    </div>
+    </template>
 
-    <div class="fake-background Signed-CheckIn">
-      <el-button w-full size="large" type="primary" @click="visible = false">
-        关闭
-      </el-button>
-    </div>
-
-    <div v-if="visible" class="Signed-Particles">
-      <vue-particles
-        id="tsparticles" :options="{
-          background: {
-            color: {
-              value: '',
-            },
-          },
-          fpsLimit: 120,
-          interactivity: {
-            events: {
-              onClick: {
-                enable: true,
-                mode: 'push',
-              },
-              onHover: {
-                enable: true,
-                mode: 'repulse',
-              },
-            },
-            modes: {
-              bubble: {
-                distance: 400,
-                duration: 2,
-                opacity: 0.8,
-                size: 40,
-              },
-              push: {
-                quantity: 4,
-              },
-              repulse: {
-                distance: 200,
-                duration: 0.4,
-              },
-            },
-          },
-          particles: {
-            color: {
-              value: '#ffffff',
-            },
-            links: {
-              color: '#ffffff',
-              distance: 150,
-              enable: true,
-              opacity: 0.5,
-              width: 1,
-            },
-            move: {
-              direction: 'none',
-              enable: true,
-              outModes: 'bounce',
-              random: false,
-              speed: 6,
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-              },
-              value: 80,
-            },
-            opacity: {
-              value: 0.5,
-            },
-            shape: {
-              type: 'circle',
-            },
-            size: {
-              value: { min: 1, max: 5 },
-            },
-          },
-          detectRetina: true,
-        }"
-      />
-    </div>
-  </div>
+    <template #bg>
+      <div class="Signed-Particles">
+        <CoffettiParticle />
+      </div>
+    </template>
+  </DrawerPage>
 </template>
 
 <style lang="scss">
+.Signed {
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  display: flex;
+  flex-direction: column;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #1a1f3b, #2d4b8e);
+    opacity: 0.3;
+    z-index: -1;
+  }
+}
+
 .Signed-Header {
   z-index: 1;
   position: relative;
-  padding: 1rem;
-
-  top: 5%;
-  left: 5%;
-
+  padding: 1.5rem;
+  margin-top: 5%;
+  margin-left: 5%;
   gap: 1rem;
   width: 90%;
+  animation: fadeInDown 0.6s ease-out;
+  flex-shrink: 0;
 
   h1 {
-    font-size: 24px;
+    display: flex;
+
+    gap: 1rem;
+    align-items: flex-end;
+
+    font-size: 32px;
+    font-weight: 700;
+    background-image: linear-gradient(45deg, #00c6ff, #0072ff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
   }
 
   .Signed-Header-Time {
-    opacity: 0.75;
+    opacity: 0.9;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 500;
+    background-image: linear-gradient(45deg, #ffffff, #e0e0e0);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.Signed-MainCard {
+  z-index: 1;
+  position: relative;
+  padding: 1.5rem;
+  margin: 2% 5%;
+  width: 90%;
+  min-height: 220px;
+  flex-shrink: 0;
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transform: translateY(20px);
+  opacity: 0;
+  animation: slideUp 0.6s ease-out forwards;
+  animation-delay: 0.3s;
+
+  p {
+    font-size: 18px;
+    font-weight: 500;
+    background-image: linear-gradient(45deg, #ffffff, #e0e0e0);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  h1 {
+    margin: 1.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .number-flow-container {
+      display: block;
+      font-size: 72px;
+      font-weight: 800;
+      color: var(--el-text-color-regular);
+    }
+
+    &>span {
+      font-size: 24px;
+      font-weight: 600;
+      background-image: linear-gradient(45deg, #ffffff, #e0e0e0);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  div[mt-8] {
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  &-Progress {
+    position: relative;
+    margin: 1.5rem 0;
+    height: 12px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.1);
+
+    &-Bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: var(--p);
+      height: 100%;
+      background: linear-gradient(90deg, #3498db, #2ecc71);
+      transform: translateX(-100%);
+      animation: progressSlide 1s ease-out forwards;
+      animation-delay: 1s;
+      box-shadow: 0 0 15px rgba(46, 204, 113, 0.4);
+    }
+  }
+}
+
+.Signed-SubCard {
+  z-index: 1;
+  position: relative;
+  margin: 1.5rem 5%;
+  display: flex;
+  gap: 1rem;
+  width: 90%;
+  justify-content: space-between;
+  flex-shrink: 0;
+
+  &Item {
+    position: relative;
+    padding: 1.5rem;
+    width: 48%;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transform: translateY(20px);
+    opacity: 0;
+    animation: slideUp 0.6s ease-out forwards;
+    transition: transform 0.3s ease;
+
+    &:nth-child(1) {
+      animation-delay: 0.6s;
+    }
+
+    &:nth-child(2) {
+      animation-delay: 0.8s;
+    }
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    p:first-child {
+      font-size: 16px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .amo {
+      margin-top: 1rem;
+
+      .number-flow-container {
+        font-size: 48px;
+        font-weight: 700;
+        color: var(--el-color-primary);
+      }
+    }
+  }
+}
+
+.Signed-Drawer {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 520px;
+  z-index: 100;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.is-expanded {
+    transform: translateY(0);
+  }
+
+  &-Handle {
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 20px;
+    cursor: pointer;
+    position: relative;
+
+    .handle-line {
+      width: 36px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 2px;
+      margin-bottom: 16px;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+
+  &-Preview {
+    width: 100%;
+
+    &>span {
+      display: block;
+      font-size: 16px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 12px;
+    }
+
+    .preview-stats {
+      display: flex;
+      gap: 20px;
+    }
+
+    .preview-stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .label {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .value {
+        font-size: 16px;
+        font-weight: 600;
+        background: linear-gradient(45deg, #00c6ff, #0072ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+    }
+  }
+
+  &-Content {
+    padding: 0 20px;
+    margin-bottom: 100px;
   }
 }
 
 .Signed-CheckIn {
+  display: none;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes progressSlide {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+// 为新的组件卡片预留的样式
+.Component-Card {
   z-index: 1;
-  position: sticky;
-  padding: 1rem;
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  top: 8%;
+  left: 5%;
+  width: 90%;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transform: translateY(20px);
+  opacity: 0;
+  animation: slideUp 0.6s ease-out forwards;
+  animation-delay: 1.2s;
+}
 
-  top: 100%;
-  left: 0;
+.Signed-MainCard-Svg {
+  position: absolute;
+  top: 0;
+  width: 40%;
+  right: 10%;
+  transform: translateY(-100%);
 
-  width: 100%;
+  img {
+    width: 100%;
+  }
+}
 
-  border-radius: 25px 25px 0 0;
-  color: var(--el-text-color-regular);
-  box-shadow: var(--el-box-shadow);
+.Signed-MainCard-SuccessSvg {
+  position: absolute;
+  top: 0;
+  width: 40%;
+  right: 0.5rem;
 
-  backdrop-filter: blur(18px) saturate(180%);
+  img {
+    width: 100%;
+  }
 }
 
 .Signed-Particles {
   z-index: 0;
   position: absolute;
-
   top: 0;
   left: 0;
-
   width: 100%;
   height: 100%;
-
-  // background-color: #00000050;
 }
 
-.Signed-MainCard-Progress {
-  .Signed-MainCard-Progress-Bar {
-    position: absolute;
+.number-flow-container {
+  display: inline-flex;
+  font-weight: 700;
+  color: var(--el-color-primary);
+}
 
-    top: 0;
-    left: 0;
+.challenge-count {
+  font-size: 20px !important;
+  font-weight: 700;
+  color: var(--el-color-primary) !important;
+}
 
-    width: var(--p);
-    height: 100%;
-
-    background-color: var(--theme-color);
-  }
-  position: relative;
-  margin: 1rem 0;
-
-  height: 20px;
+.preview-content {
   width: 100%;
 
-  overflow: hidden;
-  border-radius: 8px;
-  background-color: var(--el-fill-color-darker);
-}
+  & > span {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 12px;
+  }
 
-.Signed-SubCard {
-  &Item {
-    .amo {
+  .preview-stats {
+    display: flex;
+    gap: 20px;
+  }
+
+  .preview-stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .value {
+      font-size: 16px;
       font-weight: 600;
-      font-size: 28px;
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
-    position: relative;
-    padding: 1rem;
-
-    width: 50%;
-
-    border-radius: 25px;
-    color: var(--el-text-color-regular);
-    box-shadow: var(--el-box-shadow);
-    backdrop-filter: blur(18px) saturate(180%);
   }
-  z-index: 1;
-  position: relative;
-  margin: 1rem 0;
-  display: flex;
-
-  top: 10%;
-  left: 5%;
-
-  gap: 1rem;
-  width: 90%;
-
-  justify-content: space-between;
 }
 
-.Signed-MainCard {
-  &-Svg {
-    position: absolute;
+.drawer-header {
+  padding: 0 20px;
+  margin-bottom: 20px;
 
-    top: 0;
-    width: 40%;
-
-    right: 10%;
-
-    transform: translateY(-100%);
-
-    img {
-      width: 100%;
-    }
+  & > span {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 12px;
   }
 
-  &-SuccessSvg {
-    position: absolute;
-
-    top: 0;
-    width: 40%;
-
-    right: 0.5rem;
-
-    img {
-      width: 100%;
-    }
+  .preview-stats {
+    display: flex;
+    gap: 20px;
   }
 
-  h1 {
-    margin: 1rem 0;
-    span {
-      margin-right: 0.25rem;
-      font-size: 36px;
+  .preview-stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .value {
+      font-size: 16px;
+      font-weight: 600;
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
   }
-  z-index: 1;
-  position: relative;
-  padding: 1rem;
-
-  top: 10%;
-  left: 5%;
-
-  width: 90%;
-  height: 220px;
-
-  border-radius: 25px;
-  box-shadow: var(--el-box-shadow);
-  color: var(--el-text-color-regular);
-  backdrop-filter: blur(18px) saturate(180%);
 }
 
-.Signed {
-  &.visible {
-    transform: translateX(0);
-    pointer-events: all;
-  }
-
-  .dark &::before {
-    opacity: 0.5;
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 100%;
-
-    transform: scale(1.25);
-    filter: hue-rotate(180deg) brightness(80%) blur(2px) saturate(180%);
-    background:
-      radial-gradient(circle farthest-side at 0% 50%, #fb1 23.5%, rgba(240, 166, 17, 0) 0) 21px 30px,
-      radial-gradient(circle farthest-side at 0% 50%, #b71 24%, rgba(240, 166, 17, 0) 0) 19px 30px,
-      linear-gradient(#fb1 14%, rgba(240, 166, 17, 0) 0, rgba(240, 166, 17, 0) 85%, #fb1 0) 0 0,
-      linear-gradient(
-          150deg,
-          #fb1 24%,
-          #b71 0,
-          #b71 26%,
-          rgba(240, 166, 17, 0) 0,
-          rgba(240, 166, 17, 0) 74%,
-          #b71 0,
-          #b71 76%,
-          #fb1 0
-        )
-        0 0,
-      linear-gradient(
-          30deg,
-          #fb1 24%,
-          #b71 0,
-          #b71 26%,
-          rgba(240, 166, 17, 0) 0,
-          rgba(240, 166, 17, 0) 74%,
-          #b71 0,
-          #b71 76%,
-          #fb1 0
-        )
-        0 0,
-      linear-gradient(90deg, #b71 2%, #fb1 0, #fb1 98%, #b71 0%) 0 0 #fb1;
-    background-size: 40px 60px;
-  }
-  z-index: 100;
-  position: absolute;
-  // padding: 1rem;
-
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100%;
-
-  pointer-events: none;
-  transform: translateX(120%);
-  --fake-opacity: 0.85;
-  --fake-color: var(--el-fill-color-dark);
-
-  backdrop-filter: blur(18px) saturate(180%);
+.drawer-content {
+  padding: 0 20px;
+  margin-bottom: 100px;
 }
 </style>

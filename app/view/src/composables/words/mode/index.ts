@@ -1,7 +1,8 @@
-import type { IWordItem } from '..'
+import { CalendarData, calendarManager } from '..'
 import type { DictStorage } from '../storage'
+import { Statistics } from '../types'
 
-export abstract class PrepareWord<T, W> {
+export abstract class PrepareWord<T, W, S extends Statistics<any>> {
   mode: T
   wordsQueue: Array<W>
 
@@ -11,15 +12,22 @@ export abstract class PrepareWord<T, W> {
   startTime: number = 0
   endTime: number = 0
 
+  // stastics?: S
+  calendarData?: CalendarData<S> = undefined
+  statistics?: S = undefined
+
   constructor(mode: T) {
     this.mode = mode
     this.wordsQueue = []
 
     this.onCreated()
+    this.calendarData = calendarManager.createTodayData([], 0, false) as CalendarData<S>
+    this.statistics = this.getStatistics()
   }
 
   abstract onCreated(): void
   abstract getTargetComponent(): Component
+  abstract getStatistics(): S
 
   abstract preload(callback: (progress: number) => void): Promise<boolean>
 
@@ -48,12 +56,12 @@ export abstract class PrepareWord<T, W> {
   }
 }
 
-export interface ISignMode<T, W> {
+export interface ISignMode<T, W, S extends Statistics<any>> {
   getModeName: () => string
   getModeIcon: () => string
   getModeDesc: () => string
   // randomWord: () => IWord
-  prepareWords: () => PrepareWord<T, W>
+  prepareWords: () => PrepareWord<T, W, S>
 
   getMainColor: () => string
 
@@ -63,7 +71,7 @@ export interface ISignMode<T, W> {
   getEstimateCost: (amount: number) => number
 }
 
-export abstract class SignMode implements ISignMode<SignMode, any> {
+export abstract class SignMode implements ISignMode<SignMode, any, any> {
   dictionaryStorage: DictStorage
 
   abstract getModeName(): string
@@ -71,7 +79,7 @@ export abstract class SignMode implements ISignMode<SignMode, any> {
   abstract getModeDesc(): string
   abstract getMainColor(): string
   // abstract randomWord(): IWord
-  abstract prepareWords(): PrepareWord<any, any>
+  abstract prepareWords(): PrepareWord<any, any, any>
 
   abstract getEstimateCost(amount: number): number
 

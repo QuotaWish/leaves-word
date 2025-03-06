@@ -95,26 +95,29 @@ async function handleStart() {
   loadingOptions.progress = -1
 }
 
-useRouter().beforeEach((_to, _from, next) => {
-  if (loadingOptions.loading) {
-    next(false)
+// useRouter().beforeEach((_to, _from, next) => {
+//   if (loadingOptions.loading) {
+//     next(false)
 
-    return
-  }
+//     return
+//   }
 
-  if (loadingOptions.start) {
-    loadingOptions.start = false
+//   if (loadingOptions.start) {
+//     loadingOptions.start = false
 
-    next(false)
+//     next(false)
 
-    return
-  }
+//     return
+//   }
 
-  next(true)
-})
+//   next(true)
+// })
 
 async function handleDone() {
-  router.push('/words/signed')
+  console.log("here")
+  await router.push('/words/signed')
+  await sleep(1)
+  await router.push('/words/signed')
 }
 
 function handleBack() {
