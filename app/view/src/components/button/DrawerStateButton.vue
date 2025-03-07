@@ -22,13 +22,13 @@ const getStateIcon = () => {
     if (props.lastSlideDirection === 'up' && props.state !== DrawerState.FULLSCREEN) {
       return '<polyline points="18 15 12 9 6 15"></polyline>'; // 向上箭头
     }
-    
+
     // 如果是向下滑动且不是可见状态，显示下箭头
     if (props.lastSlideDirection === 'down' && props.state !== DrawerState.VISIBLE) {
       return '<polyline points="6 9 12 15 18 9"></polyline>'; // 向下箭头
     }
   }
-  
+
   // 如果没有滑动方向或是边界状态，根据当前状态确定箭头方向
   switch (props.state) {
     case DrawerState.FULLSCREEN:
@@ -68,32 +68,16 @@ const handleLongPressEnd = () => {
 </script>
 
 <template>
-  <button 
-    class="drawer-button drawer-toggle-button"
-    :class="{
-      'is-fullscreen': state === DrawerState.FULLSCREEN,
-      'is-expanded': state === DrawerState.EXPAND,
-      'is-shrink': state === DrawerState.SHRINK,
-      'is-visible': state === DrawerState.VISIBLE,
-      'is-hide': state === DrawerState.HIDE
-    }"
-    @click="handleClick"
-    @touchstart="handleLongPressStart" 
-    @touchend="handleLongPressEnd"
-    @mousedown="handleLongPressStart"
-    @mouseup="handleLongPressEnd"
-    @mouseleave="handleLongPressEnd">
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      width="16" 
-      height="16" 
-      viewBox="0 0 24 24" 
-      fill="none"
-      stroke="currentColor" 
-      stroke-width="2" 
-      stroke-linecap="round" 
-      stroke-linejoin="round"
-      v-html="getStateIcon()">
+  <button class="drawer-button drawer-toggle-button" :class="{
+    'is-fullscreen': state === DrawerState.FULLSCREEN,
+    'is-expanded': state === DrawerState.EXPAND,
+    'is-shrink': state === DrawerState.SHRINK,
+    'is-visible': state === DrawerState.VISIBLE,
+    'is-hide': state === DrawerState.HIDE
+  }" @click="handleClick" @touchstart="handleLongPressStart" @touchend="handleLongPressEnd"
+    @mousedown="handleLongPressStart" @mouseup="handleLongPressEnd" @mouseleave="handleLongPressEnd">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" v-html="getStateIcon()">
     </svg>
     <slot></slot>
   </button>
@@ -107,37 +91,39 @@ const handleLongPressEnd = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(30, 30, 30, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.2);
   color: rgba(255, 255, 255, 0.9);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.25, 1.0, 0.5, 1.4);
   position: relative;
 
+  filter: invert(1);
+
   &.is-fullscreen {
-    background: rgba(79, 195, 247, 0.2);
-    border-color: rgba(79, 195, 247, 0.5);
-    color: #4fc3f7;
+    background: rgba(0, 120, 170, 0.8);
+    border-color: rgba(0, 140, 200, 0.5);
+    color: rgba(255, 255, 255, 1);
   }
-  
+
   &.is-expanded {
-    background: rgba(97, 218, 251, 0.15);
-    border-color: rgba(97, 218, 251, 0.4);
+    background: rgba(20, 120, 160, 0.7);
+    border-color: rgba(30, 140, 180, 0.4);
   }
-  
+
   &.is-shrink {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(40, 40, 40, 0.7);
   }
-  
+
   &.is-visible {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(50, 50, 50, 0.6);
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(60, 60, 60, 0.9);
     transform: scale(1.05);
   }
-  
+
   &:active {
     transform: scale(0.95);
   }
@@ -147,9 +133,45 @@ const handleLongPressEnd = () => {
     height: 16px;
     transition: transform 0.2s cubic-bezier(0.25, 1.0, 0.5, 1.4);
   }
-  
+
   &:active svg {
     transform: scale(0.9);
   }
 }
-</style> 
+
+// 暗色模式样式适配 - 反色对比
+body.dark {
+  .drawer-button {
+    background: rgba(240, 240, 240, 0.8);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: rgba(30, 30, 30, 0.9);
+
+    filter: invert(0);
+
+    &.is-fullscreen {
+      background: rgba(100, 200, 250, 0.8);
+      border-color: rgba(120, 210, 255, 0.5);
+      color: rgba(10, 50, 80, 1);
+    }
+    
+    &.is-expanded {
+      background: rgba(120, 210, 250, 0.7);
+      border-color: rgba(150, 220, 255, 0.4);
+    }
+    
+    &.is-shrink {
+      background: rgba(220, 220, 220, 0.7);
+      border-color: rgba(200, 200, 200, 0.4);
+    }
+    
+    &.is-visible {
+      background: rgba(200, 200, 200, 0.6);
+      border-color: rgba(180, 180, 180, 0.4);
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.9);
+    }
+  }
+}
+</style>
