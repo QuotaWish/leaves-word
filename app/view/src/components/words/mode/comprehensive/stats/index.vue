@@ -28,7 +28,7 @@
             <div class="value">{{ formatTime(averageTimePerWord) }}</div>
           </div>
           <div class="summary-item">
-            <div class="label">正确率</div>
+            <div class="label">掌握率</div>
             <div class="value">{{ (correctRate * 100).toFixed(1) }}%</div>
           </div>
           <div class="summary-item">
@@ -37,31 +37,20 @@
           </div>
         </div>
       </div>
-      
+
       <!-- 将前三个图表合并到轮播图中 -->
-      <ChartsCarousel 
-        :correctRate="correctRate"
-        :averageTimePerWord="averageTimePerWord"
-        :sessionDuration="sessionDuration"
-        :wordsDetails="wordsDetails"
-      />
-      
+      <ChartsCarousel :correctRate="correctRate" :averageTimePerWord="averageTimePerWord"
+        :sessionDuration="sessionDuration" :wordsDetails="wordsDetails" />
+
       <!-- AI特色功能区域 -->
-      <AIFeatures 
-        :correctRate="correctRate"
-        :averageTimePerWord="averageTimePerWord"
-        :sessionDuration="sessionDuration"
-        :wordsDetails="wordsDetails"
-      />
+      <AIFeatures :correctRate="correctRate" :averageTimePerWord="averageTimePerWord" :sessionDuration="sessionDuration"
+        :wordsDetails="wordsDetails" />
 
       <!-- 艾宾浩斯记忆曲线区域 -->
       <EbbinghausSection />
 
       <!-- AI学习预测区域 -->
-      <PredictionSection 
-        :correctRate="correctRate"
-        :wordsDetails="wordsDetails"
-      />
+      <PredictionSection :correctRate="correctRate" :wordsDetails="wordsDetails" />
 
       <div class="footer">
         <div class="brand">
@@ -93,14 +82,19 @@ const props = defineProps<{
   data: Statistics<any>
 }>()
 
-console.log(props.data)
-
 const stat = computed(() => {
   if (!props.data) return { data: { correctRate: 0, averageTimePerWord: 0, sessionDuration: 0, wordsDetails: [] } }
   return ComprehensiveStatistics.parseStatistics(props.data)
 })
 
-const correctRate = computed(() => stat.value.data.correctRate || 0)
+// const correctRate = computed(() => stat.value.data.correctRate || 0)
+// 掌握率
+const correctRate = computed(() => {
+  const words = stat.value.data.wordsDetails ?? []
+  const correct = words?.filter(item => !item.wrongHistory || item.wrongHistory?.length === 0) ?? []
+
+  return correct.length / words.length
+})
 const averageTimePerWord = computed(() => stat.value.data.averageTimePerWord || 0)
 const sessionDuration = computed(() => stat.value.data.sessionDuration || 0)
 const wordsDetails = computed(() => stat.value.data.wordsDetails || [])
@@ -241,4 +235,4 @@ const formatDuration = (ms: number) => {
 .disclaimer p {
   margin: 2px 0;
 }
-</style> 
+</style>

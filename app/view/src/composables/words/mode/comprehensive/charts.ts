@@ -13,11 +13,11 @@ export function useCharts(props: ChartProps) {
   // 学习曲线分析
   const getLearningCurveAnalysis = () => {
     if (!props.wordsDetails?.length) return '暂无数据'
-    
+
     const times = props.wordsDetails.map(w => w.timeSpent / 1000)
     const avg = times.reduce((a, b) => a + b, 0) / times.length
     const trend = times.slice(-3).reduce((a, b) => a + b, 0) / 3
-    
+
     if (trend < avg * 0.8) return '学习曲线呈下降趋势，表现越来越好！'
     if (trend > avg * 1.2) return '近期响应时间略有上升，建议适当放慢节奏。'
     return '学习曲线平稳，保持良好的学习状态。'
@@ -26,18 +26,18 @@ export function useCharts(props: ChartProps) {
   // 时间分布分析
   const getTimeDistributionAnalysis = () => {
     if (!props.wordsDetails?.length) return '暂无数据'
-    
+
     const times = props.wordsDetails.map(w => w.timeSpent / 1000)
     const fastCount = times.filter(t => t <= 2).length
     const fastRate = (fastCount / times.length * 100).toFixed(1)
-    
+
     return `快速反应（≤2秒）占比${fastRate}%，整体掌握程度良好。`
   }
 
   // 能力评估分析
   const getPerformanceAnalysis = () => {
     if (!props.wordsDetails?.length) return '暂无数据'
-    
+
     const scores = [
       props.correctRate * 100,
       Math.min(100, 10000 / props.averageTimePerWord),
@@ -45,7 +45,7 @@ export function useCharts(props: ChartProps) {
       Math.min(100, props.wordsDetails.length / (props.sessionDuration / 60000) * 10),
       Math.min(100, props.wordsDetails.filter(w => w.attempts === 1).length / props.wordsDetails.length * 100)
     ]
-    
+
     const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length
     return `综合评分${avgScore.toFixed(1)}分，${avgScore >= 80 ? '表现优秀' : avgScore >= 60 ? '表现良好' : '仍有提升空间'}。`
   }
@@ -54,16 +54,18 @@ export function useCharts(props: ChartProps) {
   const initLearningPatternChart = (chartElement: HTMLElement | null) => {
     if (!chartElement || !props.wordsDetails?.length) return
     const chart = echarts.init(chartElement)
-    
+
     const timeData = props.wordsDetails.map(word => word.timeSpent / 1000)
     const wordLabels = props.wordsDetails.map(word => word.word)
-    
+
+    const isDark = useDark()
+
     const option: EChartsOption = {
       title: {
-        text: 'AI 学习进度分析',
+        text: '单词耗时分析',
         left: 'center',
         textStyle: {
-          color: 'var(--el-text-color-primary)'
+          color: isDark ? '#fff' : '#000'
         }
       },
       tooltip: {
@@ -79,11 +81,11 @@ export function useCharts(props: ChartProps) {
         axisLabel: {
           interval: 0,
           rotate: 45,
-          color: 'var(--el-text-color-regular)'
+          color: isDark ? '#fff' : '#000'
         },
         axisLine: {
           lineStyle: {
-            color: 'var(--el-border-color)'
+            color: isDark ? '#fff' : '#000'
           }
         }
       },
@@ -91,14 +93,14 @@ export function useCharts(props: ChartProps) {
         type: 'value',
         name: '响应时间 (秒)',
         nameTextStyle: {
-          color: 'var(--el-text-color-regular)'
+          color: isDark ? '#ffffff80' : '#000'
         },
         axisLabel: {
-          color: 'var(--el-text-color-regular)'
+          color: isDark ? '#ffffff80' : '#000'
         },
         splitLine: {
           lineStyle: {
-            color: 'var(--el-border-color-lighter)'
+            color: isDark ? '#ffffff80' : '#000'
           }
         }
       },
@@ -125,12 +127,12 @@ export function useCharts(props: ChartProps) {
         }
       }]
     }
-    
+
     chart.setOption(option)
-    
+
     // 监听窗口大小变化，重绘图表
     window.addEventListener('resize', () => chart.resize())
-    
+
     return chart
   }
 
@@ -138,11 +140,11 @@ export function useCharts(props: ChartProps) {
   const initTimeDistributionChart = (chartElement: HTMLElement | null) => {
     if (!chartElement || !props.wordsDetails?.length) return
     const chart = echarts.init(chartElement)
-    
+
     const timeRanges = [
       '0-2秒', '2-5秒', '5-10秒', '10秒+'
     ]
-    
+
     const timeData = props.wordsDetails.reduce((acc: number[], word) => {
       const seconds = word.timeSpent / 1000
       if (seconds <= 2) acc[0]++
@@ -151,13 +153,15 @@ export function useCharts(props: ChartProps) {
       else acc[3]++
       return acc
     }, [0, 0, 0, 0])
-    
+
+    const isDark = useDark()
+
     const option: EChartsOption = {
       title: {
-        text: 'AI 反应时间分布',
+        text: '',
         left: 'center',
         textStyle: {
-          color: 'var(--el-text-color-primary)'
+          color: isDark ? '#fff' : '#000'
         }
       },
       tooltip: {
@@ -169,11 +173,11 @@ export function useCharts(props: ChartProps) {
         left: 'left',
         top: 'middle',
         textStyle: {
-          color: 'var(--el-text-color-regular)'
+          color: isDark ? '#fff' : '#000'
         }
       },
       series: [{
-        name: '反应时间分布',
+        name: '',
         type: 'pie',
         radius: ['40%', '70%'],
         data: timeRanges.map((range, index) => ({
@@ -190,16 +194,16 @@ export function useCharts(props: ChartProps) {
         label: {
           show: true,
           formatter: '{b}: {d}%',
-          color: 'var(--el-text-color-regular)'
+          color: isDark ? '#fff' : '#000'
         }
       }]
     }
-    
+
     chart.setOption(option)
-    
+
     // 监听窗口大小变化，重绘图表
     window.addEventListener('resize', () => chart.resize())
-    
+
     return chart
   }
 
@@ -207,7 +211,7 @@ export function useCharts(props: ChartProps) {
   const initPerformanceRadarChart = (chartElement: HTMLElement | null) => {
     if (!chartElement || !props.wordsDetails?.length) return
     const chart = echarts.init(chartElement)
-    
+
     // 优化评分算法，避免极端值
     const normalizeScore = (value: number) => {
       return Math.max(40, Math.min(95, value)) // 将分数限制在40-95之间
@@ -219,12 +223,14 @@ export function useCharts(props: ChartProps) {
     const efficiencyScore = normalizeScore(Math.min(100, props.wordsDetails.length / (props.sessionDuration / 60000) * 8))
     const connectionScore = normalizeScore(props.wordsDetails.filter(w => w.attempts === 1).length / props.wordsDetails.length * 100)
 
+    const isDark = useDark()
+
     const option: EChartsOption = {
       title: {
-        text: 'AI 学习能力评估',
+        text: '',
         left: 'center',
         textStyle: {
-          color: 'var(--el-text-color-primary)'
+          color: isDark ? '#fff' : '#000'
         }
       },
       radar: {
@@ -241,16 +247,16 @@ export function useCharts(props: ChartProps) {
           }
         },
         axisName: {
-          color: 'var(--el-text-color-regular)'
+          color: isDark ? '#fff' : '#000'
         },
         axisLine: {
           lineStyle: {
-            color: 'var(--el-border-color)'
+            color: isDark ? '#ffffff30' : '#000'
           }
         },
         splitLine: {
           lineStyle: {
-            color: 'var(--el-border-color-lighter)'
+            color: isDark ? '#ffffff30' : '#000'
           }
         }
       },
@@ -286,12 +292,12 @@ export function useCharts(props: ChartProps) {
         }]
       }]
     }
-    
+
     chart.setOption(option)
-    
+
     // 监听窗口大小变化，重绘图表
     window.addEventListener('resize', () => chart.resize())
-    
+
     return chart
   }
 

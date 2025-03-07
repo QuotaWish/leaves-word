@@ -3,12 +3,13 @@
     <div class="chart-slider">
       <div class="charts-container">
         <!-- 使用v-show而非v-if，保留DOM -->
-        <div v-show="currentIndex === 0" key="chart1" class="chart-wrapper" :class="{'active': currentIndex === 0}">
+        <div v-show="currentIndex === 0" key="chart1" class="chart-wrapper" :class="{ 'active': currentIndex === 0 }">
           <div v-if="hasData" ref="learningPatternChart" class="chart"></div>
           <div v-else class="empty-chart">
             <div class="empty-chart-icon">
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 16L7 12L10 15L17 8L21 12" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3 16L7 12L10 15L17 8L21 12" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </div>
             <p>暂无表现数据，开始学习后将自动生成能力评估分析</p>
@@ -17,14 +18,15 @@
             <p>学习曲线分析：{{ getLearningCurveAnalysis() }}</p>
           </div>
         </div>
-        
-        <div v-show="currentIndex === 1" key="chart2" class="chart-wrapper" :class="{'active': currentIndex === 1}">
+
+        <div v-show="currentIndex === 1" key="chart2" class="chart-wrapper" :class="{ 'active': currentIndex === 1 }">
           <div v-if="hasData" ref="timeDistributionChart" class="chart"></div>
           <div v-else class="empty-chart">
             <div class="empty-chart-icon">
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="9" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2"/>
-                <path d="M12 7V12L15 15" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="9" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" />
+                <path d="M12 7V12L15 15" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
               </svg>
             </div>
             <p>暂无时间数据，开始学习后将自动生成时间分布分析</p>
@@ -33,16 +35,20 @@
             <p>时间分布分析：{{ getTimeDistributionAnalysis() }}</p>
           </div>
         </div>
-        
-        <div v-show="currentIndex === 2" key="chart3" class="chart-wrapper" :class="{'active': currentIndex === 2}">
+
+        <div v-show="currentIndex === 2" key="chart3" class="chart-wrapper" :class="{ 'active': currentIndex === 2 }">
           <div v-if="hasData" ref="performanceRadarChart" class="chart"></div>
           <div v-else class="empty-chart">
             <div class="empty-chart-icon">
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L4 6V18L12 22L20 18V6L12 2Z" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M12 22V12" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M12 12L20 6" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M12 12L4 6" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 2L4 6V18L12 22L20 18V6L12 2Z" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M12 22V12" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <path d="M12 12L20 6" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <path d="M12 12L4 6" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
               </svg>
             </div>
             <p>暂无表现数据，开始学习后将自动生成能力评估分析</p>
@@ -58,19 +64,17 @@
       <!-- SVG曲线导航指示器 -->
       <div class="tab-track">
         <svg class="tab-curve" width="100%" height="40" preserveAspectRatio="none">
-          <path class="tab-curve-path" d="M0,20 C100,40 200,0 300,20 C400,40 500,0 600,20" stroke="rgba(126, 87, 194, 0.2)" stroke-width="2" fill="none"/>
-          <path class="tab-curve-active" d="M0,20 C100,40 200,0 300,20 C400,40 500,0 600,20" stroke="rgba(126, 87, 194, 0.8)" stroke-width="2" fill="none" stroke-dasharray="600" :stroke-dashoffset="getDashOffset" />
+          <path class="tab-curve-path" d="M0,20 C100,40 200,0 300,20 C400,40 500,0 600,20"
+            stroke="rgba(126, 87, 194, 0.2)" stroke-width="2" fill="none" />
+          <path class="tab-curve-active" d="M0,20 C100,40 200,0 300,20 C400,40 500,0 600,20"
+            stroke="rgba(126, 87, 194, 0.8)" stroke-width="2" fill="none" stroke-dasharray="600"
+            :stroke-dashoffset="getDashOffset" />
         </svg>
       </div>
-      
+
       <div class="tab-indicators">
-        <div 
-          v-for="(title, index) in chartTitles" 
-          :key="index" 
-          class="tab-item"
-          :class="{ active: currentIndex === index }"
-          @click="currentIndex = index"
-        >
+        <div v-for="(title, index) in chartTitles" :key="index" class="tab-item"
+          :class="{ active: currentIndex === index }" @click="currentIndex = index">
           <div class="tab-dot"></div>
           <span class="tab-title">{{ title }}</span>
         </div>
@@ -96,7 +100,7 @@ const timeDistributionChart = ref<HTMLElement | null>(null)
 const performanceRadarChart = ref<HTMLElement | null>(null)
 
 const currentIndex = ref(0)
-const chartTitles = ['学习进度分析', '反应时间分布', '学习能力评估']
+const chartTitles = ['单词耗时分析', '反应时间分布', '学习能力评估']
 let autoplayTimer: number | null = null
 let charts: echarts.ECharts[] = []
 let allChartsInitialized = false
@@ -120,9 +124,9 @@ const getDashOffset = computed(() => {
   return pathLength - (position * pathLength)
 })
 
-const { 
-  initLearningPatternChart, 
-  initTimeDistributionChart, 
+const {
+  initLearningPatternChart,
+  initTimeDistributionChart,
   initPerformanceRadarChart,
   getLearningCurveAnalysis,
   getTimeDistributionAnalysis,
@@ -141,7 +145,7 @@ const prevChart = () => {
 // 初始化所有图表
 const initAllCharts = () => {
   if (!hasData.value || allChartsInitialized) return
-  
+
   // 初始化所有图表
   setTimeout(() => {
     // 依次初始化三个图表
@@ -149,19 +153,19 @@ const initAllCharts = () => {
       const chart = initLearningPatternChart(learningPatternChart.value)
       if (chart) charts[0] = chart
     }
-    
+
     if (timeDistributionChart.value) {
       const chart = initTimeDistributionChart(timeDistributionChart.value)
       if (chart) charts[1] = chart
     }
-    
+
     if (performanceRadarChart.value) {
       const chart = initPerformanceRadarChart(performanceRadarChart.value)
       if (chart) charts[2] = chart
     }
-    
+
     allChartsInitialized = true
-    
+
     // 初始化后，resize当前显示的图表
     resizeCurrentChart()
   }, 500)
@@ -194,7 +198,7 @@ const stopAutoplay = () => {
 watch(currentIndex, (index) => {
   // 重启自动轮播
   startAutoplay()
-  
+
   // 如果图表已经初始化，只需resize当前图表
   if (allChartsInitialized) {
     nextTick(() => {
@@ -206,16 +210,16 @@ watch(currentIndex, (index) => {
 // 监听数据变化
 watch(() => props.wordsDetails, () => {
   if (!hasData.value) return
-  
+
   // 数据变化时重新初始化所有图表
   allChartsInitialized = false
-  
+
   // 清理旧图表
   charts.forEach(chart => {
     if (chart) chart.dispose()
   })
   charts = [null, null, null] as any
-  
+
   // 重新初始化
   nextTick(() => {
     initAllCharts()
@@ -225,24 +229,24 @@ watch(() => props.wordsDetails, () => {
 onMounted(() => {
   // 初始化图表数组
   charts = [null, null, null] as any
-  
+
   // 延迟初始化，确保DOM已经渲染
   nextTick(() => {
     if (hasData.value) {
       initAllCharts()
     }
   })
-  
+
   // 开始自动轮播
   startAutoplay()
-  
+
   // 鼠标移入停止轮播，移出恢复
   const container = document.querySelector('.charts-carousel-container')
   if (container) {
     container.addEventListener('mouseenter', stopAutoplay)
     container.addEventListener('mouseleave', startAutoplay)
   }
-  
+
   // 添加ResizeObserver监听容器大小变化
   if (window.ResizeObserver) {
     const resizeObserver = new ResizeObserver(() => {
@@ -250,12 +254,12 @@ onMounted(() => {
         resizeCurrentChart()
       }
     })
-    
+
     const chartSlider = document.querySelector('.chart-slider')
     if (chartSlider) {
       resizeObserver.observe(chartSlider)
     }
-    
+
     onBeforeUnmount(() => {
       resizeObserver.disconnect()
     })
@@ -264,12 +268,12 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   stopAutoplay()
-  
+
   // 销毁所有图表实例，避免内存泄漏
   charts.forEach(chart => {
     if (chart) chart.dispose()
   })
-  
+
   // 移除事件监听
   const container = document.querySelector('.charts-carousel-container')
   if (container) {
@@ -358,19 +362,31 @@ onBeforeUnmount(() => {
 }
 
 @keyframes pulse {
-  0% { transform: scale(0.95); opacity: 0.7; }
-  50% { transform: scale(1.05); opacity: 1; }
-  100% { transform: scale(0.95); opacity: 0.7; }
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
 }
 
 .chart-analysis {
   padding: 12px 16px;
-  background: rgba(126,87,194,0.08);
+  background: rgba(126, 87, 194, 0.08);
   border-radius: 12px;
   font-size: 14px;
   color: var(--el-text-color-regular);
   line-height: 1.5;
-  margin-top: auto; /* 将分析固定在底部 */
+  margin-top: auto;
+  /* 将分析固定在底部 */
 }
 
 .chart-analysis p {
@@ -404,7 +420,8 @@ onBeforeUnmount(() => {
   width: 100%;
 }
 
-.tab-curve-path, .tab-curve-active {
+.tab-curve-path,
+.tab-curve-active {
   transition: stroke-dashoffset 0.5s ease;
 }
 
@@ -464,7 +481,7 @@ onBeforeUnmount(() => {
   .chart-slider {
     height: 300px;
   }
-  
+
   .chart {
     min-height: 200px;
   }
@@ -479,4 +496,4 @@ onBeforeUnmount(() => {
 :root[data-theme='dark'] .chart-analysis {
   background: rgba(126, 87, 194, 0.1);
 }
-</style> 
+</style>
