@@ -1,6 +1,6 @@
 [build]
 publish = "dist"
-command = "node --max-old-space-size pnpm run build:view"
+command = "pnpm run build:view"
 
 [build.environment]
 NODE_VERSION = "20"
