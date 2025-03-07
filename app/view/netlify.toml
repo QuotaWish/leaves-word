@@ -1,5 +1,5 @@
 [build]
-publish = "dist"
+publish = "app/view/dist"
 command = "pnpm run build:view"
 
 [build.environment]
