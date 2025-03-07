@@ -3,6 +3,7 @@ import { $api } from '../api'
 import ErrorAudio from '/sounds/error.mp3'
 import SuccessAudio from '/sounds/right.mp3'
 import CherryTapAudio from '/sounds/Cherry MX Blues.mp3'
+import VictoryAudio from '/sounds/victory.mp3'
 
 export function useWordSound(word: string): Promise<HTMLAudioElement> {
   const url = $api.utils.getWordPronounce(word)
@@ -56,6 +57,13 @@ export function useSuccessAudio() {
 export function useCherryTapAudio() {
   const audio = new Audio()
   audio.src = CherryTapAudio
+
+  return audio
+}
+
+export function useVictoryAudio() {
+  const audio = new Audio()
+  audio.src = VictoryAudio
 
   return audio
 }

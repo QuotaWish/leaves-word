@@ -743,6 +743,12 @@ function handleMainAreaClick(e: MouseEvent) {
           transition: all 0.2s cubic-bezier(0.25, 1.0, 0.5, 1.4);
           position: relative;
 
+          filter: invert(1);
+
+          .dark .drawer-button {
+            filter: invert(0);
+          }
+
           &:hover {
             background: rgba(255, 255, 255, 0.25);
             transform: scale(1.05);

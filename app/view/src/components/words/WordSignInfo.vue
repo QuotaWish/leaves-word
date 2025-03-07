@@ -56,7 +56,8 @@ async function handleCheckSign() {
 </script>
 
 <template>
-  <WordSignInfoCard :class="{ signed: todayData?.signed }" text-black class="transition-cubic WordSignInfo-Wrapper transition-duration-500">
+  <WordSignInfoCard :class="{ signed: todayData?.signed }" text-black
+    class="transition-cubic WordSignInfo-Wrapper transition-duration-500">
     <div class="leaf-decoration top-left" />
     <div class="leaf-decoration bottom-right" />
 
@@ -175,6 +176,18 @@ async function handleCheckSign() {
 </template>
 
 <style lang="scss">
+.WordSignInfo-Checked {
+  position: absolute;
+
+  top: 50%;
+  right: 0;
+
+  width: 50%;
+  height: 50%;
+
+  transform: translate(0, -50%);
+}
+
 .WordSignInfo-Content {
   .WordSignInfo-Content-Title {
     color: var(--theme-color-dark);
@@ -240,12 +253,10 @@ async function handleCheckSign() {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.05),
-        rgba(255, 255, 255, 0.2),
-        rgba(255, 255, 255, 0.05)
-      );
+      background: linear-gradient(90deg,
+          rgba(255, 255, 255, 0.05),
+          rgba(255, 255, 255, 0.2),
+          rgba(255, 255, 255, 0.05));
     }
   }
 
@@ -527,6 +538,7 @@ async function handleCheckSign() {
   0% {
     transform: translateX(-100%);
   }
+
   100% {
     transform: translateX(100%);
   }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import NumberFlow from '@number-flow/vue'
 import { dayjs } from 'element-plus'
-import { calendarManager, Statistics } from '~/composables/words'
+import { calendarManager, Statistics, useVictoryAudio } from '~/composables/words'
 import Astronaut from '/svg/astronaut.svg'
 import Mello from '/svg/mello.svg'
 import CoffettiParticle from '~/components/chore/CoffettiParticle.vue'
@@ -19,19 +19,22 @@ const drawerPage = useInstanceRef(DrawerPage)
 const router = useRouter()
 // const globalSplashState = useGlobalSplashState()
 
+const victoryAudio = useVictoryAudio()
+
 const statCompMapper = {
   ['COMPREHENSIVE']: ComprehensiveStat,
 }
 
 setTimeout(() => {
   drawerPage.value?.drawerControl.show()
-}, 1000)
+}, 1800)
 
 setTimeout(() => {
   drawerPage.value?.drawerControl.expand()
-}, 3000)
+}, 3800)
 
 onMounted(() => {
+  victoryAudio.play()
 
   // 其他逻辑...
   setTimeout(async () => {
@@ -71,6 +74,10 @@ onMounted(() => {
 
     score.value = todaySubData.words.length * 1.5
   }, 800)
+})
+
+defineOptions({
+  name: 'SignedPage',
 })
 </script>
 

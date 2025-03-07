@@ -35,20 +35,10 @@ const cozeWebSDK = new CozeWebSDK.WebChatClient({
 </script>
 
 <template>
-  <PlanLayout
-    :class="{ immersive: immersiveMode }"
-  >
+  <PlanLayout :class="{ immersive: immersiveMode }">
     <template #header>
-      <RoundInfo
-        type="success"
-        class="coffee-font"
-        text-1.75xl
-        flex
-        items-center
-        gap-1
-        font-bold
-        @click="cozeWebSDK.showChatBot()"
-      >
+      <RoundInfo type="success" class="coffee-font" text-1.75xl flex items-center gap-1 font-bold
+        @click="cozeWebSDK.showChatBot()">
         <img w-8 src="/ai-logo.png">
         Tata
       </RoundInfo>
@@ -74,9 +64,7 @@ const cozeWebSDK = new CozeWebSDK.WebChatClient({
 
     <template #cover>
       <div class="PlanCover-Wrapper absolute-layout" @click="immersiveMode = !immersiveMode">
-        <slot
-          name="cover"
-        />
+        <slot name="cover" />
 
         <div class="Immersive-Wrapper absolute-layout">
           <div class="Immersive-Decoration transition-cubic top-left absolute transition-duration-500" />
@@ -101,6 +89,7 @@ const cozeWebSDK = new CozeWebSDK.WebChatClient({
   .immersive & {
     bottom: 2rem;
   }
+
   left: 50%;
   bottom: -10rem;
 
@@ -119,6 +108,7 @@ const cozeWebSDK = new CozeWebSDK.WebChatClient({
 
     background: linear-gradient(to right, var(--theme-color) 50%, #0000);
   }
+
   &.bottom-right {
     bottom: 0;
     right: -15rem;
@@ -130,10 +120,12 @@ const cozeWebSDK = new CozeWebSDK.WebChatClient({
     &.top-left {
       left: -10rem;
     }
+
     &.bottom-right {
       right: -10rem;
     }
   }
+
   width: 12rem;
   height: 30%;
 
@@ -143,32 +135,38 @@ const cozeWebSDK = new CozeWebSDK.WebChatClient({
 .PlanLayout {
   &.immersive {
     .IndexPage-Card {
-      transform: scale(0.00001);
+      transform: scale(0.01);
     }
 
     .PlanLayout-Header {
-      transform: translateY(-5rem) scale(0.00001);
+      transform: translateY(-5rem) scale(0.01);
     }
 
     .PlanCover-Bg {
-      filter: blur(18px) saturate(180%);
+      --fake-opacity: 0;
+      filter: saturate(120%) brightness(120%);
+    //  filter: blur(18px) saturate(180%);
     }
 
     .PlanCover-Main-Inner {
       .content-text {
         font-size: 2rem !important;
       }
+
       .translation-text {
         font-size: 1.5rem !important;
       }
+
       .author-text {
         font-size: 1.2rem !important;
       }
+
       bottom: 50%;
 
       transform: translate(-50%, 50%);
     }
   }
+
   .IndexPage-Card {
     transform: scale(1);
   }
