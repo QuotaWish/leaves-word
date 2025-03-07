@@ -1,41 +1,30 @@
 <template>
   <div class="ai-features-container">
-    <div class="ai-feature-card">
+    <div class="ai-feature-card MentionCard">
       <div class="ai-feature-header">
-        <div class="icon-wrapper">
-          <i class="el-icon-magic-stick"></i>
-        </div>
         <h3>AI智能学习建议</h3>
-        <div class="ai-badge">AI智能</div>
+        <div class="ai-badge">AI建议</div>
       </div>
-      <div class="ai-feature-content">
-        <div class="ai-typing-effect">{{ getPersonalizedTips() }}</div>
-        <div class="ai-animation-dots">
+      <div class="ai-typing-effect">{{ getPersonalizedTips() }}</div>
+      <!-- <div class="ai-feature-content"> -->
+        <!-- <div class="ai-animation-dots">
           <span></span><span></span><span></span>
-        </div>
-        <div class="ai-actions">
-          <el-button size="small" type="primary" round @click="regenerateTips">重新生成建议</el-button>
-        </div>
-      </div>
+        </div> -->
+      <!-- </div> -->
     </div>
-    
+
     <div class="ai-feature-card">
       <div class="ai-feature-header">
         <div class="icon-wrapper">
-          <i class="el-icon-warning"></i>
+          <div i-carbon-ai-results />
         </div>
         <h3>难点智能识别</h3>
         <div class="ai-badge">AI分析</div>
       </div>
       <div class="ai-feature-content">
         <div v-if="difficultWords.length > 0" class="difficulty-tags">
-          <el-tag 
-            v-for="word in difficultWords" 
-            :key="word.word"
-            :type="getTagType(word.attempts)"
-            effect="dark"
-            class="word-tag"
-          >
+          <el-tag v-for="word in difficultWords" :key="word.word" :type="getTagType(word.attempts)" effect="dark"
+            class="word-tag">
             {{ word.word }}
           </el-tag>
         </div>
@@ -49,7 +38,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="ai-feature-card">
       <div class="ai-feature-header">
         <div class="icon-wrapper">
@@ -61,7 +50,8 @@
       <div class="ai-feature-content">
         <div class="learning-path">
           <el-steps :active="learningPathStep" finish-status="success" simple>
-            <el-step v-for="(step, index) in learningPath" :key="index" :title="step.title" :description="step.description"></el-step>
+            <el-step v-for="(step, index) in learningPath" :key="index" :title="step.title"
+              :description="step.description"></el-step>
           </el-steps>
         </div>
         <div class="ai-learning-tip">
@@ -73,7 +63,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="ai-feature-card">
       <div class="ai-feature-header">
         <div class="icon-wrapper">
@@ -91,12 +81,7 @@
             <div class="message-content">{{ aiMessage }}</div>
           </div>
           <div class="user-input">
-            <el-input 
-              v-model="userQuestion" 
-              placeholder="询问AI关于你的学习情况..." 
-              @keyup.enter="askAI"
-              round
-            >
+            <el-input v-model="userQuestion" placeholder="询问AI关于你的学习情况..." @keyup.enter="askAI" round>
               <template #prefix>
                 <i class="el-icon-search"></i>
               </template>
@@ -153,7 +138,7 @@ const learningPathStep = computed(() => {
 // AI特色功能方法
 const getPersonalizedTips = () => {
   if (!props.wordsDetails?.length) return '当你开始学习后，AI将为你提供个性化的学习建议。'
-  
+
   const tips = [
     '根据你的学习表现，建议你增加每日复习次数，尤其是对于反应时间较慢的单词。',
     '你的学习曲线显示定期复习效果最佳，建议每3天系统复习一次学过的内容。',
@@ -161,12 +146,12 @@ const getPersonalizedTips = () => {
     '你的学习专注度很高，建议在疲劳前适当休息，保持高效学习状态。',
     '分析显示你在晚上学习效率更高，建议调整学习时间获得更好效果。'
   ]
-  
+
   // 根据用户表现选择最合适的建议
   if (props.correctRate < 0.6) return tips[0]
   if (props.averageTimePerWord > 5000) return tips[2]
   if (props.sessionDuration > 30 * 60 * 1000) return tips[3]
-  
+
   // 随机返回一条建议
   return tips[Math.floor(Math.random() * tips.length)]
 }
@@ -189,14 +174,14 @@ const getTagType = (attempts: number) => {
 
 const getDifficultyAnalysis = () => {
   if (!difficultWords.value.length) return '暂无难点数据分析'
-  
+
   const patterns = [
     '你的学习难点主要集中在较长的词汇上，建议采用拆分记忆法。',
     '分析显示您对抽象概念类词汇掌握较慢，建议通过具体场景联想增强记忆。',
     'AI检测到你对含特殊拼写规则的词汇记忆困难，推荐通过规则归纳提高效率。',
     '根据你的学习数据，AI建议你对这些难点词汇增加50%的复习频率。'
   ]
-  
+
   return patterns[Math.floor(Math.random() * patterns.length)]
 }
 
@@ -207,13 +192,13 @@ const getLearningPathTip = () => {
     '针对难点进行专项训练，结合AI分析找出记忆瓶颈。',
     '恭喜你已达到高级水平！建议尝试更复杂的学习材料挑战自我。'
   ]
-  
+
   return tips[learningPathStep.value]
 }
 
 const askAI = () => {
   if (!userQuestion.value) return
-  
+
   // 实际应用中这里应该调用后端API获取AI回复
   // 这里仅模拟AI回复
   const responses = [
@@ -223,13 +208,17 @@ const askAI = () => {
     '你的学习状态略有波动，可能与学习环境或时间有关，建议固定学习时间以获得更稳定的效果。',
     '如果你遇到记忆困难，AI推荐你尝试词根词缀记忆法或联想记忆法，这对于你的学习类型特别有效。'
   ]
-  
+
   aiMessage.value = responses[Math.floor(Math.random() * responses.length)]
   userQuestion.value = ''
 }
 </script>
 
 <style scoped>
+.MentionCard {
+  background-color: #7e57c250 !important;
+}
+
 .ai-features-container {
   display: flex;
   flex-direction: column;
@@ -257,20 +246,24 @@ const askAI = () => {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle at center, rgba(126,87,194,0.03) 0%, transparent 50%);
+  background: radial-gradient(circle at center, rgba(126, 87, 194, 0.03) 0%, transparent 50%);
   animation: rotate 20s linear infinite;
   z-index: -1;
 }
 
 @keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .ai-feature-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(126,87,194,0.2);
-  border-color: rgba(126,87,194,0.2);
+  border-color: rgba(126, 87, 194, 0.2);
 }
 
 .ai-feature-header {
@@ -288,8 +281,8 @@ const askAI = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(126,87,194,0.8), rgba(33,150,243,0.8));
-  box-shadow: 0 4px 8px rgba(126,87,194,0.3);
+  background: linear-gradient(135deg, rgba(126, 87, 194, 0.8), rgba(33, 150, 243, 0.8));
+  box-shadow: 0 4px 8px rgba(126, 87, 194, 0.3);
   position: relative;
   overflow: hidden;
 }
@@ -301,14 +294,24 @@ const askAI = () => {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
   animation: pulse-light 3s ease-in-out infinite;
 }
 
 @keyframes pulse-light {
-  0% { transform: scale(0.8); opacity: 0; }
-  50% { opacity: 0.5; }
-  100% { transform: scale(1.2); opacity: 0; }
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
 }
 
 .ai-feature-header i {
@@ -340,14 +343,6 @@ const askAI = () => {
   font-size: 16px;
   color: var(--el-text-color-regular);
   line-height: 1.8;
-  padding: 0 16px;
-  position: relative;
-}
-
-/* AI 动画效果 */
-.ai-typing-effect {
-  border-left: 3px solid #7e57c2;
-  padding-left: 16px;
   position: relative;
 }
 
@@ -378,8 +373,17 @@ const askAI = () => {
 }
 
 @keyframes dot-pulse {
-  0%, 100% { transform: scale(0.8); opacity: 0.6; }
-  50% { transform: scale(1.2); opacity: 1; }
+
+  0%,
+  100% {
+    transform: scale(0.8);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
 }
 
 .ai-actions {
@@ -409,18 +413,36 @@ const askAI = () => {
 .ai-difficulty-analysis {
   margin-top: 16px;
   padding: 16px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  border-left: 4px solid #7e57c2;
   position: relative;
 }
 
 .ai-analysis-header {
+  &::before {
+    content: "";
+    position: absolute;
+
+    left: 8px;
+    bottom: 3px;
+
+    width: 30%;
+    height: 3px;
+
+    mask: linear-gradient(to right, #000 50%, transparent);
+    border-radius: 10px;
+    transform: skewX(45deg);
+    background-color: currentColor;
+
+    filter: brightness(0.9);
+  }
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
-  color: #7e57c2;
+  color: #C582FF;
+  /* filter: brightness(1.5) saturate(120%) contrast(1.2); */
   font-weight: 500;
 }
 
@@ -430,7 +452,7 @@ const askAI = () => {
 
 .learning-path {
   margin: 16px 0;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   padding: 16px;
 }
@@ -457,7 +479,7 @@ const askAI = () => {
   font-style: italic;
   color: var(--el-text-color-secondary);
   padding: 12px;
-  background: rgba(126,87,194,0.1);
+  background: rgba(126, 87, 194, 0.1);
   border-radius: 8px;
   position: relative;
 }
@@ -479,7 +501,7 @@ const askAI = () => {
   border-radius: 50%;
   background: linear-gradient(135deg, #7e57c2, #2196f3);
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(126,87,194,0.4);
+  box-shadow: 0 2px 8px rgba(126, 87, 194, 0.4);
   position: relative;
 }
 
@@ -489,22 +511,29 @@ const askAI = () => {
   height: 100%;
   border-radius: 50%;
   background: transparent;
-  border: 2px solid rgba(126,87,194,0.4);
+  border: 2px solid rgba(126, 87, 194, 0.4);
   animation: avatar-pulse 2s infinite;
 }
 
 @keyframes avatar-pulse {
-  0% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(1.4); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
 }
 
 .message-content {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
   padding: 12px 16px;
   border-radius: 18px;
   border-top-left-radius: 4px;
   max-width: calc(100% - 60px);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   position: relative;
 }
 
@@ -515,7 +544,7 @@ const askAI = () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to right, rgba(126,87,194,0.05), transparent);
+  background: linear-gradient(to right, rgba(126, 87, 194, 0.05), transparent);
   border-radius: 18px;
   border-top-left-radius: 4px;
   pointer-events: none;
@@ -574,4 +603,4 @@ const askAI = () => {
 :root[data-theme='dark'] .ai-feature-graph {
   background: rgba(126, 87, 194, 0.05);
 }
-</style> 
+</style>
