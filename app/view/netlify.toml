@@ -1,5 +1,5 @@
 [build]
-publish = "app/view/dist"
+publish = "dist"
 command = "node --max-old-space-size pnpm run build:view"
 
 [build.environment]
