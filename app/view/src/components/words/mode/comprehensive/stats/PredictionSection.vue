@@ -6,18 +6,20 @@
       <div v-else class="empty-prediction">
         <div class="empty-chart-icon">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 12h4v8H3v-8zm7-5h4v13h-4V7zm7-5h4v18h-4V2z" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 12h4v8H3v-8zm7-5h4v13h-4V7zm7-5h4v18h-4V2z" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </div>
         <p>学习数据不足，开始学习后将自动生成AI预测分析</p>
       </div>
       <div class="prediction-analysis">
-        <p>{{ getPredictionAnalysis() }}</p>
+        <p v-html="getPredictionAnalysis()"></p>
         <div class="prediction-accuracy">
           <span>AI预测准确率: </span>
           <div class="custom-progress">
             <div class="progress-track"></div>
-            <div class="progress-fill" :style="{width: `${predictAccuracy}%`, background: predictAccuracyColor}"></div>
+            <div class="progress-fill" :style="{ width: `${predictAccuracy}%`, background: predictAccuracyColor }">
+            </div>
           </div>
         </div>
       </div>
@@ -29,7 +31,6 @@
 import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
 import * as echarts from 'echarts'
 import type { EChartsOption } from 'echarts'
-import { ElProgress } from 'element-plus'
 
 const props = defineProps<{
   correctRate: number
@@ -53,21 +54,28 @@ const predictAccuracyColor = computed(() => {
 
 const getPredictionAnalysis = () => {
   if (!hasData.value) return '学习数据不足，暂无预测分析'
-  
-  return 'AI预测如果您保持当前学习频率，预计在14天内词汇量将提升32%，词汇反应速度提升18%。建议增加学习频率以达到更好效果。'
+
+  // 基于correctRate计算预期提升
+  const currentRate = props.correctRate * 100
+  const expectedImprovement = Math.min(50, Math.round((1 - currentRate / 100) * 50))
+  const daysToTarget = Math.round(expectedImprovement / 2) + 10
+  const reactionImprovement = Math.round(expectedImprovement * 0.6)
+  const recommendFrequency = props.wordsDetails.length < 10 ? '每天' : '每周至少3次'
+
+  return `AI预测如果您保持当前学习频率，预计在<span class="highlight-data">${daysToTarget}天</span>内词汇量将提升<span class="highlight-data">${expectedImprovement}%</span>，词汇反应速度提升<span class="highlight-data">${reactionImprovement}%</span>。建议${recommendFrequency}学习以达到更好效果。`
 }
 
 const initPredictionChart = () => {
   if (!predictionChart.value || !hasData.value) return
-  
+
   // 销毁之前的图表实例
   if (chart) {
     chart.dispose()
   }
-  
+
   // 创建新图表
   chart = echarts.init(predictionChart.value)
-  
+
   const days = ['今天', '3天后', '7天后', '14天后', '30天后']
   // 模拟预测数据
   const currentRate = props.correctRate * 100
@@ -78,20 +86,22 @@ const initPredictionChart = () => {
     Math.min(100, currentRate * 1.35),
     Math.min(100, currentRate * 1.5)
   ]
-  
+
+  const isDarkMode = useDark()
+
   const option: EChartsOption = {
     title: {
-      text: 'AI学习成效预测',
+      text: '',
       left: 'center',
       textStyle: {
         fontSize: 14,
         fontWeight: 'normal',
-        color: 'var(--el-text-color-regular)'
+        color: isDarkMode ? '#0000' : '#0000'
       }
     },
     tooltip: {
       trigger: 'axis',
-      formatter: function(params: any) {
+      formatter: function (params: any) {
         return `${params[0].name}<br/>${params[0].seriesName}: ${params[0].value.toFixed(1)}%`
       }
     },
@@ -107,11 +117,11 @@ const initPredictionChart = () => {
       data: days,
       axisLabel: {
         fontSize: 10,
-        color: 'var(--el-text-color-regular)'
+        color: isDarkMode ? '#ffffff50' : '#000'
       },
       axisLine: {
         lineStyle: {
-          color: 'var(--el-border-color)'
+          color: isDarkMode ? '#ffffff50' : '#000'
         }
       }
     },
@@ -122,11 +132,11 @@ const initPredictionChart = () => {
       axisLabel: {
         formatter: '{value}%',
         fontSize: 10,
-        color: 'var(--el-text-color-regular)'
+        color: isDarkMode ? '#ffffff50' : '#000'
       },
       splitLine: {
         lineStyle: {
-          color: 'var(--el-border-color-lighter)'
+          color: isDarkMode ? '#ffffff50' : '#000'
         }
       }
     },
@@ -155,7 +165,7 @@ const initPredictionChart = () => {
           colorStops: [
             {
               offset: 0,
-              color: 'rgba(126, 87, 194, 0.2)'
+              color: 'rgba(126, 87, 194, 0.75)'
             },
             {
               offset: 1,
@@ -166,16 +176,16 @@ const initPredictionChart = () => {
       }
     }]
   }
-  
+
   chart.setOption(option)
-  
+
   // 响应式调整
   const resizeHandler = () => {
     if (chart) chart.resize()
   }
-  
+
   window.addEventListener('resize', resizeHandler)
-  
+
   // 返回清理函数
   return () => {
     window.removeEventListener('resize', resizeHandler)
@@ -186,6 +196,9 @@ onMounted(() => {
   // 延迟初始化以确保DOM已渲染
   setTimeout(() => {
     initPredictionChart()
+    setTimeout(() => {
+      initPredictionChart()
+    }, 1000)
   }, 300)
 })
 
@@ -281,9 +294,20 @@ onBeforeUnmount(() => {
 }
 
 @keyframes pulse {
-  0% { transform: scale(0.95); opacity: 0.7; }
-  50% { transform: scale(1.05); opacity: 1; }
-  100% { transform: scale(0.95); opacity: 0.7; }
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
 }
 
 .prediction-analysis {
@@ -351,4 +375,13 @@ onBeforeUnmount(() => {
 :root[data-theme='dark'] .empty-prediction {
   background: rgba(126, 87, 194, 0.1);
 }
-</style> 
+</style>
+
+<style>
+.ai-prediction-section .highlight-data {
+  color: #7e57c2 !important;
+  font-weight: 600;
+
+  filter: brightness(150%);
+}
+</style>
