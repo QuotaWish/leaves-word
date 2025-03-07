@@ -23,7 +23,7 @@ $api.utils.getDailyQuote().then((res: any) => {
 
 // 根据内容长度获取基准字体大小
 const baseFontSize = computed(() => {
-  return data.content.length > 100 ? '1.2rem' : '1.5rem'
+  return data.content.length > 80 ? '1.2rem' : '1.5rem'
 })
 </script>
 

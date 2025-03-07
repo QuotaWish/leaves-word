@@ -130,7 +130,7 @@
   user-select: none;
   border-radius: 25px;
 
-  filter: drop-shadow(0 0 4px var(--theme-color));
+  // filter: drop-shadow(0 0 1px var(--theme-color));
   backdrop-filter: blur(18px) saturate(180%) brightness(120%);
   //   background-image: linear-gradient(to right, var(--theme-color), var(--theme-color-dark));
 

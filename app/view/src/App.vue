@@ -22,7 +22,7 @@ modeManager.set(ModeType.READING, (dictionaryStorage: DictStorage) => new DictWo
       <template #main>
         <router-view v-slot="{ Component }">
           <TransitionPage>
-            <keep-alive :exclude="['DictionaryPage']">
+            <keep-alive :exclude="['DictionaryPage', 'SignedPage']">
               <component :is="Component" />
             </keep-alive>
           </TransitionPage>
