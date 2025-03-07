@@ -64,6 +64,8 @@ const initEbbinghausChart = () => {
     100, 82, 72, 65, 58, 50, 44, 40, 37, 32, 29, 27, 24
   ]
 
+  const isDark = useDark()
+
   const option: EChartsOption = {
     title: {
       text: '记忆保留曲线',
@@ -71,7 +73,7 @@ const initEbbinghausChart = () => {
       textStyle: {
         fontSize: 14,
         fontWeight: 'normal',
-        color: 'var(--el-text-color-primary)'
+        color: isDark ? '#fff' : '#000'
       }
     },
     tooltip: {
@@ -97,7 +99,7 @@ const initEbbinghausChart = () => {
       bottom: 0,
       textStyle: {
         fontSize: 12,
-        color: 'var(--el-text-color-regular)'
+        color: isDark ? '#fff' : '#000'
       }
     },
     grid: {
@@ -121,11 +123,11 @@ const initEbbinghausChart = () => {
         fontSize: 10,
         hideOverlap: true,
         interval: 'auto',
-        color: 'var(--el-text-color-regular)'
+        color: isDark ? '#fff' : '#000'
       },
       axisLine: {
         lineStyle: {
-          color: 'var(--el-border-color)'
+          color: isDark ? '#fff' : '#000'
         }
       }
     },
@@ -136,11 +138,11 @@ const initEbbinghausChart = () => {
       axisLabel: {
         formatter: '{value}%',
         fontSize: 10,
-        color: 'var(--el-text-color-regular)'
+        color: isDark ? '#fff' : '#000'
       },
       splitLine: {
         lineStyle: {
-          color: 'var(--el-border-color-lighter)'
+          color: isDark ? '#fff' : '#000'
         }
       }
     },
@@ -155,7 +157,7 @@ const initEbbinghausChart = () => {
         data: ebbinghausData,
         lineStyle: {
           width: 2,
-          color: '#909399'
+          color: isDark ? '#909399' : '#000'
         },
         symbolSize: 4
       },
@@ -169,10 +171,10 @@ const initEbbinghausChart = () => {
         data: userMemoryData,
         lineStyle: {
           width: 3,
-          color: '#7e57c2'
+          color: isDark ? '#7e57c2' : '#000'
         },
         itemStyle: {
-          color: '#7e57c2'
+          color: isDark ? '#7e57c2' : '#000'
         },
         symbolSize: 6,
         areaStyle: {
@@ -186,11 +188,11 @@ const initEbbinghausChart = () => {
             colorStops: [
               {
                 offset: 0,
-                color: 'rgba(126, 87, 194, 0.2)'
+                color: isDark ? 'rgba(126, 87, 194, 0.2)' : 'rgba(126, 87, 194, 0.2)'
               },
               {
                 offset: 1,
-                color: 'rgba(126, 87, 194, 0.05)'
+                color: isDark ? 'rgba(126, 87, 194, 0.05)' : 'rgba(126, 87, 194, 0.05)'
               }
             ]
           }

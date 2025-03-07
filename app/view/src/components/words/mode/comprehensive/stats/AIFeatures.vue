@@ -1,16 +1,13 @@
 <template>
   <div class="ai-features-container">
-    <div class="ai-feature-card MentionCard">
+    <div class="ai-feature-card primary-card">
       <div class="ai-feature-header">
         <h3>AI智能学习建议</h3>
         <div class="ai-badge">AI建议</div>
       </div>
-      <div class="ai-typing-effect">{{ getPersonalizedTips() }}</div>
-      <!-- <div class="ai-feature-content"> -->
-        <!-- <div class="ai-animation-dots">
-          <span></span><span></span><span></span>
-        </div> -->
-      <!-- </div> -->
+      <div class="ai-feature-content">
+        {{ getPersonalizedTips() }}
+      </div>
     </div>
 
     <div class="ai-feature-card">
@@ -23,17 +20,13 @@
       </div>
       <div class="ai-feature-content">
         <div v-if="difficultWords.length > 0" class="difficulty-tags">
-          <el-tag v-for="word in difficultWords" :key="word.word" :type="getTagType(word.attempts)" effect="dark"
+          <el-tag v-for="word in difficultWords" :key="word.word" :type="getTagType(word.attempts)" effect="plain"
             class="word-tag">
             {{ word.word }}
           </el-tag>
         </div>
         <p v-else>暂未发现明显的学习难点，继续保持！</p>
-        <div class="ai-difficulty-analysis">
-          <div class="ai-analysis-header">
-            <i class="el-icon-cpu"></i>
-            <span>AI分析结果</span>
-          </div>
+        <div class="ai-analysis">
           <p>{{ getDifficultyAnalysis() }}</p>
         </div>
       </div>
@@ -42,7 +35,7 @@
     <div class="ai-feature-card">
       <div class="ai-feature-header">
         <div class="icon-wrapper">
-          <i class="el-icon-map-location"></i>
+          <div i-carbon-compass/>
         </div>
         <h3>个性化学习路径</h3>
         <div class="ai-badge">AI定制</div>
@@ -54,12 +47,8 @@
               :description="step.description"></el-step>
           </el-steps>
         </div>
-        <div class="ai-learning-tip">
-          <div class="ai-chip">
-            <i class="el-icon-s-opportunity"></i>
-            <span>AI 建议</span>
-          </div>
-          <p class="learning-path-tip">{{ getLearningPathTip() }}</p>
+        <div class="ai-tip">
+          <p>{{ getLearningPathTip() }}</p>
         </div>
       </div>
     </div>
@@ -67,27 +56,18 @@
     <div class="ai-feature-card">
       <div class="ai-feature-header">
         <div class="icon-wrapper">
-          <i class="el-icon-chat-dot-round"></i>
+          <div i-carbon-chart-logistic-regression />
         </div>
         <h3>AI互动反馈</h3>
         <div class="ai-badge">AI助手</div>
       </div>
       <div class="ai-feature-content">
         <div class="ai-chat">
-          <div class="ai-message">
-            <div class="ai-avatar">
-              <div class="ai-avatar-pulse"></div>
-            </div>
-            <div class="message-content">{{ aiMessage }}</div>
-          </div>
+          <div class="ai-message">{{ aiMessage }}</div>
           <div class="user-input">
             <el-input v-model="userQuestion" placeholder="询问AI关于你的学习情况..." @keyup.enter="askAI" round>
-              <template #prefix>
-                <i class="el-icon-search"></i>
-              </template>
             </el-input>
             <el-button type="primary" round @click="askAI" :disabled="!userQuestion">
-              <i class="el-icon-s-promotion"></i>
               发送
             </el-button>
           </div>
@@ -121,9 +101,10 @@ const difficultWords = computed(() => {
 
 const learningPath = [
   { title: '基础巩固', description: '掌握基本词汇' },
+  { title: '理解记忆', description: '可以理解记忆' },
   { title: '能力提升', description: '提高反应速度' },
   { title: '难点突破', description: '攻克学习障碍' },
-  { title: '综合应用', description: '灵活运用所学' }
+  { title: '综合应用', description: '灵活运用所学' },
 ]
 
 const learningPathStep = computed(() => {
@@ -215,273 +196,105 @@ const askAI = () => {
 </script>
 
 <style scoped>
-.MentionCard {
-  background-color: #7e57c250 !important;
-}
-
 .ai-features-container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  margin-bottom: 32px;
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
 .ai-feature-card {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 24px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.2s ease;
   width: 100%;
-  position: relative;
-  overflow: hidden;
 }
 
-.ai-feature-card::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at center, rgba(126, 87, 194, 0.03) 0%, transparent 50%);
-  animation: rotate 20s linear infinite;
-  z-index: -1;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
+.primary-card {
+  background-color: rgba(126, 87, 194, 0.08);
 }
 
 .ai-feature-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(126, 87, 194, 0.2);
+  transform: translateY(-2px);
+  border-color: rgba(126, 87, 194, 0.15);
 }
 
 .ai-feature-header {
   display: flex;
   align-items: center;
-  margin-bottom: 24px;
-  gap: 16px;
+  margin-bottom: 20px;
+  gap: 12px;
   position: relative;
 }
 
 .icon-wrapper {
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(126, 87, 194, 0.8), rgba(33, 150, 243, 0.8));
-  box-shadow: 0 4px 8px rgba(126, 87, 194, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.icon-wrapper::after {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
-  animation: pulse-light 3s ease-in-out infinite;
-}
-
-@keyframes pulse-light {
-  0% {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-
-  50% {
-    opacity: 0.5;
-  }
-
-  100% {
-    transform: scale(1.2);
-    opacity: 0;
-  }
-}
-
-.ai-feature-header i {
-  font-size: 24px;
-  color: white;
-  position: relative;
-  z-index: 2;
+  background-color: rgba(126, 87, 194, 0.8);
 }
 
 .ai-feature-header h3 {
   margin: 0;
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 500;
   color: var(--el-text-color-primary);
   flex-grow: 1;
 }
 
 .ai-badge {
-  background: linear-gradient(90deg, #7e57c2, #2196f3);
+  background-color: rgba(126, 87, 194, 0.8);
   color: white;
   padding: 4px 10px;
-  border-radius: 20px;
+  border-radius: 12px;
   font-size: 12px;
-  font-weight: 500;
-  white-space: nowrap;
+  font-weight: 400;
 }
 
 .ai-feature-content {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--el-text-color-regular);
-  line-height: 1.8;
-  position: relative;
-}
-
-.ai-animation-dots {
-  display: flex;
-  gap: 6px;
-  margin-top: 12px;
-  margin-left: 16px;
-  height: 20px;
-}
-
-.ai-animation-dots span {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #7e57c2;
-  opacity: 0.6;
-  display: inline-block;
-  animation: dot-pulse 1.5s infinite ease-in-out;
-}
-
-.ai-animation-dots span:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.ai-animation-dots span:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes dot-pulse {
-
-  0%,
-  100% {
-    transform: scale(0.8);
-    opacity: 0.6;
-  }
-
-  50% {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-}
-
-.ai-actions {
-  margin-top: 16px;
-  display: flex;
-  justify-content: flex-end;
+  line-height: 1.6;
 }
 
 .difficulty-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 16px;
 }
 
 .word-tag {
-  transition: transform 0.2s;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-weight: 500;
-}
-
-.word-tag:hover {
-  transform: scale(1.05);
-}
-
-.ai-difficulty-analysis {
-  margin-top: 16px;
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  position: relative;
+  font-weight: 400;
 }
 
-.ai-analysis-header {
-  &::before {
-    content: "";
-    position: absolute;
-
-    left: 8px;
-    bottom: 3px;
-
-    width: 30%;
-    height: 3px;
-
-    mask: linear-gradient(to right, #000 50%, transparent);
-    border-radius: 10px;
-    transform: skewX(45deg);
-    background-color: currentColor;
-
-    filter: brightness(0.9);
-  }
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-  color: #C582FF;
-  /* filter: brightness(1.5) saturate(120%) contrast(1.2); */
-  font-weight: 500;
-}
-
-.ai-analysis-header i {
-  font-size: 16px;
+.ai-analysis {
+  margin-top: 14px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
 }
 
 .learning-path {
   margin: 16px 0;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 16px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
 }
 
-.ai-learning-tip {
-  margin-top: 16px;
-  position: relative;
-}
-
-.ai-chip {
-  display: inline-flex;
-  align-items: center;
-  background: linear-gradient(90deg, #7e57c2, #2196f3);
-  color: white;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  margin-bottom: 8px;
-  gap: 6px;
-}
-
-.learning-path-tip {
-  margin-top: 8px;
+.ai-tip {
+  margin-top: 14px;
   font-style: italic;
   color: var(--el-text-color-secondary);
   padding: 12px;
-  background: rgba(126, 87, 194, 0.1);
-  border-radius: 8px;
-  position: relative;
+  background: rgba(126, 87, 194, 0.05);
+  border-radius: 10px;
 }
 
 .ai-chat {
@@ -491,69 +304,15 @@ const askAI = () => {
 }
 
 .ai-message {
-  display: flex;
-  gap: 12px;
-}
-
-.ai-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #7e57c2, #2196f3);
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(126, 87, 194, 0.4);
-  position: relative;
-}
-
-.ai-avatar-pulse {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: transparent;
-  border: 2px solid rgba(126, 87, 194, 0.4);
-  animation: avatar-pulse 2s infinite;
-}
-
-@keyframes avatar-pulse {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  100% {
-    transform: scale(1.4);
-    opacity: 0;
-  }
-}
-
-.message-content {
-  background: rgba(255, 255, 255, 0.15);
-  padding: 12px 16px;
-  border-radius: 18px;
-  border-top-left-radius: 4px;
-  max-width: calc(100% - 60px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  position: relative;
-}
-
-.message-content::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to right, rgba(126, 87, 194, 0.05), transparent);
-  border-radius: 18px;
-  border-top-left-radius: 4px;
-  pointer-events: none;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 10px;
 }
 
 .user-input {
   display: flex;
   gap: 10px;
-  margin-top: 16px;
 }
 
 :deep(.el-steps--simple) {
@@ -569,12 +328,12 @@ const askAI = () => {
 }
 
 :deep(.el-button) {
-  font-weight: 500;
+  font-weight: 400;
 }
 
 :deep(.el-input__wrapper) {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(126, 87, 194, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(126, 87, 194, 0.1);
 }
 
 :deep(.el-input__inner) {
@@ -587,20 +346,16 @@ const askAI = () => {
 
 /* 黑暗模式适配 */
 :root[data-theme='dark'] .ai-feature-card {
-  background: rgba(126, 87, 194, 0.15);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(30, 30, 40, 0.5);
 }
 
-:root[data-theme='dark'] .ai-feature-header {
-  border-bottom-color: rgba(255, 255, 255, 0.1);
+:root[data-theme='dark'] .primary-card {
+  background: rgba(126, 87, 194, 0.08);
 }
 
-:root[data-theme='dark'] .ai-difficulty-analysis,
-:root[data-theme='dark'] .ai-learning-path-section {
-  background: rgba(126, 87, 194, 0.1);
-}
-
-:root[data-theme='dark'] .ai-feature-graph {
-  background: rgba(126, 87, 194, 0.05);
+:root[data-theme='dark'] .ai-analysis,
+:root[data-theme='dark'] .ai-tip,
+:root[data-theme='dark'] .learning-path {
+  background: rgba(30, 30, 40, 0.5);
 }
 </style>
