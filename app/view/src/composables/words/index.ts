@@ -106,6 +106,7 @@ export interface ICalendarData<S extends Statistics<any>> {
   // statistics?: IStatistics<any>
 
   addData(data: ISignData<S>): void
+  addDayData(day: number, data: ISignData<S>): void
 
   createSignData(words: string[], cost: number, done: boolean): ISignData<S>
 }
@@ -128,6 +129,16 @@ export class CalendarData<S extends Statistics<any>> implements ICalendarData<S>
 
   addData(data: ISignData<S>): void {
     this.data.push(data)
+  }
+
+  addDayData(day: number, data: ISignData<S>): void {
+    const targetData = this.data.find(item => item.day === day)
+
+    if (targetData) {
+      Object.assign(targetData, data)
+    } else {
+      this.addData(data)
+    }
   }
 
   createSignData(words: string[], cost: number, done: boolean): ISignData<S> {
