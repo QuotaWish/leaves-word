@@ -19,6 +19,8 @@ const totalAmo = computed(() => data.value.words.length)
 const progress = computed(() => learnedAmo.value / totalAmo.value)
 const todayData = computed(() => calendarManager.getTodayData())
 
+console.log(todayData)
+
 function calculateTime(amo: number) {
   const mode = targetSignMode.value
   if (!mode) {

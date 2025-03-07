@@ -94,7 +94,7 @@ const drawerControl = {
   isHidden,
   toggleDrawer: () => {
     useVibrate('light');
-    
+
     // 根据最后滑动方向和当前状态决定切换行为
     if (lastSlideDirection.value === 'up') {
       // 向上滑动模式下，按钮点击切换到更高层级
@@ -280,7 +280,7 @@ function handleTouchMove(e: TouchEvent) {
   const visiblePos = options.positions[DrawerState.VISIBLE] || (window.innerHeight * 0.97)
 
   // 对下拉多做一些阻力，特别是可见状态下
-  const elasticityFactor = deltaY > 0 && currentState.value === DrawerState.VISIBLE ? 
+  const elasticityFactor = deltaY > 0 && currentState.value === DrawerState.VISIBLE ?
     options.elasticity * 0.5 : options.elasticity
 
   const newTranslateY = Math.max(
@@ -499,10 +499,10 @@ function handleMainAreaClick(e: MouseEvent) {
     // 阻止事件冒泡
     e.stopPropagation();
     useVibrate('light');
-    
+
     // 设置向下滑动方向，保持箭头逻辑一致
     lastSlideDirection.value = 'down';
-    
+
     // 直接收缩到可见状态
     currentState.value = DrawerState.VISIBLE;
   }
@@ -525,11 +525,8 @@ function handleMainAreaClick(e: MouseEvent) {
       <div ref="drawerContentRef" class="DrawerPage-Drawer-Content transition-cubic fake-background">
         <div ref="decorationBarRef" class="drawer-decoration-bar">
           <!-- 使用抽离后的 DrawerStateButton 组件，传递滑动方向 -->
-          <DrawerStateButton 
-            :state="currentState" 
-            :onClick="drawerControl.toggleDrawer"
-            :lastSlideDirection="lastSlideDirection"
-            @longPressStart="handleLongPressStart" 
+          <DrawerStateButton :state="currentState" :onClick="drawerControl.toggleDrawer"
+            :lastSlideDirection="lastSlideDirection" @longPressStart="handleLongPressStart"
             @longPressEnd="handleLongPressEnd">
 
             <!-- 状态菜单 -->
@@ -640,10 +637,10 @@ function handleMainAreaClick(e: MouseEvent) {
     &.fullscreen {
       .DrawerPage-Drawer-Content {
         border-radius: 0; // 全屏模式下无圆角
-        
+
         // 全屏模式下特殊样式，确保完全覆盖屏幕
         padding-top: 38px; // 减少顶部空间，更接近全屏
-        
+
         // 全屏模式下调整装饰栏
         .drawer-decoration-bar {
           top: 8px; // 减少顶部间距
@@ -745,9 +742,7 @@ function handleMainAreaClick(e: MouseEvent) {
 
           filter: invert(1);
 
-          .dark .drawer-button {
-            filter: invert(0);
-          }
+
 
           &:hover {
             background: rgba(255, 255, 255, 0.25);
@@ -867,5 +862,11 @@ function handleMainAreaClick(e: MouseEvent) {
     will-change: transform;
     touch-action: none;
   }
+}
+</style>
+
+<style>
+.dark .DrawerPage .drawer-button {
+  filter: invert(0) !important;
 }
 </style>
