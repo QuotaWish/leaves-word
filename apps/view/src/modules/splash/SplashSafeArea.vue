@@ -2,11 +2,13 @@
 defineProps<{
   // 是否模拟一个白条
   mock?: boolean
+  // 是否是 builder 模式
+  builder?: boolean
 }>()
 </script>
 
 <template>
-  <div :class="{ mock }" class="SplashSafeArea">
+  <div :class="{ mock, builder }" class="SplashSafeArea">
     <div class="SplashSafeArea-Mock transition-cubic" />
   </div>
 </template>
@@ -56,6 +58,10 @@ defineProps<{
 
   &.mock {
     --safe-area-inset-bottom: 12px;
+  }
+
+  &.builder {
+    height: 44px;
   }
 }
 

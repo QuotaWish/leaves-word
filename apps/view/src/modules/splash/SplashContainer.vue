@@ -6,12 +6,12 @@ import SplashWrapper from './SplashWrapper.vue'
 
 const spalshState = useGlobalSplashState()
 
-const isMobile = computed(() => spalshState.screenMode.value === ScreenMode.MOBILE)
+const isMobile = computed(() => spalshState.screenMode.value !== ScreenMode.WRAPPED)
 const mockStatusbar = computed(() => spalshState.mockStatusbar.value)
 </script>
 
 <template>
-  <div class="SplashContainer" :class="{ 'statusbar': mockStatusbar, 'fullscreen': isMobile, 'wrapped-box': !isMobile }">
+  <div class="SplashContainer" :class="{ 'statusbar': mockStatusbar || spalshState.screenMode.value === ScreenMode.BUILDER, 'fullscreen': isMobile, 'wrapped-box': !isMobile }">
     <div class="SplashMenu transition-cubic">
       <slot name="menu" />
     </div>
@@ -19,7 +19,7 @@ const mockStatusbar = computed(() => spalshState.mockStatusbar.value)
     <SplashWrapper id="rootApp" relative h-full w-full flex flex-col class="SplashContainer-Main">
       <SplashStatusbar :mock="mockStatusbar" />
       <slot />
-      <SplashSafeArea :mock="!isMobile" />
+      <SplashSafeArea :mock="!isMobile" :builder="spalshState.screenMode.value === ScreenMode.BUILDER" />
     </SplashWrapper>
   </div>
 </template>
