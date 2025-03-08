@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { IWord } from '~/composables/words'
+import type { IWord } from '~/modules/words/core/word'
 
 const props = defineProps<{
   word: IWord

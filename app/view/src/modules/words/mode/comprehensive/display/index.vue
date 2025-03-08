@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { Statistics } from '~/composables/words';
+import { Statistics } from '~/modules/words/core/word';
 import Stats from './stats/index.vue'
 
 defineProps<{

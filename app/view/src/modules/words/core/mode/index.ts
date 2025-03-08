@@ -1,6 +1,6 @@
-import { CalendarData, calendarManager } from '..'
+import { CalendarData, calendarManager } from './word'
 import type { DictStorage } from '../storage'
-import { Statistics } from '../types'
+import { Statistics } from './types'
 
 export abstract class PrepareWord<T, W, S extends Statistics<any>> {
   mode: T

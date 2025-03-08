@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PlanSelector from '~/components/words/PlanSelector.vue'
-import { calendarManager, globalData, useTargetData } from '~/composables/words'
+import { calendarManager, globalData, useTargetData } from '~/modules/words/core/word'
 
 import LeafSpeedButton from '../button/LeafSpeedButton.vue'
 import WordSignInfoCard from './card/WordSignInfoCard.vue'

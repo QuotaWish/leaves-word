@@ -1,5 +1,4 @@
-import type { RemovableRef } from '@vueuse/core'
-import type { Dictionary, IWord, IWordItem } from '.'
+import type { Dictionary, IWord, IWordItem } from '../types'
 
 export interface IStorage {
   data: any

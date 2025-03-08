@@ -1,6 +1,6 @@
 import DictWordWord from '~/components/words/mode/comprehensive/Word.vue'
-import { PrepareWord, SignMode } from '.'
-import { calendarManager, globalData, type IWord, type IWordItem, useWordSound } from '..'
+import { PrepareWord, SignMode } from '../../../modules/words/core/mode'
+import { calendarManager, globalData, type IWord, type IWordItem, useWordSound } from '../../../modules/words/core/word'
 import type { DictStorage } from '../storage'
 
 // 定义常量

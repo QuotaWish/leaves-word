@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTargetData } from "~/composables/words";
+import { useTargetData } from "~/modules/words/core/word";
 import { SoundWordType, ExampleStage } from "~/composables/words/mode/sound";
 
 const props = defineProps<{

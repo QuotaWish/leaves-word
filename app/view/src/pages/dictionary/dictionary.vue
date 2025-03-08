@@ -2,7 +2,7 @@
 import { ActionSheet, NavBar } from 'vant'
 
 // import type { IWord } from '~/composables/words'
-import { dictionaries, useTargetData } from '~/composables/words'
+import { dictionaries, useTargetData } from '~/modules/words/core/word'
 
 const route = useRoute()
 const router = useRouter()

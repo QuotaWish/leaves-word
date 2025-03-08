@@ -1,14 +1,14 @@
-import cet4 from './cet4'
-import cet6 from './cet6'
-import high from './high'
-import ielts from './ielts'
-import { modeManager, ModeType } from './mode'
-import postGraduate from './post-graduate'
-import type { IDict, IStatistics, Statistics } from './types'
+import cet4 from '../../../composables/words/cet4'
+import cet6 from '../../../composables/words/cet6'
+import high from '../../../composables/words/high'
+import ielts from '../../../composables/words/ielts'
+import { modeManager, ModeType } from './mode/index'
+import postGraduate from '../../../composables/words/post-graduate'
+import type { IDict, Statistics } from './types'
 
 export * from './types'
 export * from './util'
-
+``
 export interface IWord {
   word: string
   img: string[]
@@ -245,7 +245,7 @@ export class CalendarManager {
     return calendar
   }
 
-  getTodayData<S extends Statistics<any>>() {
+  getTodayData() {
     return this.getDayData(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate())
   }
 

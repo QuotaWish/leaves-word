@@ -1,4 +1,4 @@
-import { Dictionary } from '..'
+import { Dictionary } from '../../../modules/words/core/word'
 import PostGraduate from './post-graduate.json?raw'
 
 export default new Dictionary('post-graduate', '考研过考词汇', JSON.parse(PostGraduate), {

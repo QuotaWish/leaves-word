@@ -1,6 +1,6 @@
 <script name="Words" setup lang="ts">
 import { Swipe, SwipeItem } from 'vant'
-import { type IWord, useErrorAudio, useSuccessAudio } from '~/composables/words'
+import { type IWord, useErrorAudio, useSuccessAudio } from '~/modules/words/core/word'
 import type { IComprehensiveWordItem } from '~/composables/words/mode/comprehensive'
 
 const props = defineProps<{

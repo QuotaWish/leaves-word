@@ -4,7 +4,7 @@ import { ref } from 'vue'
 
 import type { ComponentSize, FormInstance, FormRules, UploadProps, UploadUserFile } from 'element-plus'
 
-import type { IWord } from '~/composables/words'
+import type { IWord } from '~/modules/words/core/word'
 
 const ruleFormRef = ref<FormInstance>()
 const ruleForm = reactive<IWord>({

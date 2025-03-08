@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ISignMode } from "~/composables/words/mode";
+import type { ISignMode } from "~/modules/words/core/mode";
 
 const props = defineProps<{
   mode: ISignMode<any, any>;

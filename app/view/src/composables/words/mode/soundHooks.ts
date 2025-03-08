@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue';
-import { useSuccessAudio, useErrorAudio, type IWordItem } from '..';
+import { useSuccessAudio, useErrorAudio, type IWordItem } from '../../../modules/words/core/word';
 import { 
   useLogger, 
   useSoundPlayer, 

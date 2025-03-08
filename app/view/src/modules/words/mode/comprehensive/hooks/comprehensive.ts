@@ -1,7 +1,7 @@
 import ComprehensiveWord from '~/components/words/mode/comprehensive/Word.vue'
-import { PrepareWord, SignMode } from '.'
-import { calendarManager, globalData, IStatistics, type IWord, type IWordItem, Statistics, useWordSound } from '..'
+import { calendarManager, globalData, IStatistics, type IWord, type IWordItem, Statistics, useWordSound } from '~/modules/words/core/word'
 import ComprehensiveStat from '~/components/words/mode/comprehensive/index.vue'
+import { PrepareWord } from '~/modules/words/core/mode'
 
 // 定义常量
 const PRELOAD_WORD_AMO = 5 // 提前加载的单词数量

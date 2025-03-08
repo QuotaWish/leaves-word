@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { IDict } from '~/composables/words'
-import { dictionaries, globalData } from '~/composables/words'
+import type { IDict } from '~/modules/words/core/word'
+import { dictionaries, globalData } from '~/modules/words/core/word'
 
 const active = computed({
   get() {

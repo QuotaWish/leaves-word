@@ -1,6 +1,6 @@
 <script setup>
 import VersionBar from '~/components/chore/VersionBar.vue'
-import { calendarManager } from '~/composables/words'
+import { calendarManager } from '~/modules/words/core/word'
 import PersonalHeaderDisplay from './PersonalHeaderDisplay.vue'
 import PersonalLayout from './PersonalLayout.vue'
 

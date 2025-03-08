@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Dictionary, IDict } from '~/composables/words'
+import type { Dictionary, IDict } from '~/modules/words/core/word'
 
 const props = defineProps<{
   dict: Dictionary

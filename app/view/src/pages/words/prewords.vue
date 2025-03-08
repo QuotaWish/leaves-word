@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { PrepareWord } from '~/composables/words/mode'
+import type { PrepareWord } from '~/modules/words/core/mode'
 import NumberFlow from '@number-flow/vue'
 import DictSelector from '~/components/words/DictSelector.vue'
 import ModeSelector from '~/components/words/ModeSelector.vue'
 import PlanSelector from '~/components/words/PlanSelector.vue'
-import { globalData, useTargetData } from '~/composables/words'
+import { globalData, useTargetData } from '~/modules/words/core/word'
 
 const router = useRouter()
 const { targetDict, targetSignMode } = useTargetData()

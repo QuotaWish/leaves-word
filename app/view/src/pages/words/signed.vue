@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import NumberFlow from '@number-flow/vue'
 import { dayjs } from 'element-plus'
-import { calendarManager, Statistics, useVictoryAudio } from '~/composables/words'
+import { calendarManager, Statistics, useVictoryAudio } from '~/modules/words/core/word'
 import Astronaut from '/svg/astronaut.svg'
 import Mello from '/svg/mello.svg'
 import CoffettiParticle from '~/components/chore/CoffettiParticle.vue'

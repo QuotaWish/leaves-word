@@ -1,6 +1,6 @@
 import SoundWord from "~/components/words/mode/sound/index.vue";
 import SoundStatistics from "~/components/statistics/SoundStatistics.vue";
-import { PrepareWord, SignMode, ModeType } from ".";
+import { PrepareWord, SignMode, ModeType } from "../../../modules/words/core/mode";
 import { Component, defineAsyncComponent } from "vue";
 import {
   calendarManager,
@@ -8,8 +8,8 @@ import {
   IWordItem,
   Statistics,
   useWordSound,
-} from "..";
-import type { IWord } from "..";
+} from "../../../modules/words/core/word";
+import type { IWord } from "../../../modules/words/core/word";
 
 // 定义常量
 // const NEW_WORDS_PER_SESSION = 10 // 每次学习新单词的数量

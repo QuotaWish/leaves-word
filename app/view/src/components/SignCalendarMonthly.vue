@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Calendar } from 'vant'
-import { calendarManager } from '~/composables/words'
+import { calendarManager } from '~/modules/words/core/word'
 import LeafCard from './display/LeafCard.vue'
 
 // function calcAccumuData(signData: string): number {

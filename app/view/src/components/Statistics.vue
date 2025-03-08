@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import type { IStatisticsData } from '../composables/words/mode'
+import type { IStatisticsData } from '../modules/words/core/mode'
 
 defineProps<{
   name: string

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { calendarManager } from '~/composables/words'
+import { calendarManager } from '~/modules/words/core/word'
 import LeafCard from './display/LeafCard.vue'
 
 // 获取近7天的日期

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useWordSound } from '~/composables/words'
+import { useWordSound } from '~/modules/words/core/word'
 
 const props = defineProps<{
   word: string

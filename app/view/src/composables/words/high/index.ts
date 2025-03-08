@@ -1,4 +1,4 @@
-import { Dictionary } from '../types'
+import { Dictionary } from '../../../modules/words/core/types'
 import High from './high.json?raw'
 
 const dictionary = new Dictionary('HIGH', '高考高频词汇', JSON.parse(High), {

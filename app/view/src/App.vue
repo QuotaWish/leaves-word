@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { DictStorage } from '~/composables/words/storage'
-import { modeManager, ModeType } from '~/composables/words/mode'
-import { ComprehensiveMode } from '~/composables/words/mode/comprehensive'
+import { modeManager, ModeType } from '~/modules/words/core/mode'
+import { ComprehensiveMode } from '~/modules/words/mode/comprehensive/hooks/stat'
 import { DictWordMode } from '~/composables/words/mode/dict-word'
 import { PunchMode } from '~/composables/words/mode/punch'
 import { SoundMode } from '~/composables/words/mode/sound'

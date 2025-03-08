@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ElMessage, ElMessageBox } from 'element-plus'
-import type { IWord } from '~/composables/words'
+import type { IWord } from '~/modules/words/core/word'
 import GptWords from '~/composables/words/gptwords.json?raw'
 
 const GptWordList: any[] = reactive([])

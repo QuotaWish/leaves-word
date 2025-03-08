@@ -1,4 +1,4 @@
-import { Dictionary } from '..'
+import { Dictionary } from '../../../modules/words/core/word'
 import IELTS from './IELTS.json?raw'
 
 export default new Dictionary('IELTS', '雅思必背词汇', JSON.parse(IELTS), {

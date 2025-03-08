@@ -1,4 +1,4 @@
-import { Dictionary } from '../types'
+import { Dictionary } from '../../../modules/words/core/types'
 import Cet4 from './cet4.json?raw'
 
 const dictionary = new Dictionary('CET-4', '四级过考词汇', JSON.parse(Cet4), {

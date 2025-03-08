@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { WordContent } from '~/composables/api/types'
 import { Swipe, SwipeItem } from 'vant'
-import { type IWord, useWordSound } from '~/composables/words'
+import { type IWord, useWordSound } from '~/modules/words/core/word'
 
 const props = defineProps<{
   /**

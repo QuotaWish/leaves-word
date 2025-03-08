@@ -1,43 +1,4 @@
-import { DictStorage } from './storage'
-import type { IWord } from '.'
-import { ModeType } from './mode'
-
-export interface IDict {
-  id: string
-  name: string
-  type: 'English'
-  style: {
-    color: string
-    colorLight: string
-    icon: string
-  }
-  words: IWord[]
-  storage: DictStorage
-}
-
-export class Dictionary implements IDict {
-  id: string
-  name: string
-  type: 'English'
-  style: {
-    color: string
-    colorLight: string
-    icon: string
-  }
-
-  words: IWord[]
-  storage: DictStorage
-
-  constructor(id: string, name: string, words: IWord[], style: IDict['style']) {
-    this.id = id
-    this.name = name
-    this.type = 'English'
-    this.style = style
-    this.words = words
-
-    this.storage = new DictStorage(this)
-  }
-}
+import { ModeType } from "../mode"
 
 export interface IStatistics<T extends Record<string, any>> {
   startTime: number
