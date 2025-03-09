@@ -102,7 +102,7 @@ const { active, activeNav, navs } = useFooterNav()
 
   z-index: 1;
   position: absolute;
-  padding: 0.25rem 1rem;
+  padding: 0.25rem 2rem;
 
   width: 100%;
   bottom: 0;
