@@ -7,7 +7,7 @@
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
-		"darkmode": true,
+        "darkmode" : true,
         "usingComponents" : true,
         "nvueStyleCompiler" : "uni-app",
         "compilerVersion" : 3,
@@ -43,14 +43,16 @@
                 "abiFilters" : [ "arm64-v8a", "x86" ]
             },
             /* ios打包配置 */
-            "ios" : {},
-			"apple": {
-				"UIUserInterfaceStyle": "Automatic",
-				"defaultTheme": "auto"
-			},
-			"google": {
-				"defaultNightMode": "auto"
-			},
+            "ios" : {
+                "dSYMs" : false
+            },
+            "apple" : {
+                "UIUserInterfaceStyle" : "Automatic",
+                "defaultTheme" : "auto"
+            },
+            "google" : {
+                "defaultNightMode" : "auto"
+            },
             /* SDK配置 */
             "sdkConfigs" : {},
             "icons" : {
@@ -88,11 +90,11 @@
             "splashscreen" : {
                 "useOriginalMsgbox" : true
             },
-			"safearea": {
-				"bottom": {
-					"offset": "none"
-				}
-			}
+            "safearea" : {
+                "bottom" : {
+                    "offset" : "none"
+                }
+            }
         }
     },
     /* 快应用特有相关 */
