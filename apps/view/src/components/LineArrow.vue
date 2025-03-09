@@ -24,6 +24,7 @@ defineProps<{
 <style lang="scss" scoped>
 section {
   position: relative;
+  width: 100%;
   overflow: hidden;
   user-select: none;
   transition: all 0.3s ease;

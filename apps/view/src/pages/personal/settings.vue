@@ -1,14 +1,21 @@
 <script setup lang="ts">
 import PageNavHolder from '~/components/page/holder/PageNavHolder.vue'
 import { useDevMode } from '~/modules/develop'
+import { useRouter } from 'vue-router'
 
 // 导入开发者模式设置
 const { devModeEnabled, toggleDevMode } = useDevMode()
+const router = useRouter()
+
+// 跳转到开发者页面
+function navigateToDeveloperPage() {
+  router.push('/personal/develop')
+}
 </script>
 
 <template>
-  <PageNavHolder class="SettingsPage" title="个人设置">
-    <div class="SettingsPage-Container flex flex-col gap-3">
+  <PageNavHolder :content-padding="false" class="SettingsPage" title="个人设置">
+    <div class="SettingsPage-Container h-full overflow-y-scroll flex flex-col p-4 gap-3">
       <!-- 主题与皮肤 -->
       <div class="SettingsPage-Section">
         <LineArrow>
@@ -111,14 +118,14 @@ const { devModeEnabled, toggleDevMode } = useDevMode()
       </div>
 
       <!-- 高级设置 - 添加开发者模式 -->
-      <div class="SettingsPage-Section">
+      <div class="SettingsPage-Section" v-if="devModeEnabled">
         <LineArrow>
           <template #icon>
             <div i-carbon:code />
           </template>
           高级设置
         </LineArrow>
-        <div class="SettingsPage-SectionItem">
+        <div class="SettingsPage-SectionItem" @click="navigateToDeveloperPage">
           <div class="SettingsPage-SectionItem-content">
             <div class="SettingsPage-SectionItem-title">
               开发者模式
@@ -127,14 +134,7 @@ const { devModeEnabled, toggleDevMode } = useDevMode()
               启用高级开发工具和调试功能
             </div>
           </div>
-          <label class="switch">
-            <input 
-              type="checkbox" 
-              :checked="devModeEnabled" 
-              @change="toggleDevMode"
-            >
-            <span class="slider" />
-          </label>
+          <span class="arrow" />
         </div>
       </div>
     </div>
