@@ -14,15 +14,15 @@ const lastClickTime = ref(0)
 
 function handleVersionClick() {
   const now = Date.now()
-  
+
   // 如果两次点击间隔超过1.5秒，重置计数
   if (now - lastClickTime.value > 1500) {
     clickCount.value = 0
   }
-  
+
   lastClickTime.value = now
   clickCount.value++
-  
+
   // 连续点击7次后启用开发者模式
   if (clickCount.value === 7) {
     toggleDevMode(true)
@@ -46,10 +46,7 @@ async function handleClear() {
   <PersonalLayout>
     <template #header>
       <PersonalHeaderDisplay>
-        <div h-full w-full flex flex-col>
-          <div w-full flex justify-end class="header-line h-[32px]">
-            <div i-ri:bubble-chart-fill />
-          </div>
+        <div h-full w-full flex px-2 items-center justify-between>
           <div flex items-center gap-4 class="header-main">
             <div class="header-img">
               <img src="/avatar.jpg">
@@ -62,6 +59,10 @@ async function handleClear() {
                 Leave words, Embrace worlds!
               </p>
             </div>
+          </div>
+
+          <div flex justify-end font-size-6 class="header-line">
+            <div i-ri:bubble-chart-fill />
           </div>
         </div>
       </PersonalHeaderDisplay>
@@ -93,10 +94,10 @@ async function handleClear() {
     </template>
 
     <template #footer>
-      <p @click="handleVersionClick">
+      <p @click="handleVersionClick" class="select-none">
         <VersionBar />
       </p>
-      <p font-size-3>
+      <p font-size-3 class="select-none">
         Powered by QuotaWish.
       </p>
     </template>
@@ -111,6 +112,7 @@ async function handleClear() {
 
     border-radius: 50%;
   }
+
   display: flex;
 
   width: 52px;

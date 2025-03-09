@@ -82,7 +82,6 @@ watch(isExpanded, (newVal) => {
   }
 })
 
-// 添加变量以跟踪最后的移动位置
 const lastMovePosition = ref({ x: 0, y: 0 });
 
 function initializePosition() {
@@ -361,7 +360,7 @@ onMounted(() => {
           top: `${position.y}px`
         }" @mousedown="handleMouseDown" @touchstart="handleTouchStart" @click="handleClick">
       <div class="ball-content">
-        <i class="i-mdi-code-braces text-xl"></i>
+        <i class="i-mdi-robot text-xl"></i>
       </div>
       <div class="ball-pulse"></div>
       <div class="ball-ring"></div>
@@ -447,14 +446,14 @@ onMounted(() => {
     border-bottom-right-radius: 50%;
 
     &.collapsed {
-      transform: translateX(-70%);
+      transform: translateX(-60%);
       
       &:hover:not(.dragging) {
-        transform: translateX(-65%) scale(1.05);
+        transform: translateX(-55%) scale(1.05);
       }
       
       &:active:not(.dragging) {
-        transform: translateX(-65%) scale(0.95);
+        transform: translateX(-55%) scale(0.95);
       }
     }
   }
@@ -469,14 +468,14 @@ onMounted(() => {
     border-bottom-left-radius: 50%;
 
     &.collapsed {
-      transform: translateX(70%);
+      transform: translateX(60%);
       
       &:hover:not(.dragging) {
-        transform: translateX(65%) scale(1.05);
+        transform: translateX(55%) scale(1.05);
       }
       
       &:active:not(.dragging) {
-        transform: translateX(65%) scale(0.95);
+        transform: translateX(55%) scale(0.95);
       }
     }
   }

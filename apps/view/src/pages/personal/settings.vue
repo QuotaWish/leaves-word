@@ -118,7 +118,7 @@ function navigateToDeveloperPage() {
       </div>
 
       <!-- 高级设置 - 添加开发者模式 -->
-      <div class="SettingsPage-Section">
+      <div class="SettingsPage-Section" v-if="devModeEnabled">
         <LineArrow>
           <template #icon>
             <div i-carbon:code />
