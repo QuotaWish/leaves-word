@@ -9,6 +9,8 @@ export enum ScreenMode {
   MOBILE,
   /** 非移动端 进行限制处理 */
   WRAPPED,
+  /** Builder 容器内，需要略微适配 statusbar */
+  BUILDER,
 }
 
 export const MOCK_DEVICES = {
@@ -36,3 +38,23 @@ export const useGlobalSplashState = createGlobalState(
     return { screenMode, mockStatusbar, footerVisible, mockDevice }
   },
 )
+
+export const useBuilder = () => {
+  const isBuilder = ref(false)
+
+  function check() {
+    try {
+      // @ts-ignore
+      if (plus) {
+        isBuilder.value = true
+      }
+    } catch (e) {
+      isBuilder.value = false
+    }
+  }
+
+  return {
+    check,
+    isBuilder
+  }
+}

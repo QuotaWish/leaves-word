@@ -1,6 +1,6 @@
 [build]
-publish = "app/view/dist"
-command = "pnpm run build:view"
+publish = "apps/cms/dist"
+command = "pnpm run build:cms"
 
 [build.environment]
 NODE_VERSION = "20"
