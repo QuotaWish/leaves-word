@@ -39,6 +39,10 @@ export const useGlobalSplashState = createGlobalState(
   },
 )
 
+
+/**
+ * 如果是 Builder 需要发送加载事件
+ */
 export const useBuilder = () => {
   const isBuilder = ref(false)
 
@@ -47,14 +51,23 @@ export const useBuilder = () => {
       // @ts-ignore
       if (plus) {
         isBuilder.value = true
+
+        console.log('%cBuilder mode enabled.', 'color: red; font-weight: bold;')
       }
     } catch (e) {
       isBuilder.value = false
     }
   }
 
+  function sendLoadEvent() {
+    if (isBuilder.value) {
+      window.postMessage('@leaf:done', '*')
+    }
+  }
+
   return {
     check,
-    isBuilder
+    isBuilder,
+    sendLoadEvent
   }
 }

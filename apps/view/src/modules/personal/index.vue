@@ -3,8 +3,34 @@ import VersionBar from '~/components/chore/VersionBar.vue'
 import { calendarManager } from '~/composables/words'
 import PersonalHeaderDisplay from './PersonalHeaderDisplay.vue'
 import PersonalLayout from './PersonalLayout.vue'
+import { useDevMode } from '~/modules/develop'
 
 const router = useRouter()
+const { devModeEnabled, toggleDevMode } = useDevMode()
+
+// 添加点击计数逻辑
+const clickCount = ref(0)
+const lastClickTime = ref(0)
+
+function handleVersionClick() {
+  const now = Date.now()
+  
+  // 如果两次点击间隔超过1.5秒，重置计数
+  if (now - lastClickTime.value > 1500) {
+    clickCount.value = 0
+  }
+  
+  lastClickTime.value = now
+  clickCount.value++
+  
+  // 连续点击7次后启用开发者模式
+  if (clickCount.value === 7) {
+    toggleDevMode(true)
+    clickCount.value = 0
+    // eslint-disable-next-line no-alert
+    alert('开发者模式已启用')
+  }
+}
 
 async function handleClear() {
   calendarManager.clear()
@@ -67,7 +93,7 @@ async function handleClear() {
     </template>
 
     <template #footer>
-      <p>
+      <p @click="handleVersionClick">
         <VersionBar />
       </p>
       <p font-size-3>
