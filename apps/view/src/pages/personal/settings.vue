@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import PageNavHolder from '~/components/page/holder/PageNavHolder.vue'
+import { useDevMode } from '~/modules/develop'
+
+// 导入开发者模式设置
+const { devModeEnabled, toggleDevMode } = useDevMode()
 </script>
 
 <template>
@@ -103,6 +107,34 @@ import PageNavHolder from '~/components/page/holder/PageNavHolder.vue'
             </div>
           </div>
           <span class="arrow" />
+        </div>
+      </div>
+
+      <!-- 高级设置 - 添加开发者模式 -->
+      <div class="SettingsPage-Section">
+        <LineArrow>
+          <template #icon>
+            <div i-carbon:code />
+          </template>
+          高级设置
+        </LineArrow>
+        <div class="SettingsPage-SectionItem">
+          <div class="SettingsPage-SectionItem-content">
+            <div class="SettingsPage-SectionItem-title">
+              开发者模式
+            </div>
+            <div class="SettingsPage-SectionItem-desc">
+              启用高级开发工具和调试功能
+            </div>
+          </div>
+          <label class="switch">
+            <input 
+              type="checkbox" 
+              :checked="devModeEnabled" 
+              @change="toggleDevMode"
+            >
+            <span class="slider" />
+          </label>
         </div>
       </div>
     </div>

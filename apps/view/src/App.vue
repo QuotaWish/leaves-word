@@ -9,6 +9,7 @@ import { SoundMode } from '~/composables/words/mode/sound'
 import Auth from '~/modules/auth/index.vue'
 import Core from '~/modules/core/index.vue'
 import Splash from '~/modules/splash/index.vue'
+import DeveloperFloatingBall from '~/modules/develop/index.vue'
 
 modeManager.set(ModeType.COMPREHENSIVE, (dictionaryStorage: DictStorage) => new ComprehensiveMode(dictionaryStorage))
 modeManager.set(ModeType.PUNCH, (dictionaryStorage: DictStorage) => new PunchMode(dictionaryStorage))
@@ -34,6 +35,7 @@ modeManager.set(ModeType.READING, (dictionaryStorage: DictStorage) => new DictWo
 
         <Auth />
         <Core />
+        <DeveloperFloatingBall />
       </template>
     </Splash>
   </el-config-provider>

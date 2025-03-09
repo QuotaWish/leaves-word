@@ -37,11 +37,12 @@ const cozeWebSDK = new CozeWebSDK.WebChatClient({
 <template>
   <PlanLayout :class="{ immersive: immersiveMode }">
     <template #header>
-      <RoundInfo type="success" class="coffee-font" text-1.75xl flex items-center gap-1 font-bold
-        @click="cozeWebSDK.showChatBot()">
-        <img w-8 src="/ai-logo.png">
-        Tata
-      </RoundInfo>
+      <div flex items-center>
+        <RoundInfo type="success" flex items-center gap-2 @click="cozeWebSDK.showChatBot()">
+          <img w-6 src="/ai-logo.png">
+          搜一搜
+        </RoundInfo>
+      </div>
 
       <div flex items-center gap-2>
         <RoundInfo type="danger">
@@ -145,7 +146,7 @@ const cozeWebSDK = new CozeWebSDK.WebChatClient({
     .PlanCover-Bg {
       --fake-opacity: 0;
       filter: saturate(120%) brightness(120%);
-    //  filter: blur(18px) saturate(180%);
+      //  filter: blur(18px) saturate(180%);
     }
 
     .PlanCover-Main-Inner {

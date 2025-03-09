@@ -38,6 +38,7 @@
     "ua-parser-js": "^2.0.0",
     "v-wave": "^3.0.2",
     "vant": "^4.9.9",
+    "vconsole": "^3.15.1",
     "vite-plugin-version-date-mark": "^0.1.0",
     "vue": "^3.5.3",
     "vue-echarts": "^7.0.3",
