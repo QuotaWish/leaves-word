@@ -16,10 +16,6 @@ declare module 'vue' {
     CircleLoader: typeof import('./src/components/icon/CircleLoader.vue')['default']
     CoffettiParticle: typeof import('./src/components/chore/CoffettiParticle.vue')['default']
     Comprehensive: typeof import('./src/components/words/mode/comprehensive/index.vue')['default']
-    ComprehensiveStat: typeof import('./src/components/words/mode/comprehensive/index.vue')['default']
-    ComprehensiveWord: typeof import('./src/components/words/mode/comprehensive/Word.vue')['default']
-    ContainerCard: typeof import('./src/components/words/mode/comprehensive/stats/ContainerCard.vue')['default']
-    copy: typeof import('./src/components/page/holder/PageNavHolder.vue')['default']
     DarkModeSwitch: typeof import('./src/components/button/DarkModeSwitch.vue')['default']
     DictationPage: typeof import('./src/components/input/DictationPage.vue')['default']
     DictionaryBookDisplay: typeof import('./src/components/display/DictionaryBookDisplay.vue')['default']
@@ -84,7 +80,6 @@ declare module 'vue' {
     WordPlayIcon: typeof import('./src/components/icon/WordPlayIcon.vue')['default']
     WordSection: typeof import('./src/components/words/WordSection.vue')['default']
     WordSelector: typeof import('./src/components/words/WordSelector.vue')['default']
-    WordSigned: typeof import('./src/components/words/page/WordSigned.vue')['default']
     WordSignInfo: typeof import('./src/components/words/WordSignInfo.vue')['default']
     WordSignInfoCard: typeof import('./src/components/words/card/WordSignInfoCard.vue')['default']
   }
