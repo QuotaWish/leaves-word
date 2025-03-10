@@ -7,9 +7,19 @@ import { useRouter } from 'vue-router'
 const { devModeEnabled, toggleDevMode } = useDevMode()
 const router = useRouter()
 
+// 页面跳转函数
+function navigateTo(path: string) {
+  router.push(path)
+}
+
 // 跳转到开发者页面
 function navigateToDeveloperPage() {
-  router.push('/personal/develop')
+  navigateTo('/personal/develop')
+}
+
+// 跳转到主题设置页面
+function navigateToThemePage() {
+  navigateTo('/personal/theme')
 }
 </script>
 
@@ -24,15 +34,13 @@ function navigateToDeveloperPage() {
           </template>
           主题与皮肤
         </LineArrow>
-        <div class="SettingsPage-SectionItem">
+        <div class="SettingsPage-SectionItem" @click="navigateToThemePage">
           <div class="SettingsPage-SectionItem-content">
             <div class="SettingsPage-SectionItem-title">
-              主题切换
+              主题设置
             </div>
-            <div class="theme-preview">
-              <div class="theme-option theme-light" />
-              <div class="theme-option theme-dark" />
-              <div class="theme-option theme-blue" />
+            <div class="SettingsPage-SectionItem-desc">
+              暗黑模式与主题色选择
             </div>
           </div>
           <span class="arrow" />
@@ -167,11 +175,16 @@ function navigateToDeveloperPage() {
 
 .SettingsPage-SectionItem {
   padding: 1rem;
-
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--el-border-color-light);
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: var(--el-fill-color);
+  }
 }
 
 .SettingsPage-SectionItem:last-child {
