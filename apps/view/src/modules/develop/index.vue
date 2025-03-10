@@ -22,7 +22,7 @@ const isDev = process.env.NODE_ENV === 'development'
 
 // 如果是开发环境，动态引入vConsole
 async function initVConsole() {
-  if (isDev && devModeEnabled.value) {
+  if (isDev || devModeEnabled.value) {
     try {
       const VConsole = (await import('vconsole')).default
       if (!vConsoleInstance.value) {
@@ -150,10 +150,10 @@ function handleMouseDown(e: MouseEvent) {
   e.preventDefault()
 
   // 添加事件监听器，使用捕获阶段以确保更快的响应
-  document.addEventListener('mousemove', handleMouseMove, {capture: true})
-  document.addEventListener('mouseup', handleMouseUp, {capture: true})
-  document.addEventListener('touchmove', handleTouchMove, {capture: true, passive: false})
-  document.addEventListener('touchend', handleMouseUp, {capture: true})
+  document.addEventListener('mousemove', handleMouseMove, { capture: true })
+  document.addEventListener('mouseup', handleMouseUp, { capture: true })
+  document.addEventListener('touchmove', handleTouchMove, { capture: true, passive: false })
+  document.addEventListener('touchend', handleMouseUp, { capture: true })
 }
 
 // 单独处理触摸开始事件
@@ -182,8 +182,8 @@ function handleTouchStart(e: TouchEvent) {
   e.preventDefault()
 
   // 添加事件监听器，使用捕获阶段以确保更快的响应
-  document.addEventListener('touchmove', handleTouchMove, {capture: true, passive: false})
-  document.addEventListener('touchend', handleMouseUp, {capture: true})
+  document.addEventListener('touchmove', handleTouchMove, { capture: true, passive: false })
+  document.addEventListener('touchend', handleMouseUp, { capture: true })
 }
 
 function handleMouseMove(e: MouseEvent) {
@@ -200,12 +200,12 @@ function handleMouseMove(e: MouseEvent) {
     x: e.clientX - dragOffset.value.x,
     y: e.clientY - dragOffset.value.y
   }
-  
+
   // 拖动时暂时展开球以提供更好的视觉反馈
   if (!isExpanded.value) {
     isExpanded.value = true
   }
-  
+
   // 防止事件冒泡和默认行为
   e.preventDefault()
   e.stopPropagation()
@@ -225,12 +225,12 @@ function handleTouchMove(e: TouchEvent) {
     x: e.touches[0].clientX - dragOffset.value.x,
     y: e.touches[0].clientY - dragOffset.value.y
   }
-  
+
   // 拖动时暂时展开球以提供更好的视觉反馈
   if (!isExpanded.value) {
     isExpanded.value = true
   }
-  
+
   // 防止事件冒泡和默认行为
   e.preventDefault()
   e.stopPropagation()
@@ -243,7 +243,7 @@ function handleMouseUp(e?: MouseEvent | TouchEvent) {
   if (wasDragging) {
     // 结束拖动后自动贴边
     snapToEdge()
-    
+
     // 3秒后自动隐藏
     setTimeout(() => {
       isExpanded.value = false
@@ -254,24 +254,24 @@ function handleMouseUp(e?: MouseEvent | TouchEvent) {
   }
 
   // 移除事件监听器
-  document.removeEventListener('mousemove', handleMouseMove, {capture: true})
-  document.removeEventListener('mouseup', handleMouseUp, {capture: true})
-  document.removeEventListener('touchmove', handleTouchMove, {capture: true})
-  document.removeEventListener('touchend', handleMouseUp, {capture: true})
+  document.removeEventListener('mousemove', handleMouseMove, { capture: true })
+  document.removeEventListener('mouseup', handleMouseUp, { capture: true })
+  document.removeEventListener('touchmove', handleTouchMove, { capture: true })
+  document.removeEventListener('touchend', handleMouseUp, { capture: true })
 }
 
 // 处理点击事件
 function handleClick() {
   // 如果正在拖动，则不处理点击事件
   if (isDragging.value) return
-  
+
   // 展开球
   isExpanded.value = true
   console.log('Developer ball clicked! expanded')
 
   // 根据新状态更新位置，确保贴边
   snapToEdge()
-  
+
   // 设置3秒后自动隐藏
   setTimeout(() => {
     isExpanded.value = false
@@ -283,10 +283,10 @@ function handleClick() {
 
 // 在组件卸载时清理
 onUnmounted(() => {
-  document.removeEventListener('mousemove', handleMouseMove, {capture: true})
-  document.removeEventListener('mouseup', handleMouseUp, {capture: true})
-  document.removeEventListener('touchmove', handleTouchMove, {capture: true})
-  document.removeEventListener('touchend', handleMouseUp, {capture: true})
+  document.removeEventListener('mousemove', handleMouseMove, { capture: true })
+  document.removeEventListener('mouseup', handleMouseUp, { capture: true })
+  document.removeEventListener('touchmove', handleTouchMove, { capture: true })
+  document.removeEventListener('touchend', handleMouseUp, { capture: true })
   window.removeEventListener('resize', handleResize)
 
   // 销毁vConsole实例
@@ -356,9 +356,9 @@ onMounted(() => {
       'stick-right': stickyPosition === 'right',
       'dragging': isDragging
     }" :style="{
-          left: `${position.x}px`,
-          top: `${position.y}px`
-        }" @mousedown="handleMouseDown" @touchstart="handleTouchStart" @click="handleClick">
+      left: `${position.x}px`,
+      top: `${position.y}px`
+    }" @mousedown="handleMouseDown" @touchstart="handleTouchStart" @click="handleClick">
       <div class="ball-content">
         <i class="i-mdi-robot text-xl"></i>
       </div>
@@ -391,7 +391,7 @@ onMounted(() => {
   user-select: none;
   touch-action: none;
   cursor: pointer;
-  transition: 
+  transition:
     width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
     height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
     opacity 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
@@ -422,16 +422,18 @@ onMounted(() => {
   &:active {
     transform: scale(0.95);
   }
-  
+
   // 拖动状态样式
   &.dragging {
     transition: none !important; // 拖动时完全禁用所有过渡效果
+
     * {
       transition: none !important; // 确保子元素也禁用过渡
     }
+
     opacity: 0.8;
     transform: scale(1.05);
-    
+
     .ball-content {
       transform: scale(0.9);
     }
@@ -447,11 +449,11 @@ onMounted(() => {
 
     &.collapsed {
       transform: translateX(-60%);
-      
+
       &:hover:not(.dragging) {
         transform: translateX(-55%) scale(1.05);
       }
-      
+
       &:active:not(.dragging) {
         transform: translateX(-55%) scale(0.95);
       }
@@ -469,11 +471,11 @@ onMounted(() => {
 
     &.collapsed {
       transform: translateX(60%);
-      
+
       &:hover:not(.dragging) {
         transform: translateX(55%) scale(1.05);
       }
-      
+
       &:active:not(.dragging) {
         transform: translateX(55%) scale(0.95);
       }
@@ -485,6 +487,7 @@ onMounted(() => {
     width: 30px;
     height: 30px;
     opacity: 0.7;
+
     .ball-content {
       transform: scale(0.7);
     }
@@ -493,7 +496,7 @@ onMounted(() => {
     .ball-ring {
       animation-play-state: paused;
     }
-    
+
     &:hover:not(.dragging) {
       opacity: 0.9;
     }

@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import PageNavHolder from '~/components/page/holder/PageNavHolder.vue'
 import { useDevMode } from '~/modules/develop'
+import { useGlobalSplashState, ScreenMode } from '~/modules/splash'
 
 // 导入开发者模式设置
 const { devModeEnabled, toggleDevMode } = useDevMode()
+const globalSplashState = useGlobalSplashState()
+const host = ref('')
+
+onMounted(() => {
+  host.value = window.location.href
+})
 </script>
 
 <template>
@@ -27,11 +34,7 @@ const { devModeEnabled, toggleDevMode } = useDevMode()
             </div>
           </div>
           <label class="switch">
-            <input 
-              type="checkbox" 
-              :checked="devModeEnabled" 
-              @change="toggleDevMode"
-            >
+            <input type="checkbox" :checked="devModeEnabled" @change="toggleDevMode">
             <span class="slider" />
           </label>
         </div>
@@ -42,6 +45,46 @@ const { devModeEnabled, toggleDevMode } = useDevMode()
             </div>
             <div class="DevelopPage-SectionItem-desc">
               查看应用运行日志
+            </div>
+          </div>
+          <span class="arrow" />
+        </div>
+      </div>
+
+      <!-- 调试工具 -->
+      <div class="DevelopPage-Section">
+        <LineArrow>
+          <template #icon>
+            <div i-carbon-presentation-file />
+          </template>
+          环境信息
+        </LineArrow>
+        <div class="DevelopPage-SectionItem">
+          <div class="DevelopPage-SectionItem-content">
+            <div class="DevelopPage-SectionItem-title">
+              Host
+            </div>
+            <div class="DevelopPage-SectionItem-desc">
+              {{ host }}
+            </div>
+          </div>
+          <span class="arrow" />
+        </div>
+        <div class="DevelopPage-SectionItem">
+          <div class="DevelopPage-SectionItem-content">
+            <div class="DevelopPage-SectionItem-title">
+              Mode
+            </div>
+            <div class="DevelopPage-SectionItem-desc">
+              <template v-if="globalSplashState.screenMode.value === ScreenMode.MOBILE">
+                MOBILE
+              </template>
+              <template v-else-if="globalSplashState.screenMode.value === ScreenMode.WRAPPED">
+                WRAPPED
+              </template>
+              <template v-else-if="globalSplashState.screenMode.value === ScreenMode.BUILDER">
+                Builder
+              </template>
             </div>
           </div>
           <span class="arrow" />
@@ -235,12 +278,12 @@ const { devModeEnabled, toggleDevMode } = useDevMode()
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: var(--theme-color);
   transition: background-color 0.3s ease;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   transform: translateX(20px);
   transition: transform 0.3s ease;
 }
@@ -250,4 +293,4 @@ input:checked + .slider:before {
   color: #999;
   font-size: 14px;
 }
-</style> 
+</style>
