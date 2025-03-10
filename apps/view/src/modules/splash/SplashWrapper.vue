@@ -17,7 +17,7 @@ function handleMockChange() {
     return
   }
 
-  if (splashState.screenMode.value === ScreenMode.MOBILE) {
+  if (splashState.screenMode.value !== ScreenMode.WRAPPED) {
     Object.assign(el.style, {
       width: '100%',
       height: '100%',
@@ -41,12 +41,24 @@ function handleMockChange() {
   // set image url (css var)
   el.style.setProperty('--mask-image', `url(${mask})`)
 }
+
+const modeClass = computed(() => {
+  if (splashState.screenMode.value === ScreenMode.MOBILE) {
+    return 'fullscreen'
+  }
+
+  if (splashState.screenMode.value === ScreenMode.BUILDER) {
+    return 'builder'
+  }
+
+  return currentMock.value
+})
 </script>
 
 <template>
   <!-- 根据传入的素材进行裁切视图 - 如果没有素材传入用代码裁切 -->
   <div ref="dom" :class="{ empty: !currentMock?.mask }" class="SplashWrapper">
-    <div :class="[currentMock.value]" class="SplashWrapper-Clip absolute-layout">
+    <div :class="[modeClass]" class="SplashWrapper-Clip absolute-layout">
       <slot />
     </div>
   </div>

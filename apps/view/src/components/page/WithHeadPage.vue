@@ -22,8 +22,6 @@ const handleScroll = () => {
   const scrollTop = container.scrollTop
 
   percent.value = Math.min((scrollTop / headerHeight) * 100, 100)
-
-  console.log(percent.value, headerHeight, scrollTop)
 }
 
 nextTick(() => {
@@ -82,6 +80,11 @@ onBeforeUnmount(() => {
 <style lang="scss" scoped>
 .WithHeadPage-HeaderShrink {
   .statusbar & {
+    padding-top: 44px;
+    height: 80px;
+  }
+
+  .statusbar .iPhone16 & {
     padding-top: 54px;
     height: 88px;
   }
