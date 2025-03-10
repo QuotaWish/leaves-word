@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import PageNavHolder from '~/components/page/holder/PageNavHolder.vue'
+import PageSettingsSection from '~/components/display/settings/PageSettingsSection.vue'
+import PageSettingsItem from '~/components/display/settings/PageSettingsItem.vue'
 import { useDevMode } from '~/modules/develop'
 import { useRouter } from 'vue-router'
 
@@ -21,269 +23,81 @@ function navigateToDeveloperPage() {
 function navigateToThemePage() {
   navigateTo('/personal/theme')
 }
+
+// 默认广告状态
+const noAdsEnabled = ref(false)
+
+// 切换广告状态
+function toggleNoAds(value: boolean) {
+  noAdsEnabled.value = value
+}
 </script>
 
 <template>
   <PageNavHolder :content-padding="false" class="SettingsPage" title="个人设置">
-    <div class="SettingsPage-Container h-full overflow-y-scroll flex flex-col p-4 gap-3">
+    <div class="SettingsPage-Container w-full h-full overflow-y-scroll flex flex-col p-4">
       <!-- 主题与皮肤 -->
-      <div class="SettingsPage-Section">
-        <LineArrow>
-          <template #icon>
-            <div i-carbon:paint-brush />
-          </template>
-          主题与皮肤
-        </LineArrow>
-        <div class="SettingsPage-SectionItem" @click="navigateToThemePage">
-          <div class="SettingsPage-SectionItem-content">
-            <div class="SettingsPage-SectionItem-title">
-              主题设置
-            </div>
-            <div class="SettingsPage-SectionItem-desc">
-              暗黑模式与主题色选择
-            </div>
-          </div>
-          <span class="arrow" />
-        </div>
-        <div class="SettingsPage-SectionItem">
-          <div class="SettingsPage-SectionItem-content">
-            <div class="SettingsPage-SectionItem-title">
-              皮肤定制
-            </div>
-            <div class="SettingsPage-SectionItem-desc">
-              自定义颜色、字体和背景
-            </div>
-          </div>
-          <span class="arrow" />
-        </div>
-      </div>
+      <PageSettingsSection title="主题与皮肤" icon="i-carbon:paint-brush" color="#5E9CFF">
+        <PageSettingsItem 
+          title="主题设置" 
+          desc="暗黑模式与主题色选择" 
+          :show-arrow="true"
+          @click="navigateToThemePage"
+        />
+        <PageSettingsItem 
+          title="皮肤定制" 
+          desc="自定义颜色、字体和背景" 
+          :show-arrow="true" 
+        />
+      </PageSettingsSection>
 
       <!-- 基础设置 -->
-      <div class="SettingsPage-Section">
-        <LineArrow>
-          <template #icon>
-            <div i-carbon:settings />
-          </template>
-          基础设置
-        </LineArrow>
-        <div class="SettingsPage-SectionItem">
-          <div class="SettingsPage-SectionItem-content">
-            <div class="SettingsPage-SectionItem-title">
-              通知设置
-            </div>
-            <div class="SettingsPage-SectionItem-desc">
-              管理消息接收方式
-            </div>
-          </div>
-          <span class="arrow" />
-        </div>
-        <div class="SettingsPage-SectionItem">
-          <div class="SettingsPage-SectionItem-content">
-            <div class="SettingsPage-SectionItem-title">
-              隐私设置
-            </div>
-            <div class="SettingsPage-SectionItem-desc">
-              数据安全与权限管理
-            </div>
-          </div>
-          <span class="arrow" />
-        </div>
-      </div>
+      <PageSettingsSection title="基础设置" icon="i-carbon:settings" color="#FF9F0A">
+        <PageSettingsItem 
+          title="通知设置" 
+          desc="管理消息接收方式" 
+          :show-arrow="true" 
+        />
+        <PageSettingsItem 
+          title="隐私设置" 
+          desc="数据安全与权限管理" 
+          :show-arrow="true" 
+        />
+      </PageSettingsSection>
 
       <!-- 广告与推广 -->
-      <div class="SettingsPage-Section">
-        <LineArrow>
-          <template #icon>
-            <div i-carbon:share />
-          </template>
-          广告与推广
-        </LineArrow>
-        <div class="SettingsPage-SectionItem">
-          <div class="SettingsPage-SectionItem-content">
-            <div class="SettingsPage-SectionItem-title">
-              无广告订阅
-            </div>
-            <div class="SettingsPage-SectionItem-desc">
-              提升学习体验
-            </div>
-          </div>
-          <label class="switch">
-            <input type="checkbox">
-            <span class="slider" />
-          </label>
-        </div>
-        <div class="SettingsPage-SectionItem">
-          <div class="SettingsPage-SectionItem-content">
-            <div class="SettingsPage-SectionItem-title">
-              活动海报
-            </div>
-            <div class="SettingsPage-SectionItem-desc">
-              查看最新平台活动
-            </div>
-          </div>
-          <span class="arrow" />
-        </div>
-      </div>
+      <PageSettingsSection title="广告与推广" icon="i-carbon:share" color="#FF3B30">
+        <PageSettingsItem 
+          title="无广告订阅" 
+          desc="提升学习体验" 
+          :show-switch="true"
+          :switch-value="noAdsEnabled"
+          @switch-change="toggleNoAds"
+        />
+        <PageSettingsItem 
+          title="活动海报" 
+          desc="查看最新平台活动" 
+          :show-arrow="true" 
+        />
+      </PageSettingsSection>
 
       <!-- 高级设置 - 添加开发者模式 -->
-      <div class="SettingsPage-Section" v-if="devModeEnabled">
-        <LineArrow>
-          <template #icon>
-            <div i-carbon:code />
-          </template>
-          高级设置
-        </LineArrow>
-        <div class="SettingsPage-SectionItem" @click="navigateToDeveloperPage">
-          <div class="SettingsPage-SectionItem-content">
-            <div class="SettingsPage-SectionItem-title">
-              开发者模式
-            </div>
-            <div class="SettingsPage-SectionItem-desc">
-              启用高级开发工具和调试功能
-            </div>
-          </div>
-          <span class="arrow" />
-        </div>
-      </div>
+      <PageSettingsSection 
+        v-if="devModeEnabled" 
+        title="高级设置" 
+        icon="i-carbon:code" 
+        color="#AF52DE"
+      >
+        <PageSettingsItem 
+          title="开发者模式" 
+          desc="启用高级开发工具和调试功能" 
+          :show-arrow="true"
+          @click="navigateToDeveloperPage"
+        />
+      </PageSettingsSection>
     </div>
   </PageNavHolder>
 </template>
 
 <style lang="scss" scoped>
-.SettingsPage-Container {
-  width: 100%;
-  height: 100%;
-
-  overflow-y: scroll;
-}
-
-.SettingsPage-Section {
-  border-radius: 15px;
-  background: var(--el-fill-color-light);
-}
-
-.SettingsPage-Section-title {
-  padding: 10px 0; // 调整内边距
-  font-size: 16px; // 增加字体大小
-  color: #333; // 改变文字颜色
-  border-bottom: 1px solid #eee;
-  position: sticky; // 添加 sticky 样式
-  top: 0; // 添加 top 样式
-  background: #fff; // 添加背景色以避免与内容重叠
-  z-index: 1; // 确保标题在内容之上
-}
-
-.SettingsPage-SectionItem {
-  padding: 1rem;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--el-border-color-light);
-  transition: background-color 0.2s ease;
-  
-  &:hover {
-    background-color: var(--el-fill-color);
-  }
-}
-
-.SettingsPage-SectionItem:last-child {
-  border-bottom: none;
-}
-
-.SettingsPage-SectionItem-content {
-  flex-grow: 1;
-}
-
-.SettingsPage-SectionItem-title {
-  font-size: 16px;
-  margin-bottom: 5px; // 调整间距
-}
-
-.SettingsPage-SectionItem-desc {
-  font-size: 14px; // 增加字体大小
-  color: #666;
-}
-
-.switch {
-  position: relative;
-  width: 50px;
-  height: 30px;
-  cursor: pointer; // 添加鼠标指针样式
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--el-fill-color-light);
-  border-radius: 15px;
-  transition: 0.4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: '';
-  height: 26px;
-  width: 26px;
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
-  border-radius: 50%;
-  transition: 0.4s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-input:checked + .slider {
-  background-color: var(--theme-color);
-  transition: background-color 0.3s ease;
-}
-
-input:checked + .slider:before {
-  transform: translateX(20px);
-  transition: transform 0.3s ease;
-}
-
-.arrow::after {
-  content: '>';
-  color: #999;
-  font-size: 14px;
-}
-
-.theme-preview {
-  display: flex;
-  gap: 15px;
-}
-
-.theme-option {
-  width: 50px;
-  height: 50px;
-  border-radius: 10px;
-  border: 2px solid var(--el-border-color-light);
-  transition: border-color 0.3s ease;
-}
-
-.theme-option:hover {
-  border-color: var(--theme-color-dark);
-}
-
-.theme-light {
-  background: #ffffff;
-}
-
-.theme-dark {
-  background: #1a1a1a;
-}
-
-.theme-blue {
-  background: var(--theme-color);
-}
 </style>

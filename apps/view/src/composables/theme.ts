@@ -17,15 +17,15 @@ export const isDark = useDark({
 const toggle = (forcedValue?: boolean) => {
   const newValue = forcedValue !== undefined ? forcedValue : !isDark.value
   isDark.value = newValue
-  
+
   // 确保class被正确添加或移除
   if (typeof document !== 'undefined') {
     document.documentElement.classList.toggle('dark', newValue)
-    
+
     // 更新localStorage
     localStorage.setItem('color-schema', newValue ? 'dark' : 'light')
   }
-  
+
   return newValue
 }
 
@@ -118,9 +118,16 @@ export const themeColorMap = {
 watch(themeColor, (newColor) => {
   const colors = themeColorMap[newColor]
   if (typeof document !== 'undefined') {
+    // 提取RGB值用于透明度计算
+    const primaryHex = colors.primary.replace('#', '');
+    const r = parseInt(primaryHex.substring(0, 2), 16);
+    const g = parseInt(primaryHex.substring(2, 4), 16);
+    const b = parseInt(primaryHex.substring(4, 6), 16);
+
     document.documentElement.style.setProperty('--theme-color-primary', colors.primary)
     document.documentElement.style.setProperty('--theme-color-secondary', colors.secondary)
     document.documentElement.style.setProperty('--theme-color-light', colors.light)
+    document.documentElement.style.setProperty('--theme-color-primary-rgb', `${r}, ${g}, ${b}`)
   }
 }, { immediate: true })
 
@@ -135,6 +142,11 @@ export const changeThemeColor = (color: ThemeColor, event?: MouseEvent) => {
       Math.max(x, window.innerWidth - x),
       Math.max(y, window.innerHeight - y)
     )
+
+    // 保存当前颜色，用于动画过渡
+    const oldColor = themeColor.value
+    const oldColors = themeColorMap[oldColor]
+    const newColors = themeColorMap[color]
 
     // @ts-ignore - View Transition API不在所有类型定义中
     const transition = document.startViewTransition(() => {
@@ -157,6 +169,21 @@ export const changeThemeColor = (color: ThemeColor, event?: MouseEvent) => {
           pseudoElement: '::view-transition-new(root)',
         }
       )
+
+      // 为主题色相关元素添加过渡动画
+      document.querySelectorAll('.theme-transition-element').forEach(el => {
+        el.animate(
+          [
+            { backgroundColor: oldColors.primary },
+            { backgroundColor: newColors.primary }
+          ],
+          {
+            duration: 300,
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+            fill: 'forwards'
+          }
+        )
+      })
     })
   } else if (supportsTransition) {
     // @ts-ignore - View Transition API不在所有类型定义中
@@ -218,6 +245,11 @@ if (typeof document !== 'undefined') {
     html.dark::view-transition-new(root) {
       z-index: 1;
     }
+    
+    /* 主题色过渡效果 */
+    .theme-color-transition {
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    }
   `
   document.head.appendChild(style)
 }
@@ -240,4 +272,4 @@ export const useTheme = () => {
   }
 }
 
-export default useTheme 
+export default useTheme
