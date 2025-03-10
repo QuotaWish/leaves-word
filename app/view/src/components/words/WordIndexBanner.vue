@@ -18,6 +18,18 @@ const banners = reactive([
     desc: '无障碍看美剧、英剧，地道表达！',
     image: 'https://img2.quotawish.com/2024/12/22/6766e8482b500.png',
   },
+  {
+    id: '3',
+    title: '流利口语速成课',
+    desc: '专业外教一对一指导，快速改善发音问题。',
+    image: 'https://img2.quotawish.com/2025/03/04/67c717b7c4634.webp',
+  },
+  {
+    id: '4',
+    title: '写作能力进阶课',
+    desc: '系统讲解写作结构与常用句式。',
+    image: 'https://img2.quotawish.com/2025/03/04/67c7184aaa0f2.webp',
+  },
 ])
 </script>
 
@@ -88,6 +100,7 @@ const banners = reactive([
   &:active {
     background-color: var(--el-fill-color);
   }
+
   position: relative;
   display: flex;
   padding: 1rem;
