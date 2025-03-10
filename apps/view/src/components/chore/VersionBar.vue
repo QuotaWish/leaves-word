@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
 
+const props = defineProps<{
+  detailed?: boolean
+}>()
+
 const dateTime = window.__BuildTime__ || Date.now()
 
 const version = computed(() => {
-  const time = dayjs(dateTime).format('YY.MM.DD')
+  const time = dayjs(dateTime).format(props.detailed ? 'YYYY-MM-DD HH:mm:ss' : 'YY.MM.DD')
   const sha = __LEAVES_WORD_VERSION__
 
   return `${time}-${sha}`

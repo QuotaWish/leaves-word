@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatDate } from '@vueuse/core'
 import PageNavHolder from '~/components/page/holder/PageNavHolder.vue'
 import { useDevMode } from '~/modules/develop'
 import { useGlobalSplashState, ScreenMode } from '~/modules/splash'
@@ -85,6 +86,17 @@ onMounted(() => {
               <template v-else-if="globalSplashState.screenMode.value === ScreenMode.BUILDER">
                 Builder
               </template>
+            </div>
+          </div>
+          <span class="arrow" />
+        </div>
+        <div class="DevelopPage-SectionItem">
+          <div class="DevelopPage-SectionItem-content">
+            <div class="DevelopPage-SectionItem-title">
+              BuildTime
+            </div>
+            <div class="DevelopPage-SectionItem-desc">
+              <VersionBar detailed />
             </div>
           </div>
           <span class="arrow" />
