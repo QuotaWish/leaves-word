@@ -3,30 +3,25 @@ import ExploreBackground from './ExploreBackground.vue'
 </script>
 
 <template>
-  <WithPage>
-    <div class="ExplorePage h-full overflow-y-auto">
+  <WithHeadPage class="ExplorePage">
+    <template #bg>
+      <ExploreBackground />
+    </template>
+
+    <template #header>
       <h1 class="title">
         探索
       </h1>
+    </template>
 
-      <div class="ExplorePage-Main">
-        <slot />
-      </div>
-
-      <ExploreBackground />
+    <div class="ExplorePage-Main">
+      <slot />
     </div>
-  </WithPage>
+  </WithHeadPage>
 </template>
 
 <style lang="scss">
 .ExplorePage {
-  & > h1 {
-    font-size: 24px;
-    font-weight: 600;
-
-    color: var(--el-text-color-primary);
-  }
-
   padding: 1rem;
   display: flex;
 

@@ -1,13 +1,10 @@
 <template>
   <view class="WordPage">
-    <view
-      class="loading-container"
-      :style="{
-        opacity: isLoading ? 1 : 0,
-        visibility: isLoading ? 'visible' : 'hidden',
-        position: isLoading ? 'relative' : 'absolute',
-      }"
-    >
+    <view class="loading-container" :style="{
+      opacity: isLoading ? 1 : 0,
+      visibility: isLoading ? 'visible' : 'hidden',
+      position: isLoading ? 'relative' : 'absolute',
+    }">
       <image class="logo" src="/static/logo.svg" />
       <view class="text-area">
         <text class="title">{{ loadingText }}</text>
@@ -15,18 +12,12 @@
       <view class="loading-spinner"></view>
     </view>
 
-    <web-view
-      :progress="false"
-      :src="url"
-      @error="handleError"
-      class="web-view"
-      @load="handleViewLoaded"
-      :style="{
+    <web-view :progress="false" :src="url" @error="handleError" class="web-view" @load="handleViewLoaded"
+      ref="webViewRef" :style="{
+        popGesture: 'none',
         opacity: isLoading ? 0 : 1,
         visibility: isLoading ? 'hidden' : 'visible',
-      }"
-      @message="handleMessage"
-    ></web-view>
+      }" @message="handleMessage"></web-view>
 
     <view class="error-container" :style="{ display: loadError ? 'flex' : 'none' }">
       <text class="error-text">{{ errorText }}</text>
@@ -36,7 +27,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount, getCurrentInstance } from "vue";
+import { onBackPress } from "@dcloudio/uni-app";
 
 const url = ref("");
 const isLoading = ref(true);
@@ -49,11 +41,13 @@ const leafDoneReceived = ref(false);
 // @ts-ignore
 const envType = process.env.NODE_ENV;
 
+const webViewRef = ref<PlusWebview | null>(null);
+
 // 根据不同环境设置不同的URL
 const getEnvironmentUrl = (): string => {
   let baseUrl = "";
   if (envType === "development") {
-    baseUrl = "http://192.168.128.121:3333";
+    baseUrl = "http://192.168.101.22:3333";
   } else {
     baseUrl = "https://app.leavesword.quotawish.com";
   }
@@ -135,6 +129,28 @@ onBeforeUnmount(() => {
     timeoutTimer.value = null;
   }
 });
+
+interface LeafEvent {
+  event: string
+  data: any
+}
+
+// const ins = ref(getCurrentInstance())
+
+const postMessage = (msg: LeafEvent) => {
+  webViewRef.value?.currentWebview().evalJS(`window.$uniMsg(${JSON.stringify(msg)})`)
+}
+
+onBackPress((e) => {
+  if (!webViewRef.value) return false;
+
+  console.log('onBackPress', e)
+
+  postMessage({
+    event: 'backpress',
+    data: e
+  })
+})
 </script>
 
 <style>

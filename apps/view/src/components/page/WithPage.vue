@@ -1,9 +1,13 @@
 <script setup lang="ts">
-
+withDefaults(defineProps<{
+  adapt?: boolean
+}>(), {
+  adapt: true
+})
 </script>
 
 <template>
-  <div class="WithPage">
+  <div :class="{ 'adapt': adapt }" class="WithPage">
     <div class="WithPage-Background absolute-layout -z-1">
       <slot name="bg" />
     </div>
@@ -20,11 +24,11 @@
 
   overflow: hidden;
 
-  .statusbar & {
+  .statusbar &.adapt {
     padding-top: 28px;
   }
 
-  .statusbar .iPhone16 & {
+  .statusbar .iPhone16 &.adapt {
     padding-top: 44px;
   }
 }

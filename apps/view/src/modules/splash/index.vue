@@ -6,8 +6,10 @@ import TheFooter from './footer/TheFooter.vue'
 import SplashLayout from './SplashLayout.vue'
 import SplashMenu from './SplashMenu.vue'
 import { useDeviceUaParser } from './ua-parser'
+import { useUniApp } from '~/composables/adapter/uniapp'
 
 const { isBuilder, check } = useBuilder()
+const { init, destroy } = useUniApp()
 const spalshState = useGlobalSplashState()
 
 function checkScreenSize() {
@@ -22,8 +24,16 @@ function checkScreenSize() {
   else {
     document.body.classList.remove('large-screen')
 
-    if ( isBuilder.value ) {
+    if (isBuilder.value) {
       spalshState.screenMode.value = ScreenMode.BUILDER
+
+      init(() => {
+        console.log('UniAppJSBridgeReady Done')
+      })
+
+      onBeforeUnmount(() => {
+        destroy()
+      })
     }
     else {
       spalshState.screenMode.value = ScreenMode.MOBILE
@@ -39,7 +49,7 @@ watch([width, height], () => {
   nextTick(checkScreenSize)
 })
 
-onMounted(() => {
+nextTick(() => {
   checkScreenSize()
 
   document.body.classList.add('mobile')
@@ -65,6 +75,4 @@ onMounted(() => {
   </SpalshContainer>
 </template>
 
-<style>
-
-</style>
+<style></style>

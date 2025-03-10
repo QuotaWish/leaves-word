@@ -97,9 +97,9 @@ const swiperList: Array<string> = [
           <h3 absolute class="ExplorePage-BannerItem-TransTitle left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] z-10 font-bold text-4xl text-white">词汇测试</h3>
           <img src="https://img2.quotawish.com/2025/03/04/67c7158472ce5.gif" style="width: 100%; height: 100%; object-fit: cover" />
         </SwipeItem>
-        <SwipeItem v-for="(item, idx) in swiperList" :key="idx">
+        <!-- <SwipeItem v-for="(item, idx) in swiperList" :key="idx">
           <img :src="item" style="width: 100%; height: 100%; object-fit: cover" />
-        </SwipeItem>
+        </SwipeItem> -->
       </Swipe>
     </div>
 

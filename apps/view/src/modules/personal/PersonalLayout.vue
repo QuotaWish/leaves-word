@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import WithHeadPage from '~/components/page/WithHeadPage.vue';
+
 
 </script>
 
 <template>
-  <div class="PersonalLayout">
+  <WithHeadPage :adapt="false" class="PersonalLayout">
     <header class="header">
       <slot name="header" />
     </header>
@@ -13,7 +15,11 @@
     <footer flex flex-col items-center op-50 class="footer">
       <slot name="footer" />
     </footer>
-  </div>
+
+    <template #shrinkHeader>
+      个人中心
+    </template>
+  </WithHeadPage>
 </template>
 
 <style lang="scss" scoped>

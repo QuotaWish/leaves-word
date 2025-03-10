@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { UniEventAtBackButton, uniEventBus } from '~/composables/adapter/uniapp';
+
 defineProps<{
   loading?: boolean
 }>()
@@ -14,6 +16,20 @@ defineProps<{
 // onDeactivated(() => {
 //   visible.value = false
 // })
+const router = useRouter()
+const handleBackButton = (event: any) => {
+  if (event !== UniEventAtBackButton) return
+
+  router.back()
+}
+
+onMounted(() => {
+  uniEventBus.on(handleBackButton)
+})
+
+onBeforeUnmount(() => {
+  uniEventBus.off(handleBackButton)
+})
 </script>
 
 <template>
@@ -26,8 +42,7 @@ defineProps<{
       <slot />
 
       <div
-        class="transition-cubic RoutePage-Loading absolute-layout z-1 h-full w-full flex flex-col items-center justify-center gap-4 p-4"
-      >
+        class="transition-cubic RoutePage-Loading absolute-layout z-1 h-full w-full flex flex-col items-center justify-center gap-4 p-4">
         <Loading />
       </div>
     </div>
@@ -59,13 +74,16 @@ defineProps<{
 
   &-Header {
     :deep(.van-nav-bar) {
+
       .van-icon,
       .van-nav-bar__text {
         color: var(--theme-color);
       }
+
       &::after {
         border-bottom: none !important;
       }
+
       padding-top: 0.5rem;
     }
   }
