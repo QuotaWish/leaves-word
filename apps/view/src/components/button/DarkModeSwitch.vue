@@ -1,62 +1,49 @@
 <script setup lang="ts">
-import { useDark, useToggle } from '@vueuse/core'
-import { ref } from 'vue'
+import { isDark, toggleDark, features, themeColor, themeColorMap, changeThemeColor, useTheme } from '~/composables/theme'
+import { ref, computed, onMounted } from 'vue'
 
-const isDark = useDark({
-  selector: 'html',
-  attribute: 'data-bs-theme',
-  valueDark: 'dark',
-  valueLight: 'light'
-})
-
-const toggleDark = useToggle(isDark)
+// 主题管理API
+const theme = useTheme()
 
 // 处理暗色模式切换
 const handleToggle = (event: MouseEvent) => {
-  const x = event.clientX
-  const y = event.clientY
-  // 计算最大半径 - 从点击位置到最远角落的距离
-  const endRadius = Math.hypot(
-    Math.max(x, innerWidth - x),
-    Math.max(y, innerHeight - y)
-  )
-
-  // 如果浏览器不支持 View Transitions API，直接切换
-  if (!document.startViewTransition) {
-    toggleDark()
-    return
-  }
-
-  // 启动过渡动画
-  const transition = document.startViewTransition(async () => {
-    toggleDark()
-  })
-
-  // 当准备好后开始动画
-  transition.ready.then(() => {
-    const clipPath = [
-      `circle(0px at ${x}px ${y}px)`,
-      `circle(${endRadius}px at ${x}px ${y}px)`
-    ]
-
-    document.documentElement.animate(
-      {
-        clipPath: isDark.value ? [...clipPath].reverse() : clipPath,
-      },
-      {
-        duration: 400,
-        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-        pseudoElement: isDark.value
-          ? '::view-transition-old(root)'
-          : '::view-transition-new(root)',
-      }
-    )
-  })
+  // 传递点击事件参数，启用圆形扩散效果
+  toggleDark(undefined, event)
 }
+
+// 当前主题色
+const currentThemeColor = computed(() => {
+  return themeColorMap[themeColor.value].primary
+})
+
+// 主题色选项
+const themeColors = Object.entries(themeColorMap).map(([key, value]) => ({
+  name: key,
+  color: value.primary,
+}))
+
+// 显示主题色选择器
+const showColorPicker = ref(false)
+
+// 处理主题色变更
+const handleColorChange = (colorName: string, event?: MouseEvent) => {
+  // 传递点击事件参数，启用圆形扩散效果
+  // @ts-ignore - 类型转换
+  changeThemeColor(colorName, event)
+  showColorPicker.value = false
+}
+
+// 确保在挂载时应用正确的样式
+onMounted(() => {
+  // 强制刷新一下样式以确保正确显示
+  const currentMode = isDark.value
+  document.documentElement.classList.toggle('dark', currentMode)
+})
 </script>
 
 <template>
-  <div class="DarkModeSwitch">
+  <div class="DarkModeSwitch flex items-center gap-2">
+    <!-- 暗色模式切换 -->
     <ElTooltip :content="isDark ? '切换亮色模式' : '切换暗色模式'">
       <div
         class="switch-button flex cursor-pointer items-center rounded-md p-1.5 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -66,39 +53,53 @@ const handleToggle = (event: MouseEvent) => {
         <div i-carbon-sun v-else />
       </div>
     </ElTooltip>
+
+    <!-- 主题色选择器 -->
+    <ElPopover
+      trigger="click"
+      :width="200"
+      v-model:visible="showColorPicker"
+    >
+      <template #reference>
+        <div
+          class="theme-color-button flex cursor-pointer items-center rounded-md p-1.5 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+          :style="{ color: currentThemeColor }"
+        >
+          <div i-carbon-color-palette />
+        </div>
+      </template>
+      
+      <div class="theme-color-picker p-2">
+        <div class="mb-2 text-sm font-medium">选择主题色</div>
+        <div class="flex flex-wrap gap-2">
+          <div
+            v-for="color in themeColors"
+            :key="color.name"
+            class="color-item flex h-6 w-6 cursor-pointer items-center justify-center rounded-full transition-transform hover:scale-110"
+            :style="{ backgroundColor: color.color }"
+            :class="{ 'ring-2 ring-offset-2': themeColor === color.name }"
+            @click="($event) => handleColorChange(color.name, $event)"
+          >
+            <div v-if="themeColor === color.name" i-carbon-checkmark class="text-white text-xs" />
+          </div>
+        </div>
+      </div>
+    </ElPopover>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .DarkModeSwitch {
-  .switch-button {
+  .switch-button, .theme-color-button {
     color: var(--el-text-color-primary);
+  }
+  
+  .theme-color-button {
+    color: v-bind('currentThemeColor');
   }
 }
 </style>
 
 <style>
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-/* 控制暗色模式切换时的层级顺序 */
-::view-transition-old(root) {
-  z-index: 1;
-}
-
-::view-transition-new(root) {
-  z-index: 2147483646;
-}
-
-/* 暗色模式下调整层级顺序 */
-[data-bs-theme="dark"]::view-transition-old(root) {
-  z-index: 2147483646;
-}
-
-[data-bs-theme="dark"]::view-transition-new(root) {
-  z-index: 1;
-}
+/* 由于View Transitions API样式已经移到theme.ts中统一管理，这里可以删除重复样式 */
 </style>
