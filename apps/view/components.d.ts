@@ -55,7 +55,6 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SearchBar: typeof import('./src/components/input/SearchBar.vue')['default']
     SideNavHolder: typeof import('./src/components/page/holder/SideNavHolder.vue')['default']
-    SignCalendar: typeof import('./src/components/SignCalendar.vue')['default']
     SignCalendarMonthly: typeof import('./src/components/SignCalendarMonthly.vue')['default']
     Sound: typeof import('./src/components/words/mode/sound/index.vue')['default']
     SoundEmoji: typeof import('./src/components/words/mode/sound/SoundEmoji.vue')['default']
