@@ -46,8 +46,6 @@ export function useUniApp() {
       window.$uniMsg = messageHandler
       backHandler()
 
-      console.log('UniAppJSBridgeReady - MessageHandler Done')
-
       onReady()
     })
 

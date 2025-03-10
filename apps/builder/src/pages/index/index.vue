@@ -12,12 +12,7 @@
       <view class="loading-spinner"></view>
     </view>
 
-    <web-view :progress="false" :src="url" @error="handleError" class="web-view" @load="handleViewLoaded"
-      ref="webViewRef" :style="{
-        popGesture: 'none',
-        opacity: isLoading ? 0 : 1,
-        visibility: isLoading ? 'hidden' : 'visible',
-      }" @message="handleMessage"></web-view>
+    <LeafWebView />
 
     <view class="error-container" :style="{ display: loadError ? 'flex' : 'none' }">
       <text class="error-text">{{ errorText }}</text>
@@ -28,8 +23,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, getCurrentInstance } from "vue";
-import { onBackPress } from "@dcloudio/uni-app";
+import { onBackPress, onShow } from "@dcloudio/uni-app";
+import LeafWebView from "@/components/LeafWebView.vue";
 
+const height = ref(0)
 const url = ref("");
 const isLoading = ref(true);
 const loadError = ref(false);
@@ -38,119 +35,7 @@ const errorText = ref("加载失败，请检查网络连接");
 const timeoutTimer = ref<number | null>(null);
 const leafDoneReceived = ref(false);
 
-// @ts-ignore
-const envType = process.env.NODE_ENV;
 
-const webViewRef = ref<PlusWebview | null>(null);
-
-// 根据不同环境设置不同的URL
-const getEnvironmentUrl = (): string => {
-  let baseUrl = "";
-  if (envType === "development") {
-    baseUrl = "http://192.168.101.22:3333";
-  } else {
-    baseUrl = "https://app.leavesword.quotawish.com";
-  }
-
-  // 添加query=builder参数
-  const separator = baseUrl.includes("?") ? "&" : "?";
-  return `${baseUrl}${separator}query=builder`;
-};
-
-const loadWebView = () => {
-  isLoading.value = true;
-  loadError.value = false;
-  leafDoneReceived.value = false;
-  url.value = getEnvironmentUrl();
-
-  // 清除之前的定时器（如果有）
-  if (timeoutTimer.value !== null) {
-    clearTimeout(timeoutTimer.value);
-  }
-
-  // 设置3分钟超时检测
-  timeoutTimer.value = setTimeout(() => {
-    if (!leafDoneReceived.value) {
-      errorText.value = "页面加载超时，是否重新加载？";
-      loadError.value = true;
-    }
-  }, 3 * 60 * 1000); // 3分钟
-};
-
-const handleViewLoaded = () => {
-  isLoading.value = false;
-  // 页面加载完成，但仍需等待leaf:done事件
-};
-
-const reloadWebView = () => {
-  loadError.value = false;
-  loadWebView();
-};
-
-const handleError = (event: any) => {
-  console.error("Webview 加载失败:", event);
-  loadError.value = true;
-  isLoading.value = false; // 确保在出错时也隐藏加载界面
-
-  uni.showToast({
-    title: "页面加载失败，请检查网络连接",
-    icon: "none",
-  });
-};
-
-// 处理从网页接收的消息
-const handleMessage = (event: any) => {
-  console.log("收到网页消息:", event);
-  try {
-    const message = event.detail ? event.detail : event;
-
-    // 检查是否收到leaf:done事件
-    if (message && message.data === "leaf:done") {
-      leafDoneReceived.value = true;
-      // 收到leaf:done事件后，清除超时定时器
-      if (timeoutTimer.value !== null) {
-        clearTimeout(timeoutTimer.value);
-        timeoutTimer.value = null;
-      }
-    }
-  } catch (error) {
-    console.error("处理消息时出错:", error);
-  }
-};
-
-onMounted(() => {
-  loadWebView();
-});
-
-onBeforeUnmount(() => {
-  // 组件销毁前清除定时器
-  if (timeoutTimer.value !== null) {
-    clearTimeout(timeoutTimer.value);
-    timeoutTimer.value = null;
-  }
-});
-
-interface LeafEvent {
-  event: string
-  data: any
-}
-
-// const ins = ref(getCurrentInstance())
-
-const postMessage = (msg: LeafEvent) => {
-  webViewRef.value?.currentWebview().evalJS(`window.$uniMsg(${JSON.stringify(msg)})`)
-}
-
-onBackPress((e) => {
-  if (!webViewRef.value) return false;
-
-  console.log('onBackPress', e)
-
-  postMessage({
-    event: 'backpress',
-    data: e
-  })
-})
 </script>
 
 <style>

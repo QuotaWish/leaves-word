@@ -8,6 +8,7 @@ withDefaults(defineProps<{
   adapt: true
 })
 
+const instance = getCurrentInstance()
 const percent = ref(0)
 const headerRef = ref<HTMLElement>()
 const containerRef = ref<HTMLElement>()
@@ -57,7 +58,7 @@ onBeforeUnmount(() => {
 <template>
   <WithPage :adapt="adapt" class="WithHeadPage">
     <div ref="containerRef" class="w-full h-full overflow-y-scroll overflow-x-hidden">
-      <div ref="headerRef" class="WithHeadPage-Header">
+      <div ref="headerRef" v-if="instance?.slots.header" class="WithHeadPage-Header">
         <slot name="header" />
       </div>
       <slot />
@@ -111,6 +112,8 @@ onBeforeUnmount(() => {
 }
 
 .WithHeadPage-Header {
+  padding: 1rem;
+
   font-size: 24px;
   font-weight: 600;
 

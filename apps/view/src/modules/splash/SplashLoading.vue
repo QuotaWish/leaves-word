@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { APP_LOGO } from '~/composables/constants';
 import VersionBar from '~/components/chore/VersionBar.vue'
+import { ScreenMode, useGlobalSplashState } from '.';
 
+const globalSplashState = useGlobalSplashState()
 const loading = ref(true)
 
   ; (async () => {
@@ -8,6 +11,12 @@ const loading = ref(true)
 
   loading.value = false
 })()
+
+watch(() => globalSplashState.screenMode.value, () => {
+  if ( globalSplashState.screenMode.value === ScreenMode.BUILDER ) {
+    loading.value = false
+  }
+}, { immediate: true })
 </script>
 
 <template>

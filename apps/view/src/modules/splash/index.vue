@@ -7,6 +7,7 @@ import SplashLayout from './SplashLayout.vue'
 import SplashMenu from './SplashMenu.vue'
 import { useDeviceUaParser } from './ua-parser'
 import { useUniApp } from '~/composables/adapter/uniapp'
+import { useWebSizeAdapter } from '~/composables/adapter/web'
 
 const { isBuilder, check } = useBuilder()
 const { init, destroy } = useUniApp()
@@ -28,7 +29,6 @@ function checkScreenSize() {
       spalshState.screenMode.value = ScreenMode.BUILDER
 
       init(() => {
-        console.log('UniAppJSBridgeReady Done')
       })
 
       onBeforeUnmount(() => {
@@ -37,6 +37,8 @@ function checkScreenSize() {
     }
     else {
       spalshState.screenMode.value = ScreenMode.MOBILE
+
+      useWebSizeAdapter()
     }
   }
 

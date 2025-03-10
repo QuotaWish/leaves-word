@@ -14,7 +14,7 @@ import ExploreBackground from './ExploreBackground.vue'
       </h1>
     </template>
 
-    <div class="ExplorePage-Main">
+    <div class="ExplorePage-Main p-4">
       <slot />
     </div>
   </WithHeadPage>
@@ -22,7 +22,6 @@ import ExploreBackground from './ExploreBackground.vue'
 
 <style lang="scss">
 .ExplorePage {
-  padding: 1rem;
   display: flex;
 
   flex-direction: column;
