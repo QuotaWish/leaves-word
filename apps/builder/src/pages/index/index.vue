@@ -53,7 +53,7 @@ const envType = process.env.NODE_ENV;
 const getEnvironmentUrl = (): string => {
   let baseUrl = "";
   if (envType === "development") {
-    baseUrl = "http://localhost:3333";
+    baseUrl = "http://192.168.128.121:3333";
   } else {
     baseUrl = "https://app.leavesword.quotawish.com";
   }

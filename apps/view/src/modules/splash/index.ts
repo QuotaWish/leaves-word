@@ -46,10 +46,20 @@ export const useGlobalSplashState = createGlobalState(
 export const useBuilder = () => {
   const isBuilder = ref(false)
 
+  /**
+   * 检测 query 参数是否存在
+   */
+  function isBuilderQueyExist() {
+    const url = new URL(window.location.href)
+    const query = url.searchParams
+
+    return query.get('query') === 'builder'
+  }
+
   function check() {
     try {
       // @ts-ignore
-      if (plus) {
+      if (plus || isBuilderQueyExist()) {
         isBuilder.value = true
 
         console.log('%cBuilder mode enabled.', 'color: red; font-weight: bold;')

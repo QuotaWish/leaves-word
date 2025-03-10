@@ -4,7 +4,7 @@ import ExploreBackground from './ExploreBackground.vue'
 
 <template>
   <WithPage>
-    <div class="ExplorePage">
+    <div class="ExplorePage h-full overflow-y-auto">
       <h1 class="title">
         探索
       </h1>

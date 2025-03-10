@@ -65,7 +65,6 @@ function directPage(icon: any) {
 }
 const swiperList: Array<string> = [
   "https://img2.quotawish.com/2025/03/04/67c71582b0b5e.gif",
-  "https://img2.quotawish.com/2025/03/04/67c7158472ce5.gif",
   "https://img2.quotawish.com/2025/03/04/67c71586dd466.gif",
   "https://img2.quotawish.com/2025/03/04/67c715860048c.gif",
   "https://img2.quotawish.com/2025/03/04/67c7158c240f3.gif",
@@ -91,10 +90,12 @@ const swiperList: Array<string> = [
             千叶单词 | 立即体验
           </h3>
         </SwipeItem> -->
-        <SwipeItem>
-          <h3 class="ExplorePage-BannerItem small justify-center" text="2xl">
-            你离地道发音还有多远？
-          </h3>
+        <SwipeItem class="ExplorePage-BannerItem" v-for="(item, idx) in swiperList" :key="idx">
+          <img :src="item" style="width: 100%; height: 100%; object-fit: cover" />
+        </SwipeItem>
+        <SwipeItem class="ExplorePage-BannerItem">
+          <h3 absolute class="ExplorePage-BannerItem-TransTitle left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] z-10 font-bold text-4xl text-white">词汇测试</h3>
+          <img src="https://img2.quotawish.com/2025/03/04/67c7158472ce5.gif" style="width: 100%; height: 100%; object-fit: cover" />
         </SwipeItem>
         <SwipeItem v-for="(item, idx) in swiperList" :key="idx">
           <img :src="item" style="width: 100%; height: 100%; object-fit: cover" />
@@ -111,6 +112,24 @@ const swiperList: Array<string> = [
 </template>
 
 <style lang="scss">
+.ExplorePage-BannerItem-TransTitle {
+  // 让字展示背后的 gif 图
+  // -webkit-text-stroke: 2px #000;
+  // background-image: url(https://img2.quotawish.com/2025/03/04/67c7158472ce5.gif);
+  // background-size: cover;
+  // background-position: center;
+  // background-repeat: no-repeat;
+  background-clip: text;
+  -webkit-background-clip: text;
+  // color: rgb(245,195,104);
+  color: transparent;
+  // filter: invert(1);
+  // backdrop-filter: blur(18px) saturate(180%);
+  // mix-blend-mode: difference;
+  background-image: linear-gradient(to right, rgb(248, 99, 99), rgb(29, 210, 95));
+  filter: drop-shadow(0 0 2px #000000);
+}
+
 .ExplorePage-BannerItem {
   position: relative;
   display: flex;
@@ -122,12 +141,13 @@ const swiperList: Array<string> = [
   height: 100%;
 
   color: #fff;
+  overflow: hidden;
   border-radius: 25px;
   background-image: linear-gradient(to right, rgb(248, 99, 99), rgb(74, 74, 231));
 }
 
 .ExplorePage-Banner .van-swipe {
-  height: 120px;
+  height: 180px;
 }
 
 .ExplorePage-Course {
