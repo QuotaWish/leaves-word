@@ -53,6 +53,8 @@ onMounted(() => {
 onBeforeUnmount(() => {
   uniEventBus.off(handleBackButton)
 })
+
+onActivated(handleScroll)
 </script>
 
 <template>

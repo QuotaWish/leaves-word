@@ -88,7 +88,7 @@ export default {
         const message = event.detail ? event.detail : event;
 
         // 检查是否收到leaf:done事件
-        if (message && message.data === "leaf:done") {
+        if (message && message.data === "@leaf:done") {
           this.leafDoneReceived = true;
           // 收到leaf:done事件后，清除超时定时器
           if (this.timeoutTimer !== null) {
@@ -153,12 +153,12 @@ export default {
 
   // 处理返回按钮事件
   onBackPress(e: any): boolean {
-    console.log('onBackPress', e);
+    // console.log('onBackPress', e);
 
-    this.postMessage({
-      event: 'backpress',
-      data: e
-    });
+    // this.postMessage({
+    //   event: 'backpress',
+    //   data: e
+    // });
 
     return true;
   },

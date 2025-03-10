@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UniEventAtBackButton, uniEventBus } from '~/composables/adapter/uniapp';
+// import { UniEventAtBackButton, uniEventBus } from '~/composables/adapter/uniapp';
 
 defineProps<{
   loading?: boolean
@@ -16,20 +16,22 @@ defineProps<{
 // onDeactivated(() => {
 //   visible.value = false
 // })
-const router = useRouter()
-const handleBackButton = (event: any) => {
-  if (event !== UniEventAtBackButton) return
+// const router = useRouter()
+// const handleBackButton = (event: any) => {
+//   if (event !== UniEventAtBackButton) return
 
-  router.back()
-}
+//   console.log('handleBackButton')
 
-onMounted(() => {
-  uniEventBus.on(handleBackButton)
-})
+//   router.back()
+// }
 
-onBeforeUnmount(() => {
-  uniEventBus.off(handleBackButton)
-})
+// onMounted(() => {
+//   uniEventBus.on(handleBackButton)
+// })
+
+// onBeforeUnmount(() => {
+//   uniEventBus.off(handleBackButton)
+// })
 </script>
 
 <template>
@@ -77,7 +79,7 @@ onBeforeUnmount(() => {
 
       .van-icon,
       .van-nav-bar__text {
-        color: var(--theme-color);
+        color: var(--theme-color-primary, var(--theme-color));
       }
 
       &::after {

@@ -252,6 +252,8 @@ if (typeof document !== 'undefined') {
     }
   `
   document.head.appendChild(style)
+
+  toggleDark(isDark.value)
 }
 
 // 暴露API检测功能

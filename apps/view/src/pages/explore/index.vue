@@ -122,11 +122,12 @@ const swiperList: Array<string> = [
   background-clip: text;
   -webkit-background-clip: text;
   // color: rgb(245,195,104);
-  color: transparent;
+  // color: transparent;
   // filter: invert(1);
   // backdrop-filter: blur(18px) saturate(180%);
   // mix-blend-mode: difference;
-  background-image: linear-gradient(to right, rgb(248, 99, 99), rgb(29, 210, 95));
+  color: #fff;
+  // background-image: linear-gradient(to right, rgb(248, 99, 99), rgb(29, 210, 95));
   filter: drop-shadow(0 0 2px #000000);
 }
 

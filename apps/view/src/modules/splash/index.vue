@@ -17,6 +17,12 @@ function checkScreenSize() {
   const { isBrowser } = useDeviceUaParser()
 
   check()
+  init(() => {
+    console.log('init')
+  })
+  onBeforeUnmount(() => {
+    destroy()
+  })
 
   if (window.innerWidth > 768) {
     spalshState.screenMode.value = ScreenMode.WRAPPED
@@ -27,13 +33,6 @@ function checkScreenSize() {
 
     if (isBuilder.value) {
       spalshState.screenMode.value = ScreenMode.BUILDER
-
-      init(() => {
-      })
-
-      onBeforeUnmount(() => {
-        destroy()
-      })
     }
     else {
       spalshState.screenMode.value = ScreenMode.MOBILE
@@ -51,11 +50,11 @@ watch([width, height], () => {
   nextTick(checkScreenSize)
 })
 
-nextTick(() => {
+setTimeout(() => {
   checkScreenSize()
 
   document.body.classList.add('mobile')
-})
+}, 300)
 </script>
 
 <template>
