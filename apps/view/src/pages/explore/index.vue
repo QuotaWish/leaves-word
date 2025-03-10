@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Swipe, SwipeItem } from 'vant'
 import Explore from '~/modules/explore/index.vue'
+import { useRouter } from "vue-router"
 
 defineOptions({
   name: 'ExplorePage',
@@ -62,15 +63,20 @@ function directPage(icon: any) {
   if (icon.path)
     router.push(icon.path)
 }
+const swiperList: Array<string> = [
+  "https://img2.quotawish.com/2025/03/04/67c71582b0b5e.gif",
+  "https://img2.quotawish.com/2025/03/04/67c7158472ce5.gif",
+  "https://img2.quotawish.com/2025/03/04/67c71586dd466.gif",
+  "https://img2.quotawish.com/2025/03/04/67c715860048c.gif",
+  "https://img2.quotawish.com/2025/03/04/67c7158c240f3.gif",
+];
 </script>
 
 <template>
   <Explore>
     <div class="ExplorePage-Icon">
-      <div
-        v-for="icon in icons" :key="icon.name" class="ExplorePage-IconItem"
-        :style="`--c1: ${icon.color[0]}; --c2: ${icon.color[1]}`" @click="directPage(icon)"
-      >
+      <div v-for="icon in icons" :key="icon.name" class="ExplorePage-IconItem"
+        :style="`--c1: ${icon.color[0]}; --c2: ${icon.color[1]}`" @click="directPage(icon)">
         <div class="ExplorePage-IconItem-Bg">
           <div :class="icon.icon" />
         </div>
@@ -80,15 +86,18 @@ function directPage(icon: any) {
 
     <div my-2 class="ExplorePage-Banner">
       <Swipe>
-        <SwipeItem v-for="item in 1" :key="item">
+        <!-- <SwipeItem v-for="item in 1" :key="item">
           <h3 class="ExplorePage-BannerItem small justify-center" text="2xl">
             千叶单词 | 立即体验
           </h3>
-        </SwipeItem>
+        </SwipeItem> -->
         <SwipeItem>
           <h3 class="ExplorePage-BannerItem small justify-center" text="2xl">
             你离地道发音还有多远？
           </h3>
+        </SwipeItem>
+        <SwipeItem v-for="(item, idx) in swiperList" :key="idx">
+          <img :src="item" style="width: 100%; height: 100%; object-fit: cover" />
         </SwipeItem>
       </Swipe>
     </div>

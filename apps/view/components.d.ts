@@ -62,7 +62,6 @@ declare module 'vue' {
     SettingsOption: typeof import('./src/components/settings/SettingsOption.vue')['default']
     SettingsSection: typeof import('./src/components/settings/SettingsSection.vue')['default']
     SideNavHolder: typeof import('./src/components/page/holder/SideNavHolder.vue')['default']
-    SignCalendar: typeof import('./src/components/SignCalendar.vue')['default']
     SignCalendarMonthly: typeof import('./src/components/SignCalendarMonthly.vue')['default']
     Sound: typeof import('./src/components/words/mode/sound/index.vue')['default']
     SoundEmoji: typeof import('./src/components/words/mode/sound/SoundEmoji.vue')['default']
