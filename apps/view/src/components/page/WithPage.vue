@@ -28,6 +28,10 @@ withDefaults(defineProps<{
     padding-top: 28px;
   }
 
+  .statusbar .builder &.adapt {
+    padding-top: 44px;
+  }
+
   .statusbar .iPhone16 &.adapt {
     padding-top: 44px;
   }
