@@ -26,19 +26,24 @@ router.beforeEach((to, from) => {
   const fromDepth = routes.findIndex((v) => v.path === from.path)
   if (toDepth > fromDepth) {
     if (to.matched && to.matched.length) {
-      const toComponentName = to.matched[0].components?.default.name
+      // 过滤没有 components 的
+      const filterMatched = to.matched.filter(item => item.components)
+      const toComponentName = filterMatched?.[0]?.components?.default.name
       if (toComponentName) {
         baseRouteStore.updateExcludeRoutes({ type: 'remove', value: toComponentName })
       }
     }
   } else {
     if (from.matched && from.matched.length) {
-      const fromComponentName = from.matched[0].components?.default.name
+      const filterMatched = from.matched.filter(item => item.components)
+      const fromComponentName = filterMatched?.[0]?.components?.default.name
       if (fromComponentName) {
+        baseRouteStore.updateExcludeRoutes({ type: 'add', value: fromComponentName })
         baseRouteStore.updateExcludeRoutes({ type: 'add', value: fromComponentName })
       }
     }
   }
+
   return true
 })
 

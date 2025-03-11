@@ -1,3 +1,7 @@
+export interface CardRenderState {
+  isCurrent: boolean
+}
+
 export interface DraggableOptions<T> {
   /**
    * 当加载更多数据的时候
@@ -18,7 +22,7 @@ export interface DraggableOptions<T> {
   /**
    * 渲染卡片的组件
    */
-  renderCard: (item: T, index: number) => VNode
+  renderCard: (item: T, index: number, state: CardRenderState) => VNode
   /**
    * 是否立即显示首个视频（默认为true）
    */
@@ -43,6 +47,11 @@ interface DraggableState<T> {
   loading: boolean
 }
 
+// 卡片状态缓存，使用Map存储每个卡片的状态
+interface CardStateCache {
+  [id: string]: CardRenderState
+}
+
 interface DraggableOptionState<T> {
   state: DraggableState<T>
   items: Ref<T[]>
@@ -54,6 +63,7 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
   // 当前显示的卡片索引
   const currentIndex = ref(0)
   // 容器尺寸
+  const containerWidth = ref(0)
   const containerHeight = ref(0)
   // 是否正在拖拽
   const isDragging = ref(false)
@@ -81,9 +91,81 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
   const showFirstVideoByDefault = options.showFirstVideoByDefault !== false
 
   // 获取文本配置，使用传入的或默认值
-  const desertMessageText = options.desertMessageText || '你来到了荒漠'
+  const desertMessageText = options.desertMessageText || '啥都没有...'
   const noMoreContentText = options.noMoreContentText || '没有更多内容了'
   const loadingText = options.loadingText || '加载中...'
+
+  // 创建卡片状态缓存，保持最多4个活跃卡片的状态
+  const cardStates = ref<CardStateCache>({})
+
+  // 获取或创建卡片状态
+  function getCardState(itemId: string, index: number): CardRenderState {
+    if (!cardStates.value[itemId]) {
+      cardStates.value[itemId] = {
+        isCurrent: index === currentIndex.value
+      }
+    } else {
+      // 更新卡片的当前状态 - 只在必要时更新
+      if (cardStates.value[itemId].isCurrent !== (index === currentIndex.value)) {
+        cardStates.value[itemId].isCurrent = index === currentIndex.value
+      }
+    }
+
+    return cardStates.value[itemId]
+  }
+
+  // 清理非活跃卡片状态 - 只在必要时调用
+  function cleanupCardStates() {
+    const activeIndices = [
+      currentIndex.value,
+      currentIndex.value + 1,
+      currentIndex.value - 1,
+      currentIndex.value + 2
+    ]
+    
+    // 过滤非活跃卡片状态
+    const itemsToRemove = Object.keys(cardStates.value).filter(id => {
+      const item = items.value.find(item => item.id === id)
+      if (!item) return true // 如果项目不存在，也移除
+      const index = items.value.indexOf(item)
+      return !activeIndices.includes(index)
+    })
+    
+    // 只清理确实需要清理的状态
+    if (itemsToRemove.length > 0) {
+      const newStates = { ...cardStates.value }
+      itemsToRemove.forEach(id => {
+        delete newStates[id]
+      })
+      cardStates.value = newStates
+    }
+  }
+  
+  // 更新特定卡片的状态
+  function updateCardCurrentState(oldIndex: number, newIndex: number) {
+    // 只更新前一个和当前卡片的状态
+    if (oldIndex >= 0 && oldIndex < items.value.length) {
+      const oldItem = items.value[oldIndex]
+      if (cardStates.value[oldItem.id]) {
+        cardStates.value[oldItem.id].isCurrent = false
+      }
+    }
+    
+    if (newIndex >= 0 && newIndex < items.value.length) {
+      const newItem = items.value[newIndex]
+      if (!cardStates.value[newItem.id]) {
+        cardStates.value[newItem.id] = { isCurrent: true }
+      } else {
+        cardStates.value[newItem.id].isCurrent = true
+      }
+    }
+    
+    // 打印日志，帮助调试
+    console.log('Updated card states:', JSON.stringify(cardStates.value));
+    
+    // 清理非活跃卡片状态
+    cleanupCardStates();
+  }
 
   // 创建顶部加载指示器（用于下拉刷新）
   function createTopLoadingIndicator() {
@@ -237,7 +319,9 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
     const cardList: VNode[] = render.value?.length ? render.value : []
 
     function renderDraggableCard(item: any, targetIndex: number) {
-      const cardContent = options.renderCard(item, targetIndex)
+      // 获取卡片状态，并传递正确的CardRenderState对象
+      const cardState = getCardState(item.id, targetIndex)
+      const cardContent = options.renderCard(item, targetIndex, cardState)
 
       const card = h('div', {
         class: 'DraggableCard-Item',
@@ -327,7 +411,7 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
 
       touchState.currentX = currentX
       touchState.currentY = currentY
-      
+
       // 在任何情况下都直接应用卡片偏移，确保跟手效果
       updateCardsPosition(deltaY)
 
@@ -335,15 +419,15 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
       if (currentIndex.value === 0 && deltaY > 0 && options.onRefresh) {
         // 计算下拉刷新进度，将其限制在合理范围内
         touchState.pullDownRefreshProgress = Math.min(150, deltaY);
-        
+
         // 显示顶部刷新区域
         const indicator = createTopLoadingIndicator();
         indicator.style.display = 'flex';
-        
+
         // 下拉进度越大，露出的刷新区域越多
         const revealAmount = Math.min(80, touchState.pullDownRefreshProgress);
         indicator.style.transform = `translateY(${revealAmount - 80}px)`;
-        
+
         // 当下拉超过70px时，显示下拉刷新提示
         if (touchState.pullDownRefreshProgress > 70) {
           const textSpan = indicator.querySelector('span');
@@ -361,20 +445,20 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
       // 当在最后一个卡片时，且向上拖动时，处理上拉加载更多
       if (currentIndex.value === items.value.length - 1 && deltaY < 0) {
         // 如果是在底部并且向上拉动，应用上拉刷新的阻尼效果
-        const dampingFactor = 0.6  
+        const dampingFactor = 0.6
         const dampenedDeltaY = deltaY * dampingFactor;
 
         // 设置上拉刷新状态和进度
         touchState.pullUpRefreshProgress = Math.min(150, Math.abs(deltaY));
-        
+
         // 显示底部刷新区域
         const indicator = createBottomLoadingIndicator();
         indicator.style.display = 'flex';
-        
+
         // 上拉进度越大，露出的刷新区域越多
         const revealAmount = Math.min(80, touchState.pullUpRefreshProgress);
         indicator.style.transform = `translateY(${80 - revealAmount}px)`;
-        
+
         // 当上拉超过70px时，显示上拉刷新提示
         if (touchState.pullUpRefreshProgress > 70) {
           const textSpan = indicator.querySelector('span');
@@ -407,18 +491,18 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
 
       // 检查是否需要触发下拉刷新
       const totalDeltaY = touchState.currentY - touchState.startY;
-      if (currentIndex.value === 0 && totalDeltaY > 0 && 
-          touchState.pullDownRefreshProgress > 70 && 
-          options.onRefresh) {
-        
+      if (currentIndex.value === 0 && totalDeltaY > 0 &&
+        touchState.pullDownRefreshProgress > 70 &&
+        options.onRefresh) {
+
         try {
           // 锁定UI，防止用户操作
           touchState.isLocked = true;
           state.loading = true;
-          
+
           // 显示下拉刷新加载指示器并完全展示
           showTopLoadingIndicator('刷新中...');
-          
+
           // 下移卡片，显示刷新区域
           const allCards = container.querySelectorAll('.DraggableCard-Item');
           allCards.forEach((card) => {
@@ -426,10 +510,10 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
             cardEl.style.transform = `translate3d(0, 80px, 0)`;
             cardEl.style.transition = 'transform 0.2s ease-out';
           });
-          
+
           // 调用下拉刷新回调
           await options.onRefresh();
-          
+
           // 显示刷新成功的文字在刷新区域
           if (topLoadingIndicator) {
             const textSpan = topLoadingIndicator.querySelector('span');
@@ -437,13 +521,13 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
               textSpan.textContent = '刷新成功';
             }
           }
-          
+
           // 延迟一会儿后恢复
           await new Promise(resolve => setTimeout(resolve, 800));
-          
+
         } catch (error) {
           console.error('下拉刷新失败:', error);
-          
+
           // 显示刷新失败的文字在刷新区域
           if (topLoadingIndicator) {
             const textSpan = topLoadingIndicator.querySelector('span');
@@ -451,30 +535,30 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
               textSpan.textContent = '刷新失败，请重试';
             }
           }
-          
+
           // 延迟一会儿后恢复
           await new Promise(resolve => setTimeout(resolve, 800));
-          
+
         } finally {
           // 先隐藏刷新区域
           hideTopLoadingIndicator();
-          
+
           // 恢复UI位置
           const allCards = container.querySelectorAll('.DraggableCard-Item');
           allCards.forEach((card) => {
             const cardEl = card as HTMLElement;
             cardEl.style.transform = `translate3d(0, 0, 0)`;
           });
-          
+
           // 重置状态
           state.loading = false;
           touchState.pullDownRefreshProgress = 0;
           touchState.isLocked = false;
-          
+
           // 等待动画完成
           await new Promise(resolve => setTimeout(resolve, 300));
         }
-        
+
         // 重置位置并退出
         resetCardsPosition();
         return;
@@ -482,17 +566,17 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
 
       // 检查是否需要触发上拉刷新
       if (currentIndex.value === items.value.length - 1 && totalDeltaY < 0 &&
-         touchState.pullUpRefreshProgress > 70 && 
-         options.onPullUpRefresh) {
-        
+        touchState.pullUpRefreshProgress > 70 &&
+        options.onPullUpRefresh) {
+
         try {
           // 锁定UI，防止用户操作
           touchState.isLocked = true;
           state.loading = true;
-          
+
           // 显示上拉刷新加载指示器并完全展示
           showBottomLoadingIndicator('加载中...');
-          
+
           // 上移卡片，显示刷新区域
           const allCards = container.querySelectorAll('.DraggableCard-Item');
           allCards.forEach((card) => {
@@ -500,7 +584,7 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
             cardEl.style.transform = `translate3d(0, -80px, 0)`;
             cardEl.style.transition = 'transform 0.2s ease-out';
           });
-          
+
           // 调用上拉刷新回调
           const newData = await options.onPullUpRefresh();
 
@@ -511,7 +595,7 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
 
             // 重新设置卡片并更新渲染
             setupCardDraggable();
-            
+
             // 显示刷新成功的文字在刷新区域
             if (bottomLoadingIndicator) {
               const textSpan = bottomLoadingIndicator.querySelector('span');
@@ -528,13 +612,13 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
               }
             }
           }
-          
+
           // 延迟一会儿后恢复
           await new Promise(resolve => setTimeout(resolve, 800));
-          
+
         } catch (error) {
           console.error('上拉刷新失败:', error);
-          
+
           // 显示刷新失败的文字在刷新区域
           if (bottomLoadingIndicator) {
             const textSpan = bottomLoadingIndicator.querySelector('span');
@@ -542,30 +626,30 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
               textSpan.textContent = '加载失败，请重试';
             }
           }
-          
+
           // 延迟一会儿后恢复
           await new Promise(resolve => setTimeout(resolve, 800));
-          
+
         } finally {
           // 先隐藏刷新区域
           hideBottomLoadingIndicator();
-          
+
           // 恢复UI位置
           const allCards = container.querySelectorAll('.DraggableCard-Item');
           allCards.forEach((card) => {
             const cardEl = card as HTMLElement;
             cardEl.style.transform = `translate3d(0, 0, 0)`;
           });
-          
+
           // 重置状态
           state.loading = false;
           touchState.pullUpRefreshProgress = 0;
           touchState.isLocked = false;
-          
+
           // 等待动画完成
           await new Promise(resolve => setTimeout(resolve, 300));
         }
-        
+
         // 重置位置并退出
         resetCardsPosition();
         return;
@@ -652,7 +736,7 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
     // 使用 translate3d 进行硬件加速，直接应用偏移值
     card.style.transform = `translate3d(0, ${translateY}px, 0)`;
     card.style.opacity = opacity.toString()
-    
+
     // 拖动时完全关闭过渡动画
     if (isDragging.value) {
       card.style.transition = 'none'
@@ -678,24 +762,21 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
       if (!state.loading) {
         await loadData();
       }
-
-      // 如果加载后仍然没有数据，显示提示并返回
-      if (items.value.length === 0) {
-        // 没有数据时显示空状态（通过调用方提供的渲染函数）
-        return;
-      }
+      return;
     }
+
+    // 保存旧索引用于状态更新
+    const oldIndex = currentIndex.value;
+    let newIndex = oldIndex;
 
     // 处理向下滑动（显示下一个）
     if (direction === 'next') {
-      // 如果是最后一个且没有更多数据加载中，先尝试加载数据
-      if (currentIndex.value === items.value.length - 1 && !state.loading) {
+      // 已经到达最后一个，需要加载更多数据
+      if (currentIndex.value === items.value.length - 1) {
         try {
-          // 显示加载动画
           state.loading = true;
           showBottomLoadingIndicator();
 
-          // 加载更多数据
           const newData = await options.onLoadMore();
 
           // 如果没有新数据，保持在当前位置
@@ -725,12 +806,8 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
         return;
       }
 
-      currentIndex.value = (currentIndex.value + 1) % items.value.length;
-
-      // 如果快要滑到末尾，预加载更多数据
-      if (currentIndex.value >= items.value.length - 2 && !state.loading) {
-        loadData();
-      }
+      newIndex = currentIndex.value + 1;
+      
     }
     // 处理向上滑动（显示上一个）
     else if (direction === 'prev') {
@@ -740,9 +817,15 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
         return;
       }
 
-      currentIndex.value = (currentIndex.value - 1 + items.value.length) % items.value.length;
+      newIndex = currentIndex.value - 1;
     }
 
+    // 仅在此处更新当前索引和卡片状态，避免多次更新
+    currentIndex.value = newIndex;
+    
+    // 更新卡片状态
+    updateCardCurrentState(oldIndex, newIndex);
+    
     resetCardsPosition();
 
     // 调用外部切换回调
@@ -751,6 +834,11 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
     }
 
     setupCardDraggable();
+
+    // 如果快要滑到末尾，预加载更多数据
+    if (direction === 'next' && currentIndex.value >= items.value.length - 2 && !state.loading) {
+      loadData();
+    }
   }
 
   // 初始化并加载数据
@@ -762,6 +850,16 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
 
         // 确保设置currentIndex为0
         currentIndex.value = 0
+
+        // 初始化第一个卡片的状态
+        if (items.value.length > 0) {
+          const firstItem = items.value[0]
+          if (!cardStates.value[firstItem.id]) {
+            cardStates.value[firstItem.id] = { isCurrent: true }
+          } else {
+            cardStates.value[firstItem.id].isCurrent = true
+          }
+        }
 
         // 设置卡片
         setupCardDraggable()

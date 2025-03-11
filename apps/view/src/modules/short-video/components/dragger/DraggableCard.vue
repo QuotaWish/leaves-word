@@ -72,7 +72,7 @@ export default defineComponent({
         }
         return [] // 没有函数时返回空数组
       },
-      renderCard: (item: any, index: number) => {
+      renderCard: (item: any, index: number, isCurrent: boolean) => {
         // 优先使用插槽渲染卡片，如果没有提供插槽，则使用默认渲染
         if (slots.default) {
           const debugInfo = h('div', {
@@ -99,7 +99,7 @@ export default defineComponent({
               height: '100%',
               position: 'relative'
             }
-          }, [debugInfo, slots.default({ item })])
+          }, [debugInfo, slots.default({ item, isCurrent })])
         }
 
         // 默认渲染

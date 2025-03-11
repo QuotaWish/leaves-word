@@ -47,8 +47,8 @@ const goBack = () => {
 
     <DraggableCard @pull-up-refresh="handlePullupRefresh"  @load-more="loadMoreVideos">
       <!-- 使用正确的插槽名称和参数 -->
-      <template #default="{ item }">
-        <VideoPlayer :item="item">
+      <template #default="{ item, isCurrent }">
+        <VideoPlayer :isCurrent="isCurrent" :item="item">
 
         </VideoPlayer>
       </template>

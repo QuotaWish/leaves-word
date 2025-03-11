@@ -1,21 +1,15 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, toRef, watchEffect } from 'vue'
 import Loading from '~/components/chore/Loading.vue'
 
 // 只接收视频数据作为输入，增加类型定义
 const props = defineProps<{
-  item: {
-    videoUrl?: string
-    url?: string
-    author?: {
-      name?: string
-      avatar?: string
-    }
-    authorAvatar?: string
-    description?: string
-    id?: string | number
-  }
+  item: any,
+  isCurrent: boolean
 }>()
+
+// 将isCurrent转换为响应式引用
+const isCurrentRef = toRef(props, 'isCurrent')
 
 // 保留必要的事件
 const emit = defineEmits<{
@@ -44,6 +38,8 @@ const likeCount = ref(Math.floor(Math.random() * 20000))
 const showMutedHint = ref(false)
 const autoPlayAttempted = ref(false)
 const volumeLevel = ref(1) // 默认音量级别
+const currentVideoUrl = ref('') // 跟踪当前正在播放的视频URL
+const videoReady = ref(false) // 标记视频是否已经准备好播放
 
 // 获取视频URL（兼容item.url和item.videoUrl两种情况）
 const videoUrl = computed(() => {
@@ -54,9 +50,21 @@ const videoUrl = computed(() => {
 let controlsTimer: number | null = null
 let mutedHintTimer: number | null = null
 
+// 重置视频状态
+const resetVideoState = () => {
+  isPlaying.value = false
+  currentTime.value = 0
+  duration.value = 0
+  isLoading.value = true
+  showControls.value = false
+  autoPlayAttempted.value = false
+  videoReady.value = false
+}
+
 // 视频加载完成
 const handleVideoLoaded = () => {
   isLoading.value = false
+  videoReady.value = true
   emit('loaded')
 
   // 检查视频当前是否静音
@@ -64,16 +72,18 @@ const handleVideoLoaded = () => {
     isMuted.value = videoRef.value.muted
   }
 
-  // 尝试自动播放，如果失败则静音播放
-  if (!autoPlayAttempted.value) {
-    autoPlayAttempted.value = true
+  // 如果是当前视频并且没有尝试过自动播放，则尝试播放
+  if (isCurrentRef.value && !autoPlayAttempted.value) {
     tryAutoPlay()
   }
 }
 
 // 尝试自动播放，如果失败则静音播放
 const tryAutoPlay = () => {
-  if (!videoRef.value) return
+  if (!videoRef.value || !videoReady.value) return
+
+  // 标记已尝试自动播放
+  autoPlayAttempted.value = true
 
   videoRef.value.play().then(() => {
     isPlaying.value = true
@@ -82,6 +92,7 @@ const tryAutoPlay = () => {
       videoRef.value.muted = false
       isMuted.value = false
     }
+    emit('play', 0) // 发送播放事件
   }).catch(error => {
     console.warn('自动播放失败，尝试静音播放:', error)
     if (videoRef.value) {
@@ -98,11 +109,39 @@ const tryAutoPlay = () => {
         showMutedHint.value = false
       }, 5000)
 
-      videoRef.value.play().catch(err => {
+      videoRef.value.play().then(() => {
+        isPlaying.value = true
+        emit('play', 0) // 发送播放事件
+      }).catch(err => {
         console.error('静音播放仍然失败:', err)
       })
     }
   })
+}
+
+// 暂停当前视频
+const pauseCurrentVideo = () => {
+  if (videoRef.value && isPlaying.value) {
+    videoRef.value.pause()
+    isPlaying.value = false
+  }
+}
+
+// 处理元素可见性
+const handleVisibilityChange = () => {
+  // 如果不是当前视频，不需要处理
+  if (!isCurrentRef.value) {
+    pauseCurrentVideo()
+    return
+  }
+
+  // 如果页面不可见，暂停视频
+  if (document.hidden) {
+    pauseCurrentVideo()
+  } else if (videoReady.value && isCurrentRef.value) {
+    // 页面重新可见且是当前视频，尝试恢复播放
+    tryAutoPlay()
+  }
 }
 
 // 更新视频进度
@@ -126,10 +165,11 @@ const progressPercent = computed(() => {
 
 // 切换播放/暂停
 const togglePlay = () => {
-  if (!videoRef.value) return
+  if (!videoRef.value || !videoReady.value) return
 
   if (isPlaying.value) {
     videoRef.value.pause()
+    isPlaying.value = false
   } else {
     videoRef.value.play().catch(error => {
       console.error('视频播放失败:', error)
@@ -149,14 +189,20 @@ const togglePlay = () => {
         }, 5000)
 
         // 再次尝试播放
-        videoRef.value.play().catch(err => {
+        videoRef.value.play().then(() => {
+          isPlaying.value = true
+        }).catch(err => {
           console.error('静音播放仍然失败:', err)
         })
+      }
+    }).then(() => {
+      if (videoRef.value) {
+        isPlaying.value = true
+        emit('play', 0)
       }
     })
   }
 
-  isPlaying.value = !isPlaying.value
   showControls.value = true
 
   // 重置自动隐藏计时器
@@ -228,11 +274,11 @@ const setVolume = (e: MouseEvent) => {
 
   // 限制音量在0-1之间
   volume = Math.max(0, Math.min(1, volume))
-  
+
   // 设置音量
   videoRef.value.volume = volume
   volumeLevel.value = volume
-  
+
   // 如果音量为0，设置为静音
   if (volume === 0) {
     videoRef.value.muted = true
@@ -296,6 +342,41 @@ const formatTime = (time: number) => {
   return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
 }
 
+// 监听视频URL变化，实现视频切换自动播放
+watch(videoUrl, (newUrl, oldUrl) => {
+  if (newUrl && newUrl !== oldUrl) {
+    console.log('视频URL变化，切换视频：', newUrl)
+
+    // 暂停当前视频
+    pauseCurrentVideo()
+
+    // 重置视频状态
+    resetVideoState()
+
+    // 更新当前视频URL
+    currentVideoUrl.value = newUrl
+  }
+}, { immediate: true })
+
+// 监听isCurrentRef变化，控制视频播放状态
+watchEffect(() => {
+  console.log('isCurrent changed:', isCurrentRef.value, 'for video:', videoUrl.value)
+
+  // 当current状态变化时，也触发可见性检查
+  handleVisibilityChange()
+
+  if (isCurrentRef.value) {
+    // 如果视频已准备好播放，则尝试播放
+    if (videoReady.value) {
+      tryAutoPlay()
+    }
+    // 否则当视频加载完成后会尝试播放
+  } else {
+    // 如果不是当前视频，则暂停
+    pauseCurrentVideo()
+  }
+})
+
 // 实际播放状态变化监听
 watch(videoRef, (newVideo) => {
   if (newVideo) {
@@ -306,7 +387,7 @@ watch(videoRef, (newVideo) => {
     newVideo.addEventListener('pause', () => {
       isPlaying.value = false
     })
-    
+
     // 监听音量变化
     newVideo.addEventListener('volumechange', () => {
       isMuted.value = newVideo.muted
@@ -314,11 +395,26 @@ watch(videoRef, (newVideo) => {
         volumeLevel.value = newVideo.volume
       }
     })
+
+    // 监听视频是否已准备好
+    newVideo.addEventListener('canplay', () => {
+      videoReady.value = true
+      // 如果是当前视频且没有播放，尝试播放
+      if (isCurrentRef.value && !isPlaying.value && !autoPlayAttempted.value) {
+        tryAutoPlay()
+      }
+    })
   }
 })
 
 // 组件挂载
 onMounted(() => {
+  // 记录当前视频URL
+  currentVideoUrl.value = videoUrl.value
+
+  // 监听页面可见性变化
+  document.addEventListener('visibilitychange', handleVisibilityChange)
+
   // 调整视频容器大小
   if (containerRef.value) {
     // 确保视频容器宽度不超过屏幕宽度
@@ -347,6 +443,9 @@ onUnmounted(() => {
   if (mutedHintTimer) {
     clearTimeout(mutedHintTimer)
   }
+
+  // 移除页面可见性监听
+  document.removeEventListener('visibilitychange', handleVisibilityChange)
 
   if (videoRef.value) {
     videoRef.value.pause()
@@ -378,6 +477,11 @@ onUnmounted(() => {
           d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
       </svg>
       <span>视频已静音播放，点击此处取消静音</span>
+    </div>
+
+    <!-- 当前状态指示器 -->
+    <div class="current-indicator" v-if="isCurrentRef">
+      <div class="indicator-dot"></div>
     </div>
 
     <!-- 暂停状态中央播放按钮 -->
@@ -507,6 +611,45 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   z-index: 3;
+}
+
+.current-indicator {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.indicator-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #22D980;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(34, 217, 128, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(34, 217, 128, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(34, 217, 128, 0);
+  }
 }
 
 .muted-hint {
