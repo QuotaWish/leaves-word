@@ -31,6 +31,8 @@ export default defineComponent({
         emit('refresh')
       },
       renderCard: (item: any) => {
+        console.log('render', item, slots)
+
         // 优先使用插槽渲染卡片，如果没有提供插槽，则使用默认渲染
         if (slots.default) {
           return h('div', {

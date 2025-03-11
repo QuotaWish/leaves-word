@@ -47,15 +47,75 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
     touchPoints: [] as Array<{ time: number, y: number }>
   })
 
+  // 加载指示器元素
+  let loadingIndicator: HTMLElement | null = null
+
+  // 创建加载指示器
+  function createLoadingIndicator() {
+    if (loadingIndicator) return loadingIndicator;
+
+    loadingIndicator = document.createElement('div');
+    loadingIndicator.className = 'DraggableCard-Loading';
+    loadingIndicator.style.position = 'absolute';
+    loadingIndicator.style.bottom = '20%';
+    loadingIndicator.style.left = '50%';
+    loadingIndicator.style.transform = 'translateX(-50%)';
+    loadingIndicator.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    loadingIndicator.style.color = 'white';
+    loadingIndicator.style.padding = '8px 16px';
+    loadingIndicator.style.borderRadius = '4px';
+    loadingIndicator.style.zIndex = '9999';
+    loadingIndicator.style.display = 'none';
+
+    // 添加加载动画
+    loadingIndicator.innerHTML = `
+      <div style="display: flex; align-items: center; justify-content: center;">
+        <div style="width: 16px; height: 16px; border: 2px solid #fff; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite;"></div>
+        <span style="margin-left: 8px;">加载中...</span>
+      </div>
+      <style>
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      </style>
+    `;
+
+    container.appendChild(loadingIndicator);
+
+    return loadingIndicator;
+  }
+
+  // 显示加载指示器
+  function showLoadingIndicator() {
+    const indicator = createLoadingIndicator();
+    indicator.style.display = 'block';
+  }
+
+  // 隐藏加载指示器
+  function hideLoadingIndicator() {
+    if (loadingIndicator) {
+      loadingIndicator.style.display = 'none';
+    }
+  }
+
+  // 在加载数据时显示加载指示器
   async function loadData() {
     try {
       state.loading = true
+      showLoadingIndicator();
 
       const data = await options.onLoadMore()
 
+      console.log('load', data)
+
       items.value.push(...data)
+
+      return data
     } finally {
       state.loading = false
+      hideLoadingIndicator();
+      setupCardDraggable()
     }
   }
 
@@ -66,9 +126,11 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
  * @param options 选项
  */
   function setupCardDraggable<T>() {
-    const cardList: VNode[] = []
+    const cardList: VNode[] = render.value?.length ? render.value : []
 
-    function renderDraggableCard(name: string) {
+    function renderDraggableCard(item: any) {
+      const cardContent = options.renderCard(item)
+
       const card = h('div', {
         class: 'DraggableCard-Item',
         style: {
@@ -84,26 +146,23 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
           overflow: 'hidden',
           backfaceVisibility: 'hidden'
         }
-      }, name)
+      }, cardContent)
 
       return card
     }
 
-    // 生成足够的卡片以确保无限滚动流畅
     for (let i = 0; i < 4; i++) {
-      const render = renderDraggableCard(`card-${i}`)
-      cardList.push(render)
+      // 计算要渲染的索引，从当前索引开始，渲染当前及后续的3个卡片
+      const targetIndex = (currentIndex.value + i) % items.value.length
+      const targetData = items.value[targetIndex]
+
+      if (targetData) {
+        const render = renderDraggableCard(targetData)
+        cardList[i] = render
+      }
     }
 
-    return cardList
-  }
-
-  function useCardDraggable(card: VNode) {
-    const cardRef = ref<HTMLElement | null>(null)
-
-    return {
-      cardRef
-    }
+    render.value = cardList
   }
 
   // 设置触摸事件处理
@@ -238,29 +297,115 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
   }
 
   // 切换卡片
-  function switchCard(direction: 'next' | 'prev') {
-    if (direction === 'next') {
-      currentIndex.value = (currentIndex.value + 1) % (items.value.length || 4)
-      // 如果快要滑到末尾，加载更多数据
-      if (currentIndex.value >= (items.value.length || 4) - 2 && !state.loading) {
-        loadData()
+  async function switchCard(direction: 'next' | 'prev') {
+    // 确保列表不为空
+    if (items.value.length === 0) {
+      // 尝试加载初始数据
+      if (!state.loading) {
+        await loadData();
       }
-    } else {
-      currentIndex.value = (currentIndex.value - 1 + (items.value.length || 4)) % (items.value.length || 4)
+
+      // 如果加载后仍然没有数据，显示提示并返回
+      if (items.value.length === 0) {
+        const toast = document.createElement('div');
+        toast.textContent = '暂无内容';
+        toast.style.position = 'absolute';
+        toast.style.top = '50%';
+        toast.style.left = '50%';
+        toast.style.transform = 'translate(-50%, -50%)';
+        toast.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+        toast.style.color = 'white';
+        toast.style.padding = '8px 16px';
+        toast.style.borderRadius = '4px';
+        toast.style.zIndex = '9999';
+
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          container.removeChild(toast);
+        }, 3000);
+
+        return;
+      }
     }
 
-    resetCardsPosition()
+    if (direction === 'next') {
+      // 如果是最后一个且没有更多数据加载中，先尝试加载数据
+      if (currentIndex.value === items.value.length - 1 && !state.loading) {
+        try {
+          // 显示加载动画
+          state.loading = true;
+          showLoadingIndicator();
+
+          // 加载更多数据
+          const newData = await options.onLoadMore();
+
+          // 如果没有新数据，回弹并提示
+          if (!newData || newData.length === 0) {
+            // 回弹效果
+            resetCardsPosition();
+
+            // 创建提示元素
+            const toast = document.createElement('div');
+            toast.textContent = '没有更多内容了';
+            toast.style.position = 'absolute';
+            toast.style.bottom = '20%';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+            toast.style.color = 'white';
+            toast.style.padding = '8px 16px';
+            toast.style.borderRadius = '4px';
+            toast.style.zIndex = '9999';
+
+            // 添加到容器中
+            container.appendChild(toast);
+
+            // 3秒后移除提示
+            setTimeout(() => {
+              container.removeChild(toast);
+            }, 3000);
+
+            return;
+          }
+
+          // 有新数据，添加到列表中
+          items.value.push(...newData);
+        } finally {
+          state.loading = false;
+          hideLoadingIndicator();
+        }
+      }
+
+      // 如果当前是最后一个且没有更多数据，不允许滑动
+      if (currentIndex.value === items.value.length - 1) {
+        resetCardsPosition();
+        return;
+      }
+
+      currentIndex.value = (currentIndex.value + 1) % items.value.length;
+
+      // 如果快要滑到末尾，预加载更多数据
+      if (currentIndex.value >= items.value.length - 2 && !state.loading) {
+        loadData();
+      }
+    } else {
+      currentIndex.value = (currentIndex.value - 1 + items.value.length) % items.value.length;
+    }
+
+    resetCardsPosition();
 
     // 调用外部切换回调
     if (options.onSwitch && items.value.length > 0) {
-      options.onSwitch(direction, items.value[currentIndex.value])
+      options.onSwitch(direction, items.value[currentIndex.value]);
     }
+
+    setupCardDraggable();
   }
 
   nextTick(() => {
-    const cards = setupCardDraggable()
+    setupCardDraggable()
     loadData()
-    render.value = cards
 
     // 设置触摸事件
     const cleanup = setupTouchEvents()

@@ -35,11 +35,27 @@ const goBack = () => {
 
     <DraggableCard @load-more="loadMoreVideos">
       <!-- 使用正确的插槽名称和参数 -->
-      <!-- <template #default="{ item }">
-        <div bg-red h-full class="video-card">
-          {{ item }}
+      <template #default="{ item }">
+        <div class="video-card" w-full h-full relative>
+          <video
+            class="video-content"
+            w-full h-full object-cover
+            :src="item?.url"
+            autoplay
+            loop
+            muted
+            webkit-playsinline
+            playsinline
+          ></video>
+          <div class="video-info" absolute bottom-8 left-4 right-4 text-white>
+            <div class="video-title text-lg font-bold mb-2">{{ item?.title }}</div>
+            <div class="video-author flex items-center">
+              <img :src="item?.author?.avatar" class="author-avatar w-8 h-8 rounded-full mr-2" />
+              <span class="author-name">{{ item?.author?.name }}</span>
+            </div>
+          </div>
         </div>
-      </template> -->
+      </template>
     </DraggableCard>
 
     <!-- 当接近视频列表末尾时加载更多 -->
@@ -83,5 +99,21 @@ const goBack = () => {
   color: var(--el-bg-color);
   font-size: 16px;
   font-weight: 500;
+}
+
+.video-card {
+  background-color: #000;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.video-info {
+  background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0));
+  padding: 16px;
+  border-radius: 0 0 4px 4px;
+}
+
+.video-content {
+  object-fit: cover;
 }
 </style>
