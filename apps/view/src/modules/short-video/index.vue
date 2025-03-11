@@ -105,20 +105,4 @@ const goBack = () => {
   font-size: 16px;
   font-weight: 500;
 }
-
-.video-card {
-  background-color: #000;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.video-info {
-  background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0));
-  padding: 16px;
-  border-radius: 0 0 4px 4px;
-}
-
-.video-content {
-  object-fit: cover;
-}
 </style>
