@@ -80,13 +80,14 @@ export default defineComponent({
               zIndex: '10',
               position: 'absolute',
               right: '1rem',
-              bottom: '1rem',
+              top: '1rem',
               backgroundColor: 'rgba(0, 0, 0, 0.6)',
               color: 'white',
               padding: '4px 8px',
               borderRadius: '4px',
               fontSize: '12px',
-              opacity: '0.7'
+              opacity: '0.7',
+              pointerEvents: 'none'
             }
           }, `${index}`)
 

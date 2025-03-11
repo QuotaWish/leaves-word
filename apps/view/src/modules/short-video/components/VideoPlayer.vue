@@ -5,9 +5,13 @@ import Loading from '~/components/chore/Loading.vue'
 // 只接收视频数据作为输入，增加类型定义
 const props = defineProps<{
   item: {
-    videoUrl: string
+    videoUrl?: string
+    url?: string
+    author?: {
+      name?: string
+      avatar?: string
+    }
     authorAvatar?: string
-    author?: string
     description?: string
     id?: string | number
   }
@@ -39,6 +43,12 @@ const shareCount = ref(Math.floor(Math.random() * 5000))
 const likeCount = ref(Math.floor(Math.random() * 20000))
 const showMutedHint = ref(false)
 const autoPlayAttempted = ref(false)
+const volumeLevel = ref(1) // 默认音量级别
+
+// 获取视频URL（兼容item.url和item.videoUrl两种情况）
+const videoUrl = computed(() => {
+  return props.item.url || props.item.videoUrl || ''
+})
 
 // 控制计时器，自动隐藏控制栏
 let controlsTimer: number | null = null
@@ -48,6 +58,11 @@ let mutedHintTimer: number | null = null
 const handleVideoLoaded = () => {
   isLoading.value = false
   emit('loaded')
+
+  // 检查视频当前是否静音
+  if (videoRef.value) {
+    isMuted.value = videoRef.value.muted
+  }
 
   // 尝试自动播放，如果失败则静音播放
   if (!autoPlayAttempted.value) {
@@ -62,6 +77,11 @@ const tryAutoPlay = () => {
 
   videoRef.value.play().then(() => {
     isPlaying.value = true
+    // 确保视频声音正常
+    if (videoRef.value) {
+      videoRef.value.muted = false
+      isMuted.value = false
+    }
   }).catch(error => {
     console.warn('自动播放失败，尝试静音播放:', error)
     if (videoRef.value) {
@@ -70,13 +90,13 @@ const tryAutoPlay = () => {
       isMuted.value = true
       showMutedHint.value = true
 
-      // 显示静音提示，3秒后自动隐藏
+      // 显示静音提示，5秒后自动隐藏
       if (mutedHintTimer) {
         clearTimeout(mutedHintTimer)
       }
       mutedHintTimer = window.setTimeout(() => {
         showMutedHint.value = false
-      }, 3000)
+      }, 5000)
 
       videoRef.value.play().catch(err => {
         console.error('静音播放仍然失败:', err)
@@ -91,6 +111,11 @@ const updateProgress = (e: Event) => {
   currentTime.value = video.currentTime
   duration.value = video.duration
   emit('timeupdate', currentTime.value, duration.value)
+
+  // 更新当前音量值
+  if (video && !video.muted) {
+    volumeLevel.value = video.volume
+  }
 }
 
 // 进度百分比计算
@@ -115,13 +140,13 @@ const togglePlay = () => {
         isMuted.value = true
         showMutedHint.value = true
 
-        // 显示静音提示，3秒后自动隐藏
+        // 显示静音提示，5秒后自动隐藏
         if (mutedHintTimer) {
           clearTimeout(mutedHintTimer)
         }
         mutedHintTimer = window.setTimeout(() => {
           showMutedHint.value = false
-        }, 3000)
+        }, 5000)
 
         // 再次尝试播放
         videoRef.value.play().catch(err => {
@@ -165,23 +190,57 @@ const showControlsTemporarily = () => {
 const toggleMute = () => {
   if (!videoRef.value) return
 
+  // 切换静音状态
   videoRef.value.muted = !videoRef.value.muted
   isMuted.value = videoRef.value.muted
 
+  // 如果取消静音，恢复之前的音量
+  if (!isMuted.value && videoRef.value) {
+    videoRef.value.volume = volumeLevel.value > 0 ? volumeLevel.value : 1
+  }
+
   if (isMuted.value) {
     showMutedHint.value = true
-    // 显示静音提示，3秒后自动隐藏
+    // 显示静音提示，5秒后自动隐藏
     if (mutedHintTimer) {
       clearTimeout(mutedHintTimer)
     }
     mutedHintTimer = window.setTimeout(() => {
       showMutedHint.value = false
-    }, 3000)
+    }, 5000)
   } else {
     showMutedHint.value = false
     if (mutedHintTimer) {
       clearTimeout(mutedHintTimer)
     }
+  }
+}
+
+// 设置音量
+const setVolume = (e: MouseEvent) => {
+  if (!videoRef.value) return
+
+  const volumeBar = e.currentTarget as HTMLElement
+  const rect = volumeBar.getBoundingClientRect()
+  const clickY = e.clientY - rect.top
+  const height = rect.height
+  let volume = 1 - (clickY / height)
+
+  // 限制音量在0-1之间
+  volume = Math.max(0, Math.min(1, volume))
+  
+  // 设置音量
+  videoRef.value.volume = volume
+  volumeLevel.value = volume
+  
+  // 如果音量为0，设置为静音
+  if (volume === 0) {
+    videoRef.value.muted = true
+    isMuted.value = true
+  } else if (isMuted.value) {
+    // 如果之前是静音状态，取消静音
+    videoRef.value.muted = false
+    isMuted.value = false
   }
 }
 
@@ -247,6 +306,14 @@ watch(videoRef, (newVideo) => {
     newVideo.addEventListener('pause', () => {
       isPlaying.value = false
     })
+    
+    // 监听音量变化
+    newVideo.addEventListener('volumechange', () => {
+      isMuted.value = newVideo.muted
+      if (!newVideo.muted) {
+        volumeLevel.value = newVideo.volume
+      }
+    })
   }
 })
 
@@ -295,7 +362,7 @@ onUnmounted(() => {
 <template>
   <div class="tiktok-player" ref="containerRef" @click="showControlsTemporarily">
     <!-- 视频元素 -->
-    <video ref="videoRef" :src="item.url" class="video" loop preload="auto" playsinline webkit-playsinline
+    <video ref="videoRef" :src="videoUrl" class="video" loop preload="auto" playsinline webkit-playsinline
       @click.stop="togglePlay" @ended="handleVideoEnded" @timeupdate="updateProgress" @loadedmetadata="updateProgress"
       @loadeddata="handleVideoLoaded"></video>
 
@@ -305,12 +372,12 @@ onUnmounted(() => {
     </div>
 
     <!-- 静音提示 -->
-    <div class="muted-hint" v-if="showMutedHint">
+    <div class="muted-hint" v-if="showMutedHint" @click.stop="toggleMute">
       <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="muted-icon">
         <path
           d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
       </svg>
-      <span>视频已静音播放，点击取消静音</span>
+      <span>视频已静音播放，点击此处取消静音</span>
     </div>
 
     <!-- 暂停状态中央播放按钮 -->
@@ -328,7 +395,7 @@ onUnmounted(() => {
     <div class="interaction-buttons">
       <!-- 头像 -->
       <div class="avatar-container">
-        <img :src="item.author.avatar" class="avatar" />
+        <img :src="item.author?.avatar || item.authorAvatar || 'https://via.placeholder.com/50'" class="avatar" />
         <div class="follow-button" :class="{ 'followed': isFollowed }" @click.stop="toggleFollow">
           <span v-if="!isFollowed" class="plus-icon">+</span>
         </div>
@@ -370,7 +437,7 @@ onUnmounted(() => {
     <!-- 底部信息栏 -->
     <div class="video-info" :class="{ 'show': showControls || !isPlaying }">
       <div class="author-info">
-        <h3>@{{ item.author.name || '用户名' }}</h3>
+        <h3>@{{ item.author?.name || '用户名' }}</h3>
         <p>{{ item.description || '视频描述内容...' }}</p>
       </div>
 
@@ -388,15 +455,21 @@ onUnmounted(() => {
       </div>
 
       <!-- 音量控制 -->
-      <div class="volume-control" @click.stop="toggleMute">
-        <svg v-if="!isMuted" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-        </svg>
-        <svg v-else viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
-        </svg>
+      <div class="sound-controls">
+        <div class="volume-control" @click.stop="toggleMute">
+          <svg v-if="!isMuted" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+          </svg>
+          <svg v-else viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
+          </svg>
+        </div>
+        <div class="volume-slider" @click.stop="setVolume">
+          <div class="volume-track"></div>
+          <div class="volume-fill" :style="{ height: `${volumeLevel * 100}%` }"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -441,7 +514,7 @@ onUnmounted(() => {
   top: 16px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
   color: white;
   padding: 8px 16px;
   border-radius: 20px;
@@ -451,6 +524,13 @@ onUnmounted(() => {
   z-index: 4;
   font-size: 13px;
   animation: fadeIn 0.3s ease-in-out;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.muted-hint:hover {
+  background: rgba(0, 0, 0, 0.9);
 }
 
 .muted-icon {
@@ -654,18 +734,59 @@ onUnmounted(() => {
   transition: width 0.1s linear;
 }
 
-.volume-control {
+.sound-controls {
+  display: flex;
+  align-items: center;
   position: absolute;
   right: 16px;
   bottom: 16px;
+  gap: 8px;
+}
+
+.volume-control {
   width: 24px;
   height: 24px;
   color: white;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .volume-control svg {
   width: 100%;
   height: 100%;
+}
+
+.volume-slider {
+  height: 80px;
+  width: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  display: none;
+  margin-bottom: 20px;
+  transform: translateY(-40px);
+}
+
+.sound-controls:hover .volume-slider {
+  display: block;
+}
+
+.volume-track {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.volume-fill {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  border-radius: 3px;
 }
 </style>
