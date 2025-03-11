@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, h, onMounted, watch } from 'vue'
+import { defineComponent, ref, h, onMounted, watch, reactive } from 'vue'
 import { useLeafDraggable } from './dragger';
 
 export default defineComponent({
@@ -8,21 +8,48 @@ export default defineComponent({
     onLoadMore: {
       type: Function,
       required: true
+    },
+    onPullUpRefresh: {
+      type: Function
+    },
+    desertMessageText: {
+      type: String,
+      default: '你来到了荒漠'
+    },
+    noMoreContentText: {
+      type: String,
+      default: '没有更多内容了'
+    },
+    loadingText: {
+      type: String,
+      default: '加载中...'
     }
   },
-  emits: ['load-more', 'switch', 'refresh'],
+  emits: ['switch', 'refresh', 'pull-up-refresh'],
   setup(props, { emit, slots }) {
     // 滑动容器引用
     const containerRef = ref<HTMLElement | null>(null)
+    
+    // 状态提示控制
+    const uiState = reactive({
+      showDesertMessage: false
+    })
 
     const { state, items, render, setup: setupDraggable } = useLeafDraggable(containerRef, {
       onLoadMore: async () => {
-        // 调用外部加载更多函数并转发事件
         const data = await props.onLoadMore()
-        emit('load-more', data)
         return data
       },
       onSwitch: (direction, item) => {
+        // 处理达到末尾的情况
+        if (direction === 'end') {
+          uiState.showDesertMessage = true
+          // 3秒后自动隐藏
+          setTimeout(() => {
+            uiState.showDesertMessage = false
+          }, 3000)
+        }
+        
         // 转发切换事件
         emit('switch', direction, item)
       },
@@ -30,11 +57,40 @@ export default defineComponent({
         // 转发刷新事件
         emit('refresh')
       },
-      renderCard: (item: any) => {
-        console.log('render', item, slots)
-
+      onPullUpRefresh: async () => {
+        // 转发上拉刷新事件
+        emit('pull-up-refresh')
+        // 确保props.onPullUpRefresh存在再调用
+        if (typeof props.onPullUpRefresh === 'function') {
+          try {
+            const newData = await props.onPullUpRefresh()
+            return newData || [] // 确保返回数组
+          } catch (error) {
+            console.error('上拉刷新执行出错:', error)
+            return [] // 出错时返回空数组
+          }
+        }
+        return [] // 没有函数时返回空数组
+      },
+      renderCard: (item: any, index: number) => {
         // 优先使用插槽渲染卡片，如果没有提供插槽，则使用默认渲染
         if (slots.default) {
+          const debugInfo = h('div', {
+            style: {
+              zIndex: '10',
+              position: 'absolute',
+              right: '1rem',
+              bottom: '1rem',
+              backgroundColor: 'rgba(0, 0, 0, 0.6)',
+              color: 'white',
+              padding: '4px 8px',
+              borderRadius: '4px',
+              fontSize: '12px',
+              opacity: '0.7'
+            }
+          }, `${index}`)
+
+          // 渲染内容
           return h('div', {
             class: 'DraggableCard-Content',
             style: {
@@ -42,7 +98,7 @@ export default defineComponent({
               height: '100%',
               position: 'relative'
             }
-          }, slots.default({ item }))
+          }, [debugInfo, slots.default({ item })])
         }
 
         // 默认渲染
@@ -62,7 +118,11 @@ export default defineComponent({
             boxShadow: '0 2px 12px 0 rgba(0, 0, 0, 0.1)'
           }
         }, JSON.stringify(item))
-      }
+      },
+      // 传递自定义文本
+      desertMessageText: props.desertMessageText,
+      noMoreContentText: props.noMoreContentText,
+      loadingText: props.loadingText
     })
 
     onMounted(() => {
@@ -73,34 +133,46 @@ export default defineComponent({
       containerRef,
       state,
       items,
-      render
+      render,
+      uiState
     }
   },
   render() {
-    return h('div', { class: 'DraggableCard' }, [
-      // 这里可以添加下拉刷新区域的渲染逻辑
-      // h('div', { class: 'refresh-indicator', style: getRefreshStyle.value }, [
-      //   h('div', { class: 'refresh-default-indicator' }, [
-      //     this.state.isRefreshing 
-      //       ? h('div', { class: 'refresh-spinner' })
-      //       : h('div', { class: 'refresh-arrow', style: {
-      //           transform: `rotate(${Math.min(180, this.state.refreshProgress / REFRESH_THRESHOLD * 180)}deg)`
-      //         }}),
-      //     h('div', { class: 'refresh-text' }, this.state.isRefreshing ? '刷新中...' : '下拉刷新')
-      //   ])
-      // ]),
+    // 渲染荒漠提示
+    const desertMessage = h('div', {
+      class: 'desert-message',
+      style: {
+        display: this.uiState.showDesertMessage ? 'flex' : 'none',
+        bottom: '20%',
+        left: '50%',
+        transform: 'translateX(-50%)'
+      }
+    }, [
+      h('div', {
+        style: { 
+          fontSize: '24px', 
+          marginBottom: '8px' 
+        }
+      }, '🏜️'),
+      h('div', null, this.desertMessageText),
+      h('div', {
+        style: {
+          fontSize: '14px',
+          marginTop: '6px',
+          opacity: '0.7'
+        }
+      }, this.noMoreContentText)
+    ])
 
-      /**
-       * this.items.map(item =>
-        h('div', {
-          key: item.id,
-          class: 'DraggableCard-Item'
-        }, JSON.stringify(item)
-       */
+    return h('div', { class: 'DraggableCard' }, [
+      // 滑动容器
       h('div', {
         class: 'DraggableCard-Container',
         ref: 'containerRef'
-      }, this.render)
+      }, this.render),
+      
+      // 添加提示消息
+      desertMessage
     ])
   }
 })
@@ -147,5 +219,21 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   overflow: hidden;
+}
+
+// 增加状态提示样式
+.desert-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  position: absolute;
+  z-index: 999;
+  text-align: center;
+  transition: opacity 0.3s ease;
 }
 </style>

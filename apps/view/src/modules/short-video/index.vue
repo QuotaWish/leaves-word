@@ -2,9 +2,14 @@
 import { VIDEOS } from './video-resource'
 import DraggableCard from './components/dragger/DraggableCard.vue'
 
+let amo = 0
 const loadMoreVideos = async () => {
+  if ( amo >= 3 ) return
+
+  amo += 1
+
   const result = []
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 5; i++) {
     const randomIndex = Math.floor(Math.random() * VIDEOS.length)
     result.push({
       ...VIDEOS[randomIndex],
@@ -33,7 +38,7 @@ const goBack = () => {
       <div class="nav-title">退出短视频</div>
     </div>
 
-    <DraggableCard @load-more="loadMoreVideos">
+    <DraggableCard  @load-more="loadMoreVideos">
       <!-- 使用正确的插槽名称和参数 -->
       <template #default="{ item }">
         <div class="video-card" w-full h-full relative>

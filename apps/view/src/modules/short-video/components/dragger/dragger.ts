@@ -6,15 +6,35 @@ export interface DraggableOptions<T> {
   /**
    * 当切换到的时候
    */
-  onSwitch?: (direction: 'next' | 'prev', item: T) => void
+  onSwitch?: (direction: 'next' | 'prev' | 'end', item: T) => void
   /**
    * 当触发下拉刷新的时候
    */
   onRefresh?: () => Promise<void>
   /**
+   * 当触发上拉刷新的时候（当前在列表顶部并继续上拉时触发）
+   */
+  onPullUpRefresh?: () => Promise<T[]>
+  /**
    * 渲染卡片的组件
    */
-  renderCard: (item: T) => VNode
+  renderCard: (item: T, index: number) => VNode
+  /**
+   * 是否立即显示首个视频（默认为true）
+   */
+  showFirstVideoByDefault?: boolean
+  /**
+   * 自定义荒漠提示文本
+   */
+  desertMessageText?: string
+  /**
+   * 自定义没有更多内容提示文本
+   */
+  noMoreContentText?: string
+  /**
+   * 自定义加载中提示文本
+   */
+  loadingText?: string
 }
 
 import { h, ref, reactive, nextTick, onUnmounted, VNode, Ref } from 'vue'
@@ -45,11 +65,20 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
     moveSpeed: 0,
     lastMoveTime: 0,
     touchPoints: [] as Array<{ time: number, y: number }>,
-    animationFrameId: 0 // 添加动画帧ID跟踪
+    animationFrameId: 0, // 添加动画帧ID跟踪
+    pullUpRefreshProgress: 0 // 添加上拉刷新进度
   })
 
   // 加载指示器元素
   let loadingIndicator: HTMLElement | null = null
+
+  // 是否自动显示第一个视频
+  const showFirstVideoByDefault = options.showFirstVideoByDefault !== false
+
+  // 获取文本配置，使用传入的或默认值
+  const desertMessageText = options.desertMessageText || '你来到了荒漠'
+  const noMoreContentText = options.noMoreContentText || '没有更多内容了'
+  const loadingText = options.loadingText || '加载中...'
 
   // 创建加载指示器
   function createLoadingIndicator() {
@@ -72,7 +101,7 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
     loadingIndicator.innerHTML = `
       <div style="display: flex; align-items: center; justify-content: center;">
         <div style="width: 16px; height: 16px; border: 2px solid #fff; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite;"></div>
-        <span style="margin-left: 8px;">加载中...</span>
+        <span style="margin-left: 8px;">${loadingText}</span>
       </div>
       <style>
         @keyframes spin {
@@ -88,8 +117,13 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
   }
 
   // 显示加载指示器
-  function showLoadingIndicator() {
+  function showLoadingIndicator(text: string = loadingText) {
     const indicator = createLoadingIndicator();
+    // 更新加载文本
+    const textSpan = indicator.querySelector('span');
+    if (textSpan) {
+      textSpan.textContent = text;
+    }
     indicator.style.display = 'block';
   }
 
@@ -129,8 +163,8 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
   function setupCardDraggable<T>() {
     const cardList: VNode[] = render.value?.length ? render.value : []
 
-    function renderDraggableCard(item: any) {
-      const cardContent = options.renderCard(item)
+    function renderDraggableCard(item: any, targetIndex: number) {
+      const cardContent = options.renderCard(item, targetIndex)
 
       const card = h('div', {
         class: 'DraggableCard-Item',
@@ -152,13 +186,14 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
       return card
     }
 
+    // 只渲染实际存在的数据项，不再自动添加荒漠提示
     for (let i = 0; i < 4; i++) {
-      // 计算要渲染的索引，从当前索引开始，渲染当前及后续的3个卡片
+      // 计算要渲染的索引，从当前索引开始，渲染当前及后续的卡片
       const targetIndex = (currentIndex.value + i) % items.value.length
       const targetData = items.value[targetIndex]
 
       if (targetData) {
-        const render = renderDraggableCard(targetData)
+        const render = renderDraggableCard(targetData, targetIndex)
         cardList[i] = render
       }
     }
@@ -197,43 +232,123 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
       const currentY = e.touches[0].clientY
       const deltaY = currentY - touchState.lastY
 
-      // 记录触摸点以计算速度，应用平滑处理
+      // 记录触摸点以计算速度
       touchState.touchPoints.push({
         time: Date.now(),
         y: currentY
       })
 
-      // 只保留最近的8个触摸点用于计算速度，增加样本点以获得更平滑的速度计算
-      if (touchState.touchPoints.length > 8) {
+      // 只保留最近的5个触摸点用于计算速度
+      if (touchState.touchPoints.length > 5) {
         touchState.touchPoints.shift()
       }
 
-      // 应用低通滤波器来平滑移动
-      const smoothingFactor = 0.8 // 平滑因子，值越大越平滑，但响应越慢
-      touchState.moveSpeed = (touchState.moveSpeed * smoothingFactor) + (deltaY * (1 - smoothingFactor))
+      // 使用原始的deltaY，增强跟手感
+      touchState.moveSpeed = deltaY
 
       touchState.currentY = currentY
       touchState.lastY = currentY
       touchState.lastMoveTime = Date.now()
 
-      // 使用 requestAnimationFrame 来优化性能并减少抖动
-      if (!touchState.animationFrameId) {
-        touchState.animationFrameId = requestAnimationFrame(() => {
-          // 更新卡片位置
-          updateCardsPosition(deltaY)
-          touchState.animationFrameId = 0
-        })
+      // 检测特殊的上拉刷新手势（当在列表顶部时）
+      const totalDeltaY = touchState.currentY - touchState.startY
+      if (currentIndex.value === 0 && totalDeltaY < 0 && options.onPullUpRefresh) {
+        // 如果是在顶部并且向上拉动，应用上拉刷新的阻尼效果
+        const dampingFactor = 0.4  // 阻尼系数，使得拉动更有抵抗感
+        const dampenedDeltaY = totalDeltaY * dampingFactor
+
+        // 设置上拉刷新状态和进度
+        touchState.pullUpRefreshProgress = Math.min(Math.abs(dampenedDeltaY), 150) // 限制最大进度为150px
       }
+
+      // 立即更新卡片位置，不使用动画帧，直接应用变化提高跟手度
+      updateCardsPosition(deltaY)
     }
 
     // 触摸结束
-    const handleTouchEnd = () => {
+    const handleTouchEnd = async () => {
       isDragging.value = false
 
       // 取消可能存在的动画帧请求
       if (touchState.animationFrameId) {
         cancelAnimationFrame(touchState.animationFrameId)
         touchState.animationFrameId = 0
+      }
+
+      // 检查是否需要触发上拉刷新
+      const totalDeltaY = touchState.currentY - touchState.startY
+      if (currentIndex.value === 0 && totalDeltaY < 0 &&
+        touchState.pullUpRefreshProgress > 90 && // 上拉超过阈值
+        options.onPullUpRefresh) {
+
+        try {
+          // 显示上拉刷新加载指示器
+          state.loading = true;
+          showLoadingIndicator('上拉刷新中...');
+
+          // 调用上拉刷新回调
+          const newData = await options.onPullUpRefresh();
+
+          // 完全替换列表数据
+          if (newData && newData.length > 0) {
+            items.value = newData;
+            currentIndex.value = 0;
+
+            // 重新设置卡片并更新渲染
+            setupCardDraggable();
+            resetCardsPosition();
+
+            // 显示刷新成功提示
+            const toast = document.createElement('div');
+            toast.textContent = '刷新成功';
+            toast.style.position = 'absolute';
+            toast.style.top = '20%';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+            toast.style.color = 'white';
+            toast.style.padding = '8px 16px';
+            toast.style.borderRadius = '4px';
+            toast.style.zIndex = '9999';
+
+            container.appendChild(toast);
+
+            // 2秒后移除提示
+            setTimeout(() => {
+              container.removeChild(toast);
+            }, 2000);
+
+            // 重置上拉刷新进度
+            touchState.pullUpRefreshProgress = 0;
+            return;
+          }
+        } catch (error) {
+          console.error('上拉刷新失败:', error);
+
+          // 显示刷新失败提示
+          const toast = document.createElement('div');
+          toast.textContent = '刷新失败，请重试';
+          toast.style.position = 'absolute';
+          toast.style.top = '20%';
+          toast.style.left = '50%';
+          toast.style.transform = 'translateX(-50%)';
+          toast.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+          toast.style.color = 'white';
+          toast.style.padding = '8px 16px';
+          toast.style.borderRadius = '4px';
+          toast.style.zIndex = '9999';
+
+          container.appendChild(toast);
+
+          // 2秒后移除提示
+          setTimeout(() => {
+            container.removeChild(toast);
+          }, 2000);
+        } finally {
+          state.loading = false;
+          hideLoadingIndicator();
+          touchState.pullUpRefreshProgress = 0;
+        }
       }
 
       // 计算最终速度 - 使用加权平均来平滑最终速度
@@ -259,6 +374,9 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
           touchState.moveSpeed = totalWeight > 0 ? weightedSpeed / totalWeight : distDiff / timeDiff
         }
       }
+
+      // 重置上拉刷新进度
+      touchState.pullUpRefreshProgress = 0;
 
       // 根据滑动速度和距离决定是否切换卡片
       const threshold = containerHeight.value * 0.15 // 降低一点阈值，使切换更容易触发
@@ -301,20 +419,40 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
     const offset = index - currentIndex.value
     let translateY = offset * containerHeight.value
 
-    // 添加当前拖拽的偏移量
+    // 添加当前拖拽的偏移量，优化跟手效果
     if (isDragging.value) {
+      // 直接应用偏移量，增强跟手感
       translateY += deltaY
     }
 
-    // 使用缩放和透明度效果增强视觉体验
-    const scale = 1 - Math.min(0.1, Math.abs(offset) * 0.05)
+    // 为下一张卡片设置更强的跟随效果
+    if (offset === 1 && deltaY < 0) {
+      // 增加跟随比例
+      const followRatio = 0.95; // 更高的跟随比例
+      translateY += deltaY * followRatio;
+    }
+    
+    // 为前一张卡片也设置跟随效果
+    if (offset === -1 && deltaY > 0) {
+      const followRatio = 0.95; // 高跟随比例
+      translateY += deltaY * followRatio;
+    }
+
+    // 设置适当的透明度变化
     const opacity = 1 - Math.min(0.3, Math.abs(offset) * 0.15)
 
-    // 使用 transform 属性的 translate3d 和 scale 函数来启用硬件加速
-    card.style.transform = `translate3d(0, ${translateY}px, 0) scale(${scale})`
+    // 使用 transform 中的 translateY，完全移除动画，使用硬件加速
+    card.style.transform = `translate3d(0, ${translateY}px, 0)`;
     card.style.opacity = opacity.toString()
-    // 调整动画时间和缓动函数，使滑动更跟手，非拖拽状态时使用更自然的缓动
-    card.style.transition = isDragging.value ? 'none' : 'all 0.25s cubic-bezier(0.23, 1, 0.32, 1)'
+    
+    // 拖动时完全关闭过渡动画
+    if (isDragging.value) {
+      card.style.transition = 'none'
+    } else {
+      // 松手后才使用过渡动画
+      card.style.transition = 'transform 0.15s ease-out, opacity 0.15s ease-out'
+    }
+    
     card.style.zIndex = (10 - Math.abs(offset)).toString()
   }
 
@@ -337,28 +475,12 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
 
       // 如果加载后仍然没有数据，显示提示并返回
       if (items.value.length === 0) {
-        const toast = document.createElement('div');
-        toast.textContent = '暂无内容';
-        toast.style.position = 'absolute';
-        toast.style.top = '50%';
-        toast.style.left = '50%';
-        toast.style.transform = 'translate(-50%, -50%)';
-        toast.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-        toast.style.color = 'white';
-        toast.style.padding = '8px 16px';
-        toast.style.borderRadius = '4px';
-        toast.style.zIndex = '9999';
-
-        container.appendChild(toast);
-
-        setTimeout(() => {
-          container.removeChild(toast);
-        }, 3000);
-
+        // 没有数据时显示空状态（通过调用方提供的渲染函数）
         return;
       }
     }
 
+    // 处理向下滑动（显示下一个）
     if (direction === 'next') {
       // 如果是最后一个且没有更多数据加载中，先尝试加载数据
       if (currentIndex.value === items.value.length - 1 && !state.loading) {
@@ -370,31 +492,15 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
           // 加载更多数据
           const newData = await options.onLoadMore();
 
-          // 如果没有新数据，回弹并提示
+          // 如果没有新数据，保持在当前位置
           if (!newData || newData.length === 0) {
             // 回弹效果
             resetCardsPosition();
-
-            // 创建提示元素
-            const toast = document.createElement('div');
-            toast.textContent = '没有更多内容了';
-            toast.style.position = 'absolute';
-            toast.style.bottom = '20%';
-            toast.style.left = '50%';
-            toast.style.transform = 'translateX(-50%)';
-            toast.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-            toast.style.color = 'white';
-            toast.style.padding = '8px 16px';
-            toast.style.borderRadius = '4px';
-            toast.style.zIndex = '9999';
-
-            // 添加到容器中
-            container.appendChild(toast);
-
-            // 3秒后移除提示
-            setTimeout(() => {
-              container.removeChild(toast);
-            }, 3000);
+            
+            // 使用自定义事件通知外部显示荒漠提示
+            if (options.onSwitch) {
+              options.onSwitch('end', items.value[currentIndex.value]);
+            }
 
             return;
           }
@@ -419,7 +525,15 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
       if (currentIndex.value >= items.value.length - 2 && !state.loading) {
         loadData();
       }
-    } else {
+    } 
+    // 处理向上滑动（显示上一个）
+    else if (direction === 'prev') {
+      // 从第一个向上滑动，不直接跳转到最后一个
+      if (currentIndex.value === 0) {
+        resetCardsPosition();
+        return;
+      }
+      
       currentIndex.value = (currentIndex.value - 1 + items.value.length) % items.value.length;
     }
 
@@ -433,17 +547,43 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
     setupCardDraggable();
   }
 
+  // 初始化并加载数据
+  function initializeData() {
+    return new Promise<void>(async (resolve) => {
+      try {
+        // 加载初始数据
+        await loadData()
+        
+        // 确保设置currentIndex为0
+        currentIndex.value = 0
+        
+        // 设置卡片
+        setupCardDraggable()
+        
+        // 初始化卡片位置
+        nextTick(() => {
+          resetCardsPosition()
+          resolve()
+        })
+      } catch (error) {
+        console.error('初始化数据失败:', error)
+        resolve()
+      }
+    })
+  }
+
   nextTick(() => {
     setupCardDraggable()
-    loadData()
+    
+    // 使用初始化函数加载第一个视频
+    if (showFirstVideoByDefault) {
+      initializeData()
+    } else {
+      loadData()
+    }
 
     // 设置触摸事件
     const cleanup = setupTouchEvents()
-
-    // 初始化卡片位置
-    nextTick(() => {
-      resetCardsPosition()
-    })
 
     // 返回清理函数
     onUnmounted(() => {
@@ -467,12 +607,18 @@ export function useLeafDraggable<T extends { id: string }>(container: Ref<HTMLEl
     loading: false,
   })
 
+  // 确保默认显示首个视频
+  const mergedOptions: DraggableOptions<T> = {
+    ...options,
+    showFirstVideoByDefault: options.showFirstVideoByDefault !== false
+  }
+
   function setup() {
     if (!container.value) {
       throw new Error('container is required')
     }
 
-    useInnerDraggable(container.value, options, { state, items, render })
+    useInnerDraggable(container.value, mergedOptions, { state, items, render })
   }
 
   return {
