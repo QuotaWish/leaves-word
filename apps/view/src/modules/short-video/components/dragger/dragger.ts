@@ -92,21 +92,25 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
     topLoadingIndicator = document.createElement('div');
     topLoadingIndicator.className = 'DraggableCard-TopLoading';
     topLoadingIndicator.style.position = 'absolute';
-    topLoadingIndicator.style.top = '-60px';
-    topLoadingIndicator.style.left = '50%';
-    topLoadingIndicator.style.transform = 'translateX(-50%)';
-    topLoadingIndicator.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-    topLoadingIndicator.style.color = 'white';
-    topLoadingIndicator.style.padding = '8px 16px';
-    topLoadingIndicator.style.borderRadius = '4px';
-    topLoadingIndicator.style.zIndex = '9999';
+    topLoadingIndicator.style.top = '0px';
+    topLoadingIndicator.style.left = '0';
+    topLoadingIndicator.style.width = '100%';
+    topLoadingIndicator.style.height = '80px';
+    topLoadingIndicator.style.display = 'flex';
+    topLoadingIndicator.style.alignItems = 'center';
+    topLoadingIndicator.style.justifyContent = 'center';
+    topLoadingIndicator.style.backgroundColor = '#f5f5f5';
+    topLoadingIndicator.style.color = '#333';
+    topLoadingIndicator.style.zIndex = '998';
     topLoadingIndicator.style.display = 'none';
+    topLoadingIndicator.style.transform = 'translateY(-80px)';
+    topLoadingIndicator.style.transition = 'transform 0.3s ease';
 
     // 添加加载动画
     topLoadingIndicator.innerHTML = `
       <div style="display: flex; align-items: center; justify-content: center;">
-        <div style="width: 16px; height: 16px; border: 2px solid #fff; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite;"></div>
-        <span style="margin-left: 8px;">${loadingText}</span>
+        <div style="width: 24px; height: 24px; border: 2px solid #666; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite; margin-right: 12px;"></div>
+        <span style="font-size: 14px;">${loadingText}</span>
       </div>
       <style>
         @keyframes spin {
@@ -127,21 +131,25 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
     bottomLoadingIndicator = document.createElement('div');
     bottomLoadingIndicator.className = 'DraggableCard-BottomLoading';
     bottomLoadingIndicator.style.position = 'absolute';
-    bottomLoadingIndicator.style.bottom = '20%';
-    bottomLoadingIndicator.style.left = '50%';
-    bottomLoadingIndicator.style.transform = 'translateX(-50%)';
-    bottomLoadingIndicator.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-    bottomLoadingIndicator.style.color = 'white';
-    bottomLoadingIndicator.style.padding = '8px 16px';
-    bottomLoadingIndicator.style.borderRadius = '4px';
-    bottomLoadingIndicator.style.zIndex = '9999';
+    bottomLoadingIndicator.style.bottom = '0px';
+    bottomLoadingIndicator.style.left = '0';
+    bottomLoadingIndicator.style.width = '100%';
+    bottomLoadingIndicator.style.height = '80px';
+    bottomLoadingIndicator.style.display = 'flex';
+    bottomLoadingIndicator.style.alignItems = 'center';
+    bottomLoadingIndicator.style.justifyContent = 'center';
+    bottomLoadingIndicator.style.backgroundColor = '#f5f5f5';
+    bottomLoadingIndicator.style.color = '#333';
+    bottomLoadingIndicator.style.zIndex = '998';
     bottomLoadingIndicator.style.display = 'none';
+    bottomLoadingIndicator.style.transform = 'translateY(80px)';
+    bottomLoadingIndicator.style.transition = 'transform 0.3s ease';
 
     // 添加加载动画
     bottomLoadingIndicator.innerHTML = `
       <div style="display: flex; align-items: center; justify-content: center;">
-        <div style="width: 16px; height: 16px; border: 2px solid #fff; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite;"></div>
-        <span style="margin-left: 8px;">${loadingText}</span>
+        <div style="width: 24px; height: 24px; border: 2px solid #666; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite; margin-right: 12px;"></div>
+        <span style="font-size: 14px;">${loadingText}</span>
       </div>
     `;
 
@@ -157,7 +165,8 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
     if (textSpan) {
       textSpan.textContent = text;
     }
-    indicator.style.display = 'block';
+    indicator.style.display = 'flex';
+    indicator.style.transform = 'translateY(0)';
   }
 
   // 显示底部加载指示器
@@ -168,20 +177,33 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
     if (textSpan) {
       textSpan.textContent = text;
     }
-    indicator.style.display = 'block';
+    indicator.style.display = 'flex';
+    indicator.style.transform = 'translateY(0)';
   }
 
   // 隐藏顶部加载指示器
   function hideTopLoadingIndicator() {
     if (topLoadingIndicator) {
-      topLoadingIndicator.style.display = 'none';
+      topLoadingIndicator.style.transform = 'translateY(-80px)';
+      // 动画完成后隐藏
+      setTimeout(() => {
+        if (topLoadingIndicator) {
+          topLoadingIndicator.style.display = 'none';
+        }
+      }, 300);
     }
   }
 
   // 隐藏底部加载指示器
   function hideBottomLoadingIndicator() {
     if (bottomLoadingIndicator) {
-      bottomLoadingIndicator.style.display = 'none';
+      bottomLoadingIndicator.style.transform = 'translateY(80px)';
+      // 动画完成后隐藏
+      setTimeout(() => {
+        if (bottomLoadingIndicator) {
+          bottomLoadingIndicator.style.display = 'none';
+        }
+      }, 300);
     }
   }
 
@@ -305,61 +327,77 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
 
       touchState.currentX = currentX
       touchState.currentY = currentY
-
-      // 直接应用卡片偏移
+      
+      // 在任何情况下都直接应用卡片偏移，确保跟手效果
       updateCardsPosition(deltaY)
 
       // 当在第一个卡片时，且向下拖动时，处理下拉刷新
       if (currentIndex.value === 0 && deltaY > 0 && options.onRefresh) {
         // 计算下拉刷新进度，将其限制在合理范围内
-        touchState.pullDownRefreshProgress = Math.min(200, deltaY);
-
-        // 下拉时整体UI向下移动效果
-        const allCards = container.querySelectorAll('.DraggableCard-Item');
-        const pullProgress = Math.min(100, touchState.pullDownRefreshProgress);
-
-        allCards.forEach((card) => {
-          const cardEl = card as HTMLElement;
-          const baseTransform = cardEl.style.transform.replace(/translateY\([^)]*\)/g, '');
-          cardEl.style.transform = `translateY(${pullProgress}px) ${baseTransform}`;
-        });
-
+        touchState.pullDownRefreshProgress = Math.min(150, deltaY);
+        
+        // 显示顶部刷新区域
+        const indicator = createTopLoadingIndicator();
+        indicator.style.display = 'flex';
+        
+        // 下拉进度越大，露出的刷新区域越多
+        const revealAmount = Math.min(80, touchState.pullDownRefreshProgress);
+        indicator.style.transform = `translateY(${revealAmount - 80}px)`;
+        
         // 当下拉超过70px时，显示下拉刷新提示
         if (touchState.pullDownRefreshProgress > 70) {
-          showTopLoadingIndicator('松开立即刷新');
-
-          // 将顶部加载指示器跟随下拉距离移动
-          if (topLoadingIndicator) {
-            topLoadingIndicator.style.top = `${Math.min(20, touchState.pullDownRefreshProgress - 60)}px`;
+          const textSpan = indicator.querySelector('span');
+          if (textSpan) {
+            textSpan.textContent = '松开立即刷新';
+          }
+        } else {
+          const textSpan = indicator.querySelector('span');
+          if (textSpan) {
+            textSpan.textContent = '下拉可以刷新';
           }
         }
       }
 
       // 当在最后一个卡片时，且向上拖动时，处理上拉加载更多
       if (currentIndex.value === items.value.length - 1 && deltaY < 0) {
-        // 如果是在顶部并且向上拉动，应用上拉刷新的阻尼效果
-        // 减小阻尼系数，让上拉刷新更容易触发
-        const dampingFactor = 0.6
-        const dampenedDeltaY = deltaY * dampingFactor
+        // 如果是在底部并且向上拉动，应用上拉刷新的阻尼效果
+        const dampingFactor = 0.6  
+        const dampenedDeltaY = deltaY * dampingFactor;
 
         // 设置上拉刷新状态和进度
-        touchState.pullUpRefreshProgress = Math.min(Math.abs(dampenedDeltaY), 120) // 降低所需的最大拉动距离
-
-        // 当拉动超过80px时，显示上拉刷新提示
-        if (touchState.pullUpRefreshProgress > 80 && !loadingIndicator?.style.display) {
-          showBottomLoadingIndicator('松开立即刷新');
+        touchState.pullUpRefreshProgress = Math.min(150, Math.abs(deltaY));
+        
+        // 显示底部刷新区域
+        const indicator = createBottomLoadingIndicator();
+        indicator.style.display = 'flex';
+        
+        // 上拉进度越大，露出的刷新区域越多
+        const revealAmount = Math.min(80, touchState.pullUpRefreshProgress);
+        indicator.style.transform = `translateY(${80 - revealAmount}px)`;
+        
+        // 当上拉超过70px时，显示上拉刷新提示
+        if (touchState.pullUpRefreshProgress > 70) {
+          const textSpan = indicator.querySelector('span');
+          if (textSpan) {
+            textSpan.textContent = '松开立即加载更多';
+          }
+        } else {
+          const textSpan = indicator.querySelector('span');
+          if (textSpan) {
+            textSpan.textContent = '上拉加载更多';
+          }
         }
       }
     }
 
     // 触摸结束
     const handleTouchEnd = async () => {
-      isDragging.value = false
+      isDragging.value = false;
 
       // 取消可能存在的动画帧请求
       if (touchState.animationFrameId) {
-        cancelAnimationFrame(touchState.animationFrameId)
-        touchState.animationFrameId = 0
+        cancelAnimationFrame(touchState.animationFrameId);
+        touchState.animationFrameId = 0;
       }
 
       // 如果正在锁定状态，禁止操作
@@ -368,119 +406,101 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
       }
 
       // 检查是否需要触发下拉刷新
-      const totalDeltaY = touchState.currentY - touchState.startY
-      if (currentIndex.value === 0 && totalDeltaY > 0 &&
-        touchState.pullDownRefreshProgress > 70 &&
-        options.onRefresh) {
-
+      const totalDeltaY = touchState.currentY - touchState.startY;
+      if (currentIndex.value === 0 && totalDeltaY > 0 && 
+          touchState.pullDownRefreshProgress > 70 && 
+          options.onRefresh) {
+        
         try {
           // 锁定UI，防止用户操作
           touchState.isLocked = true;
           state.loading = true;
-
-          // 显示下拉刷新加载指示器
+          
+          // 显示下拉刷新加载指示器并完全展示
           showTopLoadingIndicator('刷新中...');
-          if (topLoadingIndicator) {
-            topLoadingIndicator.style.top = '20px';
-          }
-
-          // 保持UI在下拉位置
+          
+          // 下移卡片，显示刷新区域
           const allCards = container.querySelectorAll('.DraggableCard-Item');
           allCards.forEach((card) => {
             const cardEl = card as HTMLElement;
-            const baseTransform = cardEl.style.transform.replace(/translateY\([^)]*\)/g, '');
-            cardEl.style.transform = `translateY(80px) ${baseTransform}`;
+            cardEl.style.transform = `translate3d(0, 80px, 0)`;
             cardEl.style.transition = 'transform 0.2s ease-out';
           });
-
+          
           // 调用下拉刷新回调
           await options.onRefresh();
-
-          // 显示刷新成功提示
-          const toast = document.createElement('div');
-          toast.textContent = '刷新成功';
-          toast.style.position = 'absolute';
-          toast.style.top = '20%';
-          toast.style.left = '50%';
-          toast.style.transform = 'translateX(-50%)';
-          toast.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-          toast.style.color = 'white';
-          toast.style.padding = '8px 16px';
-          toast.style.borderRadius = '4px';
-          toast.style.zIndex = '9999';
-
-          container.appendChild(toast);
-
-          // 2秒后移除提示
-          setTimeout(() => {
-            container.removeChild(toast);
-          }, 2000);
-
+          
+          // 显示刷新成功的文字在刷新区域
+          if (topLoadingIndicator) {
+            const textSpan = topLoadingIndicator.querySelector('span');
+            if (textSpan) {
+              textSpan.textContent = '刷新成功';
+            }
+          }
+          
+          // 延迟一会儿后恢复
+          await new Promise(resolve => setTimeout(resolve, 800));
+          
         } catch (error) {
           console.error('下拉刷新失败:', error);
-
-          // 显示刷新失败提示
-          const toast = document.createElement('div');
-          toast.textContent = '刷新失败，请重试';
-          toast.style.position = 'absolute';
-          toast.style.top = '20%';
-          toast.style.left = '50%';
-          toast.style.transform = 'translateX(-50%)';
-          toast.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-          toast.style.color = 'white';
-          toast.style.padding = '8px 16px';
-          toast.style.borderRadius = '4px';
-          toast.style.zIndex = '9999';
-
-          container.appendChild(toast);
-
-          // 2秒后移除提示
-          setTimeout(() => {
-            container.removeChild(toast);
-          }, 2000);
-
+          
+          // 显示刷新失败的文字在刷新区域
+          if (topLoadingIndicator) {
+            const textSpan = topLoadingIndicator.querySelector('span');
+            if (textSpan) {
+              textSpan.textContent = '刷新失败，请重试';
+            }
+          }
+          
+          // 延迟一会儿后恢复
+          await new Promise(resolve => setTimeout(resolve, 800));
+          
         } finally {
+          // 先隐藏刷新区域
+          hideTopLoadingIndicator();
+          
           // 恢复UI位置
           const allCards = container.querySelectorAll('.DraggableCard-Item');
           allCards.forEach((card) => {
             const cardEl = card as HTMLElement;
-            const baseTransform = cardEl.style.transform.replace(/translateY\([^)]*\)/g, '');
-            cardEl.style.transform = `translateY(0px) ${baseTransform}`;
+            cardEl.style.transform = `translate3d(0, 0, 0)`;
           });
-
+          
+          // 重置状态
           state.loading = false;
-          hideTopLoadingIndicator();
           touchState.pullDownRefreshProgress = 0;
           touchState.isLocked = false;
+          
+          // 等待动画完成
+          await new Promise(resolve => setTimeout(resolve, 300));
         }
-
+        
         // 重置位置并退出
         resetCardsPosition();
         return;
       }
 
       // 检查是否需要触发上拉刷新
-      if (currentIndex.value === 0 && totalDeltaY < 0 &&
-        touchState.pullUpRefreshProgress > 80 &&
-        options.onPullUpRefresh) {
-
+      if (currentIndex.value === items.value.length - 1 && totalDeltaY < 0 &&
+         touchState.pullUpRefreshProgress > 70 && 
+         options.onPullUpRefresh) {
+        
         try {
           // 锁定UI，防止用户操作
           touchState.isLocked = true;
-
-          // 显示上拉刷新加载指示器
           state.loading = true;
-          showBottomLoadingIndicator('刷新中...');
-
-          // 保持UI在上拉位置
+          
+          // 显示上拉刷新加载指示器并完全展示
+          showBottomLoadingIndicator('加载中...');
+          
+          // 上移卡片，显示刷新区域
           const allCards = container.querySelectorAll('.DraggableCard-Item');
           allCards.forEach((card) => {
             const cardEl = card as HTMLElement;
-            const baseTransform = cardEl.style.transform.replace(/translateY\([^)]*\)/g, '');
-            cardEl.style.transform = `translateY(-80px) ${baseTransform}`;
+            cardEl.style.transform = `translate3d(0, -80px, 0)`;
             cardEl.style.transition = 'transform 0.2s ease-out';
           });
-
+          
           // 调用上拉刷新回调
           const newData = await options.onPullUpRefresh();
 
@@ -491,73 +511,63 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
 
             // 重新设置卡片并更新渲染
             setupCardDraggable();
-
-            // 显示刷新成功提示
-            const toast = document.createElement('div');
-            toast.textContent = '刷新成功';
-            toast.style.position = 'absolute';
-            toast.style.top = '20%';
-            toast.style.left = '50%';
-            toast.style.transform = 'translateX(-50%)';
-            toast.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-            toast.style.color = 'white';
-            toast.style.padding = '8px 16px';
-            toast.style.borderRadius = '4px';
-            toast.style.zIndex = '9999';
-
-            container.appendChild(toast);
-
-            // 2秒后移除提示
-            setTimeout(() => {
-              container.removeChild(toast);
-            }, 2000);
+            
+            // 显示刷新成功的文字在刷新区域
+            if (bottomLoadingIndicator) {
+              const textSpan = bottomLoadingIndicator.querySelector('span');
+              if (textSpan) {
+                textSpan.textContent = '加载成功';
+              }
+            }
           } else {
             // 如果没有数据返回，显示没有更多内容提示
-            showBottomLoadingIndicator(noMoreContentText);
-            setTimeout(() => {
-              hideBottomLoadingIndicator();
-            }, 2000);
+            if (bottomLoadingIndicator) {
+              const textSpan = bottomLoadingIndicator.querySelector('span');
+              if (textSpan) {
+                textSpan.textContent = noMoreContentText;
+              }
+            }
           }
+          
+          // 延迟一会儿后恢复
+          await new Promise(resolve => setTimeout(resolve, 800));
+          
         } catch (error) {
           console.error('上拉刷新失败:', error);
-
-          // 显示刷新失败提示
-          const toast = document.createElement('div');
-          toast.textContent = '刷新失败，请重试';
-          toast.style.position = 'absolute';
-          toast.style.top = '20%';
-          toast.style.left = '50%';
-          toast.style.transform = 'translateX(-50%)';
-          toast.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-          toast.style.color = 'white';
-          toast.style.padding = '8px 16px';
-          toast.style.borderRadius = '4px';
-          toast.style.zIndex = '9999';
-
-          container.appendChild(toast);
-
-          // 2秒后移除提示
-          setTimeout(() => {
-            container.removeChild(toast);
-          }, 2000);
+          
+          // 显示刷新失败的文字在刷新区域
+          if (bottomLoadingIndicator) {
+            const textSpan = bottomLoadingIndicator.querySelector('span');
+            if (textSpan) {
+              textSpan.textContent = '加载失败，请重试';
+            }
+          }
+          
+          // 延迟一会儿后恢复
+          await new Promise(resolve => setTimeout(resolve, 800));
+          
         } finally {
+          // 先隐藏刷新区域
+          hideBottomLoadingIndicator();
+          
           // 恢复UI位置
           const allCards = container.querySelectorAll('.DraggableCard-Item');
           allCards.forEach((card) => {
             const cardEl = card as HTMLElement;
-            const baseTransform = cardEl.style.transform.replace(/translateY\([^)]*\)/g, '');
-            cardEl.style.transform = `translateY(0px) ${baseTransform}`;
+            cardEl.style.transform = `translate3d(0, 0, 0)`;
           });
-
+          
+          // 重置状态
           state.loading = false;
-          hideBottomLoadingIndicator();
           touchState.pullUpRefreshProgress = 0;
           touchState.isLocked = false;
-
-          // 重置位置并退出
-          resetCardsPosition();
+          
+          // 等待动画完成
+          await new Promise(resolve => setTimeout(resolve, 300));
         }
-
+        
+        // 重置位置并退出
+        resetCardsPosition();
         return;
       }
 
@@ -634,19 +644,7 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
     let translateY = offset * containerHeight.value
 
     // 直接应用拖拽偏移量，优化所有卡片的跟手效果
-    // 无论是哪个卡片，都直接应用偏移
     translateY += deltaY;
-
-    // 在拖动时，检查是否处于刷新状态，如果是则叠加刷新位置
-    if (isDragging.value) {
-      if (touchState.pullDownRefreshProgress > 0 && currentIndex.value === 0) {
-        const pullProgress = Math.min(100, touchState.pullDownRefreshProgress);
-        translateY += pullProgress;
-      } else if (touchState.pullUpRefreshProgress > 0 && currentIndex.value === 0) {
-        const pullProgress = Math.min(100, touchState.pullUpRefreshProgress);
-        translateY -= pullProgress;
-      }
-    }
 
     // 设置适当的透明度变化
     const opacity = 1 - Math.min(0.3, Math.abs(offset) * 0.15)
@@ -654,7 +652,7 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
     // 使用 translate3d 进行硬件加速，直接应用偏移值
     card.style.transform = `translate3d(0, ${translateY}px, 0)`;
     card.style.opacity = opacity.toString()
-
+    
     // 拖动时完全关闭过渡动画
     if (isDragging.value) {
       card.style.transition = 'none'
@@ -662,8 +660,6 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
       // 松手后才使用过渡动画
       card.style.transition = 'transform 0.15s ease-out, opacity 0.15s ease-out'
     }
-
-    card.style.zIndex = (10 - Math.abs(offset)).toString()
   }
 
   // 重置卡片位置

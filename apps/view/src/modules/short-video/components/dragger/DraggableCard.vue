@@ -29,7 +29,7 @@ export default defineComponent({
   setup(props, { emit, slots }) {
     // 滑动容器引用
     const containerRef = ref<HTMLElement | null>(null)
-    
+
     // 状态提示控制
     const uiState = reactive({
       showDesertMessage: false
@@ -49,7 +49,7 @@ export default defineComponent({
             uiState.showDesertMessage = false
           }, 3000)
         }
-        
+
         // 转发切换事件
         emit('switch', direction, item)
       },
@@ -149,9 +149,9 @@ export default defineComponent({
       }
     }, [
       h('div', {
-        style: { 
-          fontSize: '24px', 
-          marginBottom: '8px' 
+        style: {
+          fontSize: '24px',
+          marginBottom: '8px'
         }
       }, '🏜️'),
       h('div', null, this.desertMessageText),
@@ -170,7 +170,7 @@ export default defineComponent({
         class: 'DraggableCard-Container',
         ref: 'containerRef'
       }, this.render),
-      
+
       // 添加提示消息
       desertMessage
     ])

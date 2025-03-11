@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { VIDEOS } from './video-resource'
 import DraggableCard from './components/dragger/DraggableCard.vue'
+import VideoPlayer from './components/VideoPlayer.vue'
 
 let amo = 0
 const loadMoreVideos = async () => {
@@ -22,6 +23,12 @@ const loadMoreVideos = async () => {
   return result
 }
 
+const handlePullupRefresh = async () => {
+  amo = 0
+
+  return loadMoreVideos()
+}
+
 const router = useRouter()
 
 const goBack = () => {
@@ -31,35 +38,19 @@ const goBack = () => {
 
 <template>
   <RoutePage :adapt="false" class="ShortVideoHolder h-full w-full">
-    <div flex items-center gap-2 @click="goBack" class="ShortVideoHolder-Nav">
+    <div flex items-center @click="goBack" class="ShortVideoHolder-Nav">
       <div class="nav-left">
         <i block i-carbon-chevron-left></i>
       </div>
-      <div class="nav-title">退出短视频</div>
+      <div class="nav-title">退出</div>
     </div>
 
-    <DraggableCard  @load-more="loadMoreVideos">
+    <DraggableCard @pull-up-refresh="handlePullupRefresh"  @load-more="loadMoreVideos">
       <!-- 使用正确的插槽名称和参数 -->
       <template #default="{ item }">
-        <div class="video-card" w-full h-full relative>
-          <video
-            class="video-content"
-            w-full h-full object-cover
-            :src="item?.url"
-            autoplay
-            loop
-            muted
-            webkit-playsinline
-            playsinline
-          ></video>
-          <div class="video-info" absolute bottom-8 left-4 right-4 text-white>
-            <div class="video-title text-lg font-bold mb-2">{{ item?.title }}</div>
-            <div class="video-author flex items-center">
-              <img :src="item?.author?.avatar" class="author-avatar w-8 h-8 rounded-full mr-2" />
-              <span class="author-name">{{ item?.author?.name }}</span>
-            </div>
-          </div>
-        </div>
+        <VideoPlayer :item="item">
+
+        </VideoPlayer>
       </template>
     </DraggableCard>
 
@@ -73,28 +64,33 @@ const goBack = () => {
 
 .ShortVideoHolder-Nav {
   position: fixed;
+  padding: 0.5rem 0.5rem;
   top: 1rem;
   left: 1rem;
   right: 0;
-  height: 44px;
   display: flex;
   align-items: center;
   z-index: 100;
 
+  width: max-content;
+
+  font-size: 12px;
+  border-radius: 16px;
   filter: drop-shadow(var(--el-text-color-primary) 0 0 10px);
+  background-color: var(--el-overlay-color-lighter);
 
   .statusbar & {
     height: 80px;
   }
 
   .fullscreen & {
-    padding-top: 64px;
+    top: 74px;
   }
 }
 
 .nav-left {
   color: var(--el-bg-color);
-  font-size: 20px;
+  font-size: 16px;
   cursor: pointer;
 
   filter: drop-shadow(var(--el-text-color-primary) 0 0 10px);
@@ -102,7 +98,6 @@ const goBack = () => {
 
 .nav-title {
   color: var(--el-bg-color);
-  font-size: 16px;
   font-weight: 500;
 }
 </style>
