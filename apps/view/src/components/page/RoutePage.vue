@@ -1,9 +1,13 @@
 <script setup lang="ts">
 // import { UniEventAtBackButton, uniEventBus } from '~/composables/adapter/uniapp';
 
-defineProps<{
+withDefaults(defineProps<{
+  adapt?: boolean
   loading?: boolean
-}>()
+}>(), {
+  adapt: true,
+  loading: false
+})
 
 // const visible = ref(!false)
 
@@ -36,7 +40,7 @@ defineProps<{
 
 <template>
   <!-- :class="{ visible }" -->
-  <WithPage :class="{ pageLoading: loading }" class="RoutePage transition-cubic absolute-layout flex flex-col">
+  <WithPage :adapt="adapt" :class="{ pageLoading: loading }" class="RoutePage transition-cubic absolute-layout flex flex-col">
     <div class="RoutePage-Header">
       <slot name="header" />
     </div>
@@ -86,7 +90,7 @@ defineProps<{
         border-bottom: none !important;
       }
 
-      padding-top: 0.5rem;
+      // padding-top: 0.5rem;
     }
   }
 

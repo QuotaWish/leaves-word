@@ -4,7 +4,7 @@ import { useDark, useToggle, useStorage, usePreferredDark, useColorMode } from '
 // 检测浏览器是否支持CSS过渡API
 const supportsTransition = typeof document !== 'undefined' && 'startViewTransition' in document
 
-// 颜色模式管理
+// 颜色模式管理 - 使用VueUse的useDark处理暗色模式
 export const isDark = useDark({
   selector: 'html',
   attribute: 'class',
@@ -29,6 +29,11 @@ const toggle = (forcedValue?: boolean) => {
   return newValue
 }
 
+/**
+ * 切换暗色模式
+ * @param forcedValue 指定切换的目标值，undefined则自动切换
+ * @param event 鼠标事件，用于创建点击动画效果
+ */
 export const toggleDark = (forcedValue?: boolean, event?: MouseEvent) => {
   // 如果传入了点击事件，则使用圆形扩散效果
   if (event && supportsTransition) {
@@ -78,14 +83,14 @@ export const toggleDark = (forcedValue?: boolean, event?: MouseEvent) => {
   }
 }
 
-// 主题色管理
+// 主题色管理 - 支持的主题颜色类型
 export type ThemeColor = 'blue' | 'green' | 'purple' | 'orange' | 'red'
 export const defaultThemeColor: ThemeColor = 'blue'
 
 // 使用localStorage存储用户主题色偏好
 export const themeColor = useStorage<ThemeColor>('leaves-word-theme-color', defaultThemeColor)
 
-// 定义主题色映射
+// 定义主题色映射 - 每种颜色对应的主色、次色和浅色
 export const themeColorMap = {
   blue: {
     primary: '#1677ff',
@@ -114,7 +119,7 @@ export const themeColorMap = {
   },
 }
 
-// 当主题色变化时应用CSS变量
+// 当主题色变化时应用CSS变量 - 实时监听并更新文档根样式
 watch(themeColor, (newColor) => {
   const colors = themeColorMap[newColor]
   if (typeof document !== 'undefined') {
@@ -131,7 +136,11 @@ watch(themeColor, (newColor) => {
   }
 }, { immediate: true })
 
-// 更改主题色的函数
+/**
+ * 更改主题色的函数
+ * @param color 目标主题色
+ * @param event 鼠标事件，用于创建点击动画效果
+ */
 export const changeThemeColor = (color: ThemeColor, event?: MouseEvent) => {
   // 如果传入了点击事件，则使用圆形扩散效果
   if (event && supportsTransition) {
@@ -186,16 +195,18 @@ export const changeThemeColor = (color: ThemeColor, event?: MouseEvent) => {
       })
     })
   } else if (supportsTransition) {
+    // 使用简单过渡效果
     // @ts-ignore - View Transition API不在所有类型定义中
     document.startViewTransition(() => {
       themeColor.value = color
     })
   } else {
+    // 降级方案 - 直接切换
     themeColor.value = color
   }
 }
 
-// 初始化主题过渡效果样式
+// 初始化主题过渡效果样式 - 在浏览器环境下创建全局CSS动画和过渡规则
 if (typeof document !== 'undefined') {
   // 仅在浏览器环境下执行
   const style = document.createElement('style')
@@ -253,24 +264,28 @@ if (typeof document !== 'undefined') {
   `
   document.head.appendChild(style)
 
+  // 初始化时应用当前暗色模式状态
   toggleDark(isDark.value)
 }
 
-// 暴露API检测功能
+// 暴露API检测功能 - 提供浏览器特性检测结果
 export const features = {
-  supportsTransition,
-  prefersDark: usePreferredDark(),
+  supportsTransition,   // 是否支持视图过渡API
+  prefersDark: usePreferredDark(),  // 系统是否偏好暗色模式
 }
 
-// 完整的主题管理API
+/**
+ * 完整的主题管理API - 返回所有主题相关的状态和函数
+ * @returns 主题管理API对象
+ */
 export const useTheme = () => {
   return {
-    isDark,
-    toggleDark,
-    themeColor,
-    changeThemeColor,
-    themeColorMap,
-    features,
+    isDark,              // 暗色模式状态
+    toggleDark,          // 切换暗色模式的函数
+    themeColor,          // 当前主题色
+    changeThemeColor,    // 更改主题色的函数
+    themeColorMap,       // 主题色映射表
+    features,            // 特性检测结果
   }
 }
 

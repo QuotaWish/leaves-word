@@ -33,6 +33,7 @@
     "element-plus": "^2.8.8",
     "js-confetti": "^0.12.0",
     "markdown-it": "^14.1.0",
+    "pinia": "^3.0.1",
     "sass": "^1.81.0",
     "simple-keyboard": "^3.8.38",
     "ua-parser-js": "^2.0.0",

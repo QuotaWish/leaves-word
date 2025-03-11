@@ -5,6 +5,7 @@ import { InstallCodeMirror } from 'codemirror-editor-vue3'
 import ElementPlus from 'element-plus'
 import VWave from 'v-wave'
 
+import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from 'vue-router/auto-routes'
@@ -21,6 +22,7 @@ import './styles/element/index.scss'
 
 import 'vant/lib/index.css'
 
+const pinia = createPinia()
 const app = createApp(App)
 const router = transitionRouter(createRouter({
   routes,
@@ -46,6 +48,7 @@ Sentry.init({
   replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
 })
 
+app.use(pinia)
 app.use(ElementPlus)
 app.use(router)
 app.use(VWave, {

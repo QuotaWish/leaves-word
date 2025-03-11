@@ -29,6 +29,7 @@ declare module 'vue-router/auto-routes' {
     '/explore/dub': RouteRecordInfo<'/explore/dub', '/explore/dub', Record<never, never>, Record<never, never>>,
     '/explore/listen': RouteRecordInfo<'/explore/listen', '/explore/listen', Record<never, never>, Record<never, never>>,
     '/explore/pronounce': RouteRecordInfo<'/explore/pronounce', '/explore/pronounce', Record<never, never>, Record<never, never>>,
+    '/explore/short-video': RouteRecordInfo<'/explore/short-video', '/explore/short-video', Record<never, never>, Record<never, never>>,
     '/explore/speech': RouteRecordInfo<'/explore/speech', '/explore/speech', Record<never, never>, Record<never, never>>,
     '/old': RouteRecordInfo<'/old', '/old', Record<never, never>, Record<never, never>>,
     '/personal/': RouteRecordInfo<'/personal/', '/personal', Record<never, never>, Record<never, never>>,

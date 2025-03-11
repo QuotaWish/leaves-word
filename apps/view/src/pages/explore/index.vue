@@ -38,6 +38,7 @@ const icons = [{
 }, {
   name: '短视频',
   icon: 'i-carbon-video',
+  path: '/explore/short-video',
   color: ['#FE4794', '#FF4B50'],
 }, {
   name: '四六级',
