@@ -44,7 +44,8 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
     lastY: 0,
     moveSpeed: 0,
     lastMoveTime: 0,
-    touchPoints: [] as Array<{ time: number, y: number }>
+    touchPoints: [] as Array<{ time: number, y: number }>,
+    animationFrameId: 0 // 添加动画帧ID跟踪
   })
 
   // 加载指示器元素
@@ -174,12 +175,17 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
     const handleTouchStart = (e: TouchEvent) => {
       isDragging.value = true
       touchState.startY = e.touches[0].clientY
-      touchState.currentY = e.touches[0].clientY
-      touchState.lastY = e.touches[0].clientY
+      touchState.lastY = touchState.startY
+      touchState.currentY = touchState.startY
       touchState.lastMoveTime = Date.now()
       touchState.moveSpeed = 0
       // 重置触摸点数组
       touchState.touchPoints = [{ time: Date.now(), y: e.touches[0].clientY }]
+      // 添加取消可能存在的动画帧请求
+      if (touchState.animationFrameId) {
+        cancelAnimationFrame(touchState.animationFrameId)
+        touchState.animationFrameId = 0
+      }
     }
 
     // 触摸移动
@@ -188,39 +194,49 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
 
       e.preventDefault()
 
-      touchState.currentY = e.touches[0].clientY
-      const deltaY = touchState.currentY - touchState.lastY
+      const currentY = e.touches[0].clientY
+      const deltaY = currentY - touchState.lastY
 
-      // 记录触摸点以计算速度
+      // 记录触摸点以计算速度，应用平滑处理
       touchState.touchPoints.push({
         time: Date.now(),
-        y: touchState.currentY
+        y: currentY
       })
 
-      // 只保留最近的5个触摸点用于计算速度
-      if (touchState.touchPoints.length > 5) {
+      // 只保留最近的8个触摸点用于计算速度，增加样本点以获得更平滑的速度计算
+      if (touchState.touchPoints.length > 8) {
         touchState.touchPoints.shift()
       }
 
-      // 更新滑动速度
-      const now = Date.now()
-      const timeDiff = now - touchState.lastMoveTime
-      if (timeDiff > 0) {
-        touchState.moveSpeed = deltaY / timeDiff
+      // 应用低通滤波器来平滑移动
+      const smoothingFactor = 0.8 // 平滑因子，值越大越平滑，但响应越慢
+      touchState.moveSpeed = (touchState.moveSpeed * smoothingFactor) + (deltaY * (1 - smoothingFactor))
+
+      touchState.currentY = currentY
+      touchState.lastY = currentY
+      touchState.lastMoveTime = Date.now()
+
+      // 使用 requestAnimationFrame 来优化性能并减少抖动
+      if (!touchState.animationFrameId) {
+        touchState.animationFrameId = requestAnimationFrame(() => {
+          // 更新卡片位置
+          updateCardsPosition(deltaY)
+          touchState.animationFrameId = 0
+        })
       }
-
-      touchState.lastY = touchState.currentY
-      touchState.lastMoveTime = now
-
-      // 更新卡片位置
-      updateCardsPosition(deltaY)
     }
 
     // 触摸结束
     const handleTouchEnd = () => {
       isDragging.value = false
 
-      // 计算最终速度 - 使用最近几个触摸点的平均速度
+      // 取消可能存在的动画帧请求
+      if (touchState.animationFrameId) {
+        cancelAnimationFrame(touchState.animationFrameId)
+        touchState.animationFrameId = 0
+      }
+
+      // 计算最终速度 - 使用加权平均来平滑最终速度
       if (touchState.touchPoints.length >= 2) {
         const first = touchState.touchPoints[0]
         const last = touchState.touchPoints[touchState.touchPoints.length - 1]
@@ -228,16 +244,28 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
         const distDiff = last.y - first.y
 
         if (timeDiff > 0) {
-          touchState.moveSpeed = distDiff / timeDiff
+          // 使用时间加权计算最终速度
+          const points = touchState.touchPoints
+          let weightedSpeed = 0
+          let totalWeight = 0
+
+          for (let i = 1; i < points.length; i++) {
+            const weight = Math.min(1, (points[i].time - points[i - 1].time) / 30) // 时间权重
+            const pointSpeed = (points[i].y - points[i - 1].y) / (points[i].time - points[i - 1].time)
+            weightedSpeed += pointSpeed * weight
+            totalWeight += weight
+          }
+
+          touchState.moveSpeed = totalWeight > 0 ? weightedSpeed / totalWeight : distDiff / timeDiff
         }
       }
 
       // 根据滑动速度和距离决定是否切换卡片
-      const threshold = containerHeight.value * 0.2
+      const threshold = containerHeight.value * 0.15 // 降低一点阈值，使切换更容易触发
       const moveDistance = touchState.currentY - touchState.startY
       const absMoveDistance = Math.abs(moveDistance)
 
-      if (absMoveDistance > threshold || Math.abs(touchState.moveSpeed) > 0.5) {
+      if (absMoveDistance > threshold || Math.abs(touchState.moveSpeed) > 0.4) {
         // 确定方向
         const direction = moveDistance > 0 ? 'prev' : 'next'
         switchCard(direction)
@@ -282,9 +310,11 @@ function useInnerDraggable<T extends { id: string }>(container: HTMLElement, opt
     const scale = 1 - Math.min(0.1, Math.abs(offset) * 0.05)
     const opacity = 1 - Math.min(0.3, Math.abs(offset) * 0.15)
 
+    // 使用 transform 属性的 translate3d 和 scale 函数来启用硬件加速
     card.style.transform = `translate3d(0, ${translateY}px, 0) scale(${scale})`
     card.style.opacity = opacity.toString()
-    card.style.transition = isDragging.value ? 'none' : 'all 0.3s cubic-bezier(0.33, 1, 0.68, 1)'
+    // 调整动画时间和缓动函数，使滑动更跟手，非拖拽状态时使用更自然的缓动
+    card.style.transition = isDragging.value ? 'none' : 'all 0.25s cubic-bezier(0.23, 1, 0.32, 1)'
     card.style.zIndex = (10 - Math.abs(offset)).toString()
   }
 
