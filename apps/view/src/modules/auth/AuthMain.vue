@@ -72,7 +72,7 @@ function handleAuth(event: Event) {
 .title {
   font-size: 1.8rem;
   font-weight: 600;
-  color: var(--theme-color);
+  color: var(--theme-color-primary);
   margin-bottom: 2rem;
 }
 
@@ -93,12 +93,12 @@ function handleAuth(event: Event) {
     border: none;
     background: transparent;
     outline: none;
-    color: var(--theme-color);
+    color: var(--theme-color-primary);
 
     &:focus + label,
     &:not(:placeholder-shown) + label {
       transform: translateY(-1.5rem) scale(0.85);
-      color: var(--theme-color);
+      color: var(--theme-color-primary);
     }
 
     &:focus ~ .input-line::after {
@@ -135,7 +135,7 @@ function handleAuth(event: Event) {
       left: 0;
       right: 0;
       height: 2px;
-      background: var(--theme-color);
+      background: var(--theme-color-primary);
       transform: scaleX(0);
       transition: transform 0.3s ease;
     }
@@ -147,7 +147,7 @@ function handleAuth(event: Event) {
   padding: 0.8rem;
   font-size: 1rem;
   color: white;
-  background: var(--theme-color);
+  background: var(--theme-color-primary);
   border: none;
   border-radius: 8px;
   cursor: pointer;

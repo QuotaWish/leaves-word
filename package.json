@@ -49,5 +49,9 @@
   "dependencies": {
     "@umijs/openapi": "^1.13.0",
     "dayjs": "^1.11.11"
+  },
+  "devDependencies": {
+    "@umijs/plugins": "^4.4.6",
+    "rc-field-form": "^2.7.0"
   }
 }
