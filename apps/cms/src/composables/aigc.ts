@@ -1,6 +1,6 @@
 import { COZE_CN_BASE_URL, CozeAPI, RoleType } from '@coze/api'
 import axios from 'axios'
-export const TOKEN = process.env.COZE_API_TOKEN || 'pat_wRaxoZvvJzSW9tHK0ELzVayjGwSKNnodhrMeduaLeSQQ4fLcC19DoLF9TlfXxwrB'
+export const TOKEN = process.env.COZE_API_TOKEN || 'pat_kwrrFbjXOXPaczP5ZEqtbfKzZEocnBdv0BOB1A7FSFsUSoc5sUO5in31fGa9zMfT'
 
 const axiosInstance = axios.create({
   baseURL: COZE_CN_BASE_URL,

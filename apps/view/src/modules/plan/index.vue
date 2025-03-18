@@ -2,35 +2,11 @@
 import { useGlobalSplashState } from '~/modules/splash/index'
 import PlanLayout from './PlanLayout.vue'
 
+const router = useRouter()
 const immersiveMode = ref(false)
 const globalSplashState = useGlobalSplashState()
-watch(immersiveMode, (val: boolean) => globalSplashState.footerVisible.value = !val)
-
-const cozeWebSDK = new CozeWebSDK.WebChatClient({
-  config: {
-    // 智能体 ID
-    botId: '7448405006673412115',
-  },
-  ui: {
-    footer: {
-      expressionText: 'Powered by {{QuotaWish}}.',
-      linkvars: {
-        QuotaWish: {
-          text: 'QuotaWish 科塔智爱',
-          link: 'https://quotawish.com',
-        },
-      },
-    },
-    chatBot: {
-      title: 'Lucas Tata',
-    },
-    asstBtn: {
-      isNeed: false,
-    },
-    base: {
-      icon: 'https://ai.quotawish.com/favicon.ico',
-    },
-  },
+watch(immersiveMode, (val: boolean) => {
+  globalSplashState.footerVisible.value = !val
 })
 </script>
 
@@ -38,7 +14,7 @@ const cozeWebSDK = new CozeWebSDK.WebChatClient({
   <PlanLayout :class="{ immersive: immersiveMode }">
     <template #header>
       <div flex items-center>
-        <RoundInfo type="success" flex items-center gap-2 @click="cozeWebSDK.showChatBot()">
+        <RoundInfo type="success" flex items-center gap-2 @click="router.push('/search')">
           <img w-6 src="/ai-logo.png">
           搜一搜
         </RoundInfo>

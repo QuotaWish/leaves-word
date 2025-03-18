@@ -32,9 +32,9 @@ withDefaults(defineProps<{
     padding-top: 44px;
   }
 
-  .fullscreen & {
-    padding-top: 44px;
-  }
+  // .fullscreen & {
+  //   padding-top: 44px;
+  // }
 
   .statusbar .iPhone16 &.adapt {
     padding-top: 44px;
