@@ -237,6 +237,7 @@ declare global {
   const usePreferredLanguages: typeof import('@vueuse/core')['usePreferredLanguages']
   const usePreferredReducedMotion: typeof import('@vueuse/core')['usePreferredReducedMotion']
   const usePrevious: typeof import('@vueuse/core')['usePrevious']
+  const usePronunciationAnalysis: typeof import('./src/composables/usePronunciationAnalysis')['usePronunciationAnalysis']
   const useRafFn: typeof import('@vueuse/core')['useRafFn']
   const useRecording: typeof import('./src/composables/useRecording')['useRecording']
   const useRefHistory: typeof import('@vueuse/core')['useRefHistory']
@@ -552,6 +553,7 @@ declare module 'vue' {
     readonly usePreferredLanguages: UnwrapRef<typeof import('@vueuse/core')['usePreferredLanguages']>
     readonly usePreferredReducedMotion: UnwrapRef<typeof import('@vueuse/core')['usePreferredReducedMotion']>
     readonly usePrevious: UnwrapRef<typeof import('@vueuse/core')['usePrevious']>
+    readonly usePronunciationAnalysis: UnwrapRef<typeof import('./src/composables/usePronunciationAnalysis')['usePronunciationAnalysis']>
     readonly useRafFn: UnwrapRef<typeof import('@vueuse/core')['useRafFn']>
     readonly useRecording: UnwrapRef<typeof import('./src/composables/useRecording')['useRecording']>
     readonly useRefHistory: UnwrapRef<typeof import('@vueuse/core')['useRefHistory']>

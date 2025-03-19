@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { useDark } from '@vueuse/core'
 // import NumberFlow from '@number-flow/vue'
 import { ElMessage } from 'element-plus'
+import { computed, onMounted, ref, watch } from 'vue'
 import { pronounceWords } from '~/composables/pronounce'
-import { ref, computed } from 'vue'
-import { useDark } from '@vueuse/core'
-import { useSuccessAudio, useErrorAudio } from '~/composables/words'
+import { usePronunciationAnalysis } from '~/composables/usePronunciationAnalysis'
+import { useErrorAudio, useSuccessAudio } from '~/composables/words'
 
 const router = useRouter()
 const isDark = useDark()
@@ -18,19 +19,44 @@ interface IPronounceData {
 const pronounceData = useLocalStorage<IPronounceData>('pronounceData', {
   index: 0,
   scores: [],
-  mistakes: {}
+  mistakes: {},
 })
 
 const {
   isSupported,
   isListening,
-  // isFinal,
-  // error,
-  result,
+  result: speechResult,
   start,
   stop,
-} = useSpeechRecognition()
-const currentData = computed(() => pronounceWords?.[pronounceData.value.index || 0])
+} = useSpeechRecognition({
+  continuous: true,
+  interimResults: true,
+})
+
+// 添加识别状态
+const recognitionStatus = ref<'idle' | 'listening' | 'no-speech' | 'error'>('idle')
+
+// 监听识别结果
+watch(speechResult, (newResult) => {
+  if (newResult && newResult.length > 0) {
+    recognitionStatus.value = 'listening'
+  } else {
+    recognitionStatus.value = 'no-speech'
+  }
+})
+
+const currentData = computed(() => {
+  if (!pronounceWords || !pronounceWords.length) {
+    return {
+      word: '',
+      phonetic: '',
+    }
+  }
+  return pronounceWords[pronounceData.value.index || 0] || {
+    word: '',
+    phonetic: '',
+  }
+})
 
 interface IWordAnalysis {
   correct: boolean;
@@ -55,19 +81,14 @@ const mediaRecorder = ref<MediaRecorder | null>(null)
 const audioChunks = ref<Blob[]>([])
 
 // AI分析状态
-const aiAnalysisState = ref<'idle' | 'analyzing' | 'complete'>('idle')
-const pronunciationScore = ref(0)
-const pronunciationFeedback = ref<string>('')
-const showScoreCard = ref(false)
-const mouthAnimation = ref<'closed' | 'slightly-open' | 'wide-open'>('closed')
-const aiAnalysisDetails = ref<IAIAnalysisDetails>({
-  wordAnalysis: [],
-  accuracy: 0,
-  vowelIssues: [],
-  consonantIssues: [],
-  rhythmIssues: [],
-  suggestions: [],
-})
+const {
+  aiAnalysisState,
+  pronunciationScore,
+  showScoreCard,
+  aiAnalysisDetails,
+  analyzePronunciation,
+  mouthAnimation,
+} = usePronunciationAnalysis()
 
 interface IPronunciationTip {
   text: string,
@@ -135,10 +156,31 @@ const pronunciationTips = computed<IPronunciationTip>(() => {
 
 onMounted(() => {
   if (!isSupported.value) {
-    // eslint-disable-next-line no-alert
-    alert('浏览器不支持语音识别!')
-
+    ElMessage.error('浏览器不支持语音识别!')
     router.push('/')
+    return
+  }
+
+  if (!pronounceWords || !pronounceWords.length) {
+    ElMessage.error('未找到发音数据!')
+    router.push('/')
+    return
+  }
+
+  // 检测暗色模式
+  const htmlElement = document.documentElement
+  if (isDark.value) {
+    htmlElement.classList.add('dark')
+  }
+})
+
+// 监听暗色模式变化
+watch(isDark, (newValue) => {
+  const htmlElement = document.documentElement
+  if (newValue) {
+    htmlElement.classList.add('dark')
+  } else {
+    htmlElement.classList.remove('dark')
   }
 })
 
@@ -151,18 +193,18 @@ interface AINotification {
 const aiNotification = ref<AINotification>({
   show: false,
   type: 'info',
-  message: ''
+  message: '',
 })
 
-const showNotification = (message: string, type: 'success' | 'warning' | 'info' = 'info') => {
+function showNotification(message: string, type: 'success' | 'warning' | 'info' = 'info', duration = 3000) {
   aiNotification.value = {
     show: true,
     type,
-    message
+    message,
   }
   setTimeout(() => {
     aiNotification.value.show = false
-  }, 3000)
+  }, duration)
 }
 
 // 音频实例
@@ -244,25 +286,36 @@ async function stopRecording() {
       stop()
     }
 
+    // 检查是否有识别到内容
+    if (recognitionStatus.value === 'no-speech') {
+      showNotification('未能识别到语音内容，请重新尝试', 'warning')
+      recordingState.value = 'idle'
+      return
+    }
+
     try {
-      const result = await analyzePronunciation()
-      if (result.score > 80) {
-        showNotification('发音非常棒！', 'success')
-      } else if (result.score > 60) {
+      const analysisResult = await analyzePronunciation(currentData.value.word, speechResult.value?.[0]?.transcript || '')
+      showScoreCard.value = true
+      isRecording.value = false
+      recordingState.value = 'idle'
+      recognitionStatus.value = 'idle'
+      if (analysisResult.score > 80) {
+        showNotification('发音非常棒！继续保持', 'success')
+        successAudio?.play()
+      } else if (analysisResult.score > 60) {
         showNotification('发音还不错，继续努力！', 'info')
       } else {
-        showNotification('需要多加练习哦', 'warning')
+        showNotification('需要多加练习哦，再试一次', 'warning')
+        errorAudio?.play()
       }
     } catch (error) {
       console.error('分析发音失败:', error)
-      showNotification('分析发音时出现错误', 'warning')
+      showNotification('分析发音时出现错误，请重试', 'warning')
+      showScoreCard.value = true
     }
   } catch (err) {
     console.error('停止录音失败:', err)
-    showNotification('停止录音失败', 'warning')
-  } finally {
-    isRecording.value = false
-    recordingState.value = 'idle'
+    showNotification('停止录音失败，请检查麦克风权限', 'warning')
   }
 }
 
@@ -277,21 +330,21 @@ function analyzeWord(spoken: string, correct: string): IWordAnalysis[] {
         correct: false,
         originalChar: '',
         spokenChar: spoken[i],
-        type: 'extra'
+        type: 'extra',
       });
     } else if (i >= spoken.length) {
       analysis.push({
         correct: false,
         originalChar: correct[i],
         spokenChar: '',
-        type: 'missing'
+        type: 'missing',
       });
     } else {
       analysis.push({
         correct: spoken[i].toLowerCase() === correct[i].toLowerCase(),
         originalChar: correct[i],
         spokenChar: spoken[i],
-        type: spoken[i].toLowerCase() === correct[i].toLowerCase() ? 'correct' : 'wrong'
+        type: spoken[i].toLowerCase() === correct[i].toLowerCase() ? 'correct' : 'wrong',
       });
     }
   }
@@ -309,7 +362,7 @@ function analyzePronunciationIssues(analysis: IWordAnalysis[]): {
   const issues = {
     vowelIssues: [] as string[],
     consonantIssues: [] as string[],
-    rhythmIssues: [] as string[]
+    rhythmIssues: [] as string[],
   };
 
   analysis.forEach((char, index) => {
@@ -349,76 +402,8 @@ function generateSuggestions(analysis: IWordAnalysis[]): string[] {
   return suggestions;
 }
 
-async function analyzePronunciation() {
-  try {
-    aiAnalysisState.value = 'analyzing';
-    // 确保 result.value 存在且为字符串
-    if (!result.value || typeof result.value !== 'string') {
-      throw new Error('未能获取到语音识别结果');
-    }
-
-    const spokenText = result.value.toLowerCase().trim();
-    const correctText = currentData.value.word.toLowerCase().trim();
-
-    // 如果语音识别结果为空，提示用户
-    if (!spokenText) {
-      showNotification('未能识别到您的发音，请重试', 'warning');
-      return { score: 0 };
-    }
-
-    // 执行详细分析
-    const wordAnalysis = analyzeWord(spokenText, correctText);
-    const issues = analyzePronunciationIssues(wordAnalysis);
-    const suggestions = generateSuggestions(wordAnalysis);
-    const accuracy = (wordAnalysis.filter(a => a.correct).length / wordAnalysis.length) * 100;
-
-    // 更新分析结果
-    aiAnalysisDetails.value = {
-      wordAnalysis,
-      accuracy,
-      ...issues,
-      suggestions,
-    };
-
-    pronunciationScore.value = Math.round(accuracy);
-    aiAnalysisState.value = 'complete';
-    showScoreCard.value = true;
-
-    if (accuracy >= 80) {
-      successAudio.play();
-      showNotification('发音非常准确！', 'success');
-      useVibrate('light');
-
-      setTimeout(() => {
-        pronounceData.value.index += 1;
-        showScoreCard.value = false;
-      }, 3000);
-    } else {
-      errorAudio.play();
-      showNotification('继续加油，你已经很接近了！', 'info');
-      useVibrate('heavy');
-
-      if (!pronounceData.value.mistakes[currentData.value.word]) {
-        pronounceData.value.mistakes[currentData.value.word] = [];
-      }
-      pronounceData.value.mistakes[currentData.value.word].push(spokenText);
-    }
-
-    result.value = '';
-    mouthAnimation.value = 'closed';
-    recordingState.value = 'idle';
-
-    return { score: accuracy };
-  } catch (err) {
-    console.error('分析发音时出现错误:', err);
-    showNotification('分析发音时出现错误', 'warning');
-    recordingState.value = 'idle';
-    return { score: 0 };
-  }
-}
-
 // 更新嘴型动画状态
-const updateMouthAnimation = (phoneme: string) => {
+function updateMouthAnimation(phoneme: string) {
   const mouth = document.querySelector('.mouth') as HTMLElement
   if (mouth) {
     mouth.classList.add('animated')
@@ -458,41 +443,42 @@ const updateMouthAnimation = (phoneme: string) => {
 <template>
   <PageNavHolder :content-padding="false" title="发音训练">
     <div class="PronouncePage-Main" :class="{ listening: isListening, dark: isDark }">
-      <div class="ai-blur-circle left"></div>
-      <div class="ai-blur-circle right"></div>
-      <div class="ai-blur-circle center"></div>
-      <div class="bubble"></div>
-      <div class="bubble"></div>
-      <div class="bubble"></div>
-      <div class="bubble"></div>
-      <div class="bubble"></div>
+      <div class="ai-blur-circle left" />
+      <div class="ai-blur-circle right" />
+      <div class="ai-blur-circle center" />
+      <div class="bubble" />
+      <div class="bubble" />
+      <div class="bubble" />
+      <div class="bubble" />
+      <div class="bubble" />
 
       <!-- AI通知 -->
       <Transition name="ai-notification">
-        <div v-if="aiNotification.show"
-             class="AINotification"
-             :class="aiNotification.type">
+        <div
+          v-if="aiNotification.show"
+          class="AINotification"
+          :class="aiNotification.type"
+        >
           <div class="ai-notification-icon">
-            <i v-if="aiNotification.type === 'success'" class="el-icon-check"></i>
-            <i v-else-if="aiNotification.type === 'warning'" class="el-icon-warning"></i>
-            <i v-else class="el-icon-info"></i>
+            <i v-if="aiNotification.type === 'success'" class="el-icon-check" />
+            <i v-else-if="aiNotification.type === 'warning'" class="el-icon-warning" />
+            <i v-else class="el-icon-info" />
           </div>
           <span class="ai-notification-message">{{ aiNotification.message }}</span>
-          <div class="ai-notification-progress"></div>
+          <div class="ai-notification-progress" />
         </div>
       </Transition>
 
       <!-- AI能量场 -->
       <div class="ai-energy-field" :class="{ active: isListening }">
-        <div class="energy-ring"></div>
-        <div class="energy-ring"></div>
-        <div class="energy-ring"></div>
+        <div class="energy-ring" />
+        <div class="energy-ring" />
+        <div class="energy-ring" />
       </div>
 
       <div class="PronouncePage-Progress">
         <div class="progress-bar">
-          <div class="progress-fill" :style="{ width: `${(pronounceData.index / pronounceWords.length) * 100}%` }">
-          </div>
+          <div class="progress-fill" :style="{ width: `${(pronounceData.index / pronounceWords.length) * 100}%` }" />
         </div>
         <div class="progress-text">
           <span class="current">{{ pronounceData.index + 1 }}</span>
@@ -500,37 +486,38 @@ const updateMouthAnimation = (phoneme: string) => {
         </div>
       </div>
 
-      <div class="PronouncePage-AIAssistant">
+      <div class="PronouncePage-AIAssistant fake-background">
         <div class="ai-icon-container">
           <div class="ai-icon" :class="{ pulse: aiAnalysisState === 'analyzing' }">
-            <div class="ai-core"></div>
-            <div class="ai-ring"></div>
-            <div class="ai-dots" v-if="aiAnalysisState === 'analyzing'">
-              <span></span><span></span><span></span>
+            <div class="ai-core" />
+            <div class="ai-ring" />
+            <div v-if="aiAnalysisState === 'analyzing'" class="ai-dots">
+              <span /><span /><span />
             </div>
-            <i v-else-if="aiAnalysisState === 'complete'" class="el-icon-check"></i>
-            <i v-else class="el-icon-mic"></i>
+            <i v-else-if="aiAnalysisState === 'complete'" class="el-icon-check" />
+            <i v-else class="el-icon-mic" />
           </div>
         </div>
         <div class="ai-tip-container">
           <div class="ai-tip">
-            <p class="sound-type">{{ pronunciationTips.soundType }}发音技巧</p>
-            <p class="tip-content">{{ pronunciationTips.text }}</p>
-            <p class="ai-tip-text">{{ pronunciationTips.aiTip }}</p>
+            <p class="sound-type">
+              {{ pronunciationTips.soundType }}发音技巧
+            </p>
+            <p class="tip-content">
+              {{ pronunciationTips.text }}
+            </p>
+            <p class="ai-tip-text">
+              {{ pronunciationTips.aiTip }}
+            </p>
           </div>
         </div>
       </div>
 
-      <div class="PronouncePage-Instructions">
-        <p>长按"开始朗读"按钮，准确清晰地朗读单词</p>
-        <p>AI助手将实时分析您的发音并提供反馈</p>
-      </div>
-
-      <div class="PronouncePage-MainCard">
+      <div class="PronouncePage-MainCard fake-background">
         <div class="pronunciation-animation">
-          <div class="mouth" :class="[mouthAnimation, { animated: isListening }]"></div>
-          <div class="ai-wave" v-if="isListening">
-            <div class="wave-bar" v-for="i in 5" :key="i"></div>
+          <div class="mouth" :class="[mouthAnimation, { animated: isListening }]" />
+          <div v-if="isListening" class="ai-wave">
+            <div v-for="i in 5" :key="i" class="wave-bar" />
           </div>
         </div>
         <p class="word">
@@ -541,127 +528,221 @@ const updateMouthAnimation = (phoneme: string) => {
         </p>
       </div>
 
-      <div class="PronouncePage-Button"
-           :class="{ active: isListening }"
-           @touchstart.prevent="startRecording"
-           @touchend.prevent="stopRecording"
-           @mousedown.prevent="startRecording"
-           @mouseup.prevent="stopRecording"
-           @mouseleave.prevent="handleMouseLeave">
+      <!-- 移动状态提示到按钮上方 -->
+      <div v-if="isRecording" class="recognition-status">
+        <span v-if="recognitionStatus === 'listening'" class="status-text listening">
+          <i class="el-icon-microphone" /> 正在聆听...
+        </span>
+        <span v-else-if="recognitionStatus === 'no-speech'" class="status-text warning">
+          <i class="el-icon-warning" /> 未检测到语音，请说话...
+        </span>
+        <span v-else-if="recognitionStatus === 'error'" class="status-text error">
+          <i class="el-icon-error" /> 识别出错，请重试
+        </span>
+      </div>
+
+      <div
+        class="PronouncePage-Button"
+        :class="{ active: isListening }"
+        @touchstart.prevent="startRecording"
+        @touchend.prevent="stopRecording"
+        @mousedown.prevent="startRecording"
+        @mouseup.prevent="stopRecording"
+        @mouseleave.prevent="handleMouseLeave"
+      >
         <span v-if="!isListening">
-          按住开始录音
+          开始录音
         </span>
         <span v-else>
-          松开停止录音
+          停止录音
         </span>
       </div>
 
       <transition name="score-slide">
         <div v-if="showScoreCard" class="ScoreCard fake-background">
-          <!-- 滚动内容区域 -->
           <div class="score-content">
-            <div class="score-header">AI发音评估</div>
-            <div class="score-circle">
-              <div class="score-value">{{ pronunciationScore }}</div>
-              <svg class="score-ring" width="120" height="120" viewBox="0 0 120 120">
-                <defs>
-                  <linearGradient id="score-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#1677ff" />
-                    <stop offset="100%" stop-color="#4096ff" />
-                  </linearGradient>
-                </defs>
-                <circle class="score-ring-bg" cx="60" cy="60" r="54" />
-                <circle
-                  class="score-ring-progress"
-                  cx="60"
-                  cy="60"
-                  r="54"
-                  :style="{ 'stroke-dashoffset': `${(100 - pronunciationScore) * 3.4}` }"
-                />
-              </svg>
+            <div class="score-header">
+              AI发音评估
             </div>
+            <div class="score-stats">
+              <div class="score-circle">
+                <div class="score-value">
+                  {{ pronunciationScore || '0' }}
+                </div>
+                <div class="score-label">
+                  分
+                </div>
+                <svg class="score-ring" width="120" height="120" viewBox="0 0 120 120">
+                  <defs>
+                    <linearGradient id="score-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#1677ff" />
+                      <stop offset="100%" stop-color="#4096ff" />
+                    </linearGradient>
+                  </defs>
+                  <circle class="score-ring-bg" cx="60" cy="60" r="54" />
+                  <circle
+                    class="score-ring-progress"
+                    cx="60"
+                    cy="60"
+                    r="54"
+                    :style="{ 'stroke-dashoffset': `${(100 - (pronunciationScore || 0)) * 3.4}` }"
+                  />
+                </svg>
+              </div>
 
-            <div class="word-analysis">
-              <div class="char-comparison">
-                <div v-for="(char, index) in aiAnalysisDetails.wordAnalysis"
-                     :key="index"
-                     class="char-item"
-                     :class="[char.type, { 'has-error': char.type !== 'correct' }]">
-                  <div class="char-content">
-                    <div class="original" :class="{ empty: !char.originalChar }">
-                      {{ char.originalChar || '⚋' }}
-                    </div>
-                    <div class="comparison-arrow">
-                      <span class="arrow-line"></span>
-                      <span class="arrow-head">▼</span>
-                    </div>
-                    <div class="spoken" :class="{ empty: !char.spokenChar }">
-                      {{ char.spokenChar || '⚋' }}
-                    </div>
+              <!-- 统计数据 -->
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <div class="stat-value">
+                    {{ pronounceData.index + 1 }}/{{ pronounceWords.length }}
                   </div>
-                  <div class="status-icon">
-                    <i v-if="char.type === 'correct'" class="el-icon-check"></i>
-                    <i v-else-if="char.type === 'wrong'" class="el-icon-close"></i>
-                    <i v-else-if="char.type === 'missing'" class="el-icon-minus"></i>
-                    <i v-else class="el-icon-plus"></i>
+                  <div class="stat-label">
+                    进度
                   </div>
-                  <div class="char-type-label">
-                    <span v-if="char.type === 'correct'">正确</span>
-                    <span v-else-if="char.type === 'wrong'">错误</span>
-                    <span v-else-if="char.type === 'missing'">缺失</span>
-                    <span v-else>多余</span>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">
+                    {{ pronounceData.scores?.length }}
+                  </div>
+                  <div class="stat-label">
+                    已练习
+                  </div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">
+                    {{ Object.keys(pronounceData.mistakes || {}).length }}
+                  </div>
+                  <div class="stat-label">
+                    需复习
+                  </div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">
+                    {{ new Date().toLocaleTimeString() }}
+                  </div>
+                  <div class="stat-label">
+                    当前时间
                   </div>
                 </div>
               </div>
             </div>
 
+            <!-- 单词分析 -->
+            <div class="word-analysis-section">
+              <h3 class="section-title">
+                <span class="icon">📝</span>
+                单词分析
+              </h3>
+              <div class="word-analysis">
+                <div class="char-comparison">
+                  <div
+                    v-for="(char, index) in aiAnalysisDetails.wordAnalysis"
+                    :key="index"
+                    class="char-item"
+                    :class="[char.type, { 'has-error': char.type !== 'correct' }]"
+                  >
+                    <div class="char-content">
+                      <div class="original" :class="{ empty: !char.originalChar }">
+                        {{ char.originalChar || '⚋' }}
+                      </div>
+                      <div class="comparison-arrow">
+                        <span class="arrow-line" />
+                        <span class="arrow-head">▼</span>
+                      </div>
+                      <div class="spoken" :class="{ empty: !char.spokenChar }">
+                        {{ char.spokenChar || '⚋' }}
+                      </div>
+                    </div>
+                    <div class="status-icon">
+                      <i v-if="char.type === 'correct'" class="el-icon-check" />
+                      <i v-else-if="char.type === 'wrong'" class="el-icon-close" />
+                      <i v-else-if="char.type === 'missing'" class="el-icon-minus" />
+                      <i v-else class="el-icon-plus" />
+                    </div>
+                    <div class="char-type-label">
+                      <span v-if="char.type === 'correct'">正确</span>
+                      <span v-else-if="char.type === 'wrong'">错误</span>
+                      <span v-else-if="char.type === 'missing'">缺失</span>
+                      <span v-else>多余</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 问题分析 -->
             <div class="ai-analysis-details">
-              <div class="analysis-section" v-if="aiAnalysisDetails.vowelIssues.length">
+              <div v-if="aiAnalysisDetails.vowelIssues.length" class="analysis-section">
                 <h4>
                   <span class="icon">🔊</span>
                   元音问题
                 </h4>
                 <ul>
-                  <li v-for="issue in aiAnalysisDetails.vowelIssues" :key="issue">{{ issue }}</li>
+                  <li v-for="issue in aiAnalysisDetails.vowelIssues" :key="issue">
+                    {{ issue }}
+                  </li>
                 </ul>
               </div>
-              <div class="analysis-section" v-if="aiAnalysisDetails.consonantIssues.length">
+              <div v-if="aiAnalysisDetails.consonantIssues.length" class="analysis-section">
                 <h4>
                   <span class="icon">👄</span>
                   辅音问题
                 </h4>
                 <ul>
-                  <li v-for="issue in aiAnalysisDetails.consonantIssues" :key="issue">{{ issue }}</li>
+                  <li v-for="issue in aiAnalysisDetails.consonantIssues" :key="issue">
+                    {{ issue }}
+                  </li>
                 </ul>
               </div>
-              <div class="analysis-section" v-if="aiAnalysisDetails.rhythmIssues.length">
+              <div v-if="aiAnalysisDetails.rhythmIssues.length" class="analysis-section">
                 <h4>
                   <span class="icon">🎵</span>
                   节奏问题
                 </h4>
                 <ul>
-                  <li v-for="issue in aiAnalysisDetails.rhythmIssues" :key="issue">{{ issue }}</li>
+                  <li v-for="issue in aiAnalysisDetails.rhythmIssues" :key="issue">
+                    {{ issue }}
+                  </li>
                 </ul>
               </div>
             </div>
 
+            <!-- AI建议 -->
             <div class="score-feedback">
-              <p v-for="(suggestion, index) in aiAnalysisDetails.suggestions"
-                 :key="index">{{ suggestion }}</p>
+              <h3 class="section-title">
+                <span class="icon">💡</span>
+                AI建议
+              </h3>
+              <div class="feedback-list">
+                <template v-if="!(pronunciationScore ?? 0)">
+                  <div
+                    class="feedback-item">无法识别到音频，请重新朗读。</div>
+                </template>
+                <template v-else>
+                  <div
+                    v-for="(suggestion, index) in aiAnalysisDetails.suggestions"
+                    :key="index"
+                    class="feedback-item"
+                  >
+                    {{ suggestion }}
+                  </div>
+                </template>
+              </div>
             </div>
           </div>
 
           <!-- 固定在底部的按钮 -->
           <div class="score-actions">
-            <button class="action-button retry" @click="startRecording">
-              <i class="el-icon-refresh-right"></i>
+            <button class="action-button retry" @click="showScoreCard = false">
+              <i class="el-icon-refresh-right" />
               重新练习
             </button>
             <button
               v-if="pronunciationScore >= 80"
               class="action-button next"
-              @click="pronounceData.index++; showScoreCard = false">
-              <i class="el-icon-arrow-right"></i>
+              @click="pronounceData.index++; showScoreCard = false"
+            >
+              <i class="el-icon-arrow-right" />
               下一题
             </button>
           </div>
@@ -722,7 +803,6 @@ const updateMouthAnimation = (phoneme: string) => {
   max-width: 400px;
   margin: 0 auto;
   padding: 12px;
-  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(8px);
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -808,64 +888,6 @@ const updateMouthAnimation = (phoneme: string) => {
   }
 }
 
-.PronouncePage-Instructions {
-  text-align: center;
-  margin: 1rem 0;
-  position: relative;
-  z-index: 2;
-
-  p {
-    font-size: 16px;
-    color: var(--el-text-color-secondary);
-    margin: 4px 0;
-  }
-}
-
-.PronouncePage-Button {
-  .listening & {
-    &::before {
-      animation: wavingButton 1.2s infinite;
-    }
-
-    animation: buttonShaving 2s infinite;
-    box-shadow: 0 0 24px 8px var(--el-color-primary);
-  }
-
-  &::before {
-    z-index: -1;
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--el-color-primary) 0%, var(--el-color-primary-light-3) 100%);
-  }
-
-  z-index: 2;
-  position: relative;
-  margin: 1.5rem auto;
-  display: flex;
-  width: 120px;
-  height: 120px;
-  user-select: none;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 16px rgba(var(--el-color-primary-rgb), 0.3);
-  border-radius: 50%;
-  background: var(--el-color-primary);
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-  &:active,
-  &.active {
-    transform: scale(0.92);
-  }
-}
-
 .PronouncePage-MainCard {
   .word {
     font-size: 32px;
@@ -890,7 +912,7 @@ const updateMouthAnimation = (phoneme: string) => {
     .mouth {
       width: 60px;
       height: 30px;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+      background: var(--el-text-color-primary);
       border-radius: 0 0 30px 30px;
       margin: 0 auto;
       position: relative;
@@ -921,7 +943,7 @@ const updateMouthAnimation = (phoneme: string) => {
         top: -10px;
         width: 8px;
         height: 8px;
-        background: rgba(0, 0, 0, 0.5);
+        background: var(--el-text-color-secondary);
         border-radius: 50%;
         transition: all 0.3s ease;
       }
@@ -952,16 +974,11 @@ const updateMouthAnimation = (phoneme: string) => {
   justify-content: center;
   flex-direction: column;
   border-radius: 25px;
-  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(12px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   z-index: 2;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-  }
 
   &::before {
     content: '';
@@ -975,6 +992,10 @@ const updateMouthAnimation = (phoneme: string) => {
     z-index: -1;
   }
 
+  .dark &::before {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2));
+  }
+
   // 添加霓虹光效果
   &::after {
     content: '';
@@ -982,7 +1003,9 @@ const updateMouthAnimation = (phoneme: string) => {
     inset: -1px;
     background: linear-gradient(90deg, #4096ff, #1677ff, #4096ff);
     filter: blur(12px);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
     mask-composite: exclude;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -1034,12 +1057,59 @@ const updateMouthAnimation = (phoneme: string) => {
     }
   }
 
+  .score-stats {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #1677ff, #4096ff);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+
   .score-circle {
     position: relative;
     width: 120px;
     height: 120px;
-    margin: 20px auto;
+    margin: 0 auto;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 
@@ -1053,75 +1123,58 @@ const updateMouthAnimation = (phoneme: string) => {
       z-index: 1;
     }
 
-    svg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      transform: rotate(-90deg);
-
-      circle {
-        fill: none;
-        stroke-width: 8;
-        stroke-linecap: round;
-
-        &.score-ring-bg {
-          stroke: rgba(22, 119, 255, 0.1);
-        }
-
-        &.score-ring-progress {
-          stroke: url(#score-gradient);
-          stroke-dasharray: 339.292;
-          transition: stroke-dashoffset 1s ease;
-          filter: drop-shadow(0 0 4px rgba(22, 119, 255, 0.5));
-        }
-      }
-
-      defs {
-        linearGradient {
-          stop:first-child {
-            stop-color: #1677ff;
-          }
-          stop:last-child {
-            stop-color: #4096ff;
-          }
-        }
-      }
-    }
-
-    &::before {
-      content: '';
-      position: absolute;
-      inset: -4px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, rgba(22, 119, 255, 0.2), rgba(64, 150, 255, 0.2));
-      filter: blur(8px);
-      z-index: -1;
+    .score-label {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: -8px;
     }
   }
 
-  // 内容容器
-  .score-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 0 20px 80px;
-    -webkit-overflow-scrolling: touch;
+  .word-analysis-section {
+    margin: 24px 0;
+    padding: 0 20px;
+  }
 
-    // 自定义滚动条样式
-    &::-webkit-scrollbar {
-      width: 6px;
-    }
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: rgba(22, 119, 255, 0.2);
-      border-radius: 3px;
+    .icon {
+      font-size: 20px;
     }
   }
 
-  // 固定在底部的按钮容器
+  .feedback-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .feedback-item {
+    padding: 12px 16px;
+    background: rgba(22, 119, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    line-height: 1.5;
+    border-left: 3px solid #1677ff;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateX(4px);
+      background: rgba(22, 119, 255, 0.15);
+    }
+  }
+
   .score-actions {
     position: absolute;
     bottom: 0;
@@ -1222,11 +1275,11 @@ const updateMouthAnimation = (phoneme: string) => {
   display: flex;
   margin: auto;
   width: 100%;
+  height: 100%;
   gap: 1.5rem;
   align-items: center;
   flex-direction: column;
   overflow: hidden;
-  min-height: 100vh;
   padding: 1rem 0;
   background: linear-gradient(135deg, #f5f8ff, #edf3ff);
 
@@ -1347,107 +1400,49 @@ const updateMouthAnimation = (phoneme: string) => {
   }
 }
 
-.PronouncePage-Instructions {
-  text-align: center;
-  margin-bottom: 0.5rem;
+.PronouncePage-Button {
+  .listening & {
+    &::before {
+      animation: wavingButton 1.2s infinite;
+    }
 
-  p {
-    font-size: 16px;
-    color: var(--el-text-color-secondary);
+    animation: buttonShaving 2s infinite;
+    box-shadow: 0 0 24px 8px var(--el-color-primary);
   }
-}
 
-.PronouncePage {
+  &::before {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--el-color-primary) 0%, var(--el-color-primary-light-3) 100%);
+  }
+
+  z-index: 2;
   position: relative;
+  margin: 1.5rem auto;
   display: flex;
-  width: 100%;
-  height: 100%;
+  width: 120px;
+  height: 120px;
+  user-select: none;
   align-items: center;
-  flex-direction: column;
-}
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(var(--el-color-primary-rgb), 0.3);
+  border-radius: 50%;
+  background: var(--el-color-primary);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-@keyframes buttonShaving {
-  0%,
-  100% {
-    transform: scale(1.15);
+  &:active,
+  &.active {
+    transform: scale(0.92);
   }
-  50% {
-    transform: scale(1);
-  }
-}
-
-@keyframes wavingButton {
-  to {
-    opacity: 0;
-    transform: scale(1.8);
-  }
-}
-
-@keyframes wordFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes ai-pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(22, 119, 255, 0.6);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(22, 119, 255, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(22, 119, 255, 0);
-  }
-}
-
-@keyframes ai-dots {
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: scale(0.8);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-}
-
-@keyframes mouthAnimation {
-  0% {
-    transform: scaleY(0.8);
-  }
-  100% {
-    transform: scaleY(1.2);
-  }
-}
-
-@keyframes floatCircle {
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(30px, 30px);
-  }
-}
-
-.score-slide-enter-active,
-.score-slide-leave-active {
-  transition:
-    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-    opacity 0.3s ease;
-}
-
-.score-slide-enter-from,
-.score-slide-leave-to {
-  transform: translateY(100%);
-  opacity: 0;
 }
 
 .ai-wave {
@@ -1630,29 +1625,14 @@ const updateMouthAnimation = (phoneme: string) => {
   }
 }
 
-@keyframes centerPulse {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-    filter: blur(60px);
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.2);
-    filter: blur(100px);
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-    filter: blur(60px);
-  }
-}
-
 .ai-notification-enter-active,
 .ai-notification-leave-active {
-  transition: all 0.3s ease;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .ai-notification-enter-from,
 .ai-notification-leave-to {
-  transform: translate(-50%, -20px);
+  transform: translate(-50%, -10px);
   opacity: 0;
 }
 
@@ -1811,7 +1791,8 @@ const updateMouthAnimation = (phoneme: string) => {
         width: 100%;
       }
 
-      .original, .spoken {
+      .original,
+      .spoken {
         font-size: 20px;
         font-weight: 600;
         height: 36px;
@@ -1906,7 +1887,8 @@ const updateMouthAnimation = (phoneme: string) => {
       .char-item {
         background: rgba(255, 255, 255, 0.05);
 
-        .original, .spoken {
+        .original,
+        .spoken {
           background: rgba(0, 0, 0, 0.2);
         }
 
@@ -1923,10 +1905,10 @@ const updateMouthAnimation = (phoneme: string) => {
 @keyframes charItemAppear {
   0% {
     opacity: 0;
-    transform: translateY(20px) scale(0.8);
+    transform: translateY(10px) scale(0.95);
   }
   60% {
-    transform: translateY(-5px) scale(1.05);
+    transform: translateY(-2px) scale(1.02);
   }
   100% {
     opacity: 1;
@@ -1935,42 +1917,215 @@ const updateMouthAnimation = (phoneme: string) => {
 }
 
 @keyframes shake {
-  10%, 90% {
+  10%,
+  90% {
     transform: translate3d(-1px, 0, 0);
   }
-  20%, 80% {
+  20%,
+  80% {
     transform: translate3d(2px, 0, 0);
   }
-  30%, 50%, 70% {
+  30%,
+  50%,
+  70% {
     transform: translate3d(-2px, 0, 0);
   }
-  40%, 60% {
+  40%,
+  60% {
     transform: translate3d(2px, 0, 0);
   }
 }
 
 .char-item {
-  animation: charItemAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: charItemAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   @for $i from 1 through 10 {
     &:nth-child(#{$i}) {
-      animation-delay: #{$i * 0.08}s;
+      animation-delay: #{$i * 0.05}s;
     }
   }
 }
 
 // 添加光晕效果
 @keyframes glowPulse {
-  0%, 100% {
-    filter: drop-shadow(0 0 5px rgba(var(--el-color-primary-rgb), 0.3));
+  0%,
+  100% {
+    filter: drop-shadow(0 0 3px rgba(var(--el-color-primary-rgb), 0.2));
   }
   50% {
-    filter: drop-shadow(0 0 10px rgba(var(--el-color-primary-rgb), 0.5));
+    filter: drop-shadow(0 0 6px rgba(var(--el-color-primary-rgb), 0.4));
   }
 }
 
 .char-item.correct {
-  animation: charItemAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
-             glowPulse 2s ease-in-out infinite;
+  animation:
+    charItemAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+    glowPulse 2s ease-in-out infinite;
+}
+
+.recognition-status {
+  margin: 16px auto;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+
+  .status-text {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 16px;
+    font-size: 15px;
+    font-weight: 500;
+    width: 100%;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    i {
+      font-size: 18px;
+    }
+
+    &.listening {
+      background: rgba(22, 119, 255, 0.15);
+      color: var(--el-color-primary);
+      border: 1px solid rgba(22, 119, 255, 0.2);
+
+      i {
+        animation: pulse 1.5s infinite;
+      }
+    }
+
+    &.warning {
+      background: rgba(250, 173, 20, 0.15);
+      color: #faad14;
+      border: 1px solid rgba(250, 173, 20, 0.2);
+    }
+
+    &.error {
+      background: rgba(255, 77, 79, 0.15);
+      color: #ff4d4f;
+      border: 1px solid rgba(255, 77, 79, 0.2);
+    }
+  }
+
+  // 暗色模式适配
+  .dark & {
+    .status-text {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+      &.listening {
+        background: rgba(22, 119, 255, 0.25);
+      }
+
+      &.warning {
+        background: rgba(250, 173, 20, 0.25);
+      }
+
+      &.error {
+        background: rgba(255, 77, 79, 0.25);
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes buttonShaving {
+  0%,
+  100% {
+    transform: scale(1.15);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
+
+@keyframes wavingButton {
+  to {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
+
+@keyframes wordFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ai-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(22, 119, 255, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(22, 119, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(22, 119, 255, 0);
+  }
+}
+
+@keyframes ai-dots {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes mouthAnimation {
+  0% {
+    transform: scaleY(0.95);
+  }
+  50% {
+    transform: scaleY(1.05);
+  }
+  100% {
+    transform: scaleY(0.95);
+  }
+}
+
+@keyframes floatCircle {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(30px, 30px);
+  }
+}
+
+.score-slide-enter-active,
+.score-slide-leave-active {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.score-slide-enter-from,
+.score-slide-leave-to {
+  transform: translateY(20px);
+  opacity: 0;
 }
 </style>
-
