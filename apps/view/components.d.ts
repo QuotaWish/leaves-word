@@ -39,6 +39,7 @@ declare module 'vue' {
     LineLoading: typeof import('./src/components/chore/LineLoading.vue')['default']
     Loading: typeof import('./src/components/chore/Loading.vue')['default']
     Logo: typeof import('./src/components/chore/Logo.vue')['default']
+    Message: typeof import('./src/components/message/Message.vue')['default']
     MoCodeMirror: typeof import('./src/components/editor/MoCodeMirror.vue')['default']
     MoContentRender: typeof import('./src/components/editor/MoContentRender.vue')['default']
     ModeDisplay: typeof import('./src/components/display/ModeDisplay.vue')['default']
