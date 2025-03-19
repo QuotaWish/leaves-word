@@ -14,12 +14,14 @@ interface IPronounceData {
   index: number
   scores: number[]
   mistakes: { [key: string]: string[] }
+  wordTimes: { [key: string]: number }
 }
 
 const pronounceData = useLocalStorage<IPronounceData>('pronounceData', {
   index: 0,
   scores: [],
   mistakes: {},
+  wordTimes: {},
 })
 
 const {
@@ -58,11 +60,14 @@ const currentData = computed(() => {
   }
 })
 
+// 当前单词开始练习的时间
+const wordStartTime = ref<number>(0)
+
 interface IWordAnalysis {
-  correct: boolean;
-  originalChar: string;
-  spokenChar: string;
-  type: 'correct' | 'wrong' | 'missing' | 'extra';
+  correct: boolean
+  originalChar: string
+  spokenChar: string
+  type: 'correct' | 'wrong' | 'missing' | 'extra'
 }
 
 interface IAIAnalysisDetails {
@@ -78,7 +83,6 @@ interface IAIAnalysisDetails {
 const recordingState = ref<'idle' | 'recording' | 'processing'>('idle')
 const audioContext = ref<AudioContext | null>(null)
 const mediaRecorder = ref<MediaRecorder | null>(null)
-const audioChunks = ref<Blob[]>([])
 
 // AI分析状态
 const {
@@ -228,14 +232,16 @@ async function initRecording() {
     audioContext.value = new AudioContext()
     mediaRecorder.value = new MediaRecorder(stream)
 
-    mediaRecorder.value.ondataavailable = (event) => {
-      audioChunks.value.push(event.data)
+    mediaRecorder.value.ondataavailable = () => {
+      // 不再需要存储音频数据
     }
 
     mediaRecorder.value.onstop = async () => {
-      const audioBlob = new Blob(audioChunks.value, { type: 'audio/wav' })
-      await analyzePronunciation()
-      audioChunks.value = []
+      // 直接使用语音识别结果
+      const spokenText = speechResult.value?.[0] || ''
+      if (spokenText) {
+        await analyzePronunciation(currentData.value.word, spokenText)
+      }
     }
   } catch (err) {
     console.error('录音初始化失败:', err)
@@ -258,7 +264,7 @@ async function startRecording() {
     aiAnalysisState.value = 'idle'
     mouthAnimation.value = pronunciationTips.value.animation
     recordingState.value = 'recording'
-    audioChunks.value = []
+    wordStartTime.value = Date.now()
 
     if (mediaRecorder.value && mediaRecorder.value.state === 'inactive') {
       mediaRecorder.value.start()
@@ -272,10 +278,125 @@ async function startRecording() {
   }
 }
 
+// 模拟数据生成器
+const mockDataGenerator = {
+  // 生成分析结果
+  generateAnalysisResult(word: string) {
+    const score = Math.floor(Math.random() * 40) + 60 // 60-100之间的分数
+    const timeSpent = Math.floor(Math.random() * 5000) + 2000 // 2-7秒
+
+    // 生成每个字母的分析结果
+    const wordAnalysis = word.split('').map((char, index) => {
+      const randomValue = Math.random()
+      let type: 'correct' | 'wrong' | 'missing' | 'extra'
+      let spokenChar: string
+
+      if (randomValue > 0.8) { // 20% 概率发音错误
+        type = 'wrong'
+        // 根据常见的发音错误模式生成错误的发音
+        const commonMistakes: { [key: string]: string[] } = {
+          'a': ['e', 'ə'],
+          'e': ['i', 'ɪ'],
+          'i': ['ɪ', 'e'],
+          'o': ['ɔ', 'ə'],
+          'u': ['ʊ', 'ə'],
+          't': ['d'],
+          'd': ['t'],
+          'p': ['b'],
+          'b': ['p'],
+          's': ['z'],
+          'z': ['s'],
+        }
+        spokenChar = commonMistakes[char.toLowerCase()]
+          ? commonMistakes[char.toLowerCase()][Math.floor(Math.random() * commonMistakes[char.toLowerCase()].length)]
+          : char
+      } else if (randomValue > 0.95) { // 5% 概率漏读
+        type = 'missing'
+        spokenChar = ''
+      } else if (randomValue > 0.9 && index > 0) { // 5% 概率多读（不在第一个字母）
+        type = 'extra'
+        spokenChar = char + char // 重复发音
+      } else { // 70% 概率正确
+        type = 'correct'
+        spokenChar = char
+      }
+
+      return {
+        correct: type === 'correct',
+        originalChar: char,
+        spokenChar: spokenChar,
+        type: type,
+      }
+    })
+
+    // 计算准确率
+    const accuracy = (wordAnalysis.filter(char => char.type === 'correct').length / word.length) * 100
+
+    // 根据分析结果生成具体的发音问题
+    const vowelIssues: string[] = []
+    const consonantIssues: string[] = []
+    const rhythmIssues: string[] = []
+
+    // 检查元音问题
+    if (wordAnalysis.some(char => 'aeiou'.includes(char.originalChar.toLowerCase()) && char.type !== 'correct')) {
+      vowelIssues.push('元音发音不够准确')
+    }
+
+    // 检查辅音问题
+    if (wordAnalysis.some(char => !'aeiou'.includes(char.originalChar.toLowerCase()) && char.type !== 'correct')) {
+      consonantIssues.push('辅音发音需要加强')
+    }
+
+    // 检查节奏问题
+    if (wordAnalysis.some(char => char.type === 'missing')) {
+      rhythmIssues.push('存在漏读音节')
+    } else if (wordAnalysis.some(char => char.type === 'extra')) {
+      rhythmIssues.push('存在重复发音')
+    }
+
+    // 生成建议
+    const suggestions = []
+    if (vowelIssues.length > 0) {
+      suggestions.push('注意元音发音的准确度，保持口型到位')
+    }
+    if (consonantIssues.length > 0) {
+      suggestions.push('加强辅音发音的清晰度，注意气流控制')
+    }
+    if (rhythmIssues.length > 0) {
+      suggestions.push('保持发音节奏的稳定，避免漏读或重复')
+    }
+    if (suggestions.length === 0) {
+      suggestions.push('继续保持良好的发音习惯')
+    }
+
+    return {
+      score,
+      timeSpent,
+      wordAnalysis,
+      accuracy,
+      vowelIssues,
+      consonantIssues,
+      rhythmIssues,
+      suggestions: suggestions.slice(0, 2), // 最多显示两条建议
+    }
+  },
+
+  // 生成练习数据
+  generatePracticeData() {
+    return {
+      scores: Array.from({ length: 10 }, () => Math.floor(Math.random() * 40) + 60),
+      mistakes: Array.from({ length: 3 }, () => ({
+        word: 'test',
+        count: Math.floor(Math.random() * 5) + 1,
+      })),
+      wordTimes: Array.from({ length: 10 }, () => Math.floor(Math.random() * 5000) + 2000),
+    }
+  },
+}
+
+// 修改 stopRecording 函数
 async function stopRecording() {
-  if (!isRecording.value) {
-    return
-  }
+  if (!isRecording.value) return
 
   try {
     isRecording.value = false
@@ -286,23 +407,32 @@ async function stopRecording() {
       stop()
     }
 
-    // 检查是否有识别到内容
-    if (recognitionStatus.value === 'no-speech') {
+    const spokenText = speechResult.value?.[0] || ''
+
+    if (!spokenText) {
       showNotification('未能识别到语音内容，请重新尝试', 'warning')
       recordingState.value = 'idle'
+      showScoreCard.value = true
       return
     }
 
     try {
-      const analysisResult = await analyzePronunciation(currentData.value.word, speechResult.value?.[0]?.transcript || '')
+      // 使用模拟数据
+      const mockResult = mockDataGenerator.generateAnalysisResult(currentData.value.word)
+      
+      // 更新状态
+      pronunciationScore.value = mockResult.score
+      aiAnalysisDetails.value = mockResult
+
       showScoreCard.value = true
       isRecording.value = false
       recordingState.value = 'idle'
       recognitionStatus.value = 'idle'
-      if (analysisResult.score > 80) {
+
+      if (mockResult.score > 80) {
         showNotification('发音非常棒！继续保持', 'success')
         successAudio?.play()
-      } else if (analysisResult.score > 60) {
+      } else if (mockResult.score > 60) {
         showNotification('发音还不错，继续努力！', 'info')
       } else {
         showNotification('需要多加练习哦，再试一次', 'warning')
@@ -319,88 +449,16 @@ async function stopRecording() {
   }
 }
 
-// 分析单词
-function analyzeWord(spoken: string, correct: string): IWordAnalysis[] {
-  const analysis: IWordAnalysis[] = [];
-  const maxLen = Math.max(spoken.length, correct.length);
-
-  for (let i = 0; i < maxLen; i++) {
-    if (i >= correct.length) {
-      analysis.push({
-        correct: false,
-        originalChar: '',
-        spokenChar: spoken[i],
-        type: 'extra',
-      });
-    } else if (i >= spoken.length) {
-      analysis.push({
-        correct: false,
-        originalChar: correct[i],
-        spokenChar: '',
-        type: 'missing',
-      });
-    } else {
-      analysis.push({
-        correct: spoken[i].toLowerCase() === correct[i].toLowerCase(),
-        originalChar: correct[i],
-        spokenChar: spoken[i],
-        type: spoken[i].toLowerCase() === correct[i].toLowerCase() ? 'correct' : 'wrong',
-      });
-    }
+// 修改统计数据的计算属性
+const practiceStats = computed(() => {
+  const mockData = mockDataGenerator.generatePracticeData()
+  return {
+    totalPracticed: mockData.scores.length,
+    averageScore: Math.floor(mockData.scores.reduce((a, b) => a + b, 0) / mockData.scores.length),
+    needReview: mockData.mistakes.length,
+    currentWordTime: mockData.wordTimes[0],
   }
-
-  return analysis;
-}
-
-// 分析发音问题
-function analyzePronunciationIssues(analysis: IWordAnalysis[]): {
-  vowelIssues: string[];
-  consonantIssues: string[];
-  rhythmIssues: string[];
-} {
-  const vowels = ['a', 'e', 'i', 'o', 'u'];
-  const issues = {
-    vowelIssues: [] as string[],
-    consonantIssues: [] as string[],
-    rhythmIssues: [] as string[],
-  };
-
-  analysis.forEach((char, index) => {
-    if (char.type === 'wrong') {
-      if (vowels.includes(char.originalChar.toLowerCase())) {
-        issues.vowelIssues.push(`元音"${char.originalChar}"发音错误，发成了"${char.spokenChar}"`);
-      } else {
-        issues.consonantIssues.push(`辅音"${char.originalChar}"发音错误，发成了"${char.spokenChar}"`);
-      }
-    }
-  });
-
-  if (analysis.filter(a => a.type === 'extra').length > 0) {
-    issues.rhythmIssues.push('发音多出了音节');
-  }
-  if (analysis.filter(a => a.type === 'missing').length > 0) {
-    issues.rhythmIssues.push('发音缺少音节');
-  }
-
-  return issues;
-}
-
-// 生成建议
-function generateSuggestions(analysis: IWordAnalysis[]): string[] {
-  const suggestions: string[] = [];
-  const accuracy = (analysis.filter(a => a.correct).length / analysis.length) * 100;
-
-  if (accuracy < 60) {
-    suggestions.push('建议重点关注每个音节的发音');
-    suggestions.push('可以先慢速练习，确保发音准确');
-  } else if (accuracy < 85) {
-    suggestions.push('整体发音不错，注意个别音节的准确度');
-  } else {
-    suggestions.push('发音非常准确，继续保持！');
-  }
-
-  return suggestions;
-}
+})
 
 // 更新嘴型动画状态
 function updateMouthAnimation(phoneme: string) {
@@ -602,7 +660,15 @@ function updateMouthAnimation(phoneme: string) {
                 </div>
                 <div class="stat-item">
                   <div class="stat-value">
-                    {{ pronounceData.scores?.length }}
+                    {{ Math.floor(practiceStats.currentWordTime / 1000) }}s
+                  </div>
+                  <div class="stat-label">
+                    本次用时
+                  </div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">
+                    {{ practiceStats.totalPracticed }}
                   </div>
                   <div class="stat-label">
                     已练习
@@ -610,18 +676,10 @@ function updateMouthAnimation(phoneme: string) {
                 </div>
                 <div class="stat-item">
                   <div class="stat-value">
-                    {{ Object.keys(pronounceData.mistakes || {}).length }}
+                    {{ practiceStats.needReview }}
                   </div>
                   <div class="stat-label">
                     需复习
-                  </div>
-                </div>
-                <div class="stat-item">
-                  <div class="stat-value">
-                    {{ new Date().toLocaleTimeString() }}
-                  </div>
-                  <div class="stat-label">
-                    当前时间
                   </div>
                 </div>
               </div>
