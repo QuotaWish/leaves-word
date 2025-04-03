@@ -83,7 +83,6 @@ declare module 'vue' {
     WordContentDisplay: typeof import('./src/components/words/page/WordContentDisplay.vue')['default']
     WordDetailContent: typeof import('./src/components/words/WordDetailContent.vue')['default']
     WordExamples: typeof import('./src/components/WordExamples.vue')['default']
-    WordFlipCard: typeof import('./src/components/words/WordFlipCard.vue')['default']
     WordIndexBanner: typeof import('./src/components/words/WordIndexBanner.vue')['default']
     WordPlayIcon: typeof import('./src/components/icon/WordPlayIcon.vue')['default']
     WordSection: typeof import('./src/components/words/WordSection.vue')['default']
