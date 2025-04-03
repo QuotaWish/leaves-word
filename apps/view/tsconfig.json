@@ -6,6 +6,7 @@
     "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "outDir": "./dist", // 指定编译输出目录
     "paths": {
       "~/*": ["src/*"]
     },
@@ -16,7 +17,7 @@
       "unplugin-vue-router/client",
       "element-plus/global"
     ],
-    "allowJs": true,
+    "allowJs": true, // 如果不需要处理 .js 文件，可移除此项
     "strict": true,
     "strictNullChecks": true,
     "noUnusedLocals": true,
@@ -25,8 +26,9 @@
     "skipLibCheck": true
   },
   "exclude": [
-    "dist",
+    "dist", // 排除编译输出目录
     "node_modules",
-    "eslint.config.js"
+    "eslint.config.js",
+    "**/*.js" // 如果不需要处理 .js 文件，可以排除所有 .js 文件
   ]
 }
