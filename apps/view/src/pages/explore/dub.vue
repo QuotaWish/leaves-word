@@ -2,7 +2,11 @@ image.png
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+<<<<<<< HEAD
 // import { Star as IconStar } from '@element-plus/icons-vue'  // 修改导入方式
+=======
+import { Star as IconStar } from '@element-plus/icons-vue'  // 修改导入方式
+>>>>>>> c690622aed9868d7e15b1acafefee3230924cc74
 import { DUB_VIDEOS } from '~/modules/dub-videos/video-resource'
 
 const router = useRouter()
@@ -23,12 +27,15 @@ const handleVideoLoaded = () => {
   isLoading.value = false
 }
 
+<<<<<<< HEAD
 // 添加视频错误处理
 const handleVideoError = () => {
   console.error('视频加载失败')
   isLoading.value = false
 }
 
+=======
+>>>>>>> c690622aed9868d7e15b1acafefee3230924cc74
 // 视频播放
 const handleVideoPlay = () => {
   isPlaying.value = true
@@ -108,12 +115,16 @@ const handleDifficultyChange = (value: number) => {
     </div>
     <div class="dub-container">
       <div class="video-section">
+<<<<<<< HEAD
         <video
           ref="videoRef"
           class="main-video"
           :src="currentVideo.url"
           @loadeddata="handleVideoLoaded"
           @error="handleVideoError"
+=======
+        <video ref="videoRef" class="main-video" :src="currentVideo.url" @loadeddata="handleVideoLoaded"
+>>>>>>> c690622aed9868d7e15b1acafefee3230924cc74
           @play="handleVideoPlay"
           @timeupdate="(e) => handleVideoTimeUpdate((e.target as HTMLVideoElement).currentTime, (e.target as HTMLVideoElement).duration)"
           @ended="handleVideoEnded">

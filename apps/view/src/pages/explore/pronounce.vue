@@ -1,6 +1,10 @@
 <script setup lang="ts">
+<<<<<<< HEAD
 import { useDark } from '@vueuse/core'
 // import NumberFlow from '@number-flow/vue'
+=======
+import NumberFlow from '@number-flow/vue'
+>>>>>>> c690622aed9868d7e15b1acafefee3230924cc74
 import { ElMessage } from 'element-plus'
 import { computed, onMounted, ref, watch } from 'vue'
 import { pronounceWords } from '~/composables/pronounce'
@@ -499,6 +503,7 @@ function updateMouthAnimation(phoneme: string) {
 </script>
 
 <template>
+<<<<<<< HEAD
   <PageNavHolder :content-padding="false" title="发音训练">
     <div class="PronouncePage-Main" :class="{ listening: isListening, dark: isDark }">
       <div class="ai-blur-circle left" />
@@ -569,6 +574,13 @@ function updateMouthAnimation(phoneme: string) {
             </p>
           </div>
         </div>
+=======
+  <PageNavHolder title="发音训练">
+    <div class="PronouncePage-Main">
+      <div class="PronouncePage-Instructions">
+        <p>点击“开始”按钮，然后大声朗读显示的单词。</p>
+        <p>松开按钮后，系统会判断你的发音是否正确。</p>
+>>>>>>> c690622aed9868d7e15b1acafefee3230924cc74
       </div>
 
       <div class="PronouncePage-MainCard fake-background">
@@ -586,10 +598,16 @@ function updateMouthAnimation(phoneme: string) {
         </p>
       </div>
 
+<<<<<<< HEAD
       <!-- 移动状态提示到按钮上方 -->
       <div v-if="isRecording" class="recognition-status">
         <span v-if="recognitionStatus === 'listening'" class="status-text listening">
           <i class="el-icon-microphone" /> 正在聆听...
+=======
+      <div class="PronouncePage-Button transition-cubic" @touchstart="handleStart">
+        <span v-if="!isListening">
+          开 始
+>>>>>>> c690622aed9868d7e15b1acafefee3230924cc74
         </span>
         <span v-else-if="recognitionStatus === 'no-speech'" class="status-text warning">
           <i class="el-icon-warning" /> 未检测到语音，请说话...
@@ -599,6 +617,7 @@ function updateMouthAnimation(phoneme: string) {
         </span>
       </div>
 
+<<<<<<< HEAD
       <div
         class="PronouncePage-Button"
         :class="{ active: isListening }"
@@ -806,11 +825,17 @@ function updateMouthAnimation(phoneme: string) {
           </div>
         </div>
       </transition>
+=======
+      <div font-bold class="PronouncePage-StatusBar">
+        <NumberFlow suffix="/50" :continuous="true" :will-change="true" :animated="true" :value="pronounceData.index + 1" />
+      </div>
+>>>>>>> c690622aed9868d7e15b1acafefee3230924cc74
     </div>
   </PageNavHolder>
 </template>
 
 <style lang="scss">
+<<<<<<< HEAD
 .PronouncePage-Progress {
   width: 100%;
   padding: 1rem 1.5rem;
@@ -2102,10 +2127,59 @@ function updateMouthAnimation(phoneme: string) {
   }
 }
 
+=======
+.PronouncePage-Instructions {
+  text-align: center;
+  margin-bottom: 1rem;
+  p {
+    font-size: 16px;
+    color: var(--el-text-color-secondary);
+  }
+}
+
+.PronouncePage-Button {
+  .listening & {
+    &::before {
+      animation: wavingButton 1s infinite;
+    }
+    animation: buttonShaving 2s infinite;
+    box-shadow: 0 0 16px 4px var(--el-color-primary);
+  }
+
+  &::before {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: var(--el-color-primary);
+  }
+  z-index: 1;
+  position: relative;
+  margin: 1rem auto;
+  display: flex;
+  width: 96px;
+  height: 96px;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px 0 var(--el-color-primary);
+  border-radius: 50%;
+  background-color: var(--el-color-primary);
+  transition: transform 0.3s ease;
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+>>>>>>> c690622aed9868d7e15b1acafefee3230924cc74
 @keyframes buttonShaving {
   0%,
   100% {
-    transform: scale(1.15);
+    transform: scale(1.25);
   }
   50% {
     transform: scale(1);
@@ -2115,20 +2189,52 @@ function updateMouthAnimation(phoneme: string) {
 @keyframes wavingButton {
   to {
     opacity: 0;
-    transform: scale(1.8);
+    transform: scale(1.5);
   }
 }
 
-@keyframes wordFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+.PronouncePage-MainCard {
+  .word {
+    font-size: 22px;
+    font-weight: 600;
   }
+  .phonetic {
+    font-size: 18px;
+    margin: 0.5rem 0;
+    color: var(--el-text-color-primary);
+  }
+  position: relative;
+  display: flex;
+  padding: 1rem;
+  margin: 0 auto;
+  height: 200px;
+  width: 90%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 25px;
+  background-color: var(--el-bg-color-page);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.PronouncePage-Main {
+  position: relative;
+  display: flex;
+  margin: auto;
+  width: 100%;
+  gap: 3rem;
+  align-items: center;
+  flex-direction: column;
+}
+
+.PronouncePage {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  flex-direction: column;
+  // background-color: var(--el-bg-color-page);
 }
 
 @keyframes ai-pulse {
