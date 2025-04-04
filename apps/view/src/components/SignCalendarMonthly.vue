@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Calendar } from 'vant'
-import { calendarManager } from '~/composables/words'
+import { calendarManager } from '~/modules/words'
 import LeafCard from './display/LeafCard.vue'
 
 function calcAccumuData(signData: string): number {
@@ -76,7 +76,7 @@ const aiTips = computed(() => {
   return aiRecommendations[todayTopic.value] || []
 })
 
-// AI学习助手信息 
+// AI学习助手信息
 const aiAssistantMessage = computed(() => {
   if (accumulateSigned.value === 0) {
     return '今天是学习的好日子，开始你的英语学习之旅吧！'
@@ -398,7 +398,7 @@ function toggleCalendar() {
     justify-content: center;
     padding: 10px 0;
     cursor: pointer;
-    
+
     .button-content {
       display: flex;
       align-items: center;
@@ -413,26 +413,26 @@ function toggleCalendar() {
       box-shadow: 0 3px 10px rgba(var(--theme-color-rgb), 0.3);
       transition: all 0.3s ease;
       min-width: 100px;
-      
+
       &:hover {
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(var(--theme-color-rgb), 0.4);
       }
-      
+
       &.expanded {
         background: rgba(var(--theme-color-rgb), 0.1);
         color: var(--theme-color);
         border: 1px solid var(--theme-color);
-        
+
         html.dark & {
           background: rgba(var(--theme-color-rgb), 0.2);
         }
-        
+
         .arrow-icon {
           border-color: var(--theme-color);
         }
       }
-      
+
       .arrow-icon {
         width: 8px;
         height: 8px;
@@ -440,18 +440,18 @@ function toggleCalendar() {
         border-bottom: 2px solid white;
         transform: rotate(45deg);
         transition: transform 0.3s ease;
-        
+
         &.expanded {
           transform: rotate(-135deg);
         }
       }
     }
   }
-  
+
   /* 可展开内容区域 */
   .expandable-content {
     animation: slideDown 0.3s ease-out;
-    
+
     @keyframes slideDown {
       from {
         opacity: 0;
@@ -463,7 +463,7 @@ function toggleCalendar() {
       }
     }
   }
-  
+
   /* 日历容器 */
   .calendar-wrapper {
     padding: 0 0.5rem;

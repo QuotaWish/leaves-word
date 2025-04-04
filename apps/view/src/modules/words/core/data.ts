@@ -1,10 +1,12 @@
-import { modeManager, ModeType } from '../mode'
+import { modeManager } from '../mode'
+import { ModeType } from './enums'
+import { globalPreference } from './feat/preference'
 
 export const useTargetData = createGlobalState(() => {
-  const targetDict = computed(() => dictionaries.find(item => item.id === globalData.value.dict) || dictionaries[0])
+  const targetDict = computed(() => null) // dictionaries.find(item => item.id === globalData.value.dict) || dictionaries[0])
   const targetMode = computed(() => {
     const manager = [...(modeManager?.keys?.() || [])]
-    const result = manager?.find(item => item === globalData.value.mode)
+    const result = manager?.find(item => item === globalPreference.value.mode)
 
     if (!result)
       return manager?.[0] || ModeType.COMPREHENSIVE
@@ -12,7 +14,11 @@ export const useTargetData = createGlobalState(() => {
     return result
   })
   const targetSignMode = computed(() => {
-    const manager = modeManager.get(targetMode.value!)!
+    const manager = modeManager.get(targetMode.value)
+
+    if (!manager || !targetDict.value)
+      return modeManager.get(ModeType.COMPREHENSIVE)
+
     const managerIns = manager(targetDict.value.storage)
 
     return managerIns
@@ -24,4 +30,3 @@ export const useTargetData = createGlobalState(() => {
     targetSignMode,
   }
 })
-

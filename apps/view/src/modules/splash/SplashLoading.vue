@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { APP_LOGO } from '~/composables/constants';
 import VersionBar from '~/components/chore/VersionBar.vue'
+import { APP_LOGO } from '~/composables/constants';
 import { ScreenMode, useGlobalSplashState } from '.';
 
 const globalSplashState = useGlobalSplashState()

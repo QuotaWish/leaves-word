@@ -6,6 +6,9 @@ const props = defineProps<{
 }>()
 
 function generateStyles(dict: IDict) {
+  if (!dict)
+    return ''
+
   const obj: Record<string, string> = {
     '--color': dict.style.color,
     '--color-light': dict.style.colorLight,
@@ -23,11 +26,11 @@ function generateStyles(dict: IDict) {
 <template>
   <div :style="generateStyles(dict)" class="DictionaryDisplay">
     <p class="DictionaryDisplay-Title">
-      {{ dict.name }}
+      {{ dict?.name }}
     </p>
 
     <div class="icon">
-      <div v-html="dict.style.icon" />
+      <div v-html="dict?.style?.icon" />
     </div>
   </div>
 </template>

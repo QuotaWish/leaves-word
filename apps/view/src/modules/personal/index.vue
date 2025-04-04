@@ -1,14 +1,14 @@
 <script setup>
 import VersionBar from '~/components/chore/VersionBar.vue'
-import { calendarManager } from '~/composables/words'
+import { useDevMode } from '~/modules/develop'
+import { calendarManager } from '~/modules/words'
 import PersonalHeaderDisplay from './PersonalHeaderDisplay.vue'
 import PersonalLayout from './PersonalLayout.vue'
-import { useDevMode } from '~/modules/develop'
+import { globalAuthStorage } from '~/modules/auth'
 
 const router = useRouter()
 const { devModeEnabled, toggleDevMode } = useDevMode()
 
-// 添加点击计数逻辑
 const clickCount = ref(0)
 const lastClickTime = ref(0)
 
@@ -86,14 +86,14 @@ const nextWeekPrediction = ref({
   <PersonalLayout>
     <template #header>
       <PersonalHeaderDisplay>
-        <div h-full w-full flex px-2 items-center justify-between>
+        <div v-if="globalAuthStorage.user" h-full w-full flex px-2 items-center justify-between>
           <div flex items-center gap-4 class="header-main">
             <div class="header-img">
               <img src="/avatar.jpg">
             </div>
             <div flex flex-col justify-center class="header-content">
               <p font-size-5 font-bold class="name">
-                Test Account
+                {{ globalAuthStorage.user.userName || globalAuthStorage.user.id }}
               </p>
               <p class="indent-[2px]" font-size-4 op-60>
                 英语学习，随时随地

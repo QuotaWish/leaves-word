@@ -1,6 +1,7 @@
+import type { EnglishDictionary } from '~/composables/api/clients/globals';
 import { LeafDictStorage } from './storage'
 
-export class LeafDict implements API.EnglishDictionary {
+export class LeafDict implements EnglishDictionary {
   approved_words?: number;
   author?: string;
   create_time?: string;
@@ -18,7 +19,7 @@ export class LeafDict implements API.EnglishDictionary {
 
   storage: LeafDictStorage
 
-  constructor(dict: API.EnglishDictionary) {
+  constructor(dict: EnglishDictionary) {
     Object.assign(this, dict)
 
     this.storage = new LeafDictStorage(this)

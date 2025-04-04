@@ -1,59 +1,57 @@
 <script setup lang="ts">
-import PlanSelector from '~/components/words/PlanSelector.vue'
-import { calendarManager, globalData, useTargetData } from '~/composables/words'
+import PlanSelector from "~/components/words/PlanSelector.vue";
+import {
+  calendarManager,
+  globalPreference,
+  useTargetData,
+} from "~/modules/words";
 
-import LeafSpeedButton from '../button/LeafSpeedButton.vue'
-import WordSignInfoCard from './card/WordSignInfoCard.vue'
-import Cat from '/svg/cat.svg'
-import Checked from '/svg/complete.svg'
+import LeafSpeedButton from "../button/LeafSpeedButton.vue";
+import WordSignInfoCard from "./card/WordSignInfoCard.vue";
+import Cat from "/svg/cat.svg";
+import Checked from "/svg/complete.svg";
 
-const router = useRouter()
+const router = useRouter();
 
-const { targetDict, targetSignMode } = useTargetData()
-const data = computed<any>(() => targetDict.value)
+const { targetDict, targetSignMode } = useTargetData();
+const data = computed(() => targetDict.value);
 
-const storage = computed(() => data.value.storage)
-const learnedAmo = computed(() => storage.value.getLearnedWords().length)
-const totalAmo = computed(() => data.value.words.length)
+const storage = computed(() => data.value?.storage);
+const learnedAmo = computed(() => storage.value?.getLearnedWords().length ?? 0);
+const totalAmo = computed(() => data.value?.words.length);
 
-const progress = computed(() => learnedAmo.value / totalAmo.value)
-const todayData = computed(() => calendarManager.getTodayData())
-
-console.log(todayData)
+const progress = computed(() => learnedAmo.value / totalAmo.value);
+const todayData = computed(() => calendarManager.getTodayData());
 
 function calculateTime(amo: number) {
-  const mode = targetSignMode.value
+  const mode = targetSignMode.value;
   if (!mode) {
-    return 0
+    return 0;
   }
 
-  return mode.getEstimateCost(amo)
+  return mode.getEstimateCost(amo);
 }
 
-const dialogOptions = reactive<any>({
+const dialogOptions = reactive({
   visible: false,
   component: null,
-})
+});
 
 function selectDict() {
-  router.push('/words/dict-select-page')
-  // Object.assign(dialogOptions, {
-  //   visible: true,
-  //   component: DictSelector,
-  // })
+  router.push("/words/dict-select-page");
 }
 
 function selectPlan() {
   Object.assign(dialogOptions, {
     visible: true,
     component: PlanSelector,
-  })
+  });
 }
 
 async function handleCheckSign() {
-  await sleep(300)
+  await sleep(300);
 
-  router.push('/words/prewords')
+  router.push("/words/prewords");
 }
 </script>
 
@@ -65,7 +63,7 @@ async function handleCheckSign() {
 
     <template #upper>
       <div class="WordSignInfo-Svg">
-        <img :src="Cat">
+        <img :src="Cat" />
       </div>
 
       <div class="WordSignInfo-Dictionary" @click="router.push(`/dictionary/${targetDict.id}`)">
@@ -74,7 +72,7 @@ async function handleCheckSign() {
 
       <div class="WordSignInfo-Content">
         <p w-full flex justify-between class="WordSignInfo-Content-Title">
-          <span>{{ data.name }}</span>
+          <span>{{ data?.name }}</span>
           <span mr-4 flex items-center text-sm font-normal op-75 active:op-100 @click="selectDict">
             调整词书
             <i i-carbon-chevron-right block />
@@ -82,7 +80,7 @@ async function handleCheckSign() {
         </p>
         <p w-full flex items-center justify-between class="WordSignInfo-Content-Desc">
           <span>{{ learnedAmo }} /{{ totalAmo }} 已学习</span>
-          <span mr-4 text-sm op-75>剩余 {{ Math.ceil((totalAmo - learnedAmo) / globalData.amount) }} 天</span>
+          <span mr-4 text-sm op-75>剩余 {{ Math.ceil((totalAmo - learnedAmo) / globalPreference.amount) }} 天</span>
         </p>
         <div :style="`--p: ${progress * 100}%`" class="WordSignInfo-Content-Progress">
           <div class="WordSignInfo-Content-Progress-Bg" />
@@ -104,38 +102,33 @@ async function handleCheckSign() {
       <div my-4 flex items-center justify-between class="WordSignInfo-DetailBlockWrapper">
         <template v-if="todayData?.signed">
           <div class="WordSignInfo-DetailBlock coffee-font">
-            <p text-sm font-bold op-75>
-              已学习
-            </p>
+            <p text-sm font-bold op-75>已学习</p>
 
             <p>
               <span mr-3 text-3xl font-bold>
                 {{ todayData.data?.words.length }}
-              </span> 词
+              </span>
+              词
             </p>
           </div>
         </template>
         <template v-else>
           <div class="WordSignInfo-DetailBlock">
-            <p text-sm op-75>
-              需新学
-            </p>
+            <p text-sm op-75>需新学</p>
 
             <p>
               <span mr-3 text-3xl font-bold>
-                {{ globalData.amount }}
-              </span> 词
+                {{ globalPreference.amount }}
+              </span>
+              词
             </p>
           </div>
           <div class="WordSignInfo-DetailBlock">
-            <p text-sm op-75>
-              需复习
-            </p>
+            <p text-sm op-75>需复习</p>
 
             <p>
               <span mr-3 text-3xl font-bold>
-                {{ globalData.amount }}
-              </span>词
+                {{ globalPreference.amount }} </span>词
             </p>
           </div>
         </template>
@@ -150,7 +143,8 @@ async function handleCheckSign() {
         </LeafButton> -->
 
         <div my-2 flex items-center justify-center gap-1 text-sm op-75>
-          <div i-carbon-time />预计用时 {{ calculateTime(globalData.amount) }} 分钟
+          <div i-carbon-time />
+          预计用时 {{ calculateTime(globalPreference.amount) }} 分钟
         </div>
       </template>
 
@@ -159,12 +153,10 @@ async function handleCheckSign() {
           <span>打卡</span>
         </el-button>
 
-        <div my-2 ml-1 flex items-center gap-1 text-sm op-75>
-          随时随地，单词好记。
-        </div>
+        <div my-2 ml-1 flex items-center gap-1 text-sm op-75>随时随地，单词好记。</div>
 
         <div class="WordSignInfo-Checked">
-          <img :src="Checked">
+          <img :src="Checked" />
         </div>
       </template>
     </template>
@@ -252,7 +244,7 @@ async function handleCheckSign() {
     overflow: hidden;
 
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       inset: 0;
       background: linear-gradient(90deg,
@@ -273,15 +265,18 @@ async function handleCheckSign() {
     overflow: hidden;
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent);
       animation: shimmer 2s linear infinite;
     }
 
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       right: 0;
