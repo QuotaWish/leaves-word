@@ -1,36 +1,34 @@
-export interface IDict {
-  id: string
-  name: string
-  type: 'English'
-  style: {
-    color: string
-    colorLight: string
-    icon: string
-  }
-  words: IWord[]
-  storage: DictStorage
-}
+import { LeafDictStorage } from './storage'
 
-export class Dictionary implements IDict {
-  id: string
-  name: string
-  type: 'English'
-  style: {
-    color: string
-    colorLight: string
-    icon: string
-  }
+export class LeafDict implements API.EnglishDictionary {
+  approved_words?: number;
+  author?: string;
+  create_time?: string;
+  description?: string;
+  id?: number;
+  image_url?: string;
+  is_delete?: number
+  isbn?: string
+  name?: string
+  publication_date?: string
+  published_words?: number
+  publisher?: string
+  total_words?: number
+  update_time?: string
 
-  words: IWord[]
-  storage: DictStorage
+  storage: LeafDictStorage
 
-  constructor(id: string, name: string, words: IWord[], style: IDict['style']) {
-    this.id = id
-    this.name = name
-    this.type = 'English'
-    this.style = style
-    this.words = words
+  constructor(dict: API.EnglishDictionary) {
+    Object.assign(this, dict)
 
-    this.storage = new DictStorage(this)
+    this.storage = new LeafDictStorage(this)
   }
 }
+
+// export const dictionaries = reactive<IDict[]>([
+//   high,
+//   cet4,
+//   cet6,
+//   postGraduate,
+//   ielts,
+// ])

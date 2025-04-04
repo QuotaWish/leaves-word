@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { globalData, useTargetData } from "~/composables/words";
-import type { ModeType } from "~/composables/words/mode";
-import { modeManager } from "~/composables/words/mode";
+import type { ModeType } from "~/modules/words/mode";
+import { modeManager } from "~/modules/words/mode";
 
 const { targetDict } = useTargetData();
 const modes = [...modeManager.keys()];

@@ -81,7 +81,7 @@ declare module 'vue' {
     VersionBar: typeof import('./src/components/chore/VersionBar.vue')['default']
     WithHeadPage: typeof import('./src/components/page/WithHeadPage.vue')['default']
     WithPage: typeof import('./src/components/page/WithPage.vue')['default']
-    Word: typeof import('./src/components/words/mode/comprehensive/Word.vue')['default']
+    Word: typeof import('./src/modules/words/core/mode/comprehensive/display/Word.vue')['default']
     WordCard: typeof import('./src/components/WordCard.vue')['default']
     WordContentDisplay: typeof import('./src/components/words/page/WordContentDisplay.vue')['default']
     WordDetailContent: typeof import('./src/components/words/WordDetailContent.vue')['default']

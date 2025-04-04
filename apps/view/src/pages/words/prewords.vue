@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PrepareWord } from '~/composables/words/mode'
+import type { PrepareWord } from '~/modules/words/mode'
 import NumberFlow from '@number-flow/vue'
 import DictSelector from '~/components/words/DictSelector.vue'
 import ModeSelector from '~/components/words/ModeSelector.vue'

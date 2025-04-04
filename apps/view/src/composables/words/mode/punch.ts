@@ -1,5 +1,5 @@
-import PunchWord from '~/components/words/mode/comprehensive/Word.vue'
-import { PrepareWord, SignMode } from '.'
+import PunchWord from '~/modules/words/core/mode/comprehensive/display/Word.vue'
+import { PrepareWord, SignMode } from '../../../modules/words/mode'
 import { calendarManager, globalData, type IWord, type IWordItem, useWordSound } from '..'
 import type { DictStorage } from '../storage'
 

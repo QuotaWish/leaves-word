@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { DictStorage } from '~/composables/words/storage'
-import { modeManager, ModeType } from '~/composables/words/mode'
+import { modeManager, ModeType } from '~/modules/words/mode'
 import { ComprehensiveMode } from '~/composables/words/mode/comprehensive'
 import { DictWordMode } from '~/composables/words/mode/dict-word'
 import { PunchMode } from '~/composables/words/mode/punch'

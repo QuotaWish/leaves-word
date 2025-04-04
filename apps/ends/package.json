@@ -2,13 +2,8 @@
   "name": "@leaves-word/app-ends",
   "version": "100.0.0",
   "private": true,
-  "packageManager": "pnpm@9.15.4",
   "description": "千叶单词APP后端(nestjs)",
   "license": "MIT",
-  "engines": {
-    "node": ">=22.14.0",
-    "pnpm": ">=9"
-  },
   "scripts": {
     "postinstall": "npm run gen-env-types",
     "prebuild": "rimraf dist",
@@ -67,6 +62,7 @@
     "@nestjs/throttler": "^5.1.2",
     "@nestjs/typeorm": "^10.0.2",
     "@nestjs/websockets": "^10.3.9",
+    "@prisma/client": "^6.5.0",
     "@socket.io/redis-adapter": "^8.3.0",
     "@socket.io/redis-emitter": "^5.1.0",
     "axios": "^1.7.2",
@@ -137,8 +133,7 @@
     "peerDependencyRules": {
       "allowedVersions": {
         "@liaoliaots/nestjs-redis>@nestjs/common": "^10.0.0",
-        "@liaoliaots/nestjs-redis>@nestjs/core": "^10.0.0",
-        "eslint": "^9.2.0"
+        "@liaoliaots/nestjs-redis>@nestjs/core": "^10.0.0"
       }
     }
   },
@@ -161,8 +156,5 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "lint-staged": {
-    "*": ""
   }
 }
