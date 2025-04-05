@@ -10,6 +10,16 @@ import * as dictionaryWord from './dictionaryWord';
 import * as englishDictionaryController from './englishDictionaryController';
 import * as englishWords from './englishWords';
 import * as englishWordChangeLogController from './englishWordChangeLogController';
+import * as examCategoryController from './examCategoryController';
+import * as examCategoryPaperController from './examCategoryPaperController';
+import * as examOperationLogController from './examOperationLogController';
+import * as examPaperController from './examPaperController';
+import * as examPaperQuestionController from './examPaperQuestionController';
+import * as examPaperStatsController from './examPaperStatsController';
+import * as examPaperTagController from './examPaperTagController';
+import * as examPaperVersionController from './examPaperVersionController';
+import * as examQuestionController from './examQuestionController';
+import * as examTagController from './examTagController';
 import * as fileController from './fileController';
 import * as mediaCreatorController from './mediaCreatorController';
 import * as postController from './postController';
@@ -26,6 +36,16 @@ export default {
   englishDictionaryController,
   englishWords,
   englishWordChangeLogController,
+  examCategoryController,
+  examCategoryPaperController,
+  examOperationLogController,
+  examPaperController,
+  examPaperQuestionController,
+  examPaperStatsController,
+  examPaperTagController,
+  examPaperVersionController,
+  examQuestionController,
+  examTagController,
   fileController,
   mediaCreatorController,
   postController,

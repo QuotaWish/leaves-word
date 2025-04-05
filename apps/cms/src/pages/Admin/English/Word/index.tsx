@@ -1,18 +1,19 @@
 import WordContentEditor from '@/components/Word/WordContentEditor';
 import CreateModal from '@/pages/Admin/English/Word/components/CreateModal';
 import UpdateModal from '@/pages/Admin/English/Word/components/UpdateModal';
-import { deleteEnglishWordUsingPost, listEnglishWordByPageUsingPost, listEnglishWordByPageUsingPost1 } from '@/services/backend/englishWords';
+import { deleteEnglishWordUsingPost, listEnglishWordByPageUsingPost, listEnglishWordByPageUsingPost1, getDuplicateWordsUsingGet, publishWordUsingGet } from '@/services/backend/englishWords';
 import { DownOutlined, ExclamationCircleOutlined, ImportOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import '@umijs/max';
-import { Button, Dropdown, message, Modal, Popconfirm, Space, Typography, type MenuProps } from 'antd';
+import { Button, Dropdown, message, Modal, Popconfirm, Space, Spin, Typography, type MenuProps } from 'antd';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Tag } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined, CloudUploadOutlined, FileOutlined, LoadingOutlined, MinusCircleOutlined, QuestionCircleOutlined, SyncOutlined } from '@ant-design/icons';
 import BatchImporter from '@/components/Word/BatchImporter';
 import StatusHistoryModal from '../WordStatus/components/StatusHistoryModal';
 import Styles from './style.css';
+import DuplicateWordsModal from './components/DuplicateWordsModal';
 
 enum RowActionType {
   DELETE = 'DELETE',
@@ -20,6 +21,8 @@ enum RowActionType {
   PROCESS_SUPPLY = 'PROCESS_SUPPLY',
   CHANGE_HISTORY = 'CHANGE_HISTORY',
   RE_EDIT = 'RE_EDIT',
+  APPROVED = 'APPROVED',
+  PUBLISHED = 'PUBLISHED',
 }
 
 type StatusActionsType = {
@@ -44,6 +47,10 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
   const [batchImportModalVisible, setBatchImportModalVisible] = useState<boolean>(false);
   // 是否显示状态变动记录弹窗
   const [statusHistoryModalVisible, setStatusHistoryModalVisible] = useState<boolean>(false);
+  // 是否显示重复单词查询结果弹窗
+  const [duplicateWordsModalVisible, setDuplicateWordsModalVisible] = useState<boolean>(false);
+  // 重复单词数据
+  const [duplicateWordsData, setDuplicateWordsData] = useState<API.DuplicateWordDto[]>([]);
   const actionRef = useRef<ActionType>();
   // 当前用户点击的数据
   const [currentRow, setCurrentRow] = useState<API.EnglishWord>();
@@ -70,6 +77,28 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
       return false;
     }
   };
+
+  /**
+   * 发布单词
+   */
+  const handleApproved = async (record: API.EnglishWord) => {
+    const hide = message.loading('正在发布');
+    if (!record) return true;
+
+    try {
+      await publishWordUsingGet({
+        id: record.id as any,
+      });
+
+      hide();
+      message.success('发布成功');
+      actionRef?.current?.reload();
+      return true;
+    } catch (error: any) {
+      hide();
+      message.error('发布失败，' + error.message);
+    }
+  }
 
   const statusActions: StatusActionsType = {
     DELETE({ record }) {
@@ -145,6 +174,26 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
       >
         状态变动记录
       </Typography.Link>
+    },
+    APPROVED({ record }) {
+      return <Popconfirm onConfirm={() => handleApproved(record)} title="发布后单词将进入发布状态，无法再进行编辑">
+        <Typography.Link
+          type="success"
+        >
+          发布单词
+        </Typography.Link>
+      </Popconfirm>
+    },
+    PUBLISHED({ record }) {
+      return <Popconfirm onConfirm={() => {
+        message.loading('无法完成下架');
+      }} title="下架后单词将不可再进入学习序列，已经完成的进度不会受到影响。">
+        <Typography.Link
+          type="warning"
+        >
+          下架单词
+        </Typography.Link>
+      </Popconfirm>
     }
   }
 
@@ -166,7 +215,20 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
   }, []);
 
   const getActionItems = useCallback((record: API.EnglishWord) => {
-    if (record.status === 'APPROVED') return
+    if (record.status === 'PUBLISHED')
+      return (
+        <>
+          {statusActions.PUBLISHED({ record })}
+        </>
+      )
+
+    if (record.status === 'APPROVED')
+      return (
+        <>
+          {statusActions.APPROVED({ record })}
+        </>
+      )
+
     if (record.status === 'UNKNOWN' || record.status === 'CREATED') {
       return (
         <>
@@ -262,7 +324,7 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
           text: <Tag icon={<ClockCircleOutlined />} color="default">队列中</Tag>,
         },
         PUBLISHED: {
-          text: <Tag icon={<CheckCircleOutlined />} color="green">已发布</Tag>,
+          text: <Tag icon={<CheckCircleOutlined />} color="#229342">已发布</Tag>,
         },
         UNPUBLISHED: {
           text: <Tag icon={<CloseCircleOutlined />} color="red">未发布</Tag>,
@@ -309,6 +371,7 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
       dataIndex: 'info',
       hideInSearch: true,
       render: (value, data/* , _data, _row, _action */) => {
+        if (data.status === 'PUBLISHED') return <Tag icon={<CheckCircleOutlined />} color="#229342">已发布</Tag>
         if (data.status === 'DRAFT') return <Tag icon={<MinusCircleOutlined />} color="#222222">暂时以草稿模式存储</Tag>
         if (data.status === 'PROCESSING') return <Tag icon={<SyncOutlined />} color="blue">等待处理完成</Tag>
 
@@ -334,19 +397,41 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
         return (
           <Space size="middle">
             {getActionItems(record)}
-            <Dropdown menu={{ items: getDropdownItems(record) }}>
+            {record.status !== 'PUBLISHED' && <Dropdown menu={{ items: getDropdownItems(record) }}>
               <a onClick={(e) => e.preventDefault()}>
                 <Space>
                   更多
                   <DownOutlined />
                 </Space>
               </a>
-            </Dropdown>
+            </Dropdown>}
           </Space>
         )
       },
     },
   ];
+
+  const [spinning, setSpinning] = useState(false);
+
+  const handleMeshing = useCallback(async () => {
+    setSpinning(true);
+
+    try {
+      const { data, code } = await getDuplicateWordsUsingGet();
+
+      if (code !== 0) {
+        message.error('获取失败');
+        return;
+      }
+
+      setDuplicateWordsData(data || []);
+      setDuplicateWordsModalVisible(true);
+    } catch (error) {
+      message.error('获取失败，请稍后重试');
+    } finally {
+      setSpinning(false);
+    }
+  }, []);
 
   const renderInner = useMemo(() => {
     return <ProTable<API.EnglishWord>
@@ -366,6 +451,17 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
         labelWidth: 120,
       }}
       toolBarRender={() => [
+        <>
+          <Button
+            variant="dashed"
+            color="geekblue"
+            key="primary"
+            onClick={handleMeshing}
+          >
+            <PlusOutlined /> 筛查
+          </Button >
+          <Spin key="spin" spinning={spinning} fullscreen />
+        </>,
         dictionaryId ? <></> : <Button
           variant="dashed"
           color="geekblue"
@@ -472,8 +568,25 @@ const EnglishWordPage: React.FC<EnglishWordPageProps> = ({ dictionaryId }) => {
         }}
         wordId={currentRow?.id}
       />
+      <DuplicateWordsModal
+        visible={duplicateWordsModalVisible}
+        onCancel={() => {
+          setDuplicateWordsModalVisible(false);
+        }}
+        data={duplicateWordsData}
+        loading={spinning}
+      />
     </>
-  }, [createModalVisible, updateModalVisible, currentRow, batchImportModalVisible, actionRef, columns, statusActions, handleDelete, setCreateModalVisible, setUpdateModalVisible, setCurrentRow, setBatchImportModalVisible])
+  }, [
+    createModalVisible,
+    updateModalVisible,
+    currentRow,
+    batchImportModalVisible,
+    statusHistoryModalVisible,
+    duplicateWordsModalVisible,
+    duplicateWordsData,
+    spinning
+  ]);
 
   if (dictionaryId) {
     return (

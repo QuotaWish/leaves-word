@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import type { EnglishDictionary } from '~/composables/api/clients/globals'
 import { UseImage } from '@vueuse/components'
 
 const props = withDefaults(defineProps<{
-  modelValue: API.EnglishDictionary
+  modelValue: EnglishDictionary
   onlyImage?: boolean
   border?: boolean
   active?: boolean
@@ -15,7 +16,7 @@ const showBorder = computed(() => props.border !== false)
 </script>
 
 <template>
-  <div class="DictionaryBookDisplay">
+  <div :class="{ onlyImage }" class="DictionaryBookDisplay">
     <div :class="{ border: showBorder, active }" class="cover">
       <UseImage v-if="modelValue.image_url" :src="modelValue.image_url">
         <template #loading>
@@ -63,8 +64,13 @@ const showBorder = computed(() => props.border !== false)
 }
 
 .DictionaryBookDisplay {
+  &.onlyImage {
+    height: 100%;
+
+    background-color: #fff;
+    border-radius: 8px;
+  }
   width: 100%;
-  // height: 100%;
   min-height: 80px;
   overflow: hidden;
   display: flex;

@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import { useTargetData } from '~/modules/words';
+import { globalPreference } from '~/modules/words';
 
-const targetData = useTargetData()
-const empty = computed(() => !targetData.targetDict.value)
+const empty = computed(() => !globalPreference.value.dict.data)
+const loading = computed(() => globalPreference.value.dict.loading)
 </script>
 
 <template>
-  <div :class="{ empty }" text-black class="transition-cubic WordSignInfoCard fake-background">
+  <div :class="{ empty, loading }" text-black class="transition-cubic WordSignInfoCard fake-background">
     <div class="card-container">
       <div class="card-glass" />
-      <div class="card-content">
+      <template v-if="loading">
+        <div class="WordSignInfo-Loading">
+          <slot name="loading" />
+        </div>
+      </template>
+      <div v-else class="card-content">
         <template v-if="!empty">
           <div class="transition-cubic WordSignInfo">
             <slot name="upper" />
@@ -38,7 +43,8 @@ const empty = computed(() => !targetData.targetDict.value)
 </template>
 
 <style lang="scss" scoped>
-.WordSignInfo-Empty {
+.WordSignInfo-Empty,
+.WordSignInfo-Loading {
   position: relative;
   display: flex;
 

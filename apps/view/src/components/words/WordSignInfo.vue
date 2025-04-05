@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PlanSelector from "~/components/words/PlanSelector.vue";
+// import PlanSelector from "~/components/words/PlanSelector.vue";
 import {
   calendarManager,
   globalPreference,
@@ -14,11 +14,11 @@ import Checked from "/svg/complete.svg";
 const router = useRouter();
 
 const { targetDict, targetSignMode } = useTargetData();
-const data = computed(() => targetDict.value);
+const dictionary = computed(() => globalPreference.value.dict);
 
-const storage = computed(() => data.value?.storage);
-const learnedAmo = computed(() => storage.value?.getLearnedWords().length ?? 0);
-const totalAmo = computed(() => data.value?.words.length);
+// const storage = computed(() => dictionary.value?.storage);
+const learnedAmo = computed(() => 10)// storage.value?.getLearnedWords().length ?? 0);
+const totalAmo = computed(() => dictionary.value.data?.published_words ?? 100)
 
 const progress = computed(() => learnedAmo.value / totalAmo.value);
 const todayData = computed(() => calendarManager.getTodayData());
@@ -29,7 +29,7 @@ function calculateTime(amo: number) {
     return 0;
   }
 
-  return mode.getEstimateCost(amo);
+  return 0// mode.getEstimateCost(amo);
 }
 
 const dialogOptions = reactive({
@@ -47,10 +47,10 @@ function selectDict() {
 }
 
 function selectPlan() {
-  Object.assign(dialogOptions, {
-    visible: true,
-    component: PlanSelector,
-  });
+  // Object.assign(dialogOptions, {
+  //   visible: true,
+  //   component: PlanSelector,
+  // });
 }
 
 async function handleCheckSign() {
@@ -66,18 +66,18 @@ async function handleCheckSign() {
     <div class="leaf-decoration top-left" />
     <div class="leaf-decoration bottom-right" />
 
-    <template #upper>
+    <template v-if="dictionary?.data" #upper>
       <div class="WordSignInfo-Svg">
         <img :src="Cat" />
       </div>
 
-      <div class="WordSignInfo-Dictionary" @click="router.push(`/dictionary/${targetDict.id}`)">
-        <DictionaryDisplay :dict="data" />
+      <div class="WordSignInfo-Dictionary" @click="router.push(`/dictionary/${dictionary.id}`)">
+        <DictionaryBookDisplay onlyImage :model-value="dictionary.data" />
       </div>
 
       <div class="WordSignInfo-Content">
         <p w-full flex justify-between class="WordSignInfo-Content-Title">
-          <span>{{ data?.name }}</span>
+          <span>{{ dictionary.data?.name }}</span>
           <span mr-4 flex items-center text-sm font-normal op-75 active:op-100 @click="selectDict">
             调整词书
             <i i-carbon-chevron-right block />
@@ -166,11 +166,19 @@ async function handleCheckSign() {
       </template>
     </template>
 
+    <template #loading>
+      <div flex items-center justify-center gap-2 flex-col>
+        <Loading />
+        <span text-sm op-75>获取数据中...</span>
+      </div>
+    </template>
+
     <template #empty>
       <div class="WordSignInfo-Empty">
         <div class="WordSignInfo-Empty-Icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="empty-book-svg">
-            <path d="M21,4H3C1.9,4,1,4.9,1,6v13c0,1.1,0.9,2,2,2h18c1.1,0,2-0.9,2-2V6C23,4.9,22.1,4,21,4z M21,19H3V6h18V19z M10,14h8v2h-8V14z M10,10h8v2h-8V10z M5,10h3v2H5V10z M5,14h3v2H5V14z"/>
+            <path
+              d="M21,4H3C1.9,4,1,4.9,1,6v13c0,1.1,0.9,2,2,2h18c1.1,0,2-0.9,2-2V6C23,4.9,22.1,4,21,4z M21,19H3V6h18V19z M10,14h8v2h-8V14z M10,10h8v2h-8V10z M5,10h3v2H5V10z M5,14h3v2H5V14z" />
           </svg>
         </div>
         <div class="WordSignInfo-Empty-Title">

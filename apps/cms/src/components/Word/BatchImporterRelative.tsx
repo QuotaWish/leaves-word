@@ -305,6 +305,8 @@ const BatchImporter = ({ dictionaryId, onDone }: BatchImporterProps) => {
       }
 
       if (preRes.data?.length !== words.length) {
+        console.log(preRes.data, words, preRes.data?.length, words.length)
+
         Modal.error({
           title: '获取单词数据失败',
           icon: <IssuesCloseOutlined />,
@@ -322,7 +324,7 @@ const BatchImporter = ({ dictionaryId, onDone }: BatchImporterProps) => {
 
       const res = await addDictionaryWordBatchUsingPost({
         dictionary_id: dictionaryId,
-        words: wordIdList
+        words: wordIdList.map(item => item.id!)
       })
 
       setPercent('')

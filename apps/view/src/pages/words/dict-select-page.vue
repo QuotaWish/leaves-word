@@ -41,7 +41,7 @@ function handleSelectCategory(category: Category) {
 
 function handleBookClick(book: EnglishDictionary) {
   if (type.value === 'select') {
-    globalPreference.value.dict = `${book.id}`
+    globalPreference.value.dict.id = `${book.id}`
 
     router.back()
   } else {
@@ -108,6 +108,7 @@ onMounted(() => {
       <wc-waterfall
         :gap="12"
         :cols="2"
+        :key="selectCategory?.id"
       >
         <DictionaryBookDisplay :active="book.id === globalPreference.dict" v-for="book in (selectCategory?.books || [])" :key="book.id" :model-value="book" @click="handleBookClick(book)" />
       </wc-waterfall>
