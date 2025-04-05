@@ -175,34 +175,35 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, rate, editable, onChan
   const validateForms = useCallback(() => {
     return new Promise<[boolean, any, string | null]>((resolve) => {
       form.validateFields().then((values) => {
-        console.log(values, currentContent)
-        if (!isValidPronounce(currentContent.britishPronounce)) {
+        if (!isValidPronounce(values.britishPronounce)) {
           resolve([false, values, '英式发音未通过检验']);
           return;
         }
 
-        if (!isValidPronounce(currentContent.americanPronounce)) {
+        if (!isValidPronounce(values.americanPronounce)) {
           resolve([false, values, '美式发音未通过检验']);
           return;
         }
 
-        if (!currentContent.img.length) {
+        if (!values.img.length) {
           resolve([false, values, '图片列表未通过检验']);
           return;
         }
 
-        if (isValidTranslationList(currentContent.translation)) {
+        if (isValidTranslationList(values.translation)) {
           resolve([false, values, '翻译列表未通过检验']);
           return;
         }
 
-        if (!currentContent.examplePhrases.length) {
+        if (!values.examplePhrases.length) {
           resolve([false, values, '短语列表未通过检验：列表为空！']);
           return;
         }
 
-        for (let i = 0; i < currentContent.examplePhrases.length; i++) {
-          const example = currentContent.examplePhrases[i];
+        console.log('currentContent.examplePhrases', values.examplePhrases)
+
+        for (let i = 0; i < values.examplePhrases.length; i++) {
+          const example = values.examplePhrases[i];
           if (example.type !== WordExampleTypeEnum.PHRASE) {
             resolve([false, values, `短语列表未通过检验：第${i + 1}个短语类型错误！`]);
             return;
@@ -213,17 +214,17 @@ const WordContentEditor: React.FC<Prop> = ({ data, value, rate, editable, onChan
           }
         }
 
-        if (!isValidWordDerivedList(currentContent.derived)) {
+        if (!isValidWordDerivedList(values.derived)) {
           resolve([false, values, '单词网络列表未通过检验！']);
           return;
         }
 
-        if (!isValidWordTransformList(currentContent.transform)) {
+        if (!isValidWordTransformList(values.transform)) {
           resolve([false, values, '词形变化列表未通过检验！']);
           return;
         }
 
-        if (!isValidWordAffixPartList(currentContent.parts)) {
+        if (!isValidWordAffixPartList(values.parts)) {
           resolve([false, values, '单词组成列表未通过检验！']);
           return;
         }
