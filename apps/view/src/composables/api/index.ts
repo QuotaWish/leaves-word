@@ -6,14 +6,18 @@ import VueHook from 'alova/vue'
 import { useLeafEventBus } from '../event'
 import { ToastEvent } from '../event/toast-event'
 import { globalAuthStorage } from '~/modules/auth'
+import { TryAuthLogoutEvent } from '../event/auth'
+
 export const $api = {
   utils,
 }
 
+const eventBus = useLeafEventBus()
+
 const { onAuthRequired, onResponseRefreshToken } = createClientTokenAuthentication<typeof VueHook, typeof axiosRequestAdapter>({
   login: {
     handler: (response, method) => {
-      const { data } = response
+      const { data } = response.data
       const { token, user } = data
 
       globalAuthStorage.value.user = user
@@ -36,12 +40,13 @@ const { onAuthRequired, onResponseRefreshToken } = createClientTokenAuthenticati
         return false
 
       const loginTime = globalAuthStorage.value.loginTime
-      const target = loginTime + +token.tokenSessionTimeout
+      const target = loginTime + +token.tokenTimeout
 
       return target < Date.now() - 1000
     },
     handler: async () => {
-      localStorage.removeItem('leaf-auth')
+      eventBus.fireEvent(new ToastEvent('登录过期，请重新登录', 'error'))
+      eventBus.fireEvent(new TryAuthLogoutEvent())
     }
   }
 })
@@ -54,8 +59,6 @@ const { onAuthRequired, onResponseRefreshToken } = createClientTokenAuthenticati
 11016	Token已被冻结
  */
 
-const eventBus = useLeafEventBus()
-
 const alovaInstance = createAlova({
   baseURL: ENDS_URL,
   requestAdapter: axiosRequestAdapter({
@@ -67,16 +70,19 @@ const alovaInstance = createAlova({
       const { code, message } = response.data as unknown as any
 
       if (code === 11012) {
-        localStorage.removeItem('leaf-auth')
+        eventBus.fireEvent(new TryAuthLogoutEvent())
+        console.log('11012')
       }
 
       if (code === 11013) {
-        localStorage.removeItem('leaf-auth')
+        eventBus.fireEvent(new TryAuthLogoutEvent())
+        console.log('11013')
         return
       }
 
       if (code === 11014 || code === 11015 || code === 11016) {
-        localStorage.removeItem('leaf-auth')
+        eventBus.fireEvent(new TryAuthLogoutEvent())
+        console.log('11014 11015 11016')
       }
 
       if (code !== 0)

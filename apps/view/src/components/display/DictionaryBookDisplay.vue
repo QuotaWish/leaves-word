@@ -5,8 +5,10 @@ const props = withDefaults(defineProps<{
   modelValue: API.EnglishDictionary
   onlyImage?: boolean
   border?: boolean
+  active?: boolean
 }>(), {
   border: true,
+  active: false,
 })
 
 const showBorder = computed(() => props.border !== false)
@@ -14,7 +16,7 @@ const showBorder = computed(() => props.border !== false)
 
 <template>
   <div class="DictionaryBookDisplay">
-    <div :class="{ border: showBorder }" class="cover">
+    <div :class="{ border: showBorder, active }" class="cover">
       <UseImage v-if="modelValue.image_url" :src="modelValue.image_url">
         <template #loading>
           <Loading />
@@ -32,6 +34,13 @@ const showBorder = computed(() => props.border !== false)
       <div v-else class="no-image">
         <span>{{ modelValue.name?.slice(0, 1) || 'D' }}</span>
       </div>
+
+      <div v-if="active"
+        class="absolute-layout flex items-center justify-center fake-background z-10 DictionaryBookDisplay-Active">
+        <div font-bold text-2xl w-10 h-10 flex items-center justify-center rounded-full>
+          <div text-white i-carbon-checkmark />
+        </div>
+      </div>
     </div>
     <div v-if="!onlyImage" class="info">
       <div class="name">
@@ -45,6 +54,14 @@ const showBorder = computed(() => props.border !== false)
 </template>
 
 <style lang="scss" scoped>
+.DictionaryBookDisplay-Active {
+  & > div {
+    background-color: var(--theme-color-primary);
+  }
+  --fake-opacity: 0.75;
+  --fake-color: var(--el-overlay-color);
+}
+
 .DictionaryBookDisplay {
   width: 100%;
   // height: 100%;
@@ -94,7 +111,7 @@ const showBorder = computed(() => props.border !== false)
   }
 
   .info {
-    padding: 0 12px 12px;
+    padding: 0 4px 4px;
 
     .name {
       font-size: 14px;
@@ -102,7 +119,9 @@ const showBorder = computed(() => props.border !== false)
       margin-bottom: 4px;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
     }
 
     .description {
@@ -111,7 +130,7 @@ const showBorder = computed(() => props.border !== false)
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
     }
   }

@@ -38,7 +38,12 @@ const dialogOptions = reactive({
 });
 
 function selectDict() {
-  router.push("/words/dict-select-page");
+  router.push({
+    path: "/words/dict-select-page",
+    query: {
+      type: 'select',
+    },
+  });
 }
 
 function selectPlan() {
@@ -159,6 +164,25 @@ async function handleCheckSign() {
           <img :src="Checked" />
         </div>
       </template>
+    </template>
+
+    <template #empty>
+      <div class="WordSignInfo-Empty">
+        <div class="WordSignInfo-Empty-Icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="empty-book-svg">
+            <path d="M21,4H3C1.9,4,1,4.9,1,6v13c0,1.1,0.9,2,2,2h18c1.1,0,2-0.9,2-2V6C23,4.9,22.1,4,21,4z M21,19H3V6h18V19z M10,14h8v2h-8V14z M10,10h8v2h-8V10z M5,10h3v2H5V10z M5,14h3v2H5V14z"/>
+          </svg>
+        </div>
+        <div class="WordSignInfo-Empty-Title">
+          暂未选择词书
+        </div>
+        <div class="WordSignInfo-Empty-Desc">
+          选择词书以立即开始
+        </div>
+        <el-button type="primary" class="WordSignInfo-Empty-Button" @click="selectDict">
+          选择词书
+        </el-button>
+      </div>
     </template>
 
     <TouchDialog v-model="dialogOptions.visible">
@@ -571,5 +595,45 @@ async function handleCheckSign() {
 
   width: 80px;
   height: 80%;
+}
+
+.WordSignInfo-Empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 2rem;
+  text-align: center;
+
+  .WordSignInfo-Empty-Icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1.5rem;
+
+    .empty-book-svg {
+      width: 100%;
+      height: 100%;
+      fill: var(--el-color-primary);
+      opacity: 0.8;
+    }
+  }
+
+  .WordSignInfo-Empty-Title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--el-text-color-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .WordSignInfo-Empty-Desc {
+    font-size: 0.95rem;
+    color: var(--el-text-color-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .WordSignInfo-Empty-Button {
+    min-width: 120px;
+    font-weight: normal;
+  }
 }
 </style>

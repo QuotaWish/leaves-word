@@ -7,7 +7,7 @@ export interface IGlobalPreference {
 }
 
 export const obj: IGlobalPreference = {
-  dict: 'CET-4',
+  dict: '',
   mode: ModeType.COMPREHENSIVE,
   amount: 10,
 }

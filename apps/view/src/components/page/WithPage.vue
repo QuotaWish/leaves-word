@@ -25,7 +25,7 @@ withDefaults(defineProps<{
   overflow: hidden;
 
   .statusbar &.adapt {
-    padding-top: 28px;
+    padding-top: 44px;
   }
 
   .statusbar .builder &.adapt {

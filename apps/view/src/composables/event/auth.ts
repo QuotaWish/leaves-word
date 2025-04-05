@@ -21,3 +21,7 @@ export class AuthSuccessEvent implements LeafEvent {
 export class AuthLogoutEvent implements LeafEvent {
   public readonly name = 'AuthLogoutEvent';
 }
+
+export class TryAuthLogoutEvent implements LeafEvent {
+  public readonly name = 'TryAuthLogoutEvent';
+}
