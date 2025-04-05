@@ -252,6 +252,7 @@ const nextWeekPrediction = ref({
             </template>
             个性化设置
           </LineArrow>
+
           <LineArrow @click="handleClear">
             <template #icon>
               <div i-carbon:help />
@@ -584,6 +585,46 @@ const nextWeekPrediction = ref({
 
     .light & {
       color: var(--el-text-color-primary);
+    }
+  }
+}
+
+.PersonalModule {
+  .options-list {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .option-item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background: rgba(var(--theme-color-rgb), 0.1);
+    border: 1px solid rgba(var(--theme-color-rgb), 0.15);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(var(--theme-color-rgb), 0.15);
+      border-color: rgba(var(--theme-color-rgb), 0.2);
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    .icon {
+      margin-right: 12px;
+      color: var(--theme-color);
+    }
+
+    .arrow {
+      margin-left: auto;
+      color: var(--el-text-color-secondary);
     }
   }
 }

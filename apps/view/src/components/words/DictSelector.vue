@@ -63,107 +63,79 @@ function generateStyles(dict: IDict) {
         </div>
       </div>
     </el-scrollbar>
-
-    <!-- <el-button style="width: 85%;left: 7.5%" relative my-6 type="primary" size="large">
-      确定
-    </el-button> -->
   </div>
 </template>
 
 <style lang="scss">
-.DictSelector-Item {
-  .icon {
-    & > div svg {
-      width: 32px;
-      height: 32px;
-
-      opacity: 0.125;
-      transform: translate(8px, 20px) scale(2);
-    }
-    z-index: 1;
-    position: relative;
-
-    width: 24px;
-    height: 24px;
-
-    mix-blend-mode: difference;
-    color: var(--el-text-color-secondary);
-  }
-
-  .checkmark {
-    position: absolute;
-    display: flex;
-
-    width: 32px;
-    height: 32px;
-
-    right: 0.5rem;
-    bottom: 0.5rem;
-
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-    background-color: var(--el-fill-color);
-
-    transition: 0.25s;
-    transform: scale(0);
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-
-    bottom: 0px;
-    right: -2px;
-
-    width: 98%;
-    height: 3px;
-
-    border-radius: 16px 0 16px 16px;
-    background-color: var(--el-fill-color);
-  }
-
-  &.active {
-    .checkmark {
-      transform: scale(1);
-    }
-
-    border: 2px solid var(--color-light);
-  }
-
-  .title {
-    font-size: 18px;
-    font-weight: 600;
-
-    color: #000;
-  }
-  position: relative;
-  padding: 1rem;
-
-  width: 120px;
-  height: 150px;
-
-  flex: 1 0 120px;
-  border-radius: 6px 2px 4px 8px;
-  background-image: linear-gradient(to right, var(--color), var(--color-light)),
-    linear-gradient(120deg, #a6c0fe 0%, #f68084 100%);
-  border: 2px solid #0000;
-}
-
-.DictSelector-Wrapper {
-  padding: 3rem 1rem 2rem 1rem;
-  display: flex;
-
-  gap: 0.5rem;
-  // width: 100%;
-}
-
 .DictSelector {
   position: relative;
-
   width: 100%;
-
   overflow: hidden;
+
+  &-Wrapper {
+    padding: 3rem 1rem 2rem 1rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  &-Item {
+    position: relative;
+    padding: 1rem;
+    width: 120px;
+    height: 150px;
+    flex: 1 0 120px;
+    border-radius: 12px;
+    background-color: var(--color-light);
+    border: 2px solid var(--color);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 12px var(--color-light);
+
+    .icon {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .checkmark {
+      position: absolute;
+      bottom: 0.5rem;
+      right: 0.5rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background-color: var(--theme-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: scale(0);
+      transition: all 0.3s ease;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px var(--color);
+      border-color: var(--color);
+      background-color: var(--color-light);
+    }
+
+    &.active {
+      border: 2px solid var(--color);
+      background-color: var(--color-light);
+      box-shadow: 0 4px 16px var(--color);
+      
+      .checkmark {
+        transform: scale(1);
+      }
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--el-text-color-primary);
+      transition: color 0.3s ease;
+    }
+  }
 }
 </style>

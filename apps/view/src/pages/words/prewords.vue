@@ -267,7 +267,7 @@ onActivated(() => {
       <p text-white class="transition-cubic head-title next">稍等片刻</p>
 
       <div mt-8 class="transition-cubic PreWordsPage-Section flex flex-col gap-3">
-        <LineArrow @click="selectDict">
+        <LineArrow @click="selectDict" class="option-item">
           <template #icon>
             <div i-carbon:book />
           </template>
@@ -277,7 +277,7 @@ onActivated(() => {
           选择词书
         </LineArrow>
 
-        <LineArrow @click="selectPlan">
+        <LineArrow @click="selectPlan" class="option-item">
           <template #icon>
             <div i-carbon:plan />
           </template>
@@ -285,7 +285,7 @@ onActivated(() => {
           制定计划
         </LineArrow>
 
-        <LineArrow @click="selectMode">
+        <LineArrow @click="selectMode" class="option-item">
           <template #icon>
             <div i-carbon:apps />
           </template>
@@ -568,6 +568,22 @@ onActivated(() => {
 }
 
 .PreWordsPage {
+  .option-item {
+    background: var(--theme-color-light) !important;
+    border: 1px solid var(--theme-color) !important;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: var(--theme-color) !important;
+      border-color: var(--theme-color-dark) !important;
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
   &::before {
     z-index: 0;
     content: "";
