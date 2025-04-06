@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { Picker } from 'vant'
-import { useTargetData } from '~/modules/words'
 import { globalPreference } from '~/modules/words/core/feat/preference'
 
-const { targetDict } = useTargetData()
-const max = computed(() => targetDict.value.storage.getUnlearnedWords().length)
+// TODO: 暂时做成单词总数量
+const max = computed(() => globalPreference.value.dict.data?.approved_words ?? 0) // targetDict.value.storage.getUnlearnedWords().length)
 const amount = computed(() => globalPreference.value.amount || 10)
 const options = computed(() => Array.from({ length: max.value / 5 }, (_, i) => (i + 1) * 5))
 

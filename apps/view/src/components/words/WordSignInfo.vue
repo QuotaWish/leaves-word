@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// import PlanSelector from "~/components/words/PlanSelector.vue";
+import PlanSelector from "~/components/words/PlanSelector.vue";
 import {
   calendarManager,
   globalPreference,
@@ -47,10 +47,10 @@ function selectDict() {
 }
 
 function selectPlan() {
-  // Object.assign(dialogOptions, {
-  //   visible: true,
-  //   component: PlanSelector,
-  // });
+  Object.assign(dialogOptions, {
+    visible: true,
+    component: PlanSelector,
+  });
 }
 
 async function handleCheckSign() {
@@ -147,7 +147,7 @@ async function handleCheckSign() {
           <span>开始背单词吧</span>
         </LeafButton> -->
 
-        <div my-2 flex items-center justify-center gap-1 text-sm op-75>
+        <div my-4 flex items-center justify-center gap-1 text-sm op-75>
           <div i-carbon-time />
           预计用时 {{ calculateTime(globalPreference.amount) }} 分钟
         </div>
