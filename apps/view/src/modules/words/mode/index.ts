@@ -1,7 +1,8 @@
+import type { LeafDictStorage } from '..'
+import type { ModeIdentifier } from '../core/enums'
 import type { CalendarData } from '../core/feat/calendar'
 import type { Statistics } from '../core/feat/stats'
 import { calendarManager } from '../core/feat/calendar'
-import type { LeafDictStorage, ModeIdentifier } from '../core'
 
 export abstract class LeafPrepareSign<T, W, S extends Statistics<object>> {
   mode: T
@@ -64,7 +65,7 @@ export abstract class SignMode {
   abstract getModeDesc(): string
   abstract getMainColor(): string
   // abstract randomWord(): IWord
-  abstract prepareWords(): LeafPrepareSign<SignMode, unknown, Statistics<object>>
+  abstract prepareWords(): LeafPrepareSign<SignMode, any, Statistics<object>>
 
   /**
    * Unit: minute

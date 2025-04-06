@@ -1,25 +1,25 @@
 <script setup lang="ts">
-// import type { DictStorage } from '~/composables/words/storage'
-// import { modeManager, ModeType } from '~/modules/words/mode'
-// import { ComprehensiveMode } from '~/composables/words/mode/comprehensive'
-// import { DictWordMode } from '~/composables/words/mode/dict-word'
-// import { PunchMode } from '~/composables/words/mode/punch'
-// import { SoundMode } from '~/composables/words/mode/sound'
-
+import { useRequest } from 'alova/client'
 import { toast, Toaster } from 'vue-sonner'
 import Auth from '~/modules/auth/index.vue'
 import Core from '~/modules/core/index.vue'
 import DeveloperFloatingBall from '~/modules/develop/index.vue'
 import Splash from '~/modules/splash/index.vue'
-import { $endApi, initApi } from './composables/api'
+import { type LeafDictStorage, ModeType } from '~/modules/words'
+import { modeManager } from '~/modules/words/mode'
+import { ComprehensiveMode } from '~/modules/words/mode/comprehensive'
+// import { DictWordMode } from '~/modules/words/mode/dict-word'
+// import { PunchMode } from '~/modules/words/mode/punch'
+// import { SoundMode } from '~/modules/words/mode/sound'
+
+import { initApi } from './composables/api'
 import { useLeafEventBus } from './composables/event'
+import { AuthSuccessEvent } from './composables/event/auth'
 import { ToastEvent } from './composables/event/toast-event'
 import { useBaseRouteStore } from './composables/store/useRouteStore'
-import { useRequest } from 'alova/client'
-import { AuthSuccessEvent } from './composables/event/auth'
 import { globalAuthStorage } from './modules/auth'
 
-// modeManager.set(ModeType.COMPREHENSIVE, (dictionaryStorage: DictStorage) => new ComprehensiveMode(dictionaryStorage))
+modeManager.set(ModeType.COMPREHENSIVE, (dictionaryStorage: LeafDictStorage) => new ComprehensiveMode(dictionaryStorage))
 // modeManager.set(ModeType.PUNCH, (dictionaryStorage: DictStorage) => new PunchMode(dictionaryStorage))
 // modeManager.set(ModeType.LISTENING, (dictionaryStorage: DictStorage) => new SoundMode(dictionaryStorage))
 // modeManager.set(ModeType.READING, (dictionaryStorage: DictStorage) => new DictWordMode(dictionaryStorage))

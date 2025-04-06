@@ -1,5 +1,6 @@
+import type { LeafWordData } from '../..'
 import { SignMode } from '..'
-import { type LeafWordData } from '../..'
+import { ComprehensivePrepareWord } from './prepare'
 
 export interface IComprehensiveWordItem {
   mainWord: LeafWordData
@@ -8,7 +9,6 @@ export interface IComprehensiveWordItem {
   type: 'new' | 'review'
   wrongHistory: number[]
 }
-
 
 export class ComprehensiveMode extends SignMode {
   getModeIcon(): string {

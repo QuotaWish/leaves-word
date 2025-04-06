@@ -1,5 +1,5 @@
-import type { LeafWordData } from '../..';
 import type { ComprehensiveMode, IComprehensiveWordItem } from '.';
+import type { LeafWordData } from '../..';
 import { LeafPrepareSign } from '..';
 import { globalPreference, useWordSound } from '../..';
 import { ComprehensiveStatistics } from './stat';
@@ -11,7 +11,7 @@ const NEW_WORDS_PER_SESSION = 10
 // 每次复习单词的数量
 const REVIEW_WORDS_PER_SESSION = 10
 
-interface ComprehensiveWordDetail {
+export interface ComprehensiveWordDetail {
   word: string // 单词
   isNew: boolean // 是否为新单词
   attempts: number // 尝试次数
@@ -27,7 +27,6 @@ interface ComprehensiveWordDetail {
     isCorrect: boolean // 是否是正确选项
   }>
 }
-
 
 export class ComprehensivePrepareWord extends LeafPrepareSign<ComprehensiveMode, IComprehensiveWordItem, ComprehensiveStatistics> {
   getStatistics() {

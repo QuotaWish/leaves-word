@@ -1,12 +1,14 @@
 import type { EnglishDictionary } from '~/composables/api/clients/globals'
 import { useRequest } from 'alova/client'
+import { LeafDictStorage } from '../../index'
 import { ModeType } from '../enums'
 
 export interface IGlobalPreference {
   dict: {
     id: string,
     loading: boolean,
-    data?: EnglishDictionary
+    data?: EnglishDictionary,
+    storage?: LeafDictStorage
   }
   mode: ModeType
   amount: number
@@ -46,7 +48,7 @@ watch(() => globalPreference.value.dict.id, (newVal) => {
   setTimeout(async () => {
     const res = await getDict()
 
-    if (!res.data) {
+    if (!res?.data) {
       globalPreference.value.dict.data = undefined
       globalPreference.value.dict.id = ''
 
@@ -54,6 +56,7 @@ watch(() => globalPreference.value.dict.id, (newVal) => {
     }
 
     globalPreference.value.dict.data = res.data
+    globalPreference.value.dict.storage = new LeafDictStorage(res.data)
   })
 }, {
   immediate: true,

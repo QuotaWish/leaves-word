@@ -16,10 +16,10 @@ export const useTargetData = createGlobalState(() => {
   const targetSignMode = computed(() => {
     const manager = modeManager.get(targetMode.value)
 
-    if (!manager || !targetDict.value)
+    if (!manager || !globalPreference.value.dict.storage)
       return modeManager.get(ModeType.COMPREHENSIVE)
 
-    const managerIns = manager(targetDict.value.storage)
+    const managerIns = manager(globalPreference.value.dict.storage)
 
     return managerIns
   })

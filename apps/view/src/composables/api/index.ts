@@ -85,8 +85,10 @@ const alovaInstance = createAlova({
         console.log('11014 11015 11016')
       }
 
-      if (code !== 0)
-        return eventBus.fireEvent(new ToastEvent(message, 'error'))
+      if (code !== 0) {
+        eventBus.fireEvent(new ToastEvent(message, 'error'))
+        throw new Error(message)
+      }
 
       return response.data
     },

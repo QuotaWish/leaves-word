@@ -1,3 +1,47 @@
+<script setup lang="ts">
+import { ElSkeleton, ElSkeletonItem } from 'element-plus'
+import Logo from '~/components/chore/Logo.vue'
+import AIFeatures from './AIFeatures.vue'
+import ChartsCarousel from './ChartsCarousel.vue'
+import EbbinghausSection from './EbbinghausSection.vue'
+import PredictionSection from './PredictionSection.vue'
+import type { Statistics } from '~/modules/words'
+
+const props = defineProps<{
+  data: Statistics<any>
+}>()
+
+const stat = computed(() => {
+  if (!props.data) return { data: { correctRate: 0, averageTimePerWord: 0, sessionDuration: 0, wordsDetails: [] } }
+  return ComprehensiveStatistics.parseStatistics(props.data)
+})
+
+// const correctRate = computed(() => stat.value.data.correctRate || 0)
+// 掌握率
+const correctRate = computed(() => {
+  const words = stat.value.data.wordsDetails ?? []
+  const correct = words?.filter(item => !item.wrongHistory || item.wrongHistory?.length === 0) ?? []
+
+  return correct.length / words.length
+})
+const averageTimePerWord = computed(() => stat.value.data.averageTimePerWord || 0)
+const sessionDuration = computed(() => stat.value.data.sessionDuration || 0)
+const wordsDetails = computed(() => stat.value.data.wordsDetails || [])
+const isLoading = computed(() => !props.data /* || !wordsDetails.value.length */)
+
+const formatTime = (ms: number) => {
+  const seconds = ms / 1000
+  return `${seconds.toFixed(2)}秒`
+}
+
+const formatDuration = (ms: number) => {
+  const totalSeconds = ms / 1000
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = (totalSeconds % 60).toFixed(2)
+  return minutes > 0 ? `${minutes}分${seconds}秒` : `${seconds}秒`
+}
+</script>
+
 <template>
   <div class="ai-word-analysis">
     <template v-if="isLoading">
@@ -66,52 +110,6 @@
     </template>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref, computed } from 'vue'
-import { ElSkeleton, ElSkeletonItem } from 'element-plus'
-import { ComprehensiveStatistics } from '~/composables/words/mode/comprehensive'
-import { Statistics } from '~/composables/words'
-import ChartsCarousel from './ChartsCarousel.vue'
-import AIFeatures from './AIFeatures.vue'
-import EbbinghausSection from './EbbinghausSection.vue'
-import PredictionSection from './PredictionSection.vue'
-import Logo from '~/components/chore/Logo.vue'
-
-const props = defineProps<{
-  data: Statistics<any>
-}>()
-
-const stat = computed(() => {
-  if (!props.data) return { data: { correctRate: 0, averageTimePerWord: 0, sessionDuration: 0, wordsDetails: [] } }
-  return ComprehensiveStatistics.parseStatistics(props.data)
-})
-
-// const correctRate = computed(() => stat.value.data.correctRate || 0)
-// 掌握率
-const correctRate = computed(() => {
-  const words = stat.value.data.wordsDetails ?? []
-  const correct = words?.filter(item => !item.wrongHistory || item.wrongHistory?.length === 0) ?? []
-
-  return correct.length / words.length
-})
-const averageTimePerWord = computed(() => stat.value.data.averageTimePerWord || 0)
-const sessionDuration = computed(() => stat.value.data.sessionDuration || 0)
-const wordsDetails = computed(() => stat.value.data.wordsDetails || [])
-const isLoading = computed(() => !props.data /* || !wordsDetails.value.length */)
-
-const formatTime = (ms: number) => {
-  const seconds = ms / 1000
-  return `${seconds.toFixed(2)}秒`
-}
-
-const formatDuration = (ms: number) => {
-  const totalSeconds = ms / 1000
-  const minutes = Math.floor(totalSeconds / 60)
-  const seconds = (totalSeconds % 60).toFixed(2)
-  return minutes > 0 ? `${minutes}分${seconds}秒` : `${seconds}秒`
-}
-</script>
 
 <style scoped>
 .ai-word-analysis {

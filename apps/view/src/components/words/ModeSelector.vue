@@ -1,19 +1,17 @@
 <script setup lang="ts">
-import { globalData, useTargetData } from "~/composables/words";
-import type { ModeType } from "~/modules/words/mode";
+import { globalPreference, type ModeType } from '~/modules/words';
 import { modeManager } from "~/modules/words/mode";
 
-const { targetDict } = useTargetData();
 const modes = [...modeManager.keys()];
-const activeIndex = ref(modes.indexOf(globalData.value.mode) ?? 0);
+const activeIndex = ref(modes.indexOf(globalPreference.value.mode) ?? 0);
 
 // const activeMode = computed(() => modes[activeIndex.value])
 
 function modeIns(modeType: ModeType) {
   const mode = modeManager.get(modeType)!;
 
-  const dict = targetDict.value.storage;
-  const modeInstance = mode(dict);
+  const dict = globalPreference.value.dict.storage;
+  const modeInstance = mode(dict!);
 
   return modeInstance;
 }
@@ -23,7 +21,7 @@ function handleSelect(index: number) {
 
   const mode = modes[index];
 
-  globalData.value.mode = mode;
+  globalPreference.value.mode = mode;
 }
 </script>
 
