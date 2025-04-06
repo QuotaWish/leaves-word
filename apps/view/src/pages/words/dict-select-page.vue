@@ -51,9 +51,7 @@ function handleBookClick(book: EnglishDictionary) {
   }
 }
 
-onMounted(() => {
-  send()
-})
+send()
 </script>
 
 <template>
@@ -110,7 +108,7 @@ onMounted(() => {
         :cols="2"
         :key="selectCategory?.id"
       >
-        <DictionaryBookDisplay :active="book.id === globalPreference.dict" v-for="book in (selectCategory?.books || [])" :key="book.id" :model-value="book" @click="handleBookClick(book)" />
+        <DictionaryBookDisplay :active="book.id === globalPreference.dict.id" v-for="book in (selectCategory?.books || [])" :key="book.id" :model-value="book" @click="handleBookClick(book)" />
       </wc-waterfall>
     </el-skeleton>
   </DictionaryHolder>

@@ -1,6 +1,7 @@
+import type { EnglishDictionary } from '~/composables/api/clients/globals'
 import { useRequest } from 'alova/client'
 import { ModeType } from '../enums'
-import type { EnglishDictionary } from '~/composables/api/clients/globals'
+
 export interface IGlobalPreference {
   dict: {
     id: string,
@@ -25,8 +26,8 @@ export const globalPreference = useLocalStorage<IGlobalPreference>('global-prefe
 
 const { send: getDict, loading } = useRequest(() => Apis.englishDictionaryController.getEnglishDictionaryVOByIdUsingGET({
   params: {
-    id: globalPreference.value.dict.id
-  }
+    id: globalPreference.value.dict.id,
+  },
 }), {
   immediate: false,
 })

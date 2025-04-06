@@ -17,8 +17,8 @@ const { targetDict, targetSignMode } = useTargetData();
 const dictionary = computed(() => globalPreference.value.dict);
 
 // const storage = computed(() => dictionary.value?.storage);
-const learnedAmo = computed(() => 10)// storage.value?.getLearnedWords().length ?? 0);
-const totalAmo = computed(() => dictionary.value.data?.published_words ?? 100)
+const learnedAmo = computed(() => 0)// storage.value?.getLearnedWords().length ?? 0);
+const totalAmo = computed(() => dictionary.value.data?.published_words ?? 0)
 
 const progress = computed(() => learnedAmo.value / totalAmo.value);
 const todayData = computed(() => calendarManager.getTodayData());

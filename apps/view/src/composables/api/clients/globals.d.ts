@@ -365,6 +365,7 @@ export type EnglishDictionaryAddRequest = {
   publisher?: string;
 };
 export type EnglishDictionaryVO = {
+  approved_words?: number;
   author?: string;
   create_time?: string;
   description?: string;
@@ -373,7 +374,9 @@ export type EnglishDictionaryVO = {
   isbn?: string;
   name?: string;
   publication_date?: string;
+  published_words?: number;
   publisher?: string;
+  total_words?: number;
   update_time?: string;
 };
 export type BaseResponse_EnglishDictionaryVO_ = {
@@ -523,9 +526,22 @@ export type BaseResponse_EnglishWord_ = {
   data?: EnglishWord;
   message?: string;
 };
-export type BaseResponse_Array_long_ = {
+export type DuplicateWordDto = {
+  count?: number;
+  wordHead?: string;
+};
+export type BaseResponse_List_DuplicateWordDto_ = {
   code?: number;
-  data?: number[];
+  data?: DuplicateWordDto[];
+  message?: string;
+};
+export type WordHeadIdDto = {
+  head?: string;
+  id?: number;
+};
+export type BaseResponse_List_WordHeadIdDto_ = {
+  code?: number;
+  data?: WordHeadIdDto[];
   message?: string;
 };
 export type EnglishWordGetBatchRequest = {
@@ -1215,7 +1231,7 @@ export type UserLoginRequest = {
 };
 export type SaTokenInfo = {
   isLogin?: boolean;
-  loginDevice?: string;
+  loginDeviceType?: string;
   loginId?: object;
   loginType?: string;
   sessionTimeout?: number;
@@ -2595,6 +2611,7 @@ declare global {
        *   code?: number
        *   // [title] EnglishDictionaryVO
        *   data?: {
+       *     approved_words?: number
        *     author?: string
        *     create_time?: string
        *     description?: string
@@ -2603,7 +2620,9 @@ declare global {
        *     isbn?: string
        *     name?: string
        *     publication_date?: string
+       *     published_words?: number
        *     publisher?: string
+       *     total_words?: number
        *     update_time?: string
        *   }
        *   message?: string
@@ -2846,6 +2865,7 @@ declare global {
        *     }>
        *     pages?: number
        *     records?: Array<{
+       *       approved_words?: number
        *       author?: string
        *       create_time?: string
        *       description?: string
@@ -2854,7 +2874,9 @@ declare global {
        *       isbn?: string
        *       name?: string
        *       publication_date?: string
+       *       published_words?: number
        *       publisher?: string
+       *       total_words?: number
        *       update_time?: string
        *     }>
        *     searchCount?: boolean
@@ -2927,6 +2949,7 @@ declare global {
        *     }>
        *     pages?: number
        *     records?: Array<{
+       *       approved_words?: number
        *       author?: string
        *       create_time?: string
        *       description?: string
@@ -2935,7 +2958,9 @@ declare global {
        *       isbn?: string
        *       name?: string
        *       publication_date?: string
+       *       published_words?: number
        *       publisher?: string
+       *       total_words?: number
        *       update_time?: string
        *     }>
        *     searchCount?: boolean
@@ -3163,6 +3188,30 @@ declare global {
       /**
        * ---
        *
+       * [GET] getDuplicateWords
+       *
+       * **path:** /api/english_word/duplicates
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = {
+       *   code?: number
+       *   data?: Array<{
+       *     count?: number
+       *     wordHead?: string
+       *   }>
+       *   message?: string
+       * }
+       * ```
+       */
+      getDuplicateWordsUsingGET<Config extends Alova2MethodConfig<BaseResponse_List_DuplicateWordDto_>>(
+        config?: Config
+      ): Alova2Method<BaseResponse_List_DuplicateWordDto_, 'EnglishWords.getDuplicateWordsUsingGET', Config>;
+      /**
+       * ---
+       *
        * [POST] 批量获取英语单词Id
        *
        * **path:** /api/english_word/get/batch
@@ -3182,18 +3231,21 @@ declare global {
        * ```ts
        * type Response = {
        *   code?: number
-       *   data?: number[]
+       *   data?: Array<{
+       *     head?: string
+       *     id?: number
+       *   }>
        *   message?: string
        * }
        * ```
        */
       getEnglishWordBatchUsingPOST<
-        Config extends Alova2MethodConfig<BaseResponse_Array_long_> & {
+        Config extends Alova2MethodConfig<BaseResponse_List_WordHeadIdDto_> & {
           data: EnglishWordGetBatchRequest;
         }
       >(
         config: Config
-      ): Alova2Method<BaseResponse_Array_long_, 'EnglishWords.getEnglishWordBatchUsingPOST', Config>;
+      ): Alova2Method<BaseResponse_List_WordHeadIdDto_, 'EnglishWords.getEnglishWordBatchUsingPOST', Config>;
       /**
        * ---
        *
@@ -3537,6 +3589,48 @@ declare global {
       >(
         config: Config
       ): Alova2Method<BaseResponse_Page_EnglishWordVO_, 'EnglishWords.listMyEnglishWordVOByPageUsingPOST', Config>;
+      /**
+       * ---
+       *
+       * [GET] publishWord
+       *
+       * **path:** /api/english_word/publish
+       *
+       * ---
+       *
+       * **Query Parameters**
+       * ```ts
+       * type QueryParameters = {
+       *   // id
+       *   // [required]
+       *   id: number
+       * }
+       * ```
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = {
+       *   code?: number
+       *   data?: boolean
+       *   message?: string
+       * }
+       * ```
+       */
+      publishWordUsingGET<
+        Config extends Alova2MethodConfig<BaseResponse_boolean_> & {
+          params: {
+            /**
+             * id
+             * [required]
+             */
+            id: number;
+          };
+        }
+      >(
+        config: Config
+      ): Alova2Method<BaseResponse_boolean_, 'EnglishWords.publishWordUsingGET', Config>;
       /**
        * ---
        *
@@ -6011,7 +6105,7 @@ declare global {
        *     // [title] SaTokenInfo
        *     token?: {
        *       isLogin?: boolean
-       *       loginDevice?: string
+       *       loginDeviceType?: string
        *       loginId?: object
        *       loginType?: string
        *       sessionTimeout?: number

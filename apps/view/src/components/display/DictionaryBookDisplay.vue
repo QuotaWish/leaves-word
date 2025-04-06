@@ -42,9 +42,13 @@ const showBorder = computed(() => props.border !== false)
           <div text-white i-carbon-checkmark />
         </div>
       </div>
+
+      <div v-if="modelValue.published_words && !onlyImage" class="DictionaryBookDisplay-Stat z-5">
+        <span>{{ modelValue.published_words }}&nbsp;词</span>
+      </div>
     </div>
     <div v-if="!onlyImage" class="info">
-      <div class="name">
+      <div my-2 class="name">
         {{ modelValue.name }}
       </div>
       <div class="description">
@@ -55,6 +59,21 @@ const showBorder = computed(() => props.border !== false)
 </template>
 
 <style lang="scss" scoped>
+.DictionaryBookDisplay-Stat {
+  span {
+    font-size: 12px;
+    color: var(--el-text-color-secondary);
+  }
+  position: absolute;
+  padding: 0.125rem 0.5rem;
+
+  top: 0;
+  right: 0;
+
+  border-radius: 0.25rem 0 0.25rem 0.25rem;
+  background-color: var(--el-overlay-color-light);
+}
+
 .DictionaryBookDisplay-Active {
   & > div {
     background-color: var(--theme-color-primary);
