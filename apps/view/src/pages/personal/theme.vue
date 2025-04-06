@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import PageNavHolder from "~/components/page/holder/PageNavHolder.vue";
-import SettingsCard from "~/components/settings/SettingsCard.vue";
 import SettingsOption from "~/components/settings/SettingsOption.vue";
 import ColorOption from "~/components/settings/ColorOption.vue";
 import {
@@ -33,7 +32,7 @@ const themeColors = Object.entries(themeColorMap).map(([key, value]) => ({
     purple: "梦幻紫",
     orange: "活力橙",
     red: "热情红",
-  }[key],
+  }[key] || "未知颜色",
 }));
 
 // 选择主题色
