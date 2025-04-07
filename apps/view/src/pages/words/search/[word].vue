@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { WordContent } from '~/composables/api/types'
-import { getEnglishWordDetailUsingGet } from '~/composables/api/clients/api/englishWords'
+import type { EnglishWordData } from '~/modules/words'
 
 const route = useRoute('/words/search/[word]')
 
 const empty = ref(false)
 const word = computed(() => route.params.word)
-const wordData = ref<API.EnglishWord>()
+const wordData = ref<EnglishWordData>()
 const wordContent = computed(() => {
   if (!wordData.value)
     return null
@@ -29,16 +29,16 @@ const wordContent = computed(() => {
 // }
 
 async function fetchWordData() {
-  const { code, data } = await getEnglishWordDetailUsingGet({
-    word: word.value,
-  })
+  // const { code, data } = await getEnglishWordDetailUsingGet({
+  //   word: word.value,
+  // })
 
-  if (code !== 0 || !data) {
-    empty.value = true
-    return
-  }
+  // if (code !== 0 || !data) {
+  //   empty.value = true
+  //   return
+  // }
 
-  wordData.value = data
+  // wordData.value = data
 }
 
 onMounted(fetchWordData)
