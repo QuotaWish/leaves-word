@@ -73,21 +73,24 @@ router.beforeEach((to, from) => {
   const toDepth = routes.findIndex(v => v.path === to.path)
   const fromDepth = routes.findIndex(v => v.path === from.path)
   if (toDepth > fromDepth) {
+    // 前进
+    console.log('enter ', to.path)
+
     if (to.matched?.length) {
-      // 过滤没有 components 的
       const filterMatched = to.matched.filter(item => item.components)
       const toComponentName = filterMatched?.[0]?.components?.default.name
       if (toComponentName) {
-        baseRouteStore.updateExcludeRoutes({ type: 'remove', value: toComponentName })
+        baseRouteStore.updateExcludeRoutes({ type: 'add', value: toComponentName })
       }
     }
   } else {
     if (from.matched?.length) {
+      // 后退
+      console.log('leave ', from.path)
       const filterMatched = from.matched.filter(item => item.components)
       const fromComponentName = filterMatched?.[0]?.components?.default.name
       if (fromComponentName) {
-        baseRouteStore.updateExcludeRoutes({ type: 'add', value: fromComponentName })
-        baseRouteStore.updateExcludeRoutes({ type: 'add', value: fromComponentName })
+        baseRouteStore.updateExcludeRoutes({ type: 'remove', value: fromComponentName })
       }
     }
   }
@@ -103,7 +106,7 @@ router.beforeEach((to, from) => {
         <router-view v-slot="{ Component }">
           <TransitionPage>
             <!-- ['DictionaryPage', 'SignedPage'] -->
-            <keep-alive :exclude="baseRouteStore.excludeNames">
+            <keep-alive :include="['IndexPage']" :exclude="baseRouteStore.excludeNames">
               <component :is="Component" />
             </keep-alive>
           </TransitionPage>
@@ -117,6 +120,10 @@ router.beforeEach((to, from) => {
         <Core />
         <DeveloperFloatingBall />
         <Toaster mt-8 :theme="theme" richColors position="top-center" />
+
+        <!-- <div class="absolute-layout bottom-0 left-0 w-full z-1000 h-10 bg-red-500">
+          {{ baseRouteStore.excludeNames }}
+        </div> -->
       </template>
     </Splash>
   </el-config-provider>

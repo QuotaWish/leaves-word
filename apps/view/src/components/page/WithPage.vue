@@ -32,6 +32,10 @@ withDefaults(defineProps<{
     padding-top: 44px;
   }
 
+  .footerVisible & {
+    padding-bottom: var(--footer-height);
+  }
+
   // .fullscreen & {
   //   padding-top: 44px;
   // }

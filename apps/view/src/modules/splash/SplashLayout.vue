@@ -11,7 +11,9 @@ const { active } = useFooterNav()
     </div>
 
     <!-- FOOTER -->
-    <slot name="footer" />
+    <div class="SplashLayout-Footer fake-background transition-cubic">
+      <slot name="footer" />
+    </div>
   </div>
 </template>
 
@@ -29,6 +31,27 @@ const { active } = useFooterNav()
   overflow: hidden;
   flex-direction: column;
   color: var(--el-text-color-primary);
+
+  --footer-height: 64px;
+}
+
+.SplashLayout-Footer {
+  .footerVisible & {
+    transform: translateY(0);
+  }
+
+  z-index: 10000000;
+  position: absolute;
+
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+  height: var(--footer-height);
+
+  --fake-opacity: 0.9;
+  transform: translateY(100%);
+  backdrop-filter: blur(18px) saturate(180%) brightness(120%);
 }
 
 .SplashLayout-Main {
@@ -41,8 +64,8 @@ const { active } = useFooterNav()
 
   overflow: hidden;
 
-  .footerVisible & {
-    max-height: calc(100% - 64px);
-  }
+  // .footerVisible & {
+  //   max-height: calc(100% - 64px);
+  // }
 }
 </style>

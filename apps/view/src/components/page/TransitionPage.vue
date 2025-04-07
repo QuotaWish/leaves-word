@@ -29,7 +29,11 @@ function onBeforeEnter(tempEl: Element) {
   }
 
   if (transition === 'nav') {
-    console.warn(`Nav transition not support yet.`)
+    Object.assign(el.style, {
+      transition: 'none !important',
+      transform: 'scale(1.02)',
+      opacity: 0
+    })
     return
   }
 
@@ -61,17 +65,25 @@ async function onEnter(tempEl: Element, done: any) {
 
   await sleep(10)
 
-  if (transitionData.levels === 1) {
+  if (transitionData.name === 'nav') {
     Object.assign(el.style, {
       transition: '0.3s',
       transform: 'scale(1)',
+      opacity: 1
     })
-  }
-  else {
-    Object.assign(el.style, {
-      transition: '',
-      transform: 'translateX(0%)',
-    })
+  } else {
+    if (transitionData.levels === 1) {
+      Object.assign(el.style, {
+        transition: '0.3s',
+        transform: 'scale(1)',
+      })
+    }
+    else {
+      Object.assign(el.style, {
+        transition: '',
+        transform: 'translateX(0%)',
+      })
+    }
   }
 
   await sleep(200)
@@ -116,13 +128,6 @@ function onBeforeLeave(tempEl: Element) {
   const { meta } = route
   const { transition } = meta
 
-  if (transitionData?.name === 'nav' && transition === 'nav') {
-    console.warn(`Nav transition not support yet.`)
-    return
-  }
-
-  el.$transition.enable = true
-
   Object.assign(el.style, {
     position: 'absolute',
     top: '0',
@@ -130,6 +135,8 @@ function onBeforeLeave(tempEl: Element) {
     width: '100%',
     height: '100%',
   })
+
+  el.$transition.enable = true
 }
 
 // 在离开过渡开始时调用
@@ -142,20 +149,29 @@ async function onLeave(tempEl: Element, done: any) {
 
   const { levels } = transitionData
 
-  // 如果不是一层 就代表是返回
-  if (levels === 1) {
+  if (transitionData.name === 'nav') {
     Object.assign(el.style, {
-      transition: '0.3s !important',
-      transform: 'scale(0.9)',
-      borderRadius: '35px',
+      zIndex: 10,
+      transition: '0.3s',
+      transform: 'scale(0.98)',
+      opacity: 0
     })
-  }
-  else {
-    Object.assign(el.style, {
-      transition: '0.3s !important',
-      transform: 'translateX(120%)',
-      borderRadius: '35px',
-    })
+  } else {
+    // 如果不是一层 就代表是返回
+    if (levels === 1) {
+      Object.assign(el.style, {
+        transition: '0.3s !important',
+        transform: 'scale(0.9)',
+        borderRadius: '35px',
+      })
+    }
+    else {
+      Object.assign(el.style, {
+        transition: '0.3s !important',
+        transform: 'translateX(120%)',
+        borderRadius: '35px',
+      })
+    }
   }
 
   await sleep(2000)
