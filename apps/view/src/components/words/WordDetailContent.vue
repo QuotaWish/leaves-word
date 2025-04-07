@@ -1,21 +1,21 @@
 <script setup lang="ts">
+import type { EnglishWordData, WordContent } from '~/modules/words'
 import { Swipe, SwipeItem } from 'vant'
-import { type IWord, useWordSound } from '~/composables/words'
+import { useWordSound } from '~/modules/words'
 
 const props = defineProps<{
-  word: IWord
+  word: EnglishWordData
   button?: string
 }>()
 
-const emits = defineEmits<{
-  (e: 'close'): void
-}>()
+const emits = defineEmits<(e: 'close') => void>()
 
 const duration = ref()
+const content = computed(() => props.word?.content)
 const buttonTitle = computed(() => props.button || '已了解')
 
-async function spokenWord(word: IWord) {
-  const audio = await useWordSound(word.word)
+async function spokenWord(word: EnglishWordData) {
+  const audio = await useWordSound(word.word_head!)
 
   await audio.play()
 
@@ -70,8 +70,6 @@ function openChat() {
     },
   })
 
-  console.log(cozeWebSDK)
-
   cozeWebSDK.showChatBot()
 }
 
@@ -88,25 +86,25 @@ function openAnalyse() {
 
     <div class="WordDetaiContent-Header">
       <p :style="duration > 0 ? `--a: growth ${duration}ms` : ''" flex items-end gap-2 class="word">
-        {{ word.word }}
+        {{ word.word_head }}
       </p>
 
       <div class="desc">
         <div flex items-center class="desc-phonetic">
           <span text-sm class="phonetic">
-            {{ word.phonetic }}
+            <!-- {{ word.phonetic }} -->
           </span>
           <PlayIcon :active="duration > 0" @click="spokenWord(word)" />
         </div>
         <div class="desc-translation">
-          {{ word.translation }} <span mx-2 op-50>{{ formateType(word.type) }}.</span>
+          <!-- {{ word.translation }} <span mx-2 op-50>{{ formateType(word.type) }}.</span> -->
         </div>
       </div>
     </div>
 
     <div class="WordDetailContent-Main">
       <Swipe style="border-radius: 20px" lazy-render overflow-hidden :autoplay="3000" indicator-color="red">
-        <SwipeItem v-for="item in word.img" :key="item">
+        <SwipeItem v-for="item in content?.img" :key="item">
           <el-image style="width: 100%;height: 200px" fit="fill" loading="lazy" :src="item" />
         </SwipeItem>
       </Swipe>
@@ -115,18 +113,18 @@ function openAnalyse() {
         <template #Tag>
           定义解析
         </template>
-        <p>{{ word.definition[0] }}</p>
-        <p>{{ word.definition[1] }}</p>
+        <p>{{ content?.definition[0] }}</p>
+        <p>{{ content?.definition[1] }}</p>
       </WordSection>
 
       <WordSection>
         <template #Tag>
           诠释助记
         </template>
-        {{ word.remember }}
+        {{ content?.remember }}
       </WordSection>
 
-      <WordSection v-if="word.prefix || word.suffix">
+      <!-- <WordSection v-if="content?.prefix || content?.suffix">
         <template #Tag>
           词根助记
         </template>
@@ -136,9 +134,9 @@ function openAnalyse() {
         <p v-if="word.suffix">
           {{ word.suffix }}
         </p>
-      </WordSection>
+      </WordSection> -->
 
-      <WordSection>
+      <!-- <WordSection>
         <template #Tag>
           短语助记
         </template>
@@ -154,24 +152,24 @@ function openAnalyse() {
             {{ phrase.translation }}
           </p>
         </div>
-      </WordSection>
+      </WordSection> -->
 
-      <WordSection>
+      <!-- <WordSection>
         <template #Tag>
           故事助记
         </template>
         {{ word.story }}
-      </WordSection>
+      </WordSection> -->
     </div>
 
     <!-- <div v-if="word.backgroundStory" class="WordContent-Story">
         {{ word.backgroundStory }}
       </div> -->
 
-    <WordExamples v-if="word.examples?.length" style="margin: 0 1rem" :word="word" />
+    <WordExamples v-if="content?.examplePhrases?.length" style="margin: 0 1rem" :word="word" />
 
-    <div class="WordContent-Extra">
-      <div v-if="word.synonyms?.length" class="block">
+    <!-- <div class="WordContent-Extra">
+      <div v-if="content?.synonyms?.length" class="block">
         <p class="title">
           同义词
         </p>
@@ -211,7 +209,7 @@ function openAnalyse() {
           </span>
         </p>
       </div>
-    </div>
+    </div> -->
 
     <br>
 

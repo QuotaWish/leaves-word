@@ -1,28 +1,29 @@
 <script setup lang="ts">
-import type { IWord } from '~/composables/words'
+import type { EnglishWordData } from '~/modules/words'
 
 const props = defineProps<{
-  word: IWord
+  word: EnglishWordData
 }>()
 
 const select = ref(0)
 
-const cur = computed(() => props.word?.examples?.[select.value])
+const content = computed(() => props.word?.content)
+const cur = computed(() => content.value?.examplePhrases?.[select.value])
 
 function formateSentence(sentence: string) {
   if (!props.word)
     return
 
-  return sentence.replaceAll(props.word.word, `<span class="WordExamples-Word">${props.word.word}</span>`)
+  return sentence.replaceAll(props.word.word_head!, `<span class="WordExamples-Word">${props.word.word_head}</span>`)
 }
 </script>
 
 <template>
   <div v-if="word" class="WordExamples">
     <div class="WordExamples-Header">
-      <span v-for="(_example, ind) in word.examples" :key="ind" :class="{ active: ind === select }" @click="select = ind">{{ ind + 1 }}</span>
+      <span v-for="(_example, ind) in content?.examplePhrases" :key="ind" :class="{ active: ind === select }" @click="select = ind">{{ ind + 1 }}</span>
     </div>
-    <div v-if="word.examples" class="WordExample-Content">
+    <div v-if="content?.examplePhrases" class="WordExample-Content">
       <div v-if="cur" class="WordContent-ExampleItem">
         <p class="example-origin" v-html="formateSentence(cur.sentence)" />
         <p class="example-translation">

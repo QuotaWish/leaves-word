@@ -8,7 +8,7 @@ export async function useRequestAnimationFrame() {
   return new Promise(resolve => requestAnimationFrame(resolve))
 }
 
-export function formateType(type: string[], len: number = -1) {
+export function formateType(type: string[], len = -1) {
   let types = type.map((item) => {
     return item.replace(/[^a-z]/gi, '')
   })

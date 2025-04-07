@@ -1,92 +1,6 @@
-<template>
-  <div class="charts-carousel-container">
-    <div class="chart-slider">
-      <div class="charts-container">
-        <!-- 使用v-show而非v-if，保留DOM -->
-        <div v-show="currentIndex === 0" key="chart1" class="chart-wrapper" :class="{ 'active': currentIndex === 0 }">
-          <div v-if="hasData" ref="learningPatternChart" class="chart"></div>
-          <div v-else class="empty-chart">
-            <div class="empty-chart-icon">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 16L7 12L10 15L17 8L21 12" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2"
-                  stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </div>
-            <p>暂无表现数据，开始学习后将自动生成能力评估分析</p>
-          </div>
-          <div class="chart-analysis">
-            <p>学习曲线分析：{{ getLearningCurveAnalysis() }}</p>
-          </div>
-        </div>
-
-        <div v-show="currentIndex === 1" key="chart2" class="chart-wrapper" :class="{ 'active': currentIndex === 1 }">
-          <div v-if="hasData" ref="timeDistributionChart" class="chart"></div>
-          <div v-else class="empty-chart">
-            <div class="empty-chart-icon">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="9" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" />
-                <path d="M12 7V12L15 15" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round" />
-              </svg>
-            </div>
-            <p>暂无时间数据，开始学习后将自动生成时间分布分析</p>
-          </div>
-          <div class="chart-analysis">
-            <p>时间分布分析：{{ getTimeDistributionAnalysis() }}</p>
-          </div>
-        </div>
-
-        <div v-show="currentIndex === 2" key="chart3" class="chart-wrapper" :class="{ 'active': currentIndex === 2 }">
-          <div v-if="hasData" ref="performanceRadarChart" class="chart"></div>
-          <div v-else class="empty-chart">
-            <div class="empty-chart-icon">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L4 6V18L12 22L20 18V6L12 2Z" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2"
-                  stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M12 22V12" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round" />
-                <path d="M12 12L20 6" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round" />
-                <path d="M12 12L4 6" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round" />
-              </svg>
-            </div>
-            <p>暂无表现数据，开始学习后将自动生成能力评估分析</p>
-          </div>
-          <div class="chart-analysis">
-            <p>能力评估分析：{{ getPerformanceAnalysis() }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="carousel-tab-container">
-      <!-- SVG曲线导航指示器 -->
-      <div class="tab-track">
-        <svg class="tab-curve" width="100%" height="40" preserveAspectRatio="none">
-          <path class="tab-curve-path" d="M0,20 C100,40 200,0 300,20 C400,40 500,0 600,20"
-            stroke="rgba(126, 87, 194, 0.2)" stroke-width="2" fill="none" />
-          <path class="tab-curve-active" d="M0,20 C100,40 200,0 300,20 C400,40 500,0 600,20"
-            stroke="rgba(126, 87, 194, 0.8)" stroke-width="2" fill="none" stroke-dasharray="600"
-            :stroke-dashoffset="getDashOffset" />
-        </svg>
-      </div>
-
-      <div class="tab-indicators">
-        <div v-for="(title, index) in chartTitles" :key="index" class="tab-item"
-          :class="{ active: currentIndex === index }" @click="currentIndex = index">
-          <div class="tab-dot"></div>
-          <span class="tab-title">{{ title }}</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { ref, onMounted, watch, onBeforeUnmount, computed, nextTick } from 'vue'
 import * as echarts from 'echarts'
-import { useCharts } from '~/composables/words/mode/comprehensive/charts'
+import { useCharts } from '~/modules/words/mode/comprehensive/charts'
 
 const props = defineProps<{
   correctRate: number
@@ -282,6 +196,91 @@ onBeforeUnmount(() => {
   }
 })
 </script>
+
+<template>
+  <div class="charts-carousel-container">
+    <div class="chart-slider">
+      <div class="charts-container">
+        <!-- 使用v-show而非v-if，保留DOM -->
+        <div v-show="currentIndex === 0" key="chart1" class="chart-wrapper" :class="{ 'active': currentIndex === 0 }">
+          <div v-if="hasData" ref="learningPatternChart" class="chart"></div>
+          <div v-else class="empty-chart">
+            <div class="empty-chart-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 16L7 12L10 15L17 8L21 12" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <p>暂无表现数据，开始学习后将自动生成能力评估分析</p>
+          </div>
+          <div class="chart-analysis">
+            <p>学习曲线分析：{{ getLearningCurveAnalysis() }}</p>
+          </div>
+        </div>
+
+        <div v-show="currentIndex === 1" key="chart2" class="chart-wrapper" :class="{ 'active': currentIndex === 1 }">
+          <div v-if="hasData" ref="timeDistributionChart" class="chart"></div>
+          <div v-else class="empty-chart">
+            <div class="empty-chart-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="9" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" />
+                <path d="M12 7V12L15 15" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </div>
+            <p>暂无时间数据，开始学习后将自动生成时间分布分析</p>
+          </div>
+          <div class="chart-analysis">
+            <p>时间分布分析：{{ getTimeDistributionAnalysis() }}</p>
+          </div>
+        </div>
+
+        <div v-show="currentIndex === 2" key="chart3" class="chart-wrapper" :class="{ 'active': currentIndex === 2 }">
+          <div v-if="hasData" ref="performanceRadarChart" class="chart"></div>
+          <div v-else class="empty-chart">
+            <div class="empty-chart-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L4 6V18L12 22L20 18V6L12 2Z" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M12 22V12" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <path d="M12 12L20 6" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <path d="M12 12L4 6" stroke="rgba(126, 87, 194, 0.7)" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </div>
+            <p>暂无表现数据，开始学习后将自动生成能力评估分析</p>
+          </div>
+          <div class="chart-analysis">
+            <p>能力评估分析：{{ getPerformanceAnalysis() }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="carousel-tab-container">
+      <!-- SVG曲线导航指示器 -->
+      <div class="tab-track">
+        <svg class="tab-curve" width="100%" height="40" preserveAspectRatio="none">
+          <path class="tab-curve-path" d="M0,20 C100,40 200,0 300,20 C400,40 500,0 600,20"
+            stroke="rgba(126, 87, 194, 0.2)" stroke-width="2" fill="none" />
+          <path class="tab-curve-active" d="M0,20 C100,40 200,0 300,20 C400,40 500,0 600,20"
+            stroke="rgba(126, 87, 194, 0.8)" stroke-width="2" fill="none" stroke-dasharray="600"
+            :stroke-dashoffset="getDashOffset" />
+        </svg>
+      </div>
+
+      <div class="tab-indicators">
+        <div v-for="(title, index) in chartTitles" :key="index" class="tab-item"
+          :class="{ active: currentIndex === index }" @click="currentIndex = index">
+          <div class="tab-dot"></div>
+          <span class="tab-title">{{ title }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .charts-carousel-container {

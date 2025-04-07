@@ -1,8 +1,7 @@
 <script name="Words" setup lang="ts">
-import WordCard from '~/components/WordCard.vue'
-import type { IWord } from '~/composables/words'
-import { useTargetData, useWordSound } from '~/composables/words'
-import type { ComprehensivePrepareWord, IComprehensiveWordItem } from '~/composables/words/mode/comprehensive'
+import WordCard from './WordCard.vue'
+import { useTargetData, useWordSound } from '~/modules/words'
+import type { ComprehensivePrepareWord, IComprehensiveWordItem } from '~/modules/words/mode/comprehensive'
 
 const props = defineProps<{
   prepare: ComprehensivePrepareWord
@@ -73,18 +72,18 @@ async function slideCard(direction: 'left' | 'right', nextCardData: IComprehensi
     currentDom.style.transform = 'translateX(0)'
     nextDom.style.transform = 'translateX(-100%)'
   }
-  
+
   // 显示下一张卡片
   nextDom.style.visibility = 'visible'
-  
+
   // 等待DOM更新
   await sleep(10)
-  
+
   // 3. 设置过渡动画样式
   const transitionStyle = 'transform 0.4s cubic-bezier(0.33, 1, 0.68, 1)'
   currentDom.style.transition = transitionStyle
   nextDom.style.transition = transitionStyle
-  
+
   // 4. 执行同步滑动动画
   if (direction === 'left') {
     // 向左滑动：当前卡片滑出左侧，下一张卡片滑入中央
@@ -95,18 +94,18 @@ async function slideCard(direction: 'left' | 'right', nextCardData: IComprehensi
     currentDom.style.transform = 'translateX(100%)'
     nextDom.style.transform = 'translateX(0)'
   }
-  
+
   // 5. 等待动画完成
   await sleep(400)
-  
+
   // 6. 更新当前卡片数据
   data.current = nextCardData
-  
+
   // 7. 重置当前卡片位置（为下次动画做准备）
   currentDom.style.transition = 'none'
   currentDom.style.transform = 'translateX(0)'
   nextDom.style.visibility = ''
-  
+
   // 8. 朗读新单词
   if (data.current) {
     spokenWord(data.current.word.mainWord)

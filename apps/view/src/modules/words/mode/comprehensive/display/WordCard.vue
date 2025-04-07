@@ -1,7 +1,7 @@
 <script name="Words" setup lang="ts">
+import type { IComprehensiveWordItem } from '~/modules/words/mode/comprehensive'
 import { Swipe, SwipeItem } from 'vant'
-import { type IWord, useErrorAudio, useSuccessAudio } from '~/composables/words'
-import type { IComprehensiveWordItem } from '~/composables/words/mode/comprehensive'
+import { LeafWordData, useErrorAudio, useSuccessAudio } from '~/modules/words'
 
 const props = defineProps<{
   data: IComprehensiveWordItem
@@ -19,10 +19,10 @@ const options = reactive({
 })
 
 const finalOptions = computed(() => {
-  if (!props.data?.word.mainWord)
+  if (!props.data?.mainWord)
     return null
 
-  const res = [props.data.word.mainWord, ...props.data.word.options]
+  const res = [props.data.mainWord, ...props.data.options]
 
   // shuffle
   for (let i = res.length - 1; i > 0; i--) {
@@ -42,12 +42,12 @@ function handleEmit() {
   emits('choose', wrong)
 }
 
-async function handleChooseWord(word: IWord) {
-  const right = props.right.word.mainWord.word === word.word
+async function handleChooseWord(word: LeafWordData) {
+  const right = props.right.mainWord.word === word.word
 
   if (right) {
     useVibrate('bit')
-    useSuccessAudio().play()
+      ; (await useSuccessAudio()).play()
 
     options.display = true
 
@@ -68,7 +68,7 @@ async function handleChooseWord(word: IWord) {
   }
   else {
     useVibrate('heavy')
-    useErrorAudio().play()
+      ; (await useErrorAudio()).play()
 
     if (options.wrongAmo > 1) {
       options.display = true
@@ -86,6 +86,10 @@ async function handleChooseWord(word: IWord) {
     options.wrongAmo++
   }
 }
+
+const wordContent = computed(() => {
+  return props.data.mainWord.data?.content
+})
 </script>
 
 <template>
@@ -93,7 +97,7 @@ async function handleChooseWord(word: IWord) {
     <div v-if="data" class="WordsCard">
       <div class="WordsCard-Image transition-cubic">
         <Swipe v-if="!!options.wrongAmo" lazy-render h-full :autoplay="3000" indicator-color="red">
-          <SwipeItem v-for="item in data.word.mainWord.img" :key="item">
+          <SwipeItem v-for="item in wordContent?.img" :key="item">
             <el-image fit="fill" loading="lazy" :src="item" />
             <el-image fit="fill" loading="lazy" :src="item" />
           </SwipeItem>
@@ -101,24 +105,20 @@ async function handleChooseWord(word: IWord) {
       </div>
 
       <p class="transition-cubic word">
-        <span class="transition-cubic word-inner">{{ data.word.mainWord.word }}<span
-          class="transition-cubic word-type"
-        >{{
-          formateType(data.word.mainWord.type, 1)
-        }}.</span></span>
-        <span class="phonetic" flex items-center gap-2>{{ data.word.mainWord.phonetic }}
+        <span class="transition-cubic word-inner">{{ data.mainWord.word }}<span class="transition-cubic word-type">{{
+          wordContent?.translation[0].typeText
+            }}.</span></span>
+        <span class="phonetic" flex items-center gap-2>{{ data.mainWord.word }}
         </span>
       </p>
     </div>
 
     <ul v-if="finalOptions" class="WordsOptions">
       <!-- {{ formateType(word.type, 1) }}.  -->
-      <li
-        v-for="word in finalOptions" :key="word.word"
-        :class="{ right: options.display && word.word === right.word.mainWord.word }"
-        class="transition-cubic WordOption" @click="handleChooseWord(word)"
-      >
-        <p>{{ word.translation }}</p>
+      <li v-for="word in finalOptions" :key="word.word"
+        :class="{ right: options.display && word.word === right.mainWord.word }" class="transition-cubic WordOption"
+        @click="handleChooseWord(word)">
+        <!-- <p>{{ word.data?.translation }}</p> -->
       </li>
     </ul>
 
@@ -128,8 +128,8 @@ async function handleChooseWord(word: IWord) {
         上一个
       </div>
 
-      <div v-if="data?.word.mainWord" flex items-center gap-1 class="WordCard-Footer-Button">
-        <WordPlayIcon :word="data.word.mainWord?.word" />
+      <div v-if="data?.mainWord" flex items-center gap-1 class="WordCard-Footer-Button">
+        <WordPlayIcon :word="data.mainWord?.word" />
       </div>
 
       <div ml-auto flex items-center gap-1 class="WordCard-Footer-Button">
@@ -139,8 +139,8 @@ async function handleChooseWord(word: IWord) {
     </div>
 
     <teleport to="#rootMain">
-      <div v-if="data?.word.mainWord" :class="{ visible: options.content }" class="transition-cubic WordContent">
-        <WordDetailContent :word="data.word.mainWord" @close="options.content = false" />
+      <div v-if="data?.mainWord.data" :class="{ visible: options.content }" class="transition-cubic WordContent">
+        <WordDetailContent :key="data.mainWord.word" :word="data.mainWord.data.content" @close="options.content = false" />
       </div>
     </teleport>
   </div>
@@ -195,6 +195,7 @@ async function handleChooseWord(word: IWord) {
       color: var(--el-text-color-regular);
       background-color: var(--el-fill-color-darker);
     }
+
     padding: 0.35rem 0.5rem;
 
     width: max-content;
@@ -204,6 +205,7 @@ async function handleChooseWord(word: IWord) {
     color: var(--el-text-color-secondary);
     background-color: var(--el-fill-color-lighter);
   }
+
   position: sticky;
   padding: 0 0.5rem;
   margin: 1rem 0;
@@ -305,6 +307,7 @@ async function handleChooseWord(word: IWord) {
 
       align-items: center;
     }
+
     display: flex;
 
     font-size: 22px;
@@ -330,6 +333,7 @@ async function handleChooseWord(word: IWord) {
     height: 100%;
 
     border-radius: 12px;
+
     // transform: scale(0.97);
     &:first-child {
       z-index: 0;
@@ -344,6 +348,7 @@ async function handleChooseWord(word: IWord) {
     .imagable & {
       opacity: 1;
     }
+
     position: relative;
     padding: 0.5rem;
 

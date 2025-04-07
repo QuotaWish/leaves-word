@@ -5,6 +5,7 @@ import ModeSelector from '~/components/words/ModeSelector.vue'
 import PlanSelector from '~/components/words/PlanSelector.vue'
 import { useTargetData } from '~/modules/words'
 import { globalPreference } from '~/modules/words/core/feat/preference'
+import { ElMessage } from 'element-plus'
 
 const router = useRouter()
 const { targetSignMode } = useTargetData()
@@ -62,6 +63,12 @@ async function handleStart() {
   loadingOptions.progress = -1
 
   const signMode = targetSignMode.value
+
+  if (!signMode) {
+    ElMessage.error('请先选择词书和模式')
+
+    return
+  }
 
   const prepared = signMode.prepareWords()
 
@@ -172,8 +179,7 @@ function handleBack() {
             <div i-carbon:apps />
           </template>
           <template #end>
-          1
-            <!-- {{ targetSignMode.getModeName() }} -->
+            {{ targetSignMode!.getModeName() }}
           </template>
           实操模式
         </LineArrow>

@@ -1,7 +1,8 @@
 import type { ComprehensiveMode, IComprehensiveWordItem } from '.';
 import type { LeafWordData } from '../..';
 import { LeafPrepareSign } from '..';
-import { globalPreference, useWordSound } from '../..';
+import { calendarManager, globalPreference, useWordSound } from '../..';
+import ComprehensiveWord from './display/Word.vue';
 import { ComprehensiveStatistics } from './stat';
 
 // 预加载的单词数量
@@ -149,7 +150,7 @@ export class ComprehensivePrepareWord extends LeafPrepareSign<ComprehensiveMode,
     else {
       this.wordsQueue.push({ mainWord: this.currentWord.mainWord, options: this.currentWord.options, type: 'review', wrongHistory: [] })
 
-      const obj = this.currentWord.word
+      const obj = this.currentWord
 
       const history = obj.wrongHistory || []
       history.push(Date.now())
@@ -185,7 +186,7 @@ export class ComprehensivePrepareWord extends LeafPrepareSign<ComprehensiveMode,
     // 预备加载下5个单词
     const nextIndex = this.wordIndex + PRELOAD_WORD_AMO
     if (nextIndex < this.wordsQueue.length)
-      this.preloadWordData(this.wordsQueue[nextIndex].word)
+      this.preloadWordData(this.wordsQueue[nextIndex])
 
     // 重置单词开始学习时间
     this.wordStartTime = Date.now()
@@ -217,7 +218,7 @@ export class ComprehensivePrepareWord extends LeafPrepareSign<ComprehensiveMode,
 
     const duration = this.endTime - this.startTime
 
-    const words = this.wordsFinished.map(i => i.mainWord.word)
+    const words = this.wordsFinished.map(i => i.word)
 
     if (!this.calendarData) {
       this.calendarData = calendarManager.createTodayData(words, duration, true)
@@ -267,7 +268,7 @@ export class ComprehensivePrepareWord extends LeafPrepareSign<ComprehensiveMode,
 
     const wordsDetails = stat.getDataDefault('wordsDetails', new Array<ComprehensiveWordDetail>())
     const wordDetail = wordsDetails.find(
-      detail => detail.word === currentWord.word.mainWord.word
+      detail => detail.word === currentWord.mainWord.word,
     )
 
     if (wordDetail) {
@@ -284,13 +285,13 @@ export class ComprehensivePrepareWord extends LeafPrepareSign<ComprehensiveMode,
     } else {
       // 创建新记录
       wordsDetails.push({
-        word: currentWord.word.mainWord.word,
+        word: currentWord.mainWord.word,
         isNew: currentWord.type === 'new',
         attempts: 1,
         isCorrect: success,
-        timeSpent: timeSpent,
+        timeSpent,
         wrongHistory: success ? undefined : [Date.now()],
-        optionsClicks: []
+        optionsClicks: [],
       })
     }
 
@@ -304,19 +305,21 @@ export class ComprehensivePrepareWord extends LeafPrepareSign<ComprehensiveMode,
   private updateSessionStatistics(): void {
     const details = this.statistics?.data.wordsDetails || []
 
-    if (details.length === 0) return
+    if (details.length === 0)
+      return
 
     // 计算总时间和正确率
     let totalTime = 0
     let correctCount = 0
 
-    details.forEach((detail: ComprehensiveWordDetail) => {
+    for (const detail of details) {
       totalTime += detail.timeSpent
-      if (detail.isCorrect) correctCount++
-    })
+      if (detail.isCorrect)
+        correctCount++
+    }
 
     const stat = this.statistics
-    if (stat && stat.data) {
+    if (stat?.data) {
       stat.data.sessionDuration = Date.now() - this.startTime
       stat.data.averageTimePerWord = totalTime / details.length
       stat.data.correctRate = correctCount / details.length
@@ -330,14 +333,15 @@ export class ComprehensivePrepareWord extends LeafPrepareSign<ComprehensiveMode,
     }
 
     const stat = this.statistics
-    if (!stat || !stat.data) return
+    if (!stat || !stat.data)
+      return
 
     if (!stat.data.wordsDetails) {
       stat.data.wordsDetails = []
     }
 
     const wordDetail = stat.data.wordsDetails.find(
-      (detail: ComprehensiveWordDetail) => detail.word === this.currentWord!.word.mainWord.word
+      (detail: ComprehensiveWordDetail) => detail.word === this.currentWord!.mainWord.word,
     )
 
     if (wordDetail) {
@@ -348,7 +352,7 @@ export class ComprehensivePrepareWord extends LeafPrepareSign<ComprehensiveMode,
       wordDetail.optionsClicks.push({
         optionText,
         clickTime: Date.now(),
-        isCorrect
+        isCorrect,
       })
     }
 
@@ -356,5 +360,5 @@ export class ComprehensivePrepareWord extends LeafPrepareSign<ComprehensiveMode,
   }
 
   // 用于存储单词开始学习的时间
-  private wordStartTime: number = 0
+  private wordStartTime = 0
 }

@@ -17,7 +17,7 @@ export const useTargetData = createGlobalState(() => {
     const manager = modeManager.get(targetMode.value)
 
     if (!manager || !globalPreference.value.dict.storage)
-      return modeManager.get(ModeType.COMPREHENSIVE)
+      return null
 
     const managerIns = manager(globalPreference.value.dict.storage)
 
