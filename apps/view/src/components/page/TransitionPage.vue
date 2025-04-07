@@ -174,7 +174,7 @@ async function onLeave(tempEl: Element, done: any) {
     }
   }
 
-  await sleep(2000)
+  await sleep(500)
 
   done()
 }
