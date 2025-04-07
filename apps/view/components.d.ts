@@ -80,6 +80,7 @@ declare module 'vue' {
     TheInput: typeof import('./src/components/TheInput.vue')['default']
     TouchDialog: typeof import('./src/components/dialog/TouchDialog.vue')['default']
     TransitionPage: typeof import('./src/components/page/TransitionPage.vue')['default']
+    UserAvatar: typeof import('./src/components/user/UserAvatar.vue')['default']
     VersionBar: typeof import('./src/components/chore/VersionBar.vue')['default']
     WithHeadPage: typeof import('./src/components/page/WithHeadPage.vue')['default']
     WithPage: typeof import('./src/components/page/WithPage.vue')['default']

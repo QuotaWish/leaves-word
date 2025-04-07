@@ -89,7 +89,7 @@ const nextWeekPrediction = ref({
         <div v-if="globalAuthStorage.user" h-full w-full flex px-2 items-center justify-between>
           <div flex items-center gap-4 class="header-main">
             <div class="header-img">
-              <img src="/avatar.jpg">
+              <UserAvatar />
             </div>
             <div flex flex-col justify-center class="header-content">
               <p font-size-5 font-bold class="name">
@@ -102,8 +102,8 @@ const nextWeekPrediction = ref({
             </div>
           </div>
 
-          <div flex justify-end font-size-6 class="header-line">
-            <div i-ri:robot-fill class="ai-assistant-icon" />
+          <div @click="$router.push('/personal/edit')" flex justify-end font-size-6 class="header-line">
+            <div i-ri:edit-2-fill class="cursor-pointer" />
           </div>
         </div>
       </PersonalHeaderDisplay>
@@ -297,33 +297,6 @@ const nextWeekPrediction = ref({
   .light & {
     background-color: #fff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  }
-}
-
-// AI助手图标
-.ai-assistant-icon {
-  color: var(--theme-color-light);
-  filter: drop-shadow(0 0 8px rgba(var(--theme-color-rgb), 0.6));
-  animation: pulse-icon 2s infinite ease-in-out;
-  cursor: pointer;
-
-  .light & {
-    color: var(--theme-color);
-    filter: drop-shadow(0 0 5px rgba(var(--theme-color-rgb), 0.3));
-  }
-}
-
-@keyframes pulse-icon {
-
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-
-  50% {
-    transform: scale(1.1);
-    opacity: 1;
   }
 }
 
