@@ -117,13 +117,6 @@ function openAnalyse() {
         </SwipeItem>
       </Swipe>
 
-      <WordSection>
-        <template #Tag>
-          诠释助记
-        </template>
-        {{ content?.remember }}
-      </WordSection>
-
       <!-- <WordSection v-if="content?.prefix || content?.suffix">
         <template #Tag>
           词根助记
@@ -136,6 +129,13 @@ function openAnalyse() {
         </p>
       </WordSection> -->
     </div>
+
+    <WordSection>
+      <template #Tag>
+        诠释助记
+      </template>
+      {{ content?.remember }}
+    </WordSection>
 
     <WordSection v-if="content.backgroundStory" class="WordContent-Story">
       <template #Tag>
@@ -158,6 +158,13 @@ function openAnalyse() {
         词形变换
       </template>
       <WordTransformDisplayer :word="word" />
+    </WordSection>
+
+    <WordSection>
+      <template #Tag>
+        词缀助记
+      </template>
+      <WordAffixDisplayer :word="word" />
     </WordSection>
 
     <!-- <div class="WordContent-Extra">

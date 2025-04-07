@@ -1,38 +1,39 @@
 <script setup lang="ts">
 import TouchDialog from '~/components/dialog/TouchDialog.vue';
-import type { WordDerived, WordTransform } from '~/composables/api/types';
-import { transformDerivedType, type EnglishWordData } from '~/modules/words';
+import type { WordAffixPart, WordTransform } from '~/composables/api/types';
+import { transformpartType, type EnglishWordData } from '~/modules/words';
 import { highlightKeywords } from '~/composables';
-import LeafButton from '~/components/button/LeafButton.vue';
 
 const props = defineProps<{
   word: EnglishWordData
 }>()
 
 const transform = computed(() => {
-  return props.word.content?.transform
+  return props.word.content?.parts
 })
 
 const options = reactive<{
   open: boolean
-  data: WordTransform | undefined
+  data: WordAffixPart | undefined
 }>({
   open: false,
   data: undefined
 })
 
-const handleDerivedInfo = (item: WordTransform) => {
+const handlePartInfo = (item: WordAffixPart) => {
   console.log(item)
 
   options.open = true
   options.data = item
 }
 
-function getTypeInfo(item: WordTransform) {
+function getTypeInfo(item: WordAffixPart) {
   const data = item.data as any
 
   return data[item.type.toLowerCase()] || data[Object.keys(data)[0]]
 }
+
+console.log(props.word.content?.parts)
 </script>
 
 <template>
@@ -43,10 +44,10 @@ function getTypeInfo(item: WordTransform) {
 
       </div>
       <template v-if="item">
-        <p @click="handleDerivedInfo(item)" cursor-pointer class="hover:color-[var(--theme-color-primary)]" flex
+        <p @click="handlePartInfo(item)" cursor-pointer class="hover:color-[var(--theme-color-primary)]" flex
           items-center gap-2>
           <span>{{ item.content }}</span>
-          <span class="type-badge fake-background">{{ getTypeInfo(item) }}</span>
+          <span class="type-badge fake-background">{{ item.description}}</span>
           <span text-sm op-75>
             <i block i-carbon-information />
           </span>
@@ -58,19 +59,20 @@ function getTypeInfo(item: WordTransform) {
     </div>
 
     <TouchDialog targetAnimation=".WordDetailContent" v-model="options.open">
-      <div v-if="options.data" class="derived-dialog">
-        <div class="derived-header">
+      <div v-if="options.data" class="part-dialog">
+        <div class="part-header">
           <span class="type-badge">{{ options.data.type }}</span>
-          <span class="derived-text">{{ getTypeInfo(options.data) }}</span>
+          <span class="part-text">{{ options.data.description }}</span>
         </div>
 
-        <div class="derived-section fake-background">
+        <div class="part-section fake-background">
           <div class="section-title">
             <i class="section-icon" i-carbon-text-annotation></i>
             <span>{{ options.data.content }}</span>
           </div>
-          <p class="section-content" v-html="highlightKeywords(options.data.example.sentence, options.data.example.highlight)"></p>
-          <p class="section-content" v-html="options.data.example.translation"></p>
+          <p class="section-content">
+            {{ getTypeInfo(options.data) }}
+          </p>
         </div>
 
         <LeafSpeedButton w-full>AI 搜一搜</LeafSpeedButton>
@@ -160,7 +162,7 @@ function getTypeInfo(item: WordTransform) {
   }
 }
 
-.derived-dialog {
+.part-dialog {
   position: relative;
   padding: 1.5rem;
   max-width: 90vw;
@@ -168,7 +170,7 @@ function getTypeInfo(item: WordTransform) {
   overflow: hidden;
   color: #333;
 
-  .derived-header {
+  .part-header {
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -189,7 +191,7 @@ function getTypeInfo(item: WordTransform) {
       text-transform: uppercase;
     }
 
-    .derived-text {
+    .part-text {
       font-size: 1.25rem;
       font-weight: 600;
       background: linear-gradient(90deg, var(--el-text-color-regular), var(--theme-color-primary));
@@ -198,7 +200,7 @@ function getTypeInfo(item: WordTransform) {
     }
   }
 
-  .derived-section {
+  .part-section {
     position: relative;
     margin-bottom: 1rem;
     padding: 0.75rem;
@@ -265,7 +267,7 @@ function getTypeInfo(item: WordTransform) {
       font-weight: 500;
     }
 
-    .example-derived {
+    .example-part {
       font-size: 0.85rem;
     }
   }

@@ -10,8 +10,6 @@ const props = defineProps<{
 }>()
 
 const translation = computed(() => {
-  console.log(props.word.content?.translation)
-
   return props.word.content?.translation
 })
 
@@ -24,8 +22,6 @@ const options = reactive<{
 })
 
 const handleTranslationInfo = (item: WordTranslation) => {
-  console.log(item)
-
   options.open = true
   options.data = item
 }
