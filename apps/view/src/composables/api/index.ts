@@ -82,7 +82,6 @@ const alovaInstance = createAlova({
 
       if (code === 11014 || code === 11015 || code === 11016) {
         eventBus.fireEvent(new TryAuthLogoutEvent())
-        console.log('11014 11015 11016')
       }
 
       if (code !== 0) {

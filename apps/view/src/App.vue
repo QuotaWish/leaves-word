@@ -17,7 +17,7 @@ import { useLeafEventBus } from './composables/event'
 import { AuthSuccessEvent } from './composables/event/auth'
 import { ToastEvent } from './composables/event/toast-event'
 import { useBaseRouteStore } from './composables/store/useRouteStore'
-import { globalAuthStorage } from './modules/auth'
+import { globalAuthStorage, initAuthModule } from './modules/auth'
 
 modeManager.set(ModeType.COMPREHENSIVE, (dictionaryStorage: LeafDictStorage) => new ComprehensiveMode(dictionaryStorage))
 // modeManager.set(ModeType.PUNCH, (dictionaryStorage: DictStorage) => new PunchMode(dictionaryStorage))
@@ -25,6 +25,7 @@ modeManager.set(ModeType.COMPREHENSIVE, (dictionaryStorage: LeafDictStorage) => 
 // modeManager.set(ModeType.READING, (dictionaryStorage: DictStorage) => new DictWordMode(dictionaryStorage))
 
 initApi()
+initAuthModule()
 
 const eventBus = useLeafEventBus()
 const router = useRouter()

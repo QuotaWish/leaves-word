@@ -52,6 +52,7 @@ function handleAuth() {
     align-items: center;
 
     width: 70%;
+    bottom: 0;
 
     &-Button {
       .dark & {

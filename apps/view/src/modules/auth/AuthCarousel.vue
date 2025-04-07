@@ -99,7 +99,7 @@ onBeforeUnmount(() => {
         <div v-for="slide in slides" :key="slide.id" class="carousel-slide">
           <div class="slide-content">
             <video :src="slide.video" muted autoplay loop :alt="slide.title" class="slide-video" />
-            <video :src="slide.video" muted autoplay loop :alt="slide.title" class="slide-video-blur" />
+            <!-- <video :src="slide.video" muted autoplay loop :alt="slide.title" class="slide-video-blur" /> -->
 
             <div class="slide-content-inner">
               <h2 class="slide-title">{{ slide.title }}</h2>
@@ -159,20 +159,10 @@ onBeforeUnmount(() => {
 }
 
 .slide-content video {
+  filter: brightness(0.5) saturate(180%);
+
   --mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 100%);
   mask-image: var(--mask-image);
-}
-
-.slide-video-blur {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-
-  filter: blur(18px) brightness(0.5) saturate(180%);
-  /* clip-path: polygon(0 70%, 100% 70%, 100% 100%, 0 100%); */
 }
 
 .slide-content-inner {
