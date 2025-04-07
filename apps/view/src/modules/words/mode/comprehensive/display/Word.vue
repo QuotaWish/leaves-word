@@ -1,7 +1,7 @@
 <script name="Words" setup lang="ts">
 import WordCard from './WordCard.vue'
-import { useTargetData, useWordSound } from '~/modules/words'
 import type { ComprehensivePrepareWord, IComprehensiveWordItem } from '~/modules/words/mode/comprehensive'
+import { type EnglishWordData, globalPreference, useTargetData, useWordSound } from '~/modules/words'
 
 const props = defineProps<{
   prepare: ComprehensivePrepareWord
@@ -27,12 +27,12 @@ const data = reactive<{
 })
 
 let lastAudio: HTMLAudioElement | null = null
-async function spokenWord(word: IWord) {
+async function spokenWord(word: EnglishWordData) {
   if (lastAudio) {
     lastAudio?.pause()
   }
 
-  lastAudio = await useWordSound(word.word)
+  lastAudio = await useWordSound(word.word_head!)
 
   lastAudio.play()
 }
@@ -41,8 +41,10 @@ function refreshData() {
   data.current = prepareData.currentWord
   Object.assign(prepareData, props.prepare)
 
+  console.log(data.current, props.prepare)
+
   if (data.current) {
-    spokenWord(data.current.word.mainWord)
+    spokenWord(data.current.mainWord.data!)
   }
 }
 
@@ -108,7 +110,7 @@ async function slideCard(direction: 'left' | 'right', nextCardData: IComprehensi
 
   // 8. 朗读新单词
   if (data.current) {
-    spokenWord(data.current.word.mainWord)
+    spokenWord(data.current.mainWord.data!)
   }
 }
 
@@ -136,7 +138,6 @@ async function nextData(success: boolean) {
   if (!result) {
     await prepareData.finish()
     emits('done')
-    console.log('finish')
     return
   }
 
@@ -150,8 +151,6 @@ async function nextData(success: boolean) {
   await slideCard('left', nextWordData)
 }
 
-const { targetDict } = useTargetData()
-
 async function handleChoose(wrong: boolean) {
   lastAudio?.pause()
 
@@ -161,7 +160,7 @@ async function handleChoose(wrong: boolean) {
 }
 
 function goDictionary() {
-  router.push(`/dictionary/${targetDict.value.id}`)
+  router.push(`/dictionary/${globalPreference.value.dict.data?.id}`)
 }
 
 onMounted(() => {
@@ -182,7 +181,7 @@ onMounted(() => {
         </div>
 
         <h1 flex items-center gap-2 text-sm op-75 @click="goDictionary">
-          <el-link>{{ targetDict.name }}</el-link>
+          <el-link>{{ globalPreference.dict.data?.name }}</el-link>
         </h1>
       </div>
 

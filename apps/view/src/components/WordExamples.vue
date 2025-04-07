@@ -14,7 +14,7 @@ function formateSentence(sentence: string) {
   if (!props.word)
     return
 
-  return sentence.replaceAll(props.word.word_head!, `<span class="WordExamples-Word">${props.word.word_head}</span>`)
+  return sentence.replaceAll(props.word.word_head!, `<span class="highlight">${props.word.word_head}</span>`)
 }
 </script>
 
@@ -39,7 +39,7 @@ function formateSentence(sentence: string) {
   &-Header {
     span {
       &.active {
-        background-color: var(--el-color-primary-light-7);
+        background-color: var(--theme-color-primary);
       }
       display: flex;
       padding: 0.5rem;
@@ -50,6 +50,7 @@ function formateSentence(sentence: string) {
       align-items: center;
       justify-content: center;
 
+      color: #fff;
       border-radius: 4px;
       background-color: var(--el-fill-color);
     }
@@ -65,12 +66,6 @@ function formateSentence(sentence: string) {
 
   border-radius: 16px;
   color: var(--el-text-color-secondary);
-  background-color: var(--el-bg-color-page);
-}
-
-.WordExamples-Word {
-  // font-weight: 600;
-  color: var(--el-color-primary);
 }
 
 .WordExample-Content {

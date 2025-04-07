@@ -9,6 +9,7 @@ const props = defineProps<{
   header?: boolean;
   footer?: boolean;
   active?: boolean;
+  targetAnimation?: string;
 }>();
 
 const emits = defineEmits(["update:modelValue"]);
@@ -31,6 +32,8 @@ watch(visible, (val) => {
           borderRadius: "35px",
         });
       }
+
+      handleTagretElement();
     });
   } else {
     nextTick(() => {
@@ -42,6 +45,8 @@ watch(visible, (val) => {
           borderRadius: "",
         });
       }
+
+      handleTagretElement();
     });
   }
 });
@@ -51,6 +56,25 @@ const dialogOptions = reactive({
 });
 
 const dom = ref<HTMLElement>();
+
+async function handleTagretElement() {
+  if (!props.targetAnimation) return;
+
+  const targetElement = document.querySelector(props.targetAnimation) as HTMLElement;
+  if (!targetElement) return;
+
+  if (visible.value) {
+    Object.assign(targetElement.style, {
+      transform: "scale(0.9)",
+      borderRadius: "35px",
+    })
+  } else {
+    Object.assign(targetElement.style, {
+      transform: "",
+      borderRadius: "",
+    })
+  }
+}
 
 async function handleShrinkDialog() {
   const parentEl = dom.value!.parentElement!;
@@ -403,7 +427,7 @@ onMounted(() => {
     max-height: 80%;
 
     opacity: 1;
-    transition: 0.5s 0.25s;
+    transition: 0.5s 0.125s;
     transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
     transform: translate(-50%, -50%) scale(1);
   }

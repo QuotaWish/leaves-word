@@ -12,7 +12,7 @@ defineOptions({
 const route = useRoute('/dictionary/[id]')
 const dict = ref<EnglishDictionaryVO>()
 const router = useRouter()
-const active = ref(0)
+const active = ref(+(route.query.tab as string))
 const showDetailsDialog = ref(false)
 
 const { loading, send, onSuccess, onError } = useRequest(() => Apis.englishDictionaryController.getEnglishDictionaryVOByIdUsingGET({ params: { id: route.params.id } }))
@@ -84,6 +84,14 @@ const featureCards = [
 ]
 
 watch(() => route.params.id, send, { immediate: true })
+
+watch(active, () => {
+  router.replace({
+    query: {
+      tab: active.value,
+    }
+  })
+})
 </script>
 
 <template>
@@ -158,13 +166,7 @@ watch(() => route.params.id, send, { immediate: true })
           </Tab>
 
           <Tab title="词表">
-            <div class="p-4">
-              <div class="border border-gray-100 rounded-lg p-4">
-                <p class="text-sm text-gray-500">
-                  词表内容展示区域
-                </p>
-              </div>
-            </div>
+            <DictionaryWord :dict="dict" />
           </Tab>
 
           <Tab title="词典属性">

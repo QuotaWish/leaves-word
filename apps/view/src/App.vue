@@ -120,3 +120,9 @@ router.beforeEach((to, from) => {
     </Splash>
   </el-config-provider>
 </template>
+
+<style lang="scss">
+.highlight {
+  color: var(--theme-color-primary);
+}
+</style>

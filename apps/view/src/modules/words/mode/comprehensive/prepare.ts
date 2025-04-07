@@ -1,9 +1,11 @@
 import type { ComprehensiveMode, IComprehensiveWordItem } from '.';
-import type { LeafWordData } from '../..';
+import { useRequest } from 'alova/client';
 import { LeafPrepareSign } from '..';
+import { EnglishWordData, generateOptions, LeafWordData } from '../..';
 import { calendarManager, globalPreference, useWordSound } from '../..';
 import ComprehensiveWord from './display/Word.vue';
 import { ComprehensiveStatistics } from './stat';
+import type { DictionaryWordWithWordVO, EnglishWord } from '~/composables/api/clients/globals';
 
 // 预加载的单词数量
 const PRELOAD_WORD_AMO = 5
@@ -39,7 +41,7 @@ export class ComprehensivePrepareWord extends LeafPrepareSign<ComprehensiveMode,
 
     // const storage = this.mode.dictionaryStorage
     // const unlearedWords = storage.getUnlearnedWords()
-    const amo = Math.min(preference.amount, 0)
+    const amo = Math.max(preference.amount, 0)
 
     this.taskAmount = amo
   }
@@ -58,11 +60,21 @@ export class ComprehensivePrepareWord extends LeafPrepareSign<ComprehensiveMode,
     return res
   }
 
-  preload(callback: (progress: number) => void): Promise<boolean> {
+  async preload(callback: (progress: number) => void): Promise<boolean> {
     this.amo = 0
     this.wordsQueue.length = this.wordsDispalyed.length = this.wordsFinished.length = 0
 
     const storage = this.mode.dictionaryStorage
+
+    const { send } = useRequest(() => Apis.EnglishWords.listEnglishWordByPageUsingPOST({
+      data: {
+        pageSize: this.taskAmount,
+        dict_id: globalPreference.value.dict.id,
+      },
+    }))
+
+    const { data } = await send()
+    const records: LeafWordData[] = [...(data?.records || [])].map((item: DictionaryWordWithWordVO) => new LeafWordData(item.word?.word_head!).setData(new EnglishWordData(item.word!)))
 
     return new Promise((resolve) => {
       const maxProgress = PRELOAD_WORD_AMO * 5 * this.taskAmount + this.taskAmount
@@ -70,13 +82,12 @@ export class ComprehensivePrepareWord extends LeafPrepareSign<ComprehensiveMode,
       const words: IComprehensiveWordItem[] = []
 
       while (words.length < this.taskAmount) {
-        const res = storage.randomUnlearnedWordsWithOptiohns()
+        const res = records.shift()!
 
-        if (words.some(item => item.mainWord.word === res.mainWord.word)) {
-          continue
-        }
+        // 从 records 中随机选择 3 个单词
+        const options = records.filter(item => item.word !== res.word).sort(() => Math.random() - 0.5).slice(0, 3)
 
-        words.push({ mainWord: res, options: [], type: 'new', wrongHistory: [] })
+        words.push({ mainWord: res, options, type: 'new', wrongHistory: [] })
         progress += 1
         callback(+(progress / maxProgress).toFixed(2))
       }

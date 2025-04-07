@@ -17,10 +17,12 @@ declare module 'vue' {
     CoffettiParticle: typeof import('./src/components/chore/CoffettiParticle.vue')['default']
     ColorOption: typeof import('./src/components/settings/ColorOption.vue')['default']
     Comprehensive: typeof import('./src/components/words/mode/comprehensive/index.vue')['default']
+    copy: typeof import('./src/components/words/display/WordDerivedDisplayer copy.vue')['default']
     DarkModeSwitch: typeof import('./src/components/button/DarkModeSwitch.vue')['default']
     DictationPage: typeof import('./src/components/input/DictationPage.vue')['default']
     DictionaryBookDisplay: typeof import('./src/components/display/DictionaryBookDisplay.vue')['default']
     DictionaryDisplay: typeof import('./src/components/display/DictionaryDisplay.vue')['default']
+    DictionaryWord: typeof import('./src/components/words/dictionary/DictionaryWord.vue')['default']
     DictSelector: typeof import('./src/components/words/DictSelector.vue')['default']
     DrawerPage: typeof import('./src/components/page/DrawerPage.vue')['default']
     DrawerStateButton: typeof import('./src/components/button/DrawerStateButton.vue')['default']
@@ -84,6 +86,7 @@ declare module 'vue' {
     Word: typeof import('./src/modules/words/core/mode/comprehensive/display/Word.vue')['default']
     WordCard: typeof import('./src/components/WordCard.vue')['default']
     WordContentDisplay: typeof import('./src/components/words/page/WordContentDisplay.vue')['default']
+    WordDerivedDisplayer: typeof import('./src/components/words/display/WordDerivedDisplayer.vue')['default']
     WordDetailContent: typeof import('./src/components/words/WordDetailContent.vue')['default']
     WordExamples: typeof import('./src/components/WordExamples.vue')['default']
     WordIndexBanner: typeof import('./src/components/words/WordIndexBanner.vue')['default']
@@ -92,5 +95,7 @@ declare module 'vue' {
     WordSelector: typeof import('./src/components/words/WordSelector.vue')['default']
     WordSignInfo: typeof import('./src/components/words/WordSignInfo.vue')['default']
     WordSignInfoCard: typeof import('./src/components/words/card/WordSignInfoCard.vue')['default']
+    WordTransformDisplayer: typeof import('./src/components/words/display/WordTransformDisplayer.vue')['default']
+    WordTranslationDisplayer: typeof import('./src/components/words/display/WordTranslationDisplayer.vue')['default']
   }
 }

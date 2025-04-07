@@ -2,6 +2,7 @@
 import type { EnglishWordData, WordContent } from '~/modules/words'
 import { Swipe, SwipeItem } from 'vant'
 import { useWordSound } from '~/modules/words'
+import WithPage from '../page/WithPage.vue';
 
 const props = defineProps<{
   word: EnglishWordData
@@ -81,41 +82,40 @@ function openAnalyse() {
 </script>
 
 <template>
-  <div class="WordDetailContent">
-    <div class="WordDetailContent-Background" />
-
+  <WithHeadPage class="WordDetailContent transition-cubic">
     <div class="WordDetaiContent-Header">
-      <p :style="duration > 0 ? `--a: growth ${duration}ms` : ''" flex items-end gap-2 class="word">
-        {{ word.word_head }}
-      </p>
+      <div :style="duration > 0 ? `--a: growth ${duration}ms` : ''" flex items-center gap-2 class="word">
+        <p>
+          {{ word.word_head }}
+        </p>
+        <p text-xl>
+          <PlayIcon :active="duration > 0" @click="spokenWord(word)" />
+        </p>
+      </div>
 
       <div class="desc">
         <div flex items-center class="desc-phonetic">
           <span text-sm class="phonetic">
-            <!-- {{ word.phonetic }} -->
+            {{ content.britishPronounce.content }}
           </span>
-          <PlayIcon :active="duration > 0" @click="spokenWord(word)" />
-        </div>
-        <div class="desc-translation">
-          <!-- {{ word.translation }} <span mx-2 op-50>{{ formateType(word.type) }}.</span> -->
+
         </div>
       </div>
+
+      <WordSection>
+        <template #Tag>
+          释义
+        </template>
+        <WordTranslationDisplayer :word="word" />
+      </WordSection>
     </div>
 
     <div class="WordDetailContent-Main">
       <Swipe style="border-radius: 20px" lazy-render overflow-hidden :autoplay="3000" indicator-color="red">
         <SwipeItem v-for="item in content?.img" :key="item">
-          <el-image style="width: 100%;height: 200px" fit="fill" loading="lazy" :src="item" />
+          <el-image style="width: 100%;height: 240px" fit="contain" loading="lazy" :src="item" />
         </SwipeItem>
       </Swipe>
-
-      <WordSection>
-        <template #Tag>
-          定义解析
-        </template>
-        <p>{{ content?.definition[0] }}</p>
-        <p>{{ content?.definition[1] }}</p>
-      </WordSection>
 
       <WordSection>
         <template #Tag>
@@ -135,38 +135,30 @@ function openAnalyse() {
           {{ word.suffix }}
         </p>
       </WordSection> -->
-
-      <!-- <WordSection>
-        <template #Tag>
-          短语助记
-        </template>
-        <div v-for="(phrase, ind) in word.phrases" :key="ind" my-2>
-          <div my-1 class="phrase-header" flex flex-col font-bold>
-            {{ phrase.phrase }}
-            <p text-sm font-normal op-75>
-              {{ phrase.usage }}
-            </p>
-          </div>
-          <p text-sm v-html="highlightKeywords(phrase.example, phrase.phrase)" />
-          <p text-sm>
-            {{ phrase.translation }}
-          </p>
-        </div>
-      </WordSection> -->
-
-      <!-- <WordSection>
-        <template #Tag>
-          故事助记
-        </template>
-        {{ word.story }}
-      </WordSection> -->
     </div>
 
-    <!-- <div v-if="word.backgroundStory" class="WordContent-Story">
-        {{ word.backgroundStory }}
-      </div> -->
+    <WordSection v-if="content.backgroundStory" class="WordContent-Story">
+      <template #Tag>
+        故事助记
+      </template>
+      {{ content.backgroundStory }}
+    </WordSection>
 
     <WordExamples v-if="content?.examplePhrases?.length" style="margin: 0 1rem" :word="word" />
+
+    <WordSection>
+      <template #Tag>
+        衍生词
+      </template>
+      <WordDerivedDisplayer :word="word" />
+    </WordSection>
+
+    <WordSection>
+      <template #Tag>
+        词形变换
+      </template>
+      <WordTransformDisplayer :word="word" />
+    </WordSection>
 
     <!-- <div class="WordContent-Extra">
       <div v-if="content?.synonyms?.length" class="block">
@@ -225,10 +217,14 @@ function openAnalyse() {
     <TouchDialog v-model="analyze">
       <div id="chat-content" class="WordDetailContent-DialogContent" />
     </TouchDialog>
-  </div>
+
+    <template #shrinkHeader>
+      {{ word.word_head }}
+    </template>
+  </WithHeadPage>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .WordDetailContent-DialogContent {
   padding-bottom: 0.5rem;
 
@@ -246,8 +242,8 @@ function openAnalyse() {
     background-color: var(--el-fill-color);
   }
 
-  p.word {
-    &::before {
+  div.word {
+    p::before {
       content: '';
       position: absolute;
 
@@ -277,7 +273,7 @@ function openAnalyse() {
   }
 
   position: relative;
-  padding: 1rem;
+  padding: 1rem 1.25rem;
   display: flex;
 
   flex-direction: column;
@@ -301,13 +297,9 @@ function openAnalyse() {
   }
 }
 
-.WordDetailContent-Main {
-  padding: 0 1rem;
-}
-
 .WordContent-Bottom {
   position: sticky;
-  padding: 1rem;
+  padding: 1rem 2rem;
   display: flex;
 
   top: calc(100% - 72px);
@@ -370,40 +362,12 @@ function openAnalyse() {
   margin: 0.5rem 1rem;
 }
 
-.WordDetailContent {
-  .highlight {
-    color: var(--el-color-primary);
-  }
-
+div.WithPage.WordDetailContent {
   position: relative;
 
   width: 100%;
   min-height: 100%;
-}
 
-.WordDetailContent-Background {
-  .dark & {
-    opacity: 0.25;
-  }
-
-  z-index: -1;
-  position: absolute;
-
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100%;
-
-  opacity: 0.75;
-  filter: blur(12px) saturate(180%);
-
-  background-color: var(--el-bg-color-page);
-  background-image: radial-gradient(var(--theme-color-light) 10%, transparent 10%),
-    radial-gradient(var(--theme-color) 10%, transparent 10%);
-  background-size: 100px 100px;
-  background-position:
-    0 0,
-    50px 50px;
+  overflow-y: auto;
 }
 </style>

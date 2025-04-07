@@ -2,6 +2,8 @@ import type { LeafWordData } from '../..'
 import { SignMode } from '..'
 import { ComprehensivePrepareWord } from './prepare'
 
+export * from './prepare'
+
 export interface IComprehensiveWordItem {
   mainWord: LeafWordData
   options: LeafWordData[]

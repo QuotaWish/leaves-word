@@ -1,7 +1,7 @@
 <script name="Words" setup lang="ts">
 import type { IComprehensiveWordItem } from '~/modules/words/mode/comprehensive'
 import { Swipe, SwipeItem } from 'vant'
-import { LeafWordData, useErrorAudio, useSuccessAudio } from '~/modules/words'
+import { LeafWordData, useErrorAudio, useSuccessAudio, formatDisplayType } from '~/modules/words'
 
 const props = defineProps<{
   data: IComprehensiveWordItem
@@ -106,9 +106,9 @@ const wordContent = computed(() => {
 
       <p class="transition-cubic word">
         <span class="transition-cubic word-inner">{{ data.mainWord.word }}<span class="transition-cubic word-type">{{
-          wordContent?.translation[0].typeText
+          formatDisplayType(wordContent!)
             }}.</span></span>
-        <span class="phonetic" flex items-center gap-2>{{ data.mainWord.word }}
+        <span class="phonetic" flex items-center gap-2>{{ data.mainWord.data?.content.britishPronounce.content }}
         </span>
       </p>
     </div>
@@ -118,7 +118,10 @@ const wordContent = computed(() => {
       <li v-for="word in finalOptions" :key="word.word"
         :class="{ right: options.display && word.word === right.mainWord.word }" class="transition-cubic WordOption"
         @click="handleChooseWord(word)">
-        <!-- <p>{{ word.data?.translation }}</p> -->
+        <p>
+          <span text-sm>{{ formatDisplayType(word.data?.content!) }}</span>
+          {{ word.data?.content.translation[0].translation }}
+        </p>
       </li>
     </ul>
 
@@ -140,7 +143,7 @@ const wordContent = computed(() => {
 
     <teleport to="#rootMain">
       <div v-if="data?.mainWord.data" :class="{ visible: options.content }" class="transition-cubic WordContent">
-        <WordDetailContent :key="data.mainWord.word" :word="data.mainWord.data.content" @close="options.content = false" />
+        <WordDetailContent :key="data.mainWord.word" :word="data.mainWord.data" @close="options.content = false" />
       </div>
     </teleport>
   </div>
