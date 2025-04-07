@@ -21,12 +21,12 @@ watch(immersiveMode, (val: boolean) => {
       </div>
 
       <div flex items-center gap-2>
-        <RoundInfo type="danger">
+        <RoundInfo @click="router.push('/chores/health')" type="danger">
           <div i-carbon-favorite-filled />
           5
         </RoundInfo>
 
-        <RoundInfo type="warning">
+        <RoundInfo @click="router.push('/chores/dummy')" type="warning">
           <div i-carbon-star-filled />
           400
         </RoundInfo>

@@ -1,36 +1,14 @@
 <script setup lang="ts">
 import PageNavHolder from '~/components/page/holder/PageNavHolder.vue'
-import PageSettingsSection from '~/components/display/settings/PageSettingsSection.vue'
 import PageSettingsItem from '~/components/display/settings/PageSettingsItem.vue'
-import { useDevMode } from '~/modules/develop'
 import { useRouter } from 'vue-router'
 import { globalAuthStorage } from '~/modules/auth'
 
-// 导入开发者模式设置
-const { devModeEnabled, toggleDevMode } = useDevMode()
 const router = useRouter()
 
 // 页面跳转函数
 function navigateTo(path: string) {
   router.push(path)
-}
-
-// 跳转到开发者页面
-function navigateToDeveloperPage() {
-  navigateTo('/personal/develop')
-}
-
-// 跳转到主题设置页面
-function navigateToThemePage() {
-  navigateTo('/personal/theme')
-}
-
-// 默认广告状态
-const noAdsEnabled = ref(false)
-
-// 切换广告状态
-function toggleNoAds(value: boolean) {
-  noAdsEnabled.value = value
 }
 </script>
 
