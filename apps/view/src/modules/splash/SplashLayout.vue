@@ -40,7 +40,7 @@ const { active } = useFooterNav()
     transform: translateY(0);
   }
 
-  z-index: 10000000;
+  z-index: 100;
   position: absolute;
 
   bottom: 0;
