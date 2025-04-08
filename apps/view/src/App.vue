@@ -106,7 +106,8 @@ router.beforeEach((to, from) => {
         <router-view v-slot="{ Component }">
           <TransitionPage>
             <!-- ['DictionaryPage', 'SignedPage'] -->
-            <keep-alive :include="['IndexPage']" :exclude="baseRouteStore.excludeNames">
+            <!-- <keep-alive :include="['IndexPage']" :exclude="baseRouteStore.excludeNames"> -->
+            <keep-alive :lru="10" :exclude="['DictionaryPage', 'SignedPage']">
               <component :is="Component" />
             </keep-alive>
           </TransitionPage>

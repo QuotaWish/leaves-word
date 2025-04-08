@@ -338,7 +338,7 @@ const nextWeekPrediction = ref({
     width: 20px;
     height: 20px;
     margin-right: 10px;
-    color: var(--theme-color);
+    color: var(--theme-color-primary);
   }
 
   .ai-title {
@@ -391,7 +391,7 @@ const nextWeekPrediction = ref({
 
       .style-fill {
         height: 100%;
-        background: linear-gradient(to right, var(--theme-color), var(--theme-color-light));
+        background: linear-gradient(to right, var(--theme-color-primary), var(--theme-color-light));
         border-radius: 4px;
 
         .light & {
@@ -431,7 +431,7 @@ const nextWeekPrediction = ref({
   .stat-value {
     font-size: 20px;
     font-weight: 600;
-    background: linear-gradient(to right, var(--theme-color), var(--theme-color-light));
+    background: linear-gradient(to right, var(--theme-color-primary), var(--theme-color-light));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 4px;
@@ -531,7 +531,7 @@ const nextWeekPrediction = ref({
 
       .light & {
         background: rgba(var(--theme-color-rgb), 0.1);
-        color: var(--theme-color);
+        color: var(--theme-color-primary);
       }
     }
   }
@@ -556,7 +556,7 @@ const nextWeekPrediction = ref({
       content: '•';
       position: absolute;
       left: -15px;
-      color: var(--theme-color);
+      color: var(--theme-color-primary);
     }
   }
 }

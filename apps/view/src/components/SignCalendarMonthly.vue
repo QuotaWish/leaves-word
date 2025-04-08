@@ -308,14 +308,14 @@ function toggleCalendar() {
 
         &.checked {
           color: #fff;
-          background: linear-gradient(135deg, var(--theme-color) 0%, var(--theme-color-light) 100%);
+          background: linear-gradient(135deg, var(--theme-color-primary) 0%, var(--theme-color-light) 100%);
           font-weight: 600;
           transform: translateY(-2px);
         }
 
         &.today {
-          border: 2px solid var(--theme-color);
-          color: var(--theme-color);
+          border: 2px solid var(--theme-color-primary);
+          color: var(--theme-color-primary);
           font-weight: 600;
 
           .today-indicator {
@@ -323,7 +323,7 @@ function toggleCalendar() {
             bottom: -2px;
             width: 4px;
             height: 4px;
-            background-color: var(--theme-color);
+            background-color: var(--theme-color-primary);
             border-radius: 50%;
           }
 
@@ -366,28 +366,28 @@ function toggleCalendar() {
     }
 
     &.active {
-      background: linear-gradient(135deg, var(--theme-color) 0%, var(--theme-color-light) 100%);
+      background: linear-gradient(135deg, var(--theme-color-primary) 0%, var(--theme-color-light) 100%);
       transform: translateY(-2px);
       color: #fff;
       font-weight: 600;
-      box-shadow: 0 3px 8px rgba(var(--theme-color-rgb), 0.3);
+      box-shadow: 0 3px 8px rgba(var(--theme-color-primary), 0.3);
     }
 
     .topic-indicator {
       position: absolute;
       width: 6px;
       height: 6px;
-      background: linear-gradient(135deg, var(--theme-color-light) 0%, var(--theme-color) 100%);
+      background: linear-gradient(135deg, var(--theme-color-light) 0%, var(--theme-color-primary) 100%);
       border-radius: 50%;
       bottom: 2px;
     }
 
     &:hover:not(.active) {
-      background-color: rgba(var(--theme-color-rgb), 0.1);
+      background-color: rgba(var(--theme-color-primary), 0.1);
       transform: translateY(-1px);
 
       html.dark & {
-        background-color: rgba(var(--theme-color-rgb), 0.2);
+        background-color: rgba(var(--theme-color-primary), 0.2);
       }
     }
   }
@@ -405,7 +405,8 @@ function toggleCalendar() {
       justify-content: center;
       gap: 8px;
       padding: 6px 16px;
-      background: linear-gradient(135deg, var(--theme-color) 0%, var(--theme-color-light) 100%);
+      border: 1px solid var(--theme-color-primary);
+      background: linear-gradient(135deg, var(--theme-color-primary) 0%, var(--theme-color-dark) 100%);
       color: white;
       font-weight: 500;
       font-size: 13px;
@@ -420,16 +421,14 @@ function toggleCalendar() {
       }
 
       &.expanded {
-        background: rgba(var(--theme-color-rgb), 0.1);
-        color: var(--theme-color);
-        border: 1px solid var(--theme-color);
+        color: #fff;
 
         html.dark & {
           background: rgba(var(--theme-color-rgb), 0.2);
         }
 
         .arrow-icon {
-          border-color: var(--theme-color);
+          border-color: #fff;
         }
       }
 
@@ -457,6 +456,7 @@ function toggleCalendar() {
         opacity: 0;
         transform: translateY(-10px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -574,7 +574,7 @@ function toggleCalendar() {
         font-size: 18px;
         font-weight: 600;
         border-radius: 10px;
-        background: linear-gradient(135deg, var(--theme-color) 0%, var(--theme-color-light) 100%);
+        background: linear-gradient(135deg, var(--theme-color-primary) 0%, var(--theme-color-light) 100%);
         cursor: pointer;
         transition: all 0.3s ease;
         box-shadow: 0 2px 6px rgba(var(--theme-color-rgb), 0.2);
@@ -650,7 +650,7 @@ function toggleCalendar() {
           }
 
           .count-value {
-            color: var(--theme-color);
+            color: var(--theme-color-primary);
             font-weight: bold;
             font-size: 12px;
 
@@ -685,7 +685,7 @@ function toggleCalendar() {
             .mini-progress-fill {
               position: absolute;
               height: 100%;
-              background: linear-gradient(to right, var(--theme-color), var(--theme-color-light));
+              background: linear-gradient(to right, var(--theme-color-primary), var(--theme-color-light));
               border-radius: 2px;
               transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
             }
@@ -717,13 +717,13 @@ function toggleCalendar() {
       height: 1px;
       background: linear-gradient(90deg,
           transparent 0%,
-          rgba(var(--theme-color-rgb), 0.3) 50%,
+          rgba(var(--theme-color-primary), 0.3) 50%,
           transparent 100%);
 
       html.dark & {
         background: linear-gradient(90deg,
             transparent 0%,
-            rgba(var(--theme-color-rgb), 0.6) 50%,
+            rgba(var(--theme-color-primary), 0.6) 50%,
             transparent 100%);
       }
     }
@@ -742,7 +742,7 @@ function toggleCalendar() {
       align-items: center;
 
       &.completed {
-        background: linear-gradient(135deg, var(--theme-color) 0%, var(--theme-color-light) 100%);
+        background: linear-gradient(135deg, var(--theme-color-primary) 0%, var(--theme-color-light) 100%);
         color: #fff;
 
         &::before {
@@ -757,9 +757,9 @@ function toggleCalendar() {
       }
 
       &.today {
-        background: rgba(var(--theme-color-rgb), 0.08);
-        color: var(--theme-color);
-        border: 1px solid var(--theme-color);
+        background: rgba(var(--theme-color-primary), 0.08);
+        color: var(--theme-color-primary);
+        border: 1px solid var(--theme-color-primary);
 
         &::before {
           content: '';
@@ -767,18 +767,18 @@ function toggleCalendar() {
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          border: 1px solid var(--theme-color);
+          border: 1px solid var(--theme-color-primary);
           margin-right: 6px;
         }
       }
 
       &.topic {
-        background: rgba(var(--theme-color-rgb), 0.05);
+        background: rgba(var(--theme-color-primary), 0.05);
         color: var(--el-text-color-secondary);
 
         html.dark & {
           color: rgba(255, 255, 255, 0.7);
-          background: rgba(var(--theme-color-rgb), 0.1);
+          background: rgba(var(--theme-color-primary), 0.1);
         }
 
         &::before {
