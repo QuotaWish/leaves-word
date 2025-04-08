@@ -30,7 +30,7 @@ const WordExampleListEditor: React.FC<WordExampleListEditorProps> = ({ value, re
       dataIndex: 'example',
       valueType: 'group',
       renderFormItem: () => <WordExampleEditor />,
-      render: () => <WordExampleEditor readonly />,
+      render: (_, record) => <WordExampleEditor readonly value={record.example} />,
     },
     {
       title: '操作',
@@ -122,6 +122,10 @@ const WordExampleListEditor: React.FC<WordExampleListEditorProps> = ({ value, re
             注意：格式化配置中，若原音频不为空，则不会重新生成音频。
           </strong>
         </p>
+
+        <pre>
+          {JSON.stringify(exampleList, null, 2)}
+        </pre>
       </div>
     </div>
   );

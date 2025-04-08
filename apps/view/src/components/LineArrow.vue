@@ -27,12 +27,6 @@ section {
   width: 100%;
   overflow: hidden;
   user-select: none;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 128, 0, 0.1);
-  }
 
   &:active {
     background-color: rgba(0, 128, 0, 0.05);
@@ -42,12 +36,12 @@ section {
     background: linear-gradient(135deg, rgba(144, 238, 144, 0.2), rgba(0, 128, 0, 0.1));
 
     .head-icon {
-      background: linear-gradient(135deg, #90ee90, #228b22);
+      background: linear-gradient(135deg, var(--theme-color-primary), var(--theme-color-light));
       color: white;
     }
 
     .arrow-icon {
-      color: #228b22;
+      color: var(--theme-color-primary);
     }
   }
 
@@ -72,8 +66,10 @@ section {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background-color: #e8f5e9;
-    color: #2e7d32;
+    background-color: var(--theme-color-light);
+    color: var(--theme-color-primary);
+    // background-color: #e8f5e9;
+    // color: #2e7d32;
     transition: all 0.3s ease;
   }
 
@@ -82,7 +78,8 @@ section {
     min-width: 32px;
     width: max-content;
     font-size: 14px;
-    color: #66bb6a;
+    // color: #66bb6a;
+    color: var(--theme-color-primary);
 
     .arrow-icon {
       transition: transform 0.3s ease;

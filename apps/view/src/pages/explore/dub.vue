@@ -2,6 +2,10 @@ image.png
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+<<<<<<< HEAD
+=======
+import { Star as IconStar } from '@element-plus/icons-vue'  // 修改导入方式
+>>>>>>> 30a6862c7bb4cbbb96150fa1b3e32ac1ee923040
 import { DUB_VIDEOS } from '~/modules/dub-videos/video-resource'
 
 const router = useRouter()
@@ -88,10 +92,13 @@ const handleDifficultyChange = (value: number) => {
   difficulty.value = value
 }
 
+<<<<<<< HEAD
 const handleVideoError = () => {
   console.error('视频加载失败')
   isLoading.value = false
 }
+=======
+>>>>>>> 30a6862c7bb4cbbb96150fa1b3e32ac1ee923040
 </script>
 
 <template>
@@ -105,12 +112,16 @@ const handleVideoError = () => {
     </div>
     <div class="dub-container">
       <div class="video-section">
+<<<<<<< HEAD
         <video
           ref="videoRef"
           class="main-video"
           :src="currentVideo.url"
           @loadeddata="handleVideoLoaded"
           @error="handleVideoError"
+=======
+        <video ref="videoRef" class="main-video" :src="currentVideo.url" @loadeddata="handleVideoLoaded"
+>>>>>>> 30a6862c7bb4cbbb96150fa1b3e32ac1ee923040
           @play="handleVideoPlay"
           @timeupdate="(e) => handleVideoTimeUpdate((e.target as HTMLVideoElement).currentTime, (e.target as HTMLVideoElement).duration)"
           @ended="handleVideoEnded">

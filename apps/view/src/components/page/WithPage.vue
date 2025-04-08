@@ -25,16 +25,20 @@ withDefaults(defineProps<{
   overflow: hidden;
 
   .statusbar &.adapt {
-    padding-top: 28px;
+    padding-top: 44px;
   }
 
   .statusbar .builder &.adapt {
     padding-top: 44px;
   }
 
-  .fullscreen & {
-    padding-top: 44px;
+  .footerVisible & {
+    padding-bottom: var(--footer-height);
   }
+
+  // .fullscreen & {
+  //   padding-top: 44px;
+  // }
 
   .statusbar .iPhone16 &.adapt {
     padding-top: 44px;

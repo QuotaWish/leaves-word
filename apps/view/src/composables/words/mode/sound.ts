@@ -1,6 +1,6 @@
 import SoundWord from "~/components/words/mode/sound/index.vue";
 import SoundStatistics from "~/components/statistics/SoundStatistics.vue";
-import { PrepareWord, SignMode, ModeType } from ".";
+import { PrepareWord, SignMode, ModeType } from "../../../modules/words/mode";
 import { Component, defineAsyncComponent } from "vue";
 import {
   calendarManager,
@@ -373,7 +373,7 @@ export class SoundPrepareWord {
 
   checkUserInput(input: string): boolean {
     if (!this.currentWord) return false;
-    
+
     if (this.currentWord.type === SoundWordType.DICTATION) {
       const expected = this.currentWord.word.mainWord.word.trim().toLowerCase();
       const userInput = input.trim().toLowerCase();
@@ -397,14 +397,14 @@ export class SoundPrepareWord {
 
     const timeSpent = Date.now() - this.wordStartTime;
     const stat = this.getStatistics();
-    
+
     if (!stat.data.wordsDetails) {
       stat.data.wordsDetails = [];
     }
 
     const wordDetails = [...stat.data.wordsDetails];
     const wordText = this.currentWord.word.mainWord.word;
-    const detailIndex = wordDetails.findIndex(d => 
+    const detailIndex = wordDetails.findIndex(d =>
       d.word === wordText && d.type === this.currentWord?.type
     );
 
@@ -433,14 +433,14 @@ export class SoundPrepareWord {
       detail.timeSpent += timeSpent;
       detail.audioPlays = (detail.audioPlays || 0) + this.audioPlayCount;
 
-      if (this.currentWord.type === SoundWordType.EXAMPLE && 
+      if (this.currentWord.type === SoundWordType.EXAMPLE &&
           this.currentWord.exampleStage !== undefined) {
         detail.exampleStage = this.currentWord.exampleStage;
-        
+
         if (!detail.exampleAttempts) {
           detail.exampleAttempts = [];
         }
-        
+
         const stageIndex = this.currentWord.exampleStage;
         if (!detail.exampleAttempts[stageIndex]) {
           detail.exampleAttempts[stageIndex] = 1;
@@ -459,24 +459,24 @@ export class SoundPrepareWord {
 
   updateBasicStats(success: boolean): void {
     if (!this.currentWord) return;
-    
+
     const stat = this.getStatistics();
-    
+
     if (this.currentWord.type === SoundWordType.DICTATION) {
       stat.data.dictationWords = (stat.data.dictationWords || 0) + 1;
     } else if (this.currentWord.type === SoundWordType.EXAMPLE) {
       if (this.currentWord.exampleStage === ExampleStage.FULL_SENTENCE) {
         stat.data.exampleWords = (stat.data.exampleWords || 0) + 1;
       }
-      
+
       if (this.currentWord.exampleStage !== undefined) {
         if (!stat.data.exampleStageStats) {
           stat.data.exampleStageStats = {};
         }
-        
+
         const stage = this.currentWord.exampleStage;
         const stats = stat.data.exampleStageStats;
-        
+
         if (!stats[stage]) {
           stats[stage] = {
             completed: success ? 1 : 0,
@@ -495,7 +495,7 @@ export class SoundPrepareWord {
   updateSessionStatistics(): void {
     const details = this.statistics.data.wordsDetails || [];
     if (details.length === 0) return;
-    
+
     let dictationTotal = 0;
     let dictationCorrect = 0;
     let exampleTotal = 0;
@@ -503,10 +503,10 @@ export class SoundPrepareWord {
     let totalAudioPlays = 0;
     let dictationDuration = 0;
     let exampleDuration = 0;
-    
+
     details.forEach(detail => {
       totalAudioPlays += detail.audioPlays || 0;
-      
+
       if (detail.type === SoundWordType.DICTATION) {
         dictationTotal++;
         if (detail.isCorrect) dictationCorrect++;
@@ -517,13 +517,13 @@ export class SoundPrepareWord {
         exampleDuration += detail.timeSpent;
       }
     });
-    
+
     const stat = this.statistics;
     stat.data.sessionDuration = Date.now() - this.startTime;
     stat.data.dictationDuration = dictationDuration;
     stat.data.exampleDuration = exampleDuration;
     stat.data.audioPlayCount = totalAudioPlays;
-    
+
     stat.data.dictationCorrectRate = dictationTotal > 0 ? dictationCorrect / dictationTotal : 0;
     stat.data.exampleCorrectRate = exampleTotal > 0 ? exampleCorrect / exampleTotal : 0;
   }
@@ -531,7 +531,7 @@ export class SoundPrepareWord {
   async next(success: boolean): Promise<boolean> {
     this.recordWordLearningData(success);
     this.updateSessionStatistics();
-    
+
     // 具体实现
     this.wordIndex++;
     this.currentWord = this.wordsQueue[this.wordIndex];
@@ -603,7 +603,7 @@ export function useSoundPlayer() {
 
   // 音频播放核心函数
   async function playAudioCore(
-    audioSource: string, 
+    audioSource: string,
     onStart: () => void,
     onFinish: () => void,
     onError: () => void,
@@ -612,10 +612,10 @@ export function useSoundPlayer() {
     if (prepareWord) {
       prepareWord.recordAudioPlay();
     }
-    
+
     // 在这里实现音频播放逻辑
     onStart();
-    
+
     // 模拟音频播放完成
     setTimeout(() => {
       onFinish();
@@ -624,7 +624,7 @@ export function useSoundPlayer() {
 
   // 节流播放函数
   function playAudio(
-    audioSource: string, 
+    audioSource: string,
     onStart: () => void,
     onFinish: () => void,
     onError: () => void,

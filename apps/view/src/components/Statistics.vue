@@ -4,18 +4,18 @@
       <h2>{{ name }}</h2>
       <p>{{ description }}</p>
     </div>
-    
+
     <div class="statistics-content">
       <div class="stat-item">
         <div class="stat-label">总学习时间</div>
         <div class="stat-value">{{ formatTime(data.totalTime) }}</div>
       </div>
-      
+
       <div class="stat-item">
         <div class="stat-label">总单词数</div>
         <div class="stat-value">{{ data.totalWords }}</div>
       </div>
-      
+
       <div class="stat-item">
         <div class="stat-label">正确率</div>
         <div class="stat-value">{{ formatAccuracy(data.accuracy) }}</div>
@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import type { IStatisticsData } from '../composables/words/mode'
+import type { IStatisticsData } from '../modules/words/mode'
 
 defineProps<{
   name: string
@@ -107,4 +107,4 @@ function formatAccuracy(accuracy: number): string {
   font-size: 1.25rem;
   font-weight: 600;
 }
-</style> 
+</style>

@@ -5,6 +5,7 @@ defineProps<{
   showArrow?: boolean
   showSwitch?: boolean
   switchValue?: boolean
+  danger?: boolean
 }>()
 
 defineEmits<{
@@ -14,24 +15,27 @@ defineEmits<{
 </script>
 
 <template>
-  <div class="PageSettingsItem" @click="$emit('click')">
+  <div class="PageSettingsItem" :class="{ danger }" @click="$emit('click')">
     <div class="PageSettingsItem-content">
       <div class="PageSettingsItem-title">{{ title }}</div>
       <div class="PageSettingsItem-desc" v-if="desc">{{ desc }}</div>
     </div>
-    
+
     <div v-if="showSwitch" class="switch-container">
       <label class="switch">
-        <input 
-          type="checkbox" 
-          :checked="switchValue" 
+        <input
+          type="checkbox"
+          :checked="switchValue"
           @change="$emit('switchChange', ($event.target as HTMLInputElement).checked)"
         >
         <span class="slider" />
       </label>
     </div>
-    
-    <span v-else-if="showArrow" class="arrow" />
+    <div class="PageSettingsItem-right mx-2" v-else>
+      <slot />
+    </div>
+
+    <span v-if="showArrow" class="arrow" />
   </div>
 </template>
 
@@ -45,15 +49,15 @@ defineEmits<{
   transition: background-color 0.15s ease;
   background-color: transparent;
   min-height: 44px;
-  
+
   &:not(:last-child) {
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   }
-  
+
   &:active {
     background-color: rgba(0, 0, 0, 0.05);
   }
-  
+
   &-content {
     flex-grow: 1;
     padding-right: 10px;
@@ -61,18 +65,26 @@ defineEmits<{
     flex-direction: column;
     justify-content: center;
   }
-  
+
   &-title {
     font-size: 16px;
-    color: #000;
+    color: var(--el-text-color-primary);
     line-height: 1.3;
+
+    .danger & {
+      color: var(--el-color-danger);
+    }
   }
-  
+
   &-desc {
     font-size: 13px;
-    color: #8E8E93;
+    color: var(--el-text-color-secondary);
     margin-top: 4px;
     line-height: 1.2;
+
+    .danger & {
+      color: var(--el-color-danger-light-3);
+    }
   }
 }
 
@@ -80,7 +92,7 @@ defineEmits<{
   display: flex;
   align-items: center;
   margin-right: 5px;
-  
+
   &::after {
     content: '';
     display: inline-block;
@@ -147,26 +159,18 @@ input:checked + .slider:before {
     &:not(:last-child) {
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
-    
-    &-title {
-      color: #FFFFFF;
-    }
-    
-    &-desc {
-      color: #8E8E93;
-    }
-    
+
     &:active {
       background-color: rgba(255, 255, 255, 0.05);
     }
   }
-  
+
   .slider {
     background-color: #39393D;
   }
-  
+
   .arrow::after {
     border-color: #636366;
   }
 }
-</style> 
+</style>

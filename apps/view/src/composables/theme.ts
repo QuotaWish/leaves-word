@@ -96,26 +96,31 @@ export const themeColorMap = {
     primary: '#1677ff',
     secondary: '#40a9ff',
     light: '#e6f7ff',
+    dark: '#0052d9',
   },
   green: {
     primary: '#52c41a',
     secondary: '#73d13d',
     light: '#f6ffed',
+    dark: '#008000',
   },
   purple: {
     primary: '#722ed1',
     secondary: '#9254de',
     light: '#f9f0ff',
+    dark: '#522ed1',
   },
   orange: {
     primary: '#fa8c16',
     secondary: '#ffa940',
     light: '#fff7e6',
+    dark: '#fa8c16',
   },
   red: {
     primary: '#f5222d',
     secondary: '#ff4d4f',
     light: '#fff1f0',
+    dark: '#f5222d',
   },
 }
 
@@ -125,13 +130,14 @@ watch(themeColor, (newColor) => {
   if (typeof document !== 'undefined') {
     // 提取RGB值用于透明度计算
     const primaryHex = colors.primary.replace('#', '');
-    const r = parseInt(primaryHex.substring(0, 2), 16);
-    const g = parseInt(primaryHex.substring(2, 4), 16);
-    const b = parseInt(primaryHex.substring(4, 6), 16);
+    const r = Number.parseInt(primaryHex.substring(0, 2), 16);
+    const g = Number.parseInt(primaryHex.substring(2, 4), 16);
+    const b = Number.parseInt(primaryHex.substring(4, 6), 16);
 
     document.documentElement.style.setProperty('--theme-color-primary', colors.primary)
     document.documentElement.style.setProperty('--theme-color-secondary', colors.secondary)
     document.documentElement.style.setProperty('--theme-color-light', colors.light)
+    document.documentElement.style.setProperty('--theme-color-dark', colors.dark)
     document.documentElement.style.setProperty('--theme-color-primary-rgb', `${r}, ${g}, ${b}`)
   }
 }, { immediate: true })

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useRequest } from 'alova/client'
+import Apis from '~/composables/api/clients'
 import { globalAuthStorage } from '.'
 
 const options = reactive({
@@ -6,18 +8,30 @@ const options = reactive({
   certificate: '',
 })
 
-function handleAuth(event: Event) {
+const { send, loading } = useRequest(() => Apis.userController.userLoginTokenUsingPOST({
+  data: {
+    userAccount: options.identifier,
+    userPassword: options.certificate,
+  },
+  meta: {
+    authRole: 'login',
+  },
+}), {
+  immediate: false,
+})
+
+async function handleAuth(event: Event) {
   event.preventDefault()
 
   if (!options.identifier || !options.certificate)
     return
 
-  globalAuthStorage.value.isLogin = true
+  await send()
 }
 </script>
 
 <template>
-  <div class="AuthMain h-full w-full">
+  <div v-loading="loading" class="AuthMain h-full w-full">
     <div class="AuthMain-Inner fake-background">
       <h1 class="title">
         登录
@@ -72,7 +86,7 @@ function handleAuth(event: Event) {
 .title {
   font-size: 1.8rem;
   font-weight: 600;
-  color: var(--theme-color);
+  color: var(--theme-color-primary);
   margin-bottom: 2rem;
 }
 
@@ -93,12 +107,12 @@ function handleAuth(event: Event) {
     border: none;
     background: transparent;
     outline: none;
-    color: var(--theme-color);
+    color: var(--theme-color-primary);
 
     &:focus + label,
     &:not(:placeholder-shown) + label {
       transform: translateY(-1.5rem) scale(0.85);
-      color: var(--theme-color);
+      color: var(--theme-color-primary);
     }
 
     &:focus ~ .input-line::after {
@@ -135,7 +149,7 @@ function handleAuth(event: Event) {
       left: 0;
       right: 0;
       height: 2px;
-      background: var(--theme-color);
+      background: var(--theme-color-primary);
       transform: scaleX(0);
       transition: transform 0.3s ease;
     }
@@ -147,7 +161,7 @@ function handleAuth(event: Event) {
   padding: 0.8rem;
   font-size: 1rem;
   color: white;
-  background: var(--theme-color);
+  background: var(--theme-color-primary);
   border: none;
   border-radius: 8px;
   cursor: pointer;

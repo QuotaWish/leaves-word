@@ -60,13 +60,12 @@ declare namespace API {
     userId?: number;
   };
 
-  type BaseResponseArrayInt_ = {
-    code?: number;
-    data?: number[];
-    message?: string;
+  type AuthUserVO = {
+    token?: SaTokenInfo;
+    user?: LoginUserVO;
   };
 
-  type BaseResponseArrayLong_ = {
+  type BaseResponseArrayInt_ = {
     code?: number;
     data?: number[];
     message?: string;
@@ -75,6 +74,12 @@ declare namespace API {
   type BaseResponseAudioFileVO_ = {
     code?: number;
     data?: AudioFileVO;
+    message?: string;
+  };
+
+  type BaseResponseAuthUserVO_ = {
+    code?: number;
+    data?: AuthUserVO;
     message?: string;
   };
 
@@ -93,6 +98,12 @@ declare namespace API {
   type BaseResponseEnglishDictionaryVO_ = {
     code?: number;
     data?: EnglishDictionaryVO;
+    message?: string;
+  };
+
+  type BaseResponseEnglishWord_ = {
+    code?: number;
+    data?: EnglishWord;
     message?: string;
   };
 
@@ -132,9 +143,21 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseListDuplicateWordDto_ = {
+    code?: number;
+    data?: DuplicateWordDto[];
+    message?: string;
+  };
+
   type BaseResponseListEnglishDictionaryWithCategoryVO_ = {
     code?: number;
     data?: EnglishDictionaryWithCategoryVO[];
+    message?: string;
+  };
+
+  type BaseResponseListWordHeadIdDto_ = {
+    code?: number;
+    data?: WordHeadIdDto[];
     message?: string;
   };
 
@@ -381,6 +404,11 @@ declare namespace API {
     word_id?: number;
   };
 
+  type DuplicateWordDto = {
+    count?: number;
+    wordHead?: string;
+  };
+
   type EnglishDictionary = {
     approved_words?: number;
     author?: string;
@@ -594,6 +622,107 @@ declare namespace API {
     userId?: number;
   };
 
+  type ExamCategory = {
+    createdAt?: string;
+    createdBy?: number;
+    deletedAt?: string;
+    id?: number;
+    isDeleted?: boolean;
+    name?: string;
+    parentId?: number;
+    sortOrder?: number;
+    updatedAt?: string;
+    updatedBy?: number;
+  };
+
+  type ExamCategoryPaper = {
+    categoryId?: number;
+    createdAt?: string;
+    id?: number;
+    paperId?: number;
+    sortOrder?: number;
+    updatedAt?: string;
+  };
+
+  type ExamOperationLog = {
+    action?: Record<string, any>;
+    description?: string;
+    id?: number;
+    ipAddress?: string;
+    operationTime?: string;
+    operatorId?: number;
+    recordId?: number;
+    tableName?: string;
+  };
+
+  type ExamPaper = {
+    createdAt?: string;
+    createdBy?: number;
+    deletedAt?: string;
+    description?: string;
+    id?: number;
+    isDeleted?: boolean;
+    name?: string;
+    price?: number;
+    status?: Record<string, any>;
+    thumbnailUrl?: string;
+    totalQuestions?: number;
+    updatedAt?: string;
+    updatedBy?: number;
+  };
+
+  type ExamPaperQuestion = {
+    createdAt?: string;
+    id?: number;
+    paperId?: number;
+    questionId?: number;
+    sortOrder?: number;
+    updatedAt?: string;
+  };
+
+  type ExamPaperStats = {
+    attemptCount?: number;
+    averageScore?: number;
+    downloadCount?: number;
+    id?: number;
+    paperId?: number;
+    updatedAt?: string;
+    viewCount?: number;
+  };
+
+  type ExamPaperTag = {
+    createdAt?: string;
+    id?: number;
+    paperId?: number;
+    tagId?: number;
+  };
+
+  type ExamPaperVersion = {
+    content?: string;
+    createdAt?: string;
+    createdBy?: number;
+    id?: number;
+    paperId?: number;
+    versionNumber?: number;
+  };
+
+  type ExamQuestion = {
+    answer?: string;
+    createdAt?: string;
+    explanation?: string;
+    id?: number;
+    options?: string;
+    questionText?: string;
+    questionType?: Record<string, any>;
+    updatedAt?: string;
+  };
+
+  type ExamTag = {
+    createdAt?: string;
+    id?: number;
+    name?: string;
+  };
+
   type getAudioFileVOByIdUsingGETParams = {
     /** id */
     id?: number;
@@ -617,6 +746,11 @@ declare namespace API {
   type getEnglishWordChangeLogVOByIdUsingGETParams = {
     /** id */
     id?: number;
+  };
+
+  type getEnglishWordDetailUsingGETParams = {
+    /** word */
+    word: string;
   };
 
   type getEnglishWordVOByIdUsingGETParams = {
@@ -1033,7 +1167,76 @@ declare namespace API {
     userId?: number;
   };
 
+  type publishWordUsingGETParams = {
+    /** id */
+    id: number;
+  };
+
+  type SaTokenInfo = {
+    isLogin?: boolean;
+    loginDevice?: string;
+    loginId?: Record<string, any>;
+    loginType?: string;
+    sessionTimeout?: number;
+    tag?: string;
+    tokenActiveTimeout?: number;
+    tokenName?: string;
+    tokenSessionTimeout?: number;
+    tokenTimeout?: number;
+    tokenValue?: string;
+  };
+
+  type selectOneUsingGET10Params = {
+    /** id */
+    id?: number;
+  };
+
+  type selectOneUsingGET11Params = {
+    /** id */
+    id?: number;
+  };
+
   type selectOneUsingGET1Params = {
+    /** id */
+    id?: number;
+  };
+
+  type selectOneUsingGET2Params = {
+    /** id */
+    id?: number;
+  };
+
+  type selectOneUsingGET3Params = {
+    /** id */
+    id?: number;
+  };
+
+  type selectOneUsingGET4Params = {
+    /** id */
+    id?: number;
+  };
+
+  type selectOneUsingGET5Params = {
+    /** id */
+    id?: number;
+  };
+
+  type selectOneUsingGET6Params = {
+    /** id */
+    id?: number;
+  };
+
+  type selectOneUsingGET7Params = {
+    /** id */
+    id?: number;
+  };
+
+  type selectOneUsingGET8Params = {
+    /** id */
+    id?: number;
+  };
+
+  type selectOneUsingGET9Params = {
     /** id */
     id?: number;
   };
@@ -1123,6 +1326,11 @@ declare namespace API {
     userName?: string;
     userProfile?: string;
     userRole?: string;
+  };
+
+  type WordHeadIdDto = {
+    head?: string;
+    id?: number;
   };
 
   type WordStatusChange = {

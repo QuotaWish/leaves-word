@@ -35,9 +35,9 @@ export async function listRecordUsingGet(
 }
 
 /** selectOne GET /api/word_status_change/selectOne */
-export async function selectOneUsingGet1(
+export async function selectOneUsingGet11(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.selectOneUsingGET1Params,
+  params: API.selectOneUsingGET11Params,
   options?: { [key: string]: any },
 ) {
   return request<API.WordStatusChange>('/api/word_status_change/selectOne', {

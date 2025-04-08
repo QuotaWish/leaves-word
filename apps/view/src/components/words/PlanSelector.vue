@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { Picker } from 'vant'
-import { globalData, useTargetData } from '~/composables/words'
+import { globalPreference } from '~/modules/words/core/feat/preference'
 
-const { targetDict } = useTargetData()
-const max = computed(() => targetDict.value.storage.getUnlearnedWords().length)
-const amount = computed(() => globalData.value.amount || 10)
+// TODO: 暂时做成单词总数量
+const max = computed(() => globalPreference.value.dict.data?.approved_words ?? 0) // targetDict.value.storage.getUnlearnedWords().length)
+const amount = computed(() => globalPreference.value.amount || 10)
 const options = computed(() => Array.from({ length: max.value / 5 }, (_, i) => (i + 1) * 5))
 
 // 根据每个选项算出天数 然后倒叙
@@ -41,7 +41,7 @@ function handleChange({ columnIndex, selectedValues }: any) {
     model.value = [num, selectedValues[1]]
   }
 
-  globalData.value.amount = model.value[0]
+  globalPreference.value.amount = model.value[0]
 }
 </script>
 

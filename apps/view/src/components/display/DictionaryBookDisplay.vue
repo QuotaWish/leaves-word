@@ -1,20 +1,23 @@
 <script setup lang="ts">
+import type { EnglishDictionary } from '~/composables/api/clients/globals'
 import { UseImage } from '@vueuse/components'
 
 const props = withDefaults(defineProps<{
-  modelValue: API.EnglishDictionary
+  modelValue: EnglishDictionary
   onlyImage?: boolean
   border?: boolean
+  active?: boolean
 }>(), {
   border: true,
+  active: false,
 })
 
 const showBorder = computed(() => props.border !== false)
 </script>
 
 <template>
-  <div class="DictionaryBookDisplay">
-    <div :class="{ border: showBorder }" class="cover">
+  <div :class="{ onlyImage }" class="DictionaryBookDisplay">
+    <div :class="{ border: showBorder, active }" class="cover">
       <UseImage v-if="modelValue.image_url" :src="modelValue.image_url">
         <template #loading>
           <Loading />
@@ -32,9 +35,20 @@ const showBorder = computed(() => props.border !== false)
       <div v-else class="no-image">
         <span>{{ modelValue.name?.slice(0, 1) || 'D' }}</span>
       </div>
+
+      <div v-if="active"
+        class="absolute-layout flex items-center justify-center fake-background z-10 DictionaryBookDisplay-Active">
+        <div font-bold text-2xl w-10 h-10 flex items-center justify-center rounded-full>
+          <div text-white i-carbon-checkmark />
+        </div>
+      </div>
+
+      <div v-if="modelValue.published_words && !onlyImage" class="DictionaryBookDisplay-Stat z-5">
+        <span>{{ modelValue.published_words }}&nbsp;词</span>
+      </div>
     </div>
     <div v-if="!onlyImage" class="info">
-      <div class="name">
+      <div my-2 class="name">
         {{ modelValue.name }}
       </div>
       <div class="description">
@@ -45,9 +59,37 @@ const showBorder = computed(() => props.border !== false)
 </template>
 
 <style lang="scss" scoped>
+.DictionaryBookDisplay-Stat {
+  span {
+    font-size: 12px;
+    color: var(--el-text-color-secondary);
+  }
+  position: absolute;
+  padding: 0.125rem 0.5rem;
+
+  top: 0;
+  right: 0;
+
+  border-radius: 0.25rem 0 0.25rem 0.25rem;
+  background-color: var(--el-overlay-color-light);
+}
+
+.DictionaryBookDisplay-Active {
+  & > div {
+    background-color: var(--theme-color-primary);
+  }
+  --fake-opacity: 0.75;
+  --fake-color: var(--el-overlay-color);
+}
+
 .DictionaryBookDisplay {
+  &.onlyImage {
+    height: 100%;
+
+    background-color: #fff;
+    border-radius: 8px;
+  }
   width: 100%;
-  // height: 100%;
   min-height: 80px;
   overflow: hidden;
   display: flex;
@@ -94,7 +136,7 @@ const showBorder = computed(() => props.border !== false)
   }
 
   .info {
-    padding: 0 12px 12px;
+    padding: 0 4px 4px;
 
     .name {
       font-size: 14px;
@@ -102,7 +144,9 @@ const showBorder = computed(() => props.border !== false)
       margin-bottom: 4px;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
     }
 
     .description {
@@ -111,7 +155,7 @@ const showBorder = computed(() => props.border !== false)
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
     }
   }

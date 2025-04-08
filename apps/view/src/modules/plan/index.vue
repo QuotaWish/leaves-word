@@ -2,35 +2,11 @@
 import { useGlobalSplashState } from '~/modules/splash/index'
 import PlanLayout from './PlanLayout.vue'
 
+const router = useRouter()
 const immersiveMode = ref(false)
 const globalSplashState = useGlobalSplashState()
-watch(immersiveMode, (val: boolean) => globalSplashState.footerVisible.value = !val)
-
-const cozeWebSDK = new CozeWebSDK.WebChatClient({
-  config: {
-    // 智能体 ID
-    botId: '7448405006673412115',
-  },
-  ui: {
-    footer: {
-      expressionText: 'Powered by {{QuotaWish}}.',
-      linkvars: {
-        QuotaWish: {
-          text: 'QuotaWish 科塔智爱',
-          link: 'https://quotawish.com',
-        },
-      },
-    },
-    chatBot: {
-      title: 'Lucas Tata',
-    },
-    asstBtn: {
-      isNeed: false,
-    },
-    base: {
-      icon: 'https://ai.quotawish.com/favicon.ico',
-    },
-  },
+watch(immersiveMode, (val: boolean) => {
+  globalSplashState.footerVisible.value = !val
 })
 </script>
 
@@ -38,19 +14,19 @@ const cozeWebSDK = new CozeWebSDK.WebChatClient({
   <PlanLayout :class="{ immersive: immersiveMode }">
     <template #header>
       <div flex items-center>
-        <RoundInfo type="success" flex items-center gap-2 @click="cozeWebSDK.showChatBot()">
+        <RoundInfo type="success" flex items-center gap-2 @click="router.push('/search')">
           <img w-6 src="/ai-logo.png">
           搜一搜
         </RoundInfo>
       </div>
 
       <div flex items-center gap-2>
-        <RoundInfo type="danger">
+        <RoundInfo @click="router.push('/chores/health')" type="danger">
           <div i-carbon-favorite-filled />
           5
         </RoundInfo>
 
-        <RoundInfo type="warning">
+        <RoundInfo @click="router.push('/chores/dummy')" type="warning">
           <div i-carbon-star-filled />
           400
         </RoundInfo>
@@ -68,8 +44,8 @@ const cozeWebSDK = new CozeWebSDK.WebChatClient({
         <slot name="cover" />
 
         <div class="Immersive-Wrapper absolute-layout">
-          <div class="Immersive-Decoration transition-cubic top-left absolute transition-duration-500" />
-          <div class="Immersive-Decoration transition-cubic bottom-right absolute transition-duration-500" />
+          <div class="Immersive-Decoration transition-cubic absolute transition-duration-500">
+          </div>
 
           <div class="Immersive-Footer transition-cubic absolute transition-duration-500">
             <div class="Immersive-Footer-Inner flex flex-col">
@@ -102,35 +78,68 @@ const cozeWebSDK = new CozeWebSDK.WebChatClient({
   }
 }
 
+@keyframes decoration-rotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes flow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 .Immersive-Decoration {
-  &.top-left {
-    top: 0;
-    left: -15rem;
-
-    background: linear-gradient(to right, var(--theme-color) 50%, #0000);
-  }
-
-  &.bottom-right {
-    bottom: 0;
-    right: -15rem;
-
-    background: linear-gradient(to left, var(--theme-color) 50%, #0000);
-  }
-
   .immersive & {
-    &.top-left {
-      left: -10rem;
-    }
-
-    &.bottom-right {
-      right: -10rem;
-    }
+    opacity: 1;
   }
 
-  width: 12rem;
-  height: 30%;
+  z-index: 100;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  // height: calc(100% - var(--footer-height));
+  transform: translate(-50%, -50%);
+  // translateY(calc(-0.5 * var(--footer-height)))
+  border-radius: 20px;
+  pointer-events: none;
+  overflow: hidden;
 
-  transform: skewX(-30deg);
+  opacity: 0;
+  filter: blur(10px) saturate(180%) brightness(120%);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 8px;
+    background: linear-gradient(90deg,
+        #00f5a0, #00d9f5, #00a1ff, #a100ff,
+        #f400a1, #f5a000, #00f5a0, #00d9f5,
+        #00a1ff);
+    background-size: 400% 100%;
+    animation: flow 10s ease-in-out infinite;
+    border-radius: inherit;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+  }
 }
 
 .PlanLayout {
@@ -146,7 +155,6 @@ const cozeWebSDK = new CozeWebSDK.WebChatClient({
     .PlanCover-Bg {
       --fake-opacity: 0;
       filter: saturate(120%) brightness(120%);
-      //  filter: blur(18px) saturate(180%);
     }
 
     .PlanCover-Main-Inner {

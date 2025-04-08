@@ -41,7 +41,6 @@ declare global {
   const formateType: typeof import('./src/composables/index')['formateType']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
-  const globalSetting: typeof import('./src/composables/index')['globalSetting']
   const h: typeof import('vue')['h']
   const highlightKeywords: typeof import('./src/composables/index')['highlightKeywords']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
@@ -96,7 +95,6 @@ declare global {
   const resolveComponent: typeof import('vue')['resolveComponent']
   const resolveRef: typeof import('@vueuse/core')['resolveRef']
   const resolveUnref: typeof import('@vueuse/core')['resolveUnref']
-  const routerTransition: typeof import('./src/router-transition')['default']
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
@@ -210,6 +208,7 @@ declare global {
   const useMediaQuery: typeof import('@vueuse/core')['useMediaQuery']
   const useMemoize: typeof import('@vueuse/core')['useMemoize']
   const useMemory: typeof import('@vueuse/core')['useMemory']
+  const useMessage: typeof import('./src/composables/useMessage')['useMessage']
   const useModel: typeof import('vue')['useModel']
   const useMounted: typeof import('@vueuse/core')['useMounted']
   const useMouse: typeof import('@vueuse/core')['useMouse']
@@ -236,7 +235,9 @@ declare global {
   const usePreferredLanguages: typeof import('@vueuse/core')['usePreferredLanguages']
   const usePreferredReducedMotion: typeof import('@vueuse/core')['usePreferredReducedMotion']
   const usePrevious: typeof import('@vueuse/core')['usePrevious']
+  const usePronunciationAnalysis: typeof import('./src/composables/usePronunciationAnalysis')['usePronunciationAnalysis']
   const useRafFn: typeof import('@vueuse/core')['useRafFn']
+  const useRecording: typeof import('./src/composables/useRecording')['useRecording']
   const useRefHistory: typeof import('@vueuse/core')['useRefHistory']
   const useRequestAnimationFrame: typeof import('./src/composables/index')['useRequestAnimationFrame']
   const useResizeObserver: typeof import('@vueuse/core')['useResizeObserver']
@@ -523,6 +524,7 @@ declare module 'vue' {
     readonly useMediaQuery: UnwrapRef<typeof import('@vueuse/core')['useMediaQuery']>
     readonly useMemoize: UnwrapRef<typeof import('@vueuse/core')['useMemoize']>
     readonly useMemory: UnwrapRef<typeof import('@vueuse/core')['useMemory']>
+    readonly useMessage: UnwrapRef<typeof import('./src/composables/useMessage')['useMessage']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
     readonly useMounted: UnwrapRef<typeof import('@vueuse/core')['useMounted']>
     readonly useMouse: UnwrapRef<typeof import('@vueuse/core')['useMouse']>
@@ -549,7 +551,9 @@ declare module 'vue' {
     readonly usePreferredLanguages: UnwrapRef<typeof import('@vueuse/core')['usePreferredLanguages']>
     readonly usePreferredReducedMotion: UnwrapRef<typeof import('@vueuse/core')['usePreferredReducedMotion']>
     readonly usePrevious: UnwrapRef<typeof import('@vueuse/core')['usePrevious']>
+    readonly usePronunciationAnalysis: UnwrapRef<typeof import('./src/composables/usePronunciationAnalysis')['usePronunciationAnalysis']>
     readonly useRafFn: UnwrapRef<typeof import('@vueuse/core')['useRafFn']>
+    readonly useRecording: UnwrapRef<typeof import('./src/composables/useRecording')['useRecording']>
     readonly useRefHistory: UnwrapRef<typeof import('@vueuse/core')['useRefHistory']>
     readonly useRequestAnimationFrame: UnwrapRef<typeof import('./src/composables/index')['useRequestAnimationFrame']>
     readonly useResizeObserver: UnwrapRef<typeof import('@vueuse/core')['useResizeObserver']>

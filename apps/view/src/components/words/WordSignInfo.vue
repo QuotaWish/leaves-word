@@ -1,59 +1,62 @@
 <script setup lang="ts">
-import PlanSelector from '~/components/words/PlanSelector.vue'
-import { calendarManager, globalData, useTargetData } from '~/composables/words'
+import PlanSelector from "~/components/words/PlanSelector.vue";
+import {
+  calendarManager,
+  globalPreference,
+  useTargetData,
+} from "~/modules/words";
 
-import LeafSpeedButton from '../button/LeafSpeedButton.vue'
-import WordSignInfoCard from './card/WordSignInfoCard.vue'
-import Cat from '/svg/cat.svg'
-import Checked from '/svg/complete.svg'
+import LeafSpeedButton from "../button/LeafSpeedButton.vue";
+import WordSignInfoCard from "./card/WordSignInfoCard.vue";
+import Cat from "/svg/cat.svg";
+import Checked from "/svg/complete.svg";
 
-const router = useRouter()
+const router = useRouter();
 
-const { targetDict, targetSignMode } = useTargetData()
-const data = computed<any>(() => targetDict.value)
+const { targetDict, targetSignMode } = useTargetData();
+const dictionary = computed(() => globalPreference.value.dict);
 
-const storage = computed(() => data.value.storage)
-const learnedAmo = computed(() => storage.value.getLearnedWords().length)
-const totalAmo = computed(() => data.value.words.length)
+// const storage = computed(() => dictionary.value?.storage);
+const learnedAmo = computed(() => 0)// storage.value?.getLearnedWords().length ?? 0);
+const totalAmo = computed(() => dictionary.value.data?.published_words ?? 0)
 
-const progress = computed(() => learnedAmo.value / totalAmo.value)
-const todayData = computed(() => calendarManager.getTodayData())
-
-console.log(todayData)
+const progress = computed(() => learnedAmo.value / totalAmo.value);
+const todayData = computed(() => calendarManager.getTodayData());
 
 function calculateTime(amo: number) {
-  const mode = targetSignMode.value
+  const mode = targetSignMode.value;
   if (!mode) {
-    return 0
+    return 0;
   }
 
-  return mode.getEstimateCost(amo)
+  return 0// mode.getEstimateCost(amo);
 }
 
-const dialogOptions = reactive<any>({
+const dialogOptions = reactive({
   visible: false,
   component: null,
-})
+});
 
 function selectDict() {
-  router.push('/words/dict-select-page')
-  // Object.assign(dialogOptions, {
-  //   visible: true,
-  //   component: DictSelector,
-  // })
+  router.push({
+    path: "/words/dict-select-page",
+    query: {
+      type: 'select',
+    },
+  });
 }
 
 function selectPlan() {
   Object.assign(dialogOptions, {
     visible: true,
     component: PlanSelector,
-  })
+  });
 }
 
 async function handleCheckSign() {
-  await sleep(300)
+  await sleep(300);
 
-  router.push('/words/prewords')
+  router.push("/words/prewords");
 }
 </script>
 
@@ -63,18 +66,18 @@ async function handleCheckSign() {
     <div class="leaf-decoration top-left" />
     <div class="leaf-decoration bottom-right" />
 
-    <template #upper>
+    <template v-if="dictionary?.data" #upper>
       <div class="WordSignInfo-Svg">
-        <img :src="Cat">
+        <img :src="Cat" />
       </div>
 
-      <div class="WordSignInfo-Dictionary" @click="router.push(`/dictionary/${targetDict.id}`)">
-        <DictionaryDisplay :dict="data" />
+      <div class="WordSignInfo-Dictionary" @click="router.push(`/dictionary/${dictionary.id}`)">
+        <DictionaryBookDisplay onlyImage :model-value="dictionary.data" />
       </div>
 
       <div class="WordSignInfo-Content">
         <p w-full flex justify-between class="WordSignInfo-Content-Title">
-          <span>{{ data.name }}</span>
+          <span>{{ dictionary.data?.name }}</span>
           <span mr-4 flex items-center text-sm font-normal op-75 active:op-100 @click="selectDict">
             调整词书
             <i i-carbon-chevron-right block />
@@ -82,7 +85,7 @@ async function handleCheckSign() {
         </p>
         <p w-full flex items-center justify-between class="WordSignInfo-Content-Desc">
           <span>{{ learnedAmo }} /{{ totalAmo }} 已学习</span>
-          <span mr-4 text-sm op-75>剩余 {{ Math.ceil((totalAmo - learnedAmo) / globalData.amount) }} 天</span>
+          <span mr-4 text-sm op-75>剩余 {{ Math.ceil((totalAmo - learnedAmo) / globalPreference.amount) }} 天</span>
         </p>
         <div :style="`--p: ${progress * 100}%`" class="WordSignInfo-Content-Progress">
           <div class="WordSignInfo-Content-Progress-Bg" />
@@ -104,38 +107,33 @@ async function handleCheckSign() {
       <div my-4 flex items-center justify-between class="WordSignInfo-DetailBlockWrapper">
         <template v-if="todayData?.signed">
           <div class="WordSignInfo-DetailBlock coffee-font">
-            <p text-sm font-bold op-75>
-              已学习
-            </p>
+            <p text-sm font-bold op-75>已学习</p>
 
             <p>
               <span mr-3 text-3xl font-bold>
                 {{ todayData.data?.words.length }}
-              </span> 词
+              </span>
+              词
             </p>
           </div>
         </template>
         <template v-else>
           <div class="WordSignInfo-DetailBlock">
-            <p text-sm op-75>
-              需新学
-            </p>
+            <p text-sm op-75>需新学</p>
 
             <p>
               <span mr-3 text-3xl font-bold>
-                {{ globalData.amount }}
-              </span> 词
+                {{ globalPreference.amount }}
+              </span>
+              词
             </p>
           </div>
           <div class="WordSignInfo-DetailBlock">
-            <p text-sm op-75>
-              需复习
-            </p>
+            <p text-sm op-75>需复习</p>
 
             <p>
               <span mr-3 text-3xl font-bold>
-                {{ globalData.amount }}
-              </span>词
+                {{ globalPreference.amount }} </span>词
             </p>
           </div>
         </template>
@@ -149,8 +147,9 @@ async function handleCheckSign() {
           <span>开始背单词吧</span>
         </LeafButton> -->
 
-        <div my-2 flex items-center justify-center gap-1 text-sm op-75>
-          <div i-carbon-time />预计用时 {{ calculateTime(globalData.amount) }} 分钟
+        <div my-4 flex items-center justify-center gap-1 text-sm op-75>
+          <div i-carbon-time />
+          预计用时 {{ calculateTime(globalPreference.amount) }} 分钟
         </div>
       </template>
 
@@ -159,14 +158,39 @@ async function handleCheckSign() {
           <span>打卡</span>
         </el-button>
 
-        <div my-2 ml-1 flex items-center gap-1 text-sm op-75>
-          随时随地，单词好记。
-        </div>
+        <div my-2 ml-1 flex items-center gap-1 text-sm op-75>随时随地，单词好记。</div>
 
         <div class="WordSignInfo-Checked">
-          <img :src="Checked">
+          <img :src="Checked" />
         </div>
       </template>
+    </template>
+
+    <template #loading>
+      <div flex items-center justify-center gap-2 flex-col>
+        <Loading />
+        <span text-sm op-75>获取数据中...</span>
+      </div>
+    </template>
+
+    <template #empty>
+      <div class="WordSignInfo-Empty">
+        <div class="WordSignInfo-Empty-Icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="empty-book-svg">
+            <path
+              d="M21,4H3C1.9,4,1,4.9,1,6v13c0,1.1,0.9,2,2,2h18c1.1,0,2-0.9,2-2V6C23,4.9,22.1,4,21,4z M21,19H3V6h18V19z M10,14h8v2h-8V14z M10,10h8v2h-8V10z M5,10h3v2H5V10z M5,14h3v2H5V14z" />
+          </svg>
+        </div>
+        <div class="WordSignInfo-Empty-Title">
+          暂未选择词书
+        </div>
+        <div class="WordSignInfo-Empty-Desc">
+          选择词书以立即开始
+        </div>
+        <el-button type="primary" class="WordSignInfo-Empty-Button" @click="selectDict">
+          选择词书
+        </el-button>
+      </div>
     </template>
 
     <TouchDialog v-model="dialogOptions.visible">
@@ -252,7 +276,7 @@ async function handleCheckSign() {
     overflow: hidden;
 
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       inset: 0;
       background: linear-gradient(90deg,
@@ -273,15 +297,18 @@ async function handleCheckSign() {
     overflow: hidden;
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent);
       animation: shimmer 2s linear infinite;
     }
 
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       right: 0;
@@ -576,5 +603,45 @@ async function handleCheckSign() {
 
   width: 80px;
   height: 80%;
+}
+
+.WordSignInfo-Empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 2rem;
+  text-align: center;
+
+  .WordSignInfo-Empty-Icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1.5rem;
+
+    .empty-book-svg {
+      width: 100%;
+      height: 100%;
+      fill: var(--el-color-primary);
+      opacity: 0.8;
+    }
+  }
+
+  .WordSignInfo-Empty-Title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--el-text-color-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .WordSignInfo-Empty-Desc {
+    font-size: 0.95rem;
+    color: var(--el-text-color-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .WordSignInfo-Empty-Button {
+    min-width: 120px;
+    font-weight: normal;
+  }
 }
 </style>

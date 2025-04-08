@@ -84,15 +84,15 @@ defineProps<{
 .SplashStatusbar-DynamicIsland {
   position: absolute;
 
-  top: 50%;
+  top: 12px;
   left: 50%;
 
-  width: 30%;
-  height: 30px;
+  width: 126px;
+  height: 34px;
 
   border-radius: 20px;
   background-color: #000;
 
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
 }
 </style>
