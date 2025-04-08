@@ -5,6 +5,7 @@ defineProps<{
   showArrow?: boolean
   showSwitch?: boolean
   switchValue?: boolean
+  danger?: boolean
 }>()
 
 defineEmits<{
@@ -14,7 +15,7 @@ defineEmits<{
 </script>
 
 <template>
-  <div class="PageSettingsItem" @click="$emit('click')">
+  <div class="PageSettingsItem" :class="{ danger }" @click="$emit('click')">
     <div class="PageSettingsItem-content">
       <div class="PageSettingsItem-title">{{ title }}</div>
       <div class="PageSettingsItem-desc" v-if="desc">{{ desc }}</div>
@@ -67,15 +68,23 @@ defineEmits<{
 
   &-title {
     font-size: 16px;
-    color: #000;
+    color: var(--el-text-color-primary);
     line-height: 1.3;
+
+    .danger & {
+      color: var(--el-color-danger);
+    }
   }
 
   &-desc {
     font-size: 13px;
-    color: #8E8E93;
+    color: var(--el-text-color-secondary);
     margin-top: 4px;
     line-height: 1.2;
+
+    .danger & {
+      color: var(--el-color-danger-light-3);
+    }
   }
 }
 
@@ -149,14 +158,6 @@ input:checked + .slider:before {
   .PageSettingsItem {
     &:not(:last-child) {
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    &-title {
-      color: #FFFFFF;
-    }
-
-    &-desc {
-      color: #8E8E93;
     }
 
     &:active {

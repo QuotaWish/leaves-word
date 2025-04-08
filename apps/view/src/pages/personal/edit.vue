@@ -3,12 +3,21 @@ import PageNavHolder from '~/components/page/holder/PageNavHolder.vue'
 import PageSettingsItem from '~/components/display/settings/PageSettingsItem.vue'
 import { useRouter } from 'vue-router'
 import { globalAuthStorage } from '~/modules/auth'
+import { useLeafEventBus } from '~/composables/event'
+import { TryAuthLogoutEvent } from '~/composables/event/auth'
+import { ElMessageBox } from 'element-plus'
 
-const router = useRouter()
+// const router = useRouter()
+const eventBus = useLeafEventBus()
 
-// 页面跳转函数
-function navigateTo(path: string) {
-  router.push(path)
+function handleLogout() {
+  ElMessageBox.confirm('确定退出登录吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  }).then(() => {
+    eventBus.fireEvent(new TryAuthLogoutEvent())
+  })
 }
 </script>
 
@@ -42,6 +51,8 @@ function navigateTo(path: string) {
           #{{ globalAuthStorage.user.id || '-' }}
         </div>
       </PageSettingsItem>
+
+      <PageSettingsItem danger title="退出登录" desc="退出登录" :show-arrow="true" @click="handleLogout" />
     </div>
   </PageNavHolder>
 </template>
