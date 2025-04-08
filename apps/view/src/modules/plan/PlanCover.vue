@@ -37,7 +37,7 @@ const baseFontSize = computed(() => {
       <slot name="card" />
     </div> -->
     <div v-if="data?.content" class="fake-background PlanCover-Main absolute-layout">
-      <div class="PlanCover-Main-Inner transition-cubic absolute bottom-4 left-1/2 w-full flex flex-col items-start justify-end px-8 -translate-x-1/2">
+      <div class="PlanCover-Main-Inner transition-cubic absolute left-1/2 w-full flex flex-col items-start justify-end px-8 -translate-x-1/2">
         <p class="content-text transition-cubic">
           {{ data.content }}
         </p>
@@ -74,6 +74,10 @@ const baseFontSize = computed(() => {
     z-index: 1;
     padding: 2rem;
     background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+
+    &-Inner {
+      bottom: calc(var(--footer-height) + 2rem);
+    }
 
     .content-text {
       font-size: v-bind(baseFontSize);

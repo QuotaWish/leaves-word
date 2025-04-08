@@ -1,28 +1,29 @@
 <script setup lang="ts">
-import type { IWord } from '~/composables/words'
+import type { EnglishWordData } from '~/modules/words'
 
 const props = defineProps<{
-  word: IWord
+  word: EnglishWordData
 }>()
 
 const select = ref(0)
 
-const cur = computed(() => props.word?.examples?.[select.value])
+const content = computed(() => props.word?.content)
+const cur = computed(() => content.value?.examplePhrases?.[select.value])
 
 function formateSentence(sentence: string) {
   if (!props.word)
     return
 
-  return sentence.replaceAll(props.word.word, `<span class="WordExamples-Word">${props.word.word}</span>`)
+  return sentence.replaceAll(props.word.word_head!, `<span class="highlight">${props.word.word_head}</span>`)
 }
 </script>
 
 <template>
   <div v-if="word" class="WordExamples">
     <div class="WordExamples-Header">
-      <span v-for="(_example, ind) in word.examples" :key="ind" :class="{ active: ind === select }" @click="select = ind">{{ ind + 1 }}</span>
+      <span v-for="(_example, ind) in content?.examplePhrases" :key="ind" :class="{ active: ind === select }" @click="select = ind">{{ ind + 1 }}</span>
     </div>
-    <div v-if="word.examples" class="WordExample-Content">
+    <div v-if="content?.examplePhrases" class="WordExample-Content">
       <div v-if="cur" class="WordContent-ExampleItem">
         <p class="example-origin" v-html="formateSentence(cur.sentence)" />
         <p class="example-translation">
@@ -38,7 +39,7 @@ function formateSentence(sentence: string) {
   &-Header {
     span {
       &.active {
-        background-color: var(--el-color-primary-light-7);
+        background-color: var(--theme-color-primary);
       }
       display: flex;
       padding: 0.5rem;
@@ -49,6 +50,7 @@ function formateSentence(sentence: string) {
       align-items: center;
       justify-content: center;
 
+      color: #fff;
       border-radius: 4px;
       background-color: var(--el-fill-color);
     }
@@ -64,12 +66,6 @@ function formateSentence(sentence: string) {
 
   border-radius: 16px;
   color: var(--el-text-color-secondary);
-  background-color: var(--el-bg-color-page);
-}
-
-.WordExamples-Word {
-  // font-weight: 600;
-  color: var(--el-color-primary);
 }
 
 .WordExample-Content {

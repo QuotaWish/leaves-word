@@ -87,7 +87,7 @@ const ins = ref(getCurrentInstance())
 
       transition: 0.25s;
       transform: scale(0);
-      background-color: var(--theme-color);
+      background-color: var(--theme-color-primary);
     }
     position: relative;
     padding: 0.25rem 0.25rem;

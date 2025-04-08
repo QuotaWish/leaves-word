@@ -1,20 +1,38 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { globalPreference } from '~/modules/words';
+
+const empty = computed(() => !globalPreference.value.dict.data)
+const loading = computed(() => globalPreference.value.dict.loading)
+</script>
 
 <template>
-  <div text-black class="transition-cubic WordSignInfoCard fake-background">
+  <div :class="{ empty, loading }" text-black class="transition-cubic WordSignInfoCard fake-background">
     <div class="card-container">
       <div class="card-glass" />
-      <div class="card-content">
-        <div class="transition-cubic WordSignInfo">
-          <slot name="upper" />
+      <template v-if="loading">
+        <div class="WordSignInfo-Loading">
+          <slot name="loading" />
         </div>
-
-        <div class="fake-background WordSignInfo-Detail">
-          <div class="detail-pattern" />
-          <div class="detail-content">
-            <slot name="lower" />
+      </template>
+      <div v-else class="card-content">
+        <template v-if="!empty">
+          <div class="transition-cubic WordSignInfo">
+            <slot name="upper" />
           </div>
-        </div>
+
+          <div class="fake-background WordSignInfo-Detail">
+            <div class="detail-pattern" />
+            <div class="detail-content">
+              <slot name="lower" />
+            </div>
+          </div>
+        </template>
+
+        <template v-else>
+          <div class="WordSignInfo-Empty">
+            <slot name="empty" />
+          </div>
+        </template>
       </div>
     </div>
 
@@ -25,6 +43,18 @@
 </template>
 
 <style lang="scss" scoped>
+.WordSignInfo-Empty,
+.WordSignInfo-Loading {
+  position: relative;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+}
+
 .WordSignInfo-Detail {
   position: relative;
   padding: 1.5rem;

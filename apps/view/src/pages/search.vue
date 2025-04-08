@@ -305,8 +305,3 @@ function getTagColor(tag: string) {
   }
 }
 </style>
-
-<route lang="yaml">
-meta:
-  transition: nav
-</route>

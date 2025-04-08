@@ -18,6 +18,8 @@ const WordExampleEditor: React.FC<WordExampleEditorProps> = ({ value, onChange, 
   useEffect(() => {
     if (value)
       setExample(value)
+
+    console.log('example', example)
   }, [value, isModalVisible])
 
   const handleSave = () => {
@@ -43,10 +45,10 @@ const WordExampleEditor: React.FC<WordExampleEditorProps> = ({ value, onChange, 
   return (
     <div>
       <Button size="small" type="dashed" onClick={showModal}>
-        配置示例
+        {readonly ? '查看示例' : '配置示例'}
       </Button>
       <Modal
-        title="配置示例"
+        title={readonly ? '查看示例' : '配置示例'}
         open={isModalVisible}
         onCancel={handleCancel}
         footer={[

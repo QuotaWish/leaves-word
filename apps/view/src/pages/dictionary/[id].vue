@@ -1,18 +1,29 @@
 <script setup lang="ts">
+import { useRequest } from 'alova/client'
 import { ElMessage } from 'element-plus'
 import { Tab, Tabs } from 'vant'
 import { getEnglishDictionaryVoByIdUsingGet } from '~/composables/api/clients/api/englishDictionaryController'
+import { EnglishDictionaryVO } from '~/composables/api/clients/globals'
 
 defineOptions({
   name: 'DictionaryPage',
 })
 
 const route = useRoute('/dictionary/[id]')
-const loading = ref(false)
-const dict = ref<API.EnglishDictionaryVO>()
+const dict = ref<EnglishDictionaryVO>()
 const router = useRouter()
-const active = ref(0)
+const active = ref(+(route.query.tab as string))
 const showDetailsDialog = ref(false)
+
+const { loading, send, onSuccess, onError } = useRequest(() => Apis.englishDictionaryController.getEnglishDictionaryVOByIdUsingGET({ params: { id: route.params.id } }))
+
+onSuccess((res) => {
+  dict.value = res.data.data
+})
+
+onError(() => {
+  router.back()
+})
 
 const featureCards = [
   {
@@ -72,33 +83,20 @@ const featureCards = [
   },
 ]
 
-async function fetchDictionaryData() {
-  loading.value = true
+watch(() => route.params.id, send, { immediate: true })
 
-  const { code, data } = await getEnglishDictionaryVoByIdUsingGet({
-    id: route.params.id,
+watch(active, () => {
+  router.replace({
+    query: {
+      tab: active.value,
+    }
   })
-
-  if (code !== 0) {
-    ElMessage.error('获取字典数据失败')
-
-    router.back()
-
-    return
-  }
-
-  dict.value = data
-
-  loading.value = false
-}
-
-watch(() => route.params.id, fetchDictionaryData, { immediate: true })
+})
 </script>
 
 <template>
   <PageNavHolder :content-padding="false" :loading="loading" title="词典">
     <div v-if="dict" class="dictionary-container">
-      <!-- 顶部信息区域 -->
       <div class="info-section rounded-lg p-4">
         <div class="flex items-center gap-4">
           <div class="relative w-[100px] flex-shrink-0">
@@ -168,13 +166,7 @@ watch(() => route.params.id, fetchDictionaryData, { immediate: true })
           </Tab>
 
           <Tab title="词表">
-            <div class="p-4">
-              <div class="border border-gray-100 rounded-lg p-4">
-                <p class="text-sm text-gray-500">
-                  词表内容展示区域
-                </p>
-              </div>
-            </div>
+            <DictionaryWord :dict="dict" />
           </Tab>
 
           <Tab title="词典属性">

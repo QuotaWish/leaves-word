@@ -1,14 +1,14 @@
 <script setup>
 import VersionBar from '~/components/chore/VersionBar.vue'
-import { calendarManager } from '~/composables/words'
+import { useDevMode } from '~/modules/develop'
+import { calendarManager } from '~/modules/words'
 import PersonalHeaderDisplay from './PersonalHeaderDisplay.vue'
 import PersonalLayout from './PersonalLayout.vue'
-import { useDevMode } from '~/modules/develop'
+import { globalAuthStorage } from '~/modules/auth'
 
 const router = useRouter()
 const { devModeEnabled, toggleDevMode } = useDevMode()
 
-// 添加点击计数逻辑
 const clickCount = ref(0)
 const lastClickTime = ref(0)
 
@@ -86,14 +86,14 @@ const nextWeekPrediction = ref({
   <PersonalLayout>
     <template #header>
       <PersonalHeaderDisplay>
-        <div h-full w-full flex px-2 items-center justify-between>
+        <div v-if="globalAuthStorage.user" h-full w-full flex px-2 items-center justify-between>
           <div flex items-center gap-4 class="header-main">
             <div class="header-img">
-              <img src="/avatar.jpg">
+              <UserAvatar />
             </div>
             <div flex flex-col justify-center class="header-content">
               <p font-size-5 font-bold class="name">
-                Test Account
+                {{ globalAuthStorage.user.userName || globalAuthStorage.user.id }}
               </p>
               <p class="indent-[2px]" font-size-4 op-60>
                 英语学习，随时随地
@@ -102,8 +102,8 @@ const nextWeekPrediction = ref({
             </div>
           </div>
 
-          <div flex justify-end font-size-6 class="header-line">
-            <div i-ri:robot-fill class="ai-assistant-icon" />
+          <div @click="$router.push('/personal/edit')" flex justify-end font-size-6 class="header-line">
+            <div i-ri:edit-2-fill class="cursor-pointer" />
           </div>
         </div>
       </PersonalHeaderDisplay>
@@ -300,33 +300,6 @@ const nextWeekPrediction = ref({
   }
 }
 
-// AI助手图标
-.ai-assistant-icon {
-  color: var(--theme-color-light);
-  filter: drop-shadow(0 0 8px rgba(var(--theme-color-rgb), 0.6));
-  animation: pulse-icon 2s infinite ease-in-out;
-  cursor: pointer;
-
-  .light & {
-    color: var(--theme-color);
-    filter: drop-shadow(0 0 5px rgba(var(--theme-color-rgb), 0.3));
-  }
-}
-
-@keyframes pulse-icon {
-
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-
-  50% {
-    transform: scale(1.1);
-    opacity: 1;
-  }
-}
-
 // AI分析卡片样式
 .ai-analysis-card,
 .ai-suggestions-card,
@@ -365,7 +338,7 @@ const nextWeekPrediction = ref({
     width: 20px;
     height: 20px;
     margin-right: 10px;
-    color: var(--theme-color);
+    color: var(--theme-color-primary);
   }
 
   .ai-title {
@@ -418,7 +391,7 @@ const nextWeekPrediction = ref({
 
       .style-fill {
         height: 100%;
-        background: linear-gradient(to right, var(--theme-color), var(--theme-color-light));
+        background: linear-gradient(to right, var(--theme-color-primary), var(--theme-color-light));
         border-radius: 4px;
 
         .light & {
@@ -458,7 +431,7 @@ const nextWeekPrediction = ref({
   .stat-value {
     font-size: 20px;
     font-weight: 600;
-    background: linear-gradient(to right, var(--theme-color), var(--theme-color-light));
+    background: linear-gradient(to right, var(--theme-color-primary), var(--theme-color-light));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 4px;
@@ -558,7 +531,7 @@ const nextWeekPrediction = ref({
 
       .light & {
         background: rgba(var(--theme-color-rgb), 0.1);
-        color: var(--theme-color);
+        color: var(--theme-color-primary);
       }
     }
   }
@@ -583,7 +556,7 @@ const nextWeekPrediction = ref({
       content: '•';
       position: absolute;
       left: -15px;
-      color: var(--theme-color);
+      color: var(--theme-color-primary);
     }
   }
 }

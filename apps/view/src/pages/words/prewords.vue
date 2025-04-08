@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import type { PrepareWord } from '~/composables/words/mode'
+import type { LeafPrepareSign } from '~/modules/words/mode'
 import NumberFlow from '@number-flow/vue'
-import DictSelector from '~/components/words/DictSelector.vue'
 import ModeSelector from '~/components/words/ModeSelector.vue'
 import PlanSelector from '~/components/words/PlanSelector.vue'
-import { globalData, useTargetData } from '~/composables/words'
+import { useTargetData } from '~/modules/words'
+import { globalPreference } from '~/modules/words/core/feat/preference'
+import { ElMessage } from 'element-plus'
 
 const router = useRouter()
-const { targetDict, targetSignMode } = useTargetData()
+const { targetSignMode } = useTargetData()
 
 const loadingOptions = reactive<{
   loading: boolean
   progress: number
   start: boolean
   component: Component | null
-  prepare: PrepareWord<any, any, any> | null
+  prepare: LeafPrepareSign<any, any, any> | null
 }>({
   loading: false,
   progress: -1,
@@ -29,10 +30,12 @@ const dialogOptions = reactive<any>({
 })
 
 function selectDict() {
-  Object.assign(dialogOptions, {
-    visible: true,
-    component: DictSelector,
-  })
+  router.push({
+    path: "/words/dict-select-page",
+    query: {
+      type: 'select',
+    },
+  });
 }
 
 function selectPlan() {
@@ -50,7 +53,7 @@ function selectMode() {
 }
 
 function calculateTime(amo: number) {
-  const mode = targetSignMode.value
+  const mode = targetSignMode.value!
 
   return mode.getEstimateCost(amo)
 }
@@ -60,6 +63,12 @@ async function handleStart() {
   loadingOptions.progress = -1
 
   const signMode = targetSignMode.value
+
+  if (!signMode) {
+    ElMessage.error('请先选择词书和模式')
+
+    return
+  }
 
   const prepared = signMode.prepareWords()
 
@@ -128,7 +137,7 @@ function handleBack() {
     <template #bg>
       <LeafBackground />
     </template>
-    <div class="PreWordsPage-Main">
+    <div v-if="globalPreference.dict.data" class="PreWordsPage-Main">
       <div class="coffee-font PreWordsPage-Head">
         <span class="item-1 prewords-headword-item">W</span>
         <span class="prewords-headword-item item-2">O</span>
@@ -150,7 +159,7 @@ function handleBack() {
             <div i-carbon:book />
           </template>
           <template #end>
-            {{ targetDict.name }}
+            {{ globalPreference.dict.data?.name }}
           </template>
           选择词书
         </LineArrow>
@@ -160,7 +169,7 @@ function handleBack() {
             <div i-carbon:plan />
           </template>
           <template #end>
-            {{ globalData.amount }}个/组
+            {{ globalPreference.amount }}个/组
           </template>
           制定计划
         </LineArrow>
@@ -170,7 +179,7 @@ function handleBack() {
             <div i-carbon:apps />
           </template>
           <template #end>
-            {{ targetSignMode.getModeName() }}
+            {{ targetSignMode!.getModeName() }}
           </template>
           实操模式
         </LineArrow>
@@ -178,7 +187,7 @@ function handleBack() {
     </div>
     <div class="transition-cubic PreWordsPage-Supper">
       <div my-2 flex items-center justify-center gap-2 op-75>
-        <div i-carbon-time />预计用时 {{ calculateTime(globalData.amount) }} 分钟
+        <div i-carbon-time />预计用时 {{ calculateTime(globalPreference.amount) }} 分钟
       </div>
       <LeafButton v-wave animated w-full @click="handleStart">
         开始打卡

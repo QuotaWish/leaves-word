@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useRequest } from 'alova/client'
+import Apis from '~/composables/api/clients'
 import { globalAuthStorage } from '.'
 
 const options = reactive({
@@ -6,18 +8,30 @@ const options = reactive({
   certificate: '',
 })
 
-function handleAuth(event: Event) {
+const { send, loading } = useRequest(() => Apis.userController.userLoginTokenUsingPOST({
+  data: {
+    userAccount: options.identifier,
+    userPassword: options.certificate,
+  },
+  meta: {
+    authRole: 'login',
+  },
+}), {
+  immediate: false,
+})
+
+async function handleAuth(event: Event) {
   event.preventDefault()
 
   if (!options.identifier || !options.certificate)
     return
 
-  globalAuthStorage.value.isLogin = true
+  await send()
 }
 </script>
 
 <template>
-  <div class="AuthMain h-full w-full">
+  <div v-loading="loading" class="AuthMain h-full w-full">
     <div class="AuthMain-Inner fake-background">
       <h1 class="title">
         登录

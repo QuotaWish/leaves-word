@@ -15,24 +15,13 @@ import { AllExceptionsFilter } from './common/filters/any-exception.filter'
 import { IdempotenceInterceptor } from './common/interceptors/idempotence.interceptor'
 import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor'
 import { TransformInterceptor } from './common/interceptors/transform.interceptor'
-import { AiGcModule } from './modules/aigc/aigc.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard'
 import { RbacGuard } from './modules/auth/guards/rbac.guard'
-import { BannerModule } from './modules/banner/banner.module'
-import { PostModule } from './modules/community/post.module'
-import { CouponModule } from './modules/coupon/coupon.module'
-import { DocModule } from './modules/document/doc.module'
-import { DummyModule } from './modules/dummy/dummy.module'
-import { FeedbackModule } from './modules/feedback/feedback.module'
 import { HealthModule } from './modules/health/health.module'
-import { InvitationModule } from './modules/invitation/invitation.module'
-import { LivechatModule } from './modules/livechat/livechat.module'
 import { NetdiskModule } from './modules/netdisk/netdisk.module'
-import { OrderModule } from './modules/order/order.module'
 import { PlatformModule } from './modules/platform/platform.module'
 import { SseModule } from './modules/sse/sse.module'
-import { SubscribeModule } from './modules/subscribe/subscribe.module'
 import { SystemModule } from './modules/system/system.module'
 import { TasksModule } from './modules/tasks/tasks.module'
 import { TodoModule } from './modules/todo/todo.module'
@@ -41,17 +30,16 @@ import { UserConfigModule } from './modules/user-config/user-config.module'
 import { DatabaseModule } from './shared/database/database.module'
 
 import { SocketModule } from './socket/socket.module'
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       expandVariables: true,
-      // 指定多个 env 文件时，第一个优先级最高
       envFilePath: ['.env.local', `.env.${process.env.NODE_ENV}`, '.env'],
       load: [...Object.values(config)],
     }),
-    // 避免暴力请求，限制同一个接口 1 秒内不能超过 12 次请求
     ThrottlerModule.forRootAsync({
       useFactory: () => ({
         errorMessage: '当前操作过于频繁，请稍后再试！',
@@ -60,7 +48,6 @@ import { SocketModule } from './socket/socket.module'
         ],
       }),
     }),
-    // 启用 CLS 上下文
     ClsModule.forRoot({
       global: true,
       // https://github.com/Papooch/nestjs-cls/issues/92
@@ -108,20 +95,10 @@ import { SocketModule } from './socket/socket.module'
     // end biz
 
     TodoModule,
-    AiGcModule,
-    DocModule,
-    DummyModule,
     PlatformModule,
-    OrderModule,
-    SubscribeModule,
-    CouponModule,
-    InvitationModule,
-    FeedbackModule,
-    PostModule,
 
     UserConfigModule,
-    BannerModule,
-    LivechatModule,
+    PrismaModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },

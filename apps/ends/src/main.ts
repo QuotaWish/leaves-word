@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
-import { NestFastifyApplication } from '@nestjs/platform-fastify'
+import type { NestFastifyApplication } from '@nestjs/platform-fastify'
 
 import { useContainer } from 'class-validator'
 
@@ -23,7 +23,7 @@ import { isDev, isMainProcess } from './global/env'
 import { setupSwagger } from './setup-swagger'
 import { LoggerService } from './shared/logger/logger.service'
 
-declare const module: any
+declare const module: { hot: { accept: () => void; dispose: (fn: () => void) => void } }
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -92,7 +92,7 @@ async function bootstrap() {
     if (!isMainProcess)
       return
 
-    const logger = new Logger('NestApplication')
+    const logger = new Logger('LeavesWord')
     logger.log(`[${prefix + pid}] Server running on ${url}`)
 
     if (isDev)

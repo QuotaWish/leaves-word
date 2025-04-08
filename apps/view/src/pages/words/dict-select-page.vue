@@ -2,42 +2,31 @@
 // import WordSelector from '@/components/words/WordSelector.vue'
 import { useDebounceFn } from '@vueuse/core'
 import { ElMessage } from 'element-plus'
-import { listEnglishDictionaryUsingGet } from '~/composables/api/clients/api/englishDictionaryController'
-import type { Book, Category } from '~/modules/core/dictionary'
 import { useCategoryTree } from '~/modules/core/dictionary'
 import DictionaryHolder from '~/modules/core/dictionary/DictionaryHolder.vue'
 // import BookItem from './BookItem.vue'
+import { globalPreference } from '~/modules/words/core/feat/preference'
 import 'wc-waterfall'
+import { useRequest } from 'alova/client'
+import type { Category, EnglishDictionary } from '~/composables/api/clients/globals'
 
-const loading = ref(false)
+const route = useRoute()
 const router = useRouter()
 const bookData = ref<Category[]>([])
 const selectCategory = ref<Category>()
-// const selectBook = ref<Book>()
 
-async function fetchBookData() {
-  loading.value = true
+const type = computed(() => route.query.type)
 
-  const { code, data } = await listEnglishDictionaryUsingGet()
+const { loading, send, onSuccess } = useRequest(() => Apis.englishDictionaryController.listEnglishDictionaryUsingGET())
 
-  loading.value = false
+onSuccess((res) => {
+  const result = res.data.data || []
 
-  if (code === 0) {
-    const result = data || []
+  bookData.value = useCategoryTree(result).value
 
-    bookData.value = useCategoryTree(result).value
-
-    if (!selectCategory.value) {
-      selectCategory.value = bookData.value[0]
-    }
+  if (!selectCategory.value) {
+    selectCategory.value = bookData.value[0]
   }
-  else {
-    ElMessage.error('获取书籍数据失败')
-  }
-}
-
-onMounted(() => {
-  fetchBookData()
 })
 
 const searchQuery = ref('')
@@ -50,12 +39,19 @@ function handleSelectCategory(category: Category) {
   selectCategory.value = category
 }
 
-function handleBookClick(book: Book) {
-  // selectBook.value = book
-  router.push({
-    path: `/dictionary/${book.id}`,
-  })
+function handleBookClick(book: EnglishDictionary) {
+  if (type.value === 'select') {
+    globalPreference.value.dict.id = `${book.id}`
+
+    router.back()
+  } else {
+    router.push({
+      path: `/dictionary/${book.id}`,
+    })
+  }
 }
+
+send()
 </script>
 
 <template>
@@ -110,8 +106,9 @@ function handleBookClick(book: Book) {
       <wc-waterfall
         :gap="12"
         :cols="2"
+        :key="selectCategory?.id"
       >
-        <DictionaryBookDisplay v-for="book in (selectCategory?.books || [])" :key="book.id" :model-value="book" @click="handleBookClick(book)" />
+        <DictionaryBookDisplay :active="book.id === globalPreference.dict.id" v-for="book in (selectCategory?.books || [])" :key="book.id" :model-value="book" @click="handleBookClick(book)" />
       </wc-waterfall>
     </el-skeleton>
   </DictionaryHolder>

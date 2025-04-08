@@ -9,7 +9,9 @@ const currentMock = computed(() => {
   return mock
 })
 
-watch(currentMock, nextTick.bind(null, handleMockChange), { immediate: true })
+watch(() => [currentMock.value, splashState.screenMode.value], nextTick.bind(null, handleMockChange))
+
+onMounted(handleMockChange)
 
 function handleMockChange() {
   const el = dom.value
@@ -51,7 +53,7 @@ const modeClass = computed(() => {
     return 'builder'
   }
 
-  return currentMock.value
+  return currentMock.value?.value
 })
 </script>
 
