@@ -458,3 +458,90 @@ flex: 1;
 }
 }
 }
+const showVideoSelector = ref(false)
+
+function selectVideo(video: any) {
+  currentVideo.value = video
+  showVideoSelector.value = false
+  if (videoRef.value) {
+    videoRef.value.load() // 重新加载视频
+    if (isPlaying.value) {
+      videoRef.value.play()
+    }
+  }
+}
+
+<!-- 在template中添加 -->
+.video-selector {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+
+  .selector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .video-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+  }
+
+  .video-item {
+    background: #333;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: scale(1.03);
+    }
+
+    .video-thumbnail {
+      height: 120px;
+      background: #555;
+    }
+
+    .video-info {
+      padding: 10px;
+
+      h4 {
+        margin: 0 0 5px 0;
+        color: white;
+      }
+
+      p {
+        margin: 0;
+        color: #aaa;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+.select-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 8px 16px;
+  background: var(--el-color-primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 100;
+}
+<!-- 在控制区域添加选择按钮 -->
+<button class="select-button" @click="showVideoSelector = true">
+  选择视频
+</button>
