@@ -136,7 +136,8 @@ function handleDirectPoster(banner: any) {
 }
 
 .poster-popup {
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
   z-index: 2000;
   width: 100vw;
   height: 100vh;

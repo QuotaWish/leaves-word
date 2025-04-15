@@ -19,7 +19,7 @@ const icons = [{
   name: '发音',
   icon: 'i-carbon:activity',
   path: '/explore/pronounce',
-  color: ['#B392F2', '#8A69F6'],
+  color: ['#B392F2', '#8A69F2'],
 }, {
   name: '口语',
   icon: 'i-carbon-headphones',
@@ -89,22 +89,14 @@ const swiperList: Array<string> = [
     </div>
 
     <div my-2 class="ExplorePage-Banner">
-      <Swipe>
-        <!-- <SwipeItem v-for="item in 1" :key="item">
-          <h3 class="ExplorePage-BannerItem small justify-center" text="2xl">
-            千叶单词 | 立即体验
-          </h3>
-        </SwipeItem> -->
-        <SwipeItem class="ExplorePage-BannerItem" v-for="(item, idx) in swiperList" :key="idx">
+      <Swipe :autoplay="3000" :show-indicators="true" :loop="true" :touchable="true" :duration="300" :touch-distance="10">
+        <SwipeItem class="ExplorePage-BannerItem" v-for="(item, idx) in swiperList" :key="idx" @click="idx === 0 ? router.push('/explore/comprehensive') : idx === 1 ? router.push('/explore/listen') : idx === 2 ? router.push('/explore/dub') : router.push('/explore/entertainment')">
           <img :src="item" style="width: 100%; height: 100%; object-fit: cover" />
         </SwipeItem>
-        <SwipeItem class="ExplorePage-BannerItem">
+        <SwipeItem class="ExplorePage-BannerItem" @click="router.push('/explore/word-test')">
           <h3 absolute class="ExplorePage-BannerItem-TransTitle left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] z-10 font-bold text-4xl text-white">词汇测试</h3>
           <img src="https://img2.quotawish.com/2025/03/04/67c7158472ce5.gif" style="width: 100%; height: 100%; object-fit: cover" />
         </SwipeItem>
-        <!-- <SwipeItem v-for="(item, idx) in swiperList" :key="idx">
-          <img :src="item" style="width: 100%; height: 100%; object-fit: cover" />
-        </SwipeItem> -->
       </Swipe>
     </div>
 
