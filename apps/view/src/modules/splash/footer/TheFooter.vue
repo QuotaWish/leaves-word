@@ -16,7 +16,7 @@ const { active, activeNav, navs } = useFooterNav()
         v-for="(nav, ind) in navs" :id="`footer-nav-item-${ind + 1}`" :key="nav.path" flex flex-col items-center
         :class="{ active: activeNav?.path === nav.path }" @click="router.push(nav.path)"
       >
-        <div class="transition-cubic fake-background nav-icon">
+        <div class="transition-cubic nav-icon">
           <template v-if="nav.icon.startsWith('i-')">
             <div :class="nav.icon" />
           </template>

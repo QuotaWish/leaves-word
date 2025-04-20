@@ -11,7 +11,7 @@ interface LeafEvent {
 const getEnvironmentUrl = (): string => {
   let baseUrl = "";
   if (envType === "development") {
-    baseUrl = "http://192.168.128.121:3333";
+    baseUrl = "http://172.21.176.1:3334";
   } else {
     baseUrl = "https://app.leavesword.quotawish.com";
   }
@@ -52,12 +52,11 @@ export default {
         this.handleLoad()
       })
 
-      // 清除之前的定时器（如果有）
+
       if (this.timeoutTimer !== null) {
         clearTimeout(this.timeoutTimer);
       }
 
-      // 设置3分钟超时检测
       this.timeoutTimer = setTimeout(() => {
         if (!this.leafDoneReceived) {
           this.errorText = "页面加载超时，是否重新加载？";
@@ -81,16 +80,13 @@ export default {
       });
     },
 
-    // 处理从网页接收的消息
     handleMessage(event: any): void {
       console.log("收到网页消息:", event);
       try {
         const message = event.detail ? event.detail : event;
 
-        // 检查是否收到leaf:done事件
         if (message && message.data === "@leaf:done") {
           this.leafDoneReceived = true;
-          // 收到leaf:done事件后，清除超时定时器
           if (this.timeoutTimer !== null) {
             clearTimeout(this.timeoutTimer);
             this.timeoutTimer = null;

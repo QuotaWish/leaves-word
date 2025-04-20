@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>HBuilderX-高效极客技巧</title>
+        <link href="//ask.dcloud.net.cn/static/css/classblack/img/favicon.png?v=20141207" rel="shortcut icon" type="image/x-icon">
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <meta name="keywords" content="HBuilderX,快应用,流应用,mui,nativejs,dcloud,HBuilder,HTML5,数字天堂网络,数字天堂,web,前端开发,web开发,跨平台,app开发,公众号,开发工具,ide,css,vue,javascript,dreamweaver,dw,sublime,brackets,vs,code,eclipse,webstorm,visual studio,editplus,notepad++,数字天堂（北京）网络技术有限公司">
+        <meta name="description" content="HBuilderX是当前最快的HTML开发工具，强大的代码助手帮你快速完成开发，最全的语法库和浏览器兼容性数据让浏览器碎片化不再头痛">
+        <link rel="stylesheet" type="text/css" href="css/hbuilderx_new.css?v=20230210" />
+        <link rel="stylesheet" type="text/css" href="css/fonticon.css?v=0923">
+        <script src="js/vue.js?t=20210817" type="text/javascript" charset="utf-8"></script>
+    </head>
+    <body class="hx">
+        <div id="app" v-cloak>
+            <!-- page-header -->
+            <div class="header head-msg" v-bind:class="{hidden : language != 'zh'}">
+                <div class="clearfix">
+                    <ul class="mui-pull-right mui-list-inline">
+                        <li>
+                            <a class="weixin-toggle"><i class="icon-weixin"></i>
+                                <div class="pop-modal"><img src="//dcloud.io/img/weixin.jpg"></div>
+                            </a>
+                            <div class="pop-modal"> <img src="//dcloud.io/img/weixin.jpg"> </div>
+                        </li>
+                        <li>
+                            <a href="//weibo.com/u/3196963860" target="_blank" class="weibo"><i class="icon-weibo"></i></a>
+                        </li>
+                        <li><i class="icon-message"></i>
+                            <div id="notice">
+                                <a href="//dcloud.io/150914/index.html?t=1523879749232" target="_blank" class="notice-open">法院判决APICloud赔付DCloud共计184.48万元并公开道歉</a>
+                                <a href="//dcloud.io/hr/" target="_blank" class="notice-open">DCloud招人啦，工程师、运营快到碗里来</a>
+                                <a href="//ask.dcloud.net.cn/article/986" target="_blank" class="notice-open">HTML5中国产业联盟正式挂靠于工信部</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="header mobile-header">
+                <div class="clearfix">
+                    <ul class="dcloud-logo mui-pull-left mui-list-inline">
+                        <li> <a href="/index.html" class="hb-logo"></a> </li>
+                    </ul>
+                    <ul class="mobile-nav mui-pull-right mui-list-inline">
+                        <li> <a href="index.html" target="_blank">{{LangData.nav.home.n}}</a> </li>
+                        <li> <a href="//hx.dcloud.net.cn" target="_blank">{{ LangData.nav.hxDoc.n }}</a> </li>
+                        <li> <a href="//hx.dcloud.net.cn/ExtensionTutorial/README" target="_blank">{{ LangData.nav.pDoc.n }}</a> </li>
+                        <li> <a :href="AskURL" target="_blank">{{ LangData.nav.ask.n }}</a> </li>
+                        <li v-if="language == 'zh'"> <a href="//www.html5plus.org/" target="_blank">{{ LangData.nav.al.n }}</a> </li>
+                        <li v-if="language == 'zh'"> <a href="//dcloud.io/case/" target="_blank">{{ LangData.nav.case.n }}</a> </li>
+                        <li class="item-dev" v-if="language == 'zh'"> <a href="//dev.dcloud.net.cn/sponsor/" target="_blank">{{ LangData.nav.sponsor.n }}</a> </li>
+                        <li class="item-dev" v-if="language == 'zh'"> <a href="//dev.dcloud.net.cn/wish/" target="_blank">{{ LangData.nav.dw.n }}</a> </li>
+                        <li class="item-dev dropdown">
+                            <div style="display:flex;">
+                                <span>{{ LangData.nav.lang.n }}</span>
+                                <svg t="1629441415944" class="icon" viewBox="0 20 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3713" width="16" height="16" style="margin-top: 14px;"><path d="M508.025406 655.446718c-14.45307 0-28.183486-5.781228-39.023289-15.898376l-231.249118-231.249118c-10.117149-10.117149-10.117149-26.015526 0-36.132675s26.015526-10.117149 36.132675 0l231.249118 231.249118c2.16796 2.16796 4.335921 2.16796 5.781228 0l231.971771-231.971771c10.117149-10.117149 26.015526-10.117149 35.410021 0 10.117149 10.117149 10.117149 26.015526 0 36.132674l-231.971771 231.971772c-9.394495 10.117149-23.124912 15.898377-38.300635 15.898376z" p-id="3714"></path></svg>
+                            </div>
+                            <div class="dropdown-content">
+                                <p @click="setLang('zh')" v-bind:class="{ clickDisabled: language == 'zh' }">简体中文</p>
+                                <p @click="setLang('en')" v-bind:class="{ clickDisabled: language == 'en' }">English</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- logo and download button -->
+            <div class="menu">
+                <div class="hx-title" v-if="language == 'zh'">
+                    <img src="//qiniu-ecdn.dcloud.net.cn/uploads/images/hbuilderx/icon/hbuilderx_icon@2x.png" />
+                    <span class="text-for-hbuilderx ">HBuilder X</span>
+                    <span class="text-for-hbuilderx-desc">为极客、为懒人、为你</span>
+                </div>
+                <div class="hx-title" v-else>
+                    <img src="//qiniu-ecdn.dcloud.net.cn/uploads/images/hbuilderx/icon/hbuilderx_icon@2x.png" />
+                    <span class="text-for-hbuilderx ">HBuilder X</span>
+                    <span class="text-for-hbuilderx-desc">a superpowered IDE for Vue</span>
+                </div>
+                <div class="download-hx download-hx-cn" id="download-hx" style="margin-bottom: 1.5rem;margin-top: 1.5rem;" v-if="!isPc">
+                    <a title="下载HBuilderX" v-on:click="openDownloadBox();">DOWNLOAD</a>
+                </div>
+                <!-- 2022-04-21 UI -->
+                <div v-else>
+                    <div class="download-hx download-hx-en" id="download-hx-en" style="margin-bottom: 1.5rem;margin-top: 1.5rem;"
+                        @mouseleave="en_download_matrix=false">
+                        <div class="en-text">
+                            <a download title="Download HBuilderX" :href="en_default_download_url" @click="addGoogleEvent()">{{ DownLoad_Text_for_en }}</a>
+                        </div>
+                        <div class="split-line"></div>
+                        <div class="en-icon" @mouseenter="en_download_matrix=true">
+                            <span class="more">more</span>
+                            <span id="more_icon" class="more_icon" :class="[en_download_matrix ? 'up_arrow': 'down_arrow']">
+                            </span>
+                        </div>
+
+                        <div id="download-matrix" class="download-matrix"
+                            :class="{'zh-download-matrix': language == 'zh'}"
+                            v-show="en_download_matrix"
+                            @mouseleave="en_download_matrix=false">
+                            <table>
+                              <tr>
+                                <th class="t-w30"></th>
+                                <th class="t-w35">{{ LangData.release }} <span class="version_tag">{{ ReleaseConfig.displayVersion }}</span></th>
+                                <th class="t-w35">{{ LangData.alpha }} <span class="version_tag">{{ AlphaConfig.displayVersion }}</span></th>
+                              </tr>
+                              <tr>
+                                <td class="os t-w30">
+                                    <img class="os-icon" src="https://qiniu-ecdn.dcloud.net.cn/uploads/images/win-icon.png" /> Windows
+                                </td>
+                                <td class="t-w35">
+                                    <div>
+                                        <a download :href="ReleaseConfig.win_simple.path" @click="addGoogleEvent()"  class="download_icon">.zip</a>
+                                    </div>
+                                </td>
+                                <td class="t-w35">
+                                    <div>
+                                        <a download :href="AlphaConfig.win_simple.path" @click="addGoogleEvent()" class="download_icon">.zip</a>
+                                    </div>
+                                </td>
+                              </tr>
+                              <tr class="tr-line">
+                                <td class="os t-w30">
+                                    <img class="os-icon" src="https://qiniu-ecdn.dcloud.net.cn/uploads/images/mac-icon.png" /> MacOS
+                                </td>
+                                <td class="t-w35">
+                                    <div>
+                                        <a download :href="ReleaseConfig.mac_simple.path" @click="addGoogleEvent()" class="download_icon">.dmg</a>
+                                    </div>
+                                </td>
+                                <td class="t-w35">
+                                    <div>
+                                        <a download :href="AlphaConfig.mac_simple.path" @click="addGoogleEvent()" class="download_icon">.dmg</a>
+                                    </div>
+                                </td>
+                              </tr>
+                              <tr class="tr-line">
+                                <td class="t-w30"></td>
+                                <td class="t-w35"><a target="_blank" :href="ReleaseConfig.release">
+                                    <img src="https://qiniu-ecdn.dcloud.net.cn/uploads/images/info.png" class="os-img-icon"/>
+                                    {{ LangData.ReleaseNote }}</a>
+                                </td>
+                                <td class="t-w35"><a target="_blank" :href="AlphaConfig.release">
+                                    <img src="https://qiniu-ecdn.dcloud.net.cn/uploads/images/info.png" class="os-img-icon"/>
+                                    {{ LangData.ReleaseNote }}</a>
+                                </td>
+                              </tr>
+                            </table>
+                            <div v-if="language == 'zh'">
+                                <p class="pkg-tip">
+                                    <span>PS：标准版也可安装app开发插件</span>
+                                    <a href="https://ask.dcloud.net.cn/article/35765" target="_Blank" style="color: #348e43; padding: 0 10px;">版本区别说明</a>
+                                    <a href="https://hx.dcloud.net.cn/Tutorial/HistoryVersion" target="_Blank" style="color: #348e43;">历史版本</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--page-animate-->
+            <div id="page-hx-animate" class="animate">
+                <div style="position: relative;">
+                    <div id="ani-layer" class="ani-layer" style="display: block;">
+                        <p id="ani-layer-text"></p>
+                    </div>
+                    <div id="animate-main" class="animate-main">
+                        <!--搜索条-->
+                        <div id="animate-toolbar" class="animate-header"></div>
+                        <div class="animate-content">
+                            <!--项目管理区域-->
+                            <div id="animate-side" class="animate-side"></div>
+                            <!--顶部选项卡部分-->
+                            <!-- <nav class="animate-nav"></nav> -->
+                            <!--动画内容-->
+                            <div id="animate-canvas-content" class="animate-canvas">
+                                <canvas id="animate-canvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--底部条-->
+                <div class="animate-footer">
+                    <div id="hotkey-desc" class="hotkey-desc"></div>
+                    <div class="control on" id="animate-control"></div>
+                </div>
+
+                <!-- 底部切换 -->
+                <div class="animate-footer-tab text-center">
+                    <a class="nav-item a-switch active" href="javascript:;" title="绿柔主题: 秒开大文件"></a>
+                    <a class="nav-item a-switch" href="javascript:;" title="雅蓝主题: 强大的Vue支持"></a>
+                    <a class="nav-item a-switch" href="javascript:;" title="酷黑主题: 智能双击与包围"></a>
+                    <div class="display-inline" style="margin-left: 30px;">
+                        <a class="more-skil-text" href="https://hx.dcloud.net.cn/Tutorial/UserGuide/skill" target="_blank">{{ LangData.MoreSkill }} &#62;&#62;</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- page-body-shadow -->
+            <div class="page-shadow">
+                <span></span>
+            </div>
+
+            <!-- page-hx-desc-img -->
+            <div id="page-hx-desc-pic" class="hx-container">
+                <div class="text-center hx-desc" v-if="language == 'zh'">
+                    <img src="//img.cdn.aliyun.dcloud.net.cn/hbuilderx/website/en/hx_desc@1x.png"
+                        srcset="//img.cdn.aliyun.dcloud.net.cn/hbuilderx/website/en/hx_desc@2x.png 2x" />
+                </div>
+                <div class="text-center hx-desc-en" v-else>
+                    HBuilder - Fast, Light, Powerful, Free
+                </div>
+            </div>
+
+            <!-- page-hx-desc-text -->
+            <div id="page-hx-desc-text"  class="hx-container hx-board-c">
+                <div class="tip-list">
+                    <div class="tip-item">
+                        <img class="tip-icon" src="//img.cdn.aliyun.dcloud.net.cn/hbuilderx/website/en/tip/hx_tip_icon_1@1x.png"
+                            srcset="//img.cdn.aliyun.dcloud.net.cn/hbuilderx/website/en/tip/hx_tip_icon_1@1x.png 2x" />
+                        <dl>
+                            <dt>{{ LangData.body.intro.title }}</dt>
+                            <dd> <p v-html="LangData.body.intro.desc"></p> </dd>
+                        </dl>
+                    </div>
+                    <div class="tip-item">
+                        <img class="tip-icon" src="//img.cdn.aliyun.dcloud.net.cn/hbuilderx/website/en/tip/hx_tip_icon_2@1x.png"
+                            srcset="//img.cdn.aliyun.dcloud.net.cn/hbuilderx/website/en/tip/hx_tip_icon_2@2x.png 2x" />
+                        <dl>
+                            <dt>{{ LangData.body.Intellisense.title }}</dt>
+                            <dd> <p v-html="LangData.body.Intellisense.desc"></p> </dd>
+                        </dl>
+                        <a href="https://hx.dcloud.net.cn/Tutorial/Language/Overview" target="_blank">{{ LangData.details }}&gt;</a>
+                    </div>
+                </div>
+                <div class="tip-list">
+                    <div class="tip-item">
+                        <img class="tip-icon" src="//img.cdn.aliyun.dcloud.net.cn/hbuilderx/website/en/tip/hx_tip_icon_3@1x.png"
+                            srcset="//img.cdn.aliyun.dcloud.net.cn/hbuilderx/website/en/tip/hx_tip_icon_3@2x.png 2x" />
+                        <dl>
+                            <dt>{{ LangData.body.vue.title }}</dt>
+                            <dd> <p v-html="LangData.body.vue.desc"></p> </dd>
+                        </dl>
+                        <a href="https://hx.dcloud.net.cn/Tutorial/Language/vue" target="_blank">{{ LangData.details }}&gt;</a>
+                    </div>
+                    <div class="tip-item">
+                        <img class="tip-icon" src="//img.cdn.aliyun.dcloud.net.cn/hbuilderx/website/en/tip/hx_tip_icon_4@1x.png"
+                            srcset="//img.cdn.aliyun.dcloud.net.cn/hbuilderx/website/en/tip/hx_tip_icon_4@2x.png 2x" />
+                        <dl>
+                            <dt>{{ LangData.body.UI.title }}</dt>
+                            <dd> <p v-html="LangData.body.UI.desc"></p> </dd>
+                        </dl>
+                        <a href="https://hx.dcloud.net.cn/Tutorial/Other/health" target="_blank">{{ LangData.details }}&gt;</a>
+                    </div>
+                </div>
+                <div class="tip-list">
+                    <div class="tip-item">
+                        <img class="tip-icon" src="//img.cdn.aliyun.dcloud.net.cn/hbuilderx/website/en/tip/hx_tip_icon_5@1x.png"
+                            srcset="//img.cdn.aliyun.dcloud.net.cn/hbuilderx/website/en/tip/hx_tip_icon_5@2x.png 2x" />
+                        <dl>
+                            <dt>{{ LangData.body.Geek.title }}</dt>
+                            <dd> <p v-html="LangData.body.Geek.desc"></p> </dd>
+                        </dl>
+                        <a :href="LangData.body.Geek.url" target="_blank" v-show="LangData.body.Geek.url">{{ LangData.details }}&gt;</a>
+                    </div>
+                    <div class="tip-item">
+                        <img class="tip-icon" src="//img.cdn.aliyun.dcloud.net.cn/hbuilderx/website/en/tip/hx_tip_icon_6@1x.png"
+                            srcset="//img.cdn.aliyun.dcloud.net.cn/hbuilderx/website/en/tip/hx_tip_icon_6@2x.png 2x" />
+                        <dl>
+                            <dt>{{ LangData.body.md.title }}</dt>
+                            <dd> <p v-html="LangData.body.md.desc"></p> </dd>
+                        </dl>
+                        <a href="//hx.dcloud.net.cn/Tutorial/Language/markdown" target="_blank">{{ LangData.details }}&gt;</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clear"></div>
+
+            <!-- footer -->
+            <div id="page-footer" class="hx-footer">
+                <img class="logo" src="//img.cdn.aliyun.dcloud.net.cn/hbuilderx/website/en/icon/hx_icon@1x.png"
+                    srcset="//img.cdn.aliyun.dcloud.net.cn/hbuilderx/website/en/icon/hx_icon@2x.png 2x" />
+                <p class="copyright">
+                    <a class="home" href="//www.dcloud.io">©DCloud.io</a>
+                </p>
+            </div>
+
+            <!-- 下载mask -->
+            <div id="download-mask" class="mask" :class="[isShowBox?'display-block':'display-no']">
+
+                <!-- 手机浏览器弹窗 -->
+                <div id="download-modal-phone" name="download-mobile" class="download-modal" style="padding-top: 50px;" :class="{'display-no': isPc}">
+                    <span class="close icon-close" @click="isShowBox = false"></span>
+                    <div id="mobile-hx-logo" class="text-center">
+                        <img class="logo" src="//qiniu-ecdn.dcloud.net.cn/uploads/images/hbuilderx/hx_icon@1x.png"
+                            srcset="//qiniu-ecdn.dcloud.net.cn/uploads/images/hbuilderx/hx_icon@2x.png 2x" />
+                    </div>
+                    <div id="mobile-hx-release-version" class="mobile-hx-version">
+                        <span class="version-text">{{ LangData.release }} <span class="version-code" id="phone-version-hock">{{ ReleaseConfig.displayVersion }}</span></span>
+                        <a id="mobile-hx-changelog" class="version-changelog float-right" :href="ReleaseConfig.release" target="_blank">{{ LangData.ReleaseNote }}&#62;</a>
+                    </div>
+                    <div class="cut-line"></div>
+                    <div id="mobile-hx-alpha-version" class="mobile-hx-version">
+                        <span class="version-text">{{ LangData.alpha }} <span class="version-code" id="phone-version-alpha-hock">{{ AlphaConfig.displayVersion }}</span></span>
+                        <a id="mobile-hx-alpha-changelog" class="version-changelog float-right" :href="AlphaConfig.release" target="_blank">{{ LangData.ReleaseNote }}&#62;</a>
+                    </div>
+                    <div class="cut-line"></div>
+                    <div id="mobile-hx-download-prompt" class="mobile-hx-download-prompt">
+                        <div style="margin-right: 5px;margin-top: -1px;">
+                            <img src="//qiniu-ecdn.dcloud.net.cn/uploads/images/hbuilderx/mobile-hx-prompt.png"
+                                srcset="//qiniu-ecdn.dcloud.net.cn/uploads/images/hbuilderx/mobile-hx-prompt@2x.png 2x" />
+                        </div>
+                        <div class="prompt-text">
+                            <span>HBuilderX是PC桌面软件，手机端不支持下载，请打开电脑浏览器进行下载。</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="//js.cdn.aliyun.dcloud.net.cn/dev/js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+        <script src="miku-delivery-1.2.1.js" type="text/javascript" charset="utf-8"></script>
+        <script>
+            mikuDelivery.initProxy('miku-delivery-sw-1.2.1.js', {
+                /** appID 和 appSalt 由七牛配置提供*/
+              app: { appID: 'r5v5l8yhuips0xwv', appSalt: 'ejhqsncr0hrwcadkfrsh07n3p6wxt9q3' },
+              /** 需要被代理的域名列表，域名需要提前在七牛创建完成，由七牛配置 ecdn 功能 */
+              domains: ['qiniu-ecdn.dcloud.net.cn'],
+              // debug: true,
+              /** 开启对 <a> 标签文件下载请求的代理功能 */
+              anchorDownload: true,
+              patterns: {
+                  other: [/\.(zip|dmg)$/]
+              }
+            })
+
+            //获取指定名称的cookie的值
+            function getCookie(name) {
+                let arr,reg=new RegExp('(^| )'+name+'=([^;]*)(;|$)');
+                if(arr=document.cookie.match(reg)) {
+                    return unescape(arr[2]);
+                } else {
+                    return null;
+                };
+            };
+
+            // 2021-06-16 增加通过链接直接打开下载弹窗功能，并切换到相应的版本。
+            // https://www.dcloud.io/hbuilderx.html#download_alpha || https://www.dcloud.io/hbuilderx.html#download_release
+            var urlHash = window.location.hash;
+
+            // 2021-07-14 针对手机，优化下载弹窗样式。手机访问，点击下载，仅显示版本号和更新日志
+            var sUserAgent = navigator.userAgent.toLowerCase();
+            var isPc = true;
+            if (sUserAgent.includes('mobile')) {
+                isPc = false;
+            };
+
+            // 英文版：Download按钮
+            var OSName = 'windows';
+            var DownLoad_Text_for_en = 'Download for Windows';
+            if (sUserAgent.indexOf('mac') > -1) {
+                DownLoad_Text_for_en = 'Download for Mac';
+                OSName = 'mac';
+            };
+
+            // 获取浏览器语言
+            var lan = navigator.systemLanguage || navigator.language;
+            lan = lan.substr(0, 2) == 'zh' ? 'zh' : 'en';
+
+            let user_set_language = getCookie('user_set_language');
+            if (['en','zh'].includes(user_set_language)) {
+                lan = user_set_language;
+            };
+
+            // set title
+            if (lan != 'zh') {
+                document.getElementsByTagName('title')[0].innerText = 'HBuilderX - a superpowered IDE for Vue';
+                document.querySelector('meta[name="description"]').setAttribute('content','HBuilderX is the fastest HTML development tool. Powerful code assistant helps you complete development quickly. The complete syntax library and browser compatibility function will improve your development efficiency.');
+            };
+
+            // 语言：中文/英文
+            let InternationalizationData = {'zh': {'MoreSkill': '更多高级技巧','details': '详情','ReleaseNote': '更新日志','alpha': 'Alpha版','release': '正式版','Windows': 'Windows版','MacOS': 'MacOS版','historyVersion': '历史版本','hxSimple': '标准版','hxFull': 'App开发版','win32Simple': '标准版','macosxSimple': '标准版','nav': {'home': {'n': '首页'},'hxDoc': {'n': '产品文档'},'pDoc': {'n': '插件文档'},'ask': {'n': '社区'},'al': {'n': '联盟'},'case': {'n': '案例'},'sponsor': {'n': '赞助我们'},'dw': {'n': '需求墙'},'lang': {'n': '简体中文'}},'body': {'intro': {'title': '轻巧、极速','desc': '10M的绿色发行包。<br/>C++架构，启动速度、大文档打开速度、<br/>编码提示，都极速响应。'},'Intellisense': {'title': '强大的语法提示','desc': '一流的ast语法分析能力<br/>语法提示精准、全面、细致，<br/>转到定义、重构完善','url': '//hx.dcloud.net.cn/Tutorial/Language/Overview'},'vue': {'title': '专为vue打造','desc': '提供比其他工具更优秀的vue支持<br/>大幅提升你的vue开发效率','url': '//hx.dcloud.net.cn/Tutorial/Language/vue'},'UI': {'title': '清爽护眼','desc': '界面清爽简洁，绿柔主题经过科学的脑疲劳测试，<br/>最适合人眼长期观看的主题界面。</br>保护手腕，减缓鼠标手。','url': '//hx.dcloud.net.cn/Tutorial/Other/health'},'Geek': {'title': '高效极客操作','desc': 'HBuilderX对字处理提供了更崇高的支持。<br/>更强大的多光标、智能双击、选区管理...<br/>让文字处理的效率大幅提升。<br/><br/>比如你可以简单的选中想要处理的多端文字区块，方便的同时注释掉不同行的一对tag或if块首尾行。','url': '//hx.dcloud.net.cn/Tutorial/UserGuide/skill'},'md': {'title': 'markdown优先','desc': 'HX是唯一一个新建文件默认类型是markdown的编辑器，也是对md支持最强的编辑器，你甚至可以直接粘贴表格、图片进来。<br/><br/>对于技术人员，我们强烈建议你以后不要使用记事本了，用markdown来替代txt。','url': '//hx.dcloud.net.cn/Tutorial/Language/markdown'}}},'en': {'MoreSkill': 'More skills','details': 'Details','ReleaseNote': 'ReleaseNotes','alpha': 'Alpha','release': 'Releases','Windows': 'Windows','MacOS': 'MacOS','historyVersion': 'Specific Releases','hxSimple': 'Universal','hxFull': 'App开发版','win32Simple': '.zip','macosxSimple': '.dmg','nav': {'home': {'n': 'Home'},'hxDoc': {'n': 'Docs'},'pDoc': {'n': 'API'},'ask': {'n': 'Forum'},'al': {'n': 'Alliances'},'case': {'n': 'Case'},'sponsor': {'n': 'Sponsor'},'dw': {'n': 'Demand'},'lang': {'n': 'English'}},'body': {'intro': {'title': 'Lightweight and Super Fast','desc': 'Implemented with C++, only 10 Mb install package.<br/>Fast startup, fast intellisense, and handles large files with ease.'},'Intellisense': {'title': 'Powerful intellisense','desc': 'First-class AST syntax analysis.<br/>Accurate and comprehensive auto-completion, <br/>Goto definition and code refactor support.'},'vue': {'title': 'Built for Vue','desc': 'Dedicated, best-in-class Vue support.<br/>API autocompletion, type inference and latest syntax such as &lt;script setup&gt;.'},'UI': {'title': 'Easy on the eyes','desc': 'A default theme optimized for long work sessions,scienfitically tested to reduce eye and brain fatigue.'},'Geek': {'title': 'Efficient Text Editing','desc': 'Multi-cursor / multi-line selection.<br/>Smart auto selection on double click.<br/>Smart hotkeys that work even without selection.'},'md': {'title': 'Advanced Markdown Support','desc': 'Emmet-like shortcuts<br/>Built-in formatting and outlines<br/>Smart copy-paste for links, tables and images, and more!'}}}};
+
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    OSName: 'windows',
+                    isPc: '',
+                    isShowBox: false,
+                    isShowBoxForRlease: true,
+                    zh_downloadURL: 'https://download1.dcloud.net.cn/hbuilderx/',
+                    en_downloadURL: 'https://download.dcloud.io/hbuilderx/',
+                    // en_downloadURL: "http://192.168.12.242:8848/hx官网源码/",
+                    // zh_downloadURL: "http://192.168.12.242:8848/hx官网源码/",
+                    language: '',
+                    LangData: {},
+                    ReleaseConfig: {'win_simple':{}, 'win_full': {}, 'mac_simple': {}, 'mac_full': {}},
+                    AlphaConfig: {'win_simple':{}, 'win_full': {}, 'mac_simple': {}, 'mac_full': {}},
+                    AskURL: '//ask.dcloud.net.cn/explore/',
+                    en_default_download_url: '',
+                    DownLoad_Text_for_en: DownLoad_Text_for_en,
+                    en_download_matrix: false,
+                },
+                created() {
+                    this.OSName = OSName;
+                    this.isPc = isPc;
+                    this.language = lan;
+                    this.LangData = InternationalizationData[lan];
+                    this.getHXAlphaDownLoadConfig();
+                    this.getHXReleaseDownLoadConfig();
+                },
+                mounted() {
+                    if (this.language != 'zh') {
+                        // this.isShowBoxForRlease = false;
+                        this.AskURL = 'https://github.com/dcloudio/HBuilderX/issues';
+                    };
+                    // if (urlHash == '#download_alpha') {
+                    //     this.isShowBox = true;
+                    //     this.isShowBoxForRlease = false;
+                    // };
+                },
+                methods: {
+                    openDownloadBox() {
+                        this.isShowBox = true;
+                    },
+                    addGoogleEvent() {
+                        // 添加google事件
+                        if (this.language != 'zh') {
+                            gtag('event', 'ClickDownLoadBtn', {
+                               'event_name': 'download-hx'
+                            });
+                        };
+                    },
+                    isShowBoxForVersion(item) {
+                        this.isShowBoxForRlease = item == 'alpha' ? false : true;
+                    },
+                    setLang(item) {
+                        this.setCookie('user_set_language', item);
+                        location.reload();
+                    },
+                    setCookie(name, value) {
+                        var Days = 365;
+                        var exp = new Date();
+                        exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+                        document.cookie = name + '=' + escape(value) + ';expires=' + exp.toGMTString();
+                    },
+                    open_en_download_matrix() {
+                        if (this.en_download_matrix) {
+                            this.en_download_matrix = false;
+                        } else {
+                            this.en_download_matrix = true;
+                        }
+                    },
+                    // 获取HBuilderX Alpha下载配置文件
+                    getHXAlphaDownLoadConfig() {
+                        let configFile = lan == 'zh' ? 'alpha.json' : 'alpha_en.json';
+                        let downloadURL = lan == 'zh' ? this.zh_downloadURL : this.en_downloadURL;
+
+                        let downloadConfig = {};
+                        let that = this;
+                        $.ajax({
+                            url: downloadURL + configFile + '?timestamp=' + $.now(),
+                            dataType: 'json',
+                            success: function(data) {
+                                // hbuilderx release version
+                                downloadConfig['displayVersion'] = "v"+data.displayVersion;
+                                downloadConfig['version'] = data.version;
+
+                                // hbuilderx release note url
+                                downloadConfig['release'] = data.release;
+
+                                // download info
+                                for (let i of data.files) {
+                                    let code = i.code;
+                                    i.path = i.path.replace('download1.dcloud.net.cn', 'qiniu-ecdn.dcloud.net.cn');
+                                    if (code == 'win_simple') {downloadConfig.win_simple = i;};
+                                    if (code == 'win_full') {downloadConfig.win_full = i;};
+                                    if (code == 'mac_simple') {downloadConfig.mac_simple = i;};
+                                    if (code == 'mac_full') {downloadConfig.mac_full = i;};
+                                };
+                                that.AlphaConfig = downloadConfig;
+                            },
+                            error: function(err) {
+                                console.log('错误：获取不到Alpha版下载配置文件信息，因此无法显示下载链接。');
+                            }
+                        });
+                    },
+                    // 获取HBuilderX 正式版下载配置文件
+                    getHXReleaseDownLoadConfig() {
+                        let configFile = lan == 'zh' ? 'release.json' : 'release_en.json';
+                        let downloadURL = lan == 'zh' ? this.zh_downloadURL : this.en_downloadURL;
+
+                        let downloadConfig = {};
+                        let that = this;
+                        $.ajax({
+                            url: downloadURL + configFile + '?timestamp=' + $.now(),
+                            dataType: 'json',
+                            success: function(data) {
+                                // hbuilderx release version
+                                downloadConfig['displayVersion'] = "v"+ data.displayVersion;
+                                downloadConfig['version'] = data.version;
+
+                                // hbuilderx release note url
+                                downloadConfig['release'] = data.release;
+
+                                // download info for windows
+                                for (let s of data.win) {
+                                    let path = s.path;
+                                    s.path = s.path.replace('download1.dcloud.net.cn', 'qiniu-ecdn.dcloud.net.cn');
+                                    if (path.includes('HBuilderX') && !path.includes('full.zip')) {downloadConfig.win_simple = s;};
+                                    if (path.includes('HBuilderX') && path.includes('full.zip')) {downloadConfig.win_full = s;};
+                                    if (s.name.includes('HBuilder.')) {downloadConfig.hb_win = s.path;};
+                                };
+
+                                // download info for macosx
+                                for (let s1 of data.mac) {
+                                    let path1 = s1.path;
+                                    s1.path = s1.path.replace('download1.dcloud.net.cn', 'qiniu-ecdn.dcloud.net.cn');
+                                    if (path1.includes('HBuilderX') && !path1.includes('full.dmg')) {downloadConfig.mac_simple = s1;};
+                                    if (path1.includes('HBuilderX') && path1.includes('full.dmg')) {downloadConfig.mac_full = s1;};
+                                    if (s1.name.includes('HBuilder.')) {downloadConfig.hb_mac = s1.path;};
+                                };
+                                that.en_default_download_url = that.OSName == 'windows' ? downloadConfig.win_simple.path : downloadConfig.mac_simple.path;
+                                that.ReleaseConfig = downloadConfig;
+                            },
+                            error: function(err) {
+                                console.log('错误：获取不到正式版下载配置文件信息，因此无法显示下载链接。');
+                            }
+                        });
+                    }
+                }
+            });
+
+            // 2021-09-02: google分析，仅对非中文环境生效
+            if (lan != 'zh') {
+                var script1=document.createElement('script');
+                script1.src='https://www.googletagmanager.com/gtag/js?id=G-H78DWGLM17';
+                var script2=document.createElement('script');
+                script2.innerText='window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag(\'js\', new Date());gtag(\'config\', \'G-H78DWGLM17\');';
+                document.head.append(script1);
+                document.head.append(script2);
+            };
+
+            // 2021-09-03: baidu统计
+            if (lan == 'zh') {
+                var _hmt = _hmt || [];
+                var hm = document.createElement('script');
+                hm.src = '//hm.baidu.com/hm.js?16bea9b124e2f593705dfb2997ff87db';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+                // 来源统计
+                var source = document.referrer;
+                $(document).on('click', '.statistics-hock', function() {
+                    var edition = $(this).attr('data-source');
+                    var type = $(this).attr('data-type');
+                    if (source) {
+                        type += '?=' + source;
+                    };
+                    _hmt.push(['_trackEvent', edition, 'download', type]);
+                });
+            };
+        </script>
+
+        <script src="js/hbuilderx.js?t=20230210" type="text/javascript" charset="utf-8"></script>
+        <!-- 统计 -->
+        <script>
+            var load = true;
+            (function() {
+                var weixin = document.querySelector('.weixin-toggle'),
+                    pop = document.querySelector('.pop-modal');
+                weixin.addEventListener('click', function() {
+                    weixin.classList.add('open');
+                });
+                pop.addEventListener('click', function(e) {
+                    weixin.classList.remove('open');
+                    e.stopPropagation();
+                    e.preventDefault();
+                });
+            })();
+
+            // 公告轮播
+            var notice = document.getElementById('notice');
+            notice.innerHTML += notice.innerHTML;
+            var a = setTimeout(setScroll, 5000);
+            var num = 0;
+
+            function setScroll() {
+                if (num % 18 === 0) {
+                    var x = setInterval(function() {
+                        num++, notice.scrollTop = num;
+                        if (num % 18 === 0) {
+                            if (notice.scrollHeight / 2 === num) {
+                                notice.scrollTop = 0;
+                                num = 0;
+                            }
+                            clearInterval(x);
+                            a = setTimeout(setScroll, 5000);
+                        }
+                    }, 10);
+                };
+            };
+            notice.onmouseover = function() {
+                clearTimeout(a);
+            };
+            notice.onmouseout = function() {
+                a = setTimeout(setScroll, 5000);
+            };
+        </script>
+    </body>
+
+</html>

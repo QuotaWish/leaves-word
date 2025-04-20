@@ -21,6 +21,7 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import './styles/element/index.scss'
 
 import 'vant/lib/index.css'
+import '@vant/touch-emulator';
 
 const pinia = createPinia()
 const app = createApp(App)

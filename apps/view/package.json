@@ -3,7 +3,6 @@
   "type": "module",
   "version": "100.0.0",
   "private": true,
-  "packageManager": "pnpm@9.9.0",
   "description": "千叶单词APP UI界面(web)",
   "scripts": {
     "build": "vite build",
@@ -24,6 +23,7 @@
     "@tsparticles/vue3": "^3.0.1",
     "@types/codemirror": "^5.60.15",
     "@vant/compat": "1",
+    "@vant/touch-emulator": "^1.4.0",
     "@vueuse/components": "^12.5.0",
     "@vueuse/core": "^11.0.3",
     "@vueuse/sound": "^2.0.1",
@@ -66,7 +66,6 @@
     "eslint-plugin-format": "^0.1.2",
     "jsdom": "^25.0.0",
     "lint-staged": "^15.2.10",
-    "pnpm": "^9.9.0",
     "simple-git-hooks": "^2.11.1",
     "taze": "^0.16.7",
     "typescript": "^5.5.4",

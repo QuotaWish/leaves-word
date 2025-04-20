@@ -1,0 +1,112 @@
+<script setup lang="ts">
+
+</script>
+
+<template>
+  <div class="DiceWrapper">
+    <span class="loader"></span>
+  </div>
+</template>
+
+<style scoped>
+.DiceWrapper {
+  position: absolute;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  left: 50%;
+  top: 50%;
+
+
+  transform: translate(-50%, -50%);
+}
+
+.loader {
+  display: block;
+
+  left: 0;
+
+  width: 54px;
+  height: 54px;
+  position: relative;
+  border-radius: 4px;
+  background-color: #19191a;
+  background-image: radial-gradient(circle 5px, #eee 100%, transparent 1%),
+    radial-gradient(circle 5px, #eee 100%, transparent 1%),
+    radial-gradient(circle 5px, #eee 100%, transparent 1%),
+    radial-gradient(circle 5px, #eee 100%, transparent 1%),
+    radial-gradient(circle 5px, #eee 100%, transparent 1%),
+    radial-gradient(circle 5px, #eee 100%, transparent 1%);
+  background-repeat: no-repeat;
+  animation: move 4s linear infinite, rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+
+  0%,
+  20% {
+    transform: rotate(0deg);
+  }
+
+  30%,
+  40% {
+    transform: rotate(90deg);
+  }
+
+  50%,
+  60% {
+    transform: rotate(180deg);
+  }
+
+  70%,
+  80% {
+    transform: rotate(270deg);
+  }
+
+  90%,
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes move {
+
+  0%,
+  9% {
+    background-position: -12px -15px, -12px 0px, -12px 15px, 12px -15px,
+      12px 0px, 12px 15px;
+  }
+
+  10%,
+  25% {
+    background-position: 0px -15px, -12px 0px, -12px 15px, 34px -15px, 12px 0px,
+      12px 15px;
+  }
+
+  30%,
+  45% {
+    background-position: 0px -34px, -12px -10px, -12px 12px, 34px -15px,
+      12px -10px, 12px 12px;
+  }
+
+  50%,
+  65% {
+    background-position: 0px -34px, -12px -34px, -12px 12px, 34px -12px,
+      0px -10px, 12px 12px;
+  }
+
+  70%,
+  85% {
+    background-position: 0px -34px, -12px -34px, 0px 12px, 34px -12px, 0px -10px,
+      34px 12px;
+  }
+
+  90%,
+  100% {
+    background-position: 0px -34px, -12px -34px, 0px 0px, 34px -12px, 0px 0px,
+      34px 12px;
+  }
+}
+</style>
