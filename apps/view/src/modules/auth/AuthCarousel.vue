@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthScene1 from '/video/auth/scene1.mp4'
-// import AuthScene2 from '/video/auth/scene2.mp4'
+import AuthScene2 from '/video/auth/scene2.mp4'
 import AuthScene3 from '/video/auth/scene3.mp4'
 import AuthScene4 from '/video/auth/scene4.mp4'
 import AuthScene5 from '/video/auth/scene5.mp4'
@@ -16,20 +16,32 @@ const slides: CarouselSlide[] = [
   {
     id: 1,
     title: '千叶单词',
-    description: '像翻阅电子书般流畅的背词体验',
-    video: AuthScene4,
+    description: '无障碍交流，从一词开始',
+    video: AuthScene1,
   },
   {
     id: 2,
     title: '千叶单词',
-    description: '流动记忆，触手可及',
-    video: AuthScene5,
+    description: '旅行无国界，单词即向导',
+    video: AuthScene2,
   },
   {
     id: 3,
     title: '千叶单词',
-    description: '驰骋词林长跑',
+    description: '生命即课堂，万物皆可学',
     video: AuthScene3,
+  },
+  {
+    id: 4,
+    title: '千叶单词',
+    description: '自信表达，每个场景都是舞台',
+    video: AuthScene4,
+  },
+  {
+    id: 5,
+    title: '千叶单词',
+    description: '碎片成金，成长有迹可循',
+    video: AuthScene5,
   },
 ];
 

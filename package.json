@@ -46,6 +46,15 @@
   "lint-staged": {
     "*": ""
   },
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "@liaoliaots/nestjs-redis>@nestjs/common": "^10.0.0",
+        "@liaoliaots/nestjs-redis>@nestjs/core": "^10.0.0",
+        "eslint": "^9.2.0"
+      }
+    }
+  },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
     "@umijs/openapi": "^1.13.0",
@@ -53,7 +62,8 @@
   },
   "devDependencies": {
     "@umijs/plugins": "^4.4.6",
-    "rc-field-form": "^2.7.0"
+    "rc-field-form": "^2.7.0",
+    "tsx": "^4.19.3"
   },
   "engines": {
     "node": ">=22.14.0",

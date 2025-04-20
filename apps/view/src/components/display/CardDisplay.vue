@@ -60,14 +60,14 @@ const hasIcon = computed(() => ins?.slots?.icon)
 
 .card-icon {
   position: absolute;
-  right: 0;
-  bottom: 0;
+  inset: 0;
+  margin: auto;
   width: 45%;
   height: 45%;
   z-index: 0;
   opacity: 0.15;
   font-size: 32px;
-  transform: rotate(-28deg) scale(1.2) translateX(25%) translateY(25%);
+  transform: rotate(-28deg) scale(1.2);
   transition: all 0.4s ease;
   pointer-events: none;
 
@@ -80,7 +80,7 @@ const hasIcon = computed(() => ins?.slots?.icon)
   }
 
   .CardDisplay:hover & {
-    transform: rotate(-5deg) scale(1.25) translateX(8%) translateY(8%);
+    transform: rotate(-5deg) scale(1.25);
     opacity: 0.2;
   }
 }
