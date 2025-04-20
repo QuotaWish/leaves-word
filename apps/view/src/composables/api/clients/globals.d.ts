@@ -393,6 +393,7 @@ export type EnglishDictionaryImportRequest = {
   id?: number;
 };
 export type EnglishDictionaryWithCategoryVO = {
+  approved_words?: number;
   author?: string;
   categoryList?: Category[];
   create_time?: string;
@@ -402,7 +403,9 @@ export type EnglishDictionaryWithCategoryVO = {
   isbn?: string;
   name?: string;
   publication_date?: string;
+  published_words?: number;
   publisher?: string;
+  total_words?: number;
   update_time?: string;
 };
 export type BaseResponse_List_EnglishDictionaryWithCategoryVO_ = {
@@ -638,7 +641,7 @@ export type BaseResponse_IPage_DictionaryWordWithWordVO_ = {
 };
 export type EnglishWordQueryDictRequest = {
   current?: number;
-  dict_id?: number;
+  dict_id?: string;
   id?: number;
   notId?: number;
   pageSize?: number;
@@ -2695,6 +2698,7 @@ declare global {
        * type Response = {
        *   code?: number
        *   data?: Array<{
+       *     approved_words?: number
        *     author?: string
        *     categoryList?: Array<{
        *       createdAt?: string
@@ -2713,7 +2717,9 @@ declare global {
        *     isbn?: string
        *     name?: string
        *     publication_date?: string
+       *     published_words?: number
        *     publisher?: string
+       *     total_words?: number
        *     update_time?: string
        *   }>
        *   message?: string
@@ -3384,7 +3390,7 @@ declare global {
        * ```ts
        * type RequestBody = {
        *   current?: number
-       *   dict_id?: number
+       *   dict_id?: string
        *   id?: number
        *   notId?: number
        *   pageSize?: number
