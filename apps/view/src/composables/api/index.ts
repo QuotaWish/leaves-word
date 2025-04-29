@@ -69,6 +69,12 @@ const alovaInstance = createAlova({
     onSuccess: (response, method) => {
       const { code, message } = response.data as unknown as any
 
+      if (code === 11011) {
+        eventBus.fireEvent(new TryAuthLogoutEvent())
+        eventBus.fireEvent(new ToastEvent("登录已过期，请重新登录", 'error'))
+        return
+      }
+
       if (code === 11012) {
         eventBus.fireEvent(new TryAuthLogoutEvent())
         console.log('11012')

@@ -12,12 +12,15 @@
       <view class="loading-spinner"></view>
     </view>
 
-    <LeafWebView />
-
+    <template v-if="provider">
+		<LeafWebView v-if="provider === 'web'" />
+		<LeafTiktokWebView v-if="provider === 'toutiao' || provider === 'tiktok'" />
+	</template>
+<!-- 
     <view class="error-container" :style="{ display: loadError ? 'flex' : 'none' }">
       <text class="error-text">{{ errorText }}</text>
       <button class="reload-btn" @click="reloadWebView">重新加载</button>
-    </view>
+    </view> -->
   </view>
 </template>
 
@@ -25,6 +28,7 @@
 import { ref, onMounted, onBeforeUnmount, getCurrentInstance } from "vue";
 import { onBackPress, onShow } from "@dcloudio/uni-app";
 import LeafWebView from "@/components/LeafWebView.vue";
+import LeafTiktokWebView from '@/components/LeafTiktokWebView.vue'
 
 const height = ref(0)
 const url = ref("");
@@ -34,8 +38,14 @@ const loadingText = ref("加载中...");
 const errorText = ref("加载失败，请检查网络连接");
 const timeoutTimer = ref<number | null>(null);
 const leafDoneReceived = ref(false);
+const provider = ref("")
 
-
+uni.getProvider({
+	service: 'oauth',
+	success: (res) => {
+		provider.value = res.provider?.[0]
+	}
+})
 </script>
 
 <style>

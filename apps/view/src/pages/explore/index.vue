@@ -51,6 +51,7 @@ const icons = [{
 }, {
   name: '休闲娱乐',
   icon: 'i-carbon-face-cool',
+  path: '/explore/entertainment',
   color: ['#0FDEFE', '#00B4FE'],
 }, {
   name: '词汇测试',
