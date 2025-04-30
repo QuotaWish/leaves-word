@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, reactive } from 'vue'
 import { Popup } from 'vant'
 
 const showPoster = ref(false)
@@ -41,6 +42,16 @@ const banners = reactive([
     poster: '/images/writing-poster.png',
   },
 ])
+
+// 处理网络图片加载错误
+const handleImageError = (title: string) => {
+  console.error(`图片 ${title} 加载失败，请检查链接是否有效。`)
+}
+
+// 处理海报图片加载错误
+const handlePosterError = () => {
+  console.error('海报图片加载失败，请检查图片路径是否正确。')
+}
 </script>
 
 <template>
@@ -51,12 +62,14 @@ const banners = reactive([
         <span font-size-3 op-75>{{ banner.desc }}</span>
       </div>
       <div class="WordIndexBanner-Item-Image">
-        <img :src="banner.image" :alt="banner.title">
+        <!-- 添加错误处理 -->
+        <img :src="banner.image" :alt="banner.title" @error="handleImageError(banner.title)" />
       </div>
     </div>
   </div>
   <Popup v-model:show="showPoster" class="poster-popup" position="center">
-    <img :src="currentPoster" class="poster-image" @click="showPoster = false" />
+    <!-- 添加错误处理 -->
+    <img :src="currentPoster" class="poster-image" @click="showPoster = false" @error="handlePosterError" />
   </Popup>
 </template>
 
