@@ -139,6 +139,7 @@ function handleDirectPoster(banner: any) {
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(8px);
   z-index: 2000;
+  position: fixed; // 改为固定定位
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -146,12 +147,9 @@ function handleDirectPoster(banner: any) {
   justify-content: center;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   .poster-image {
-    max-width: 85vw;
-    max-height: 72vh;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    position: absolute;
+    width: 420px;
+    height: 900px;
+    position: absolute; 
     top: 50%;
     left: 18%;
     transform: translate(-52%, -54%);
