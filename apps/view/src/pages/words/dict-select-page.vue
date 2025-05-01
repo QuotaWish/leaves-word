@@ -51,7 +51,9 @@ function handleBookClick(book: EnglishDictionary) {
   }
 }
 
-send()
+onMounted(() => {
+  send()
+})
 </script>
 
 <template>

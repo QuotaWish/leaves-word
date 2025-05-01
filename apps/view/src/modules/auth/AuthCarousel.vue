@@ -257,6 +257,8 @@ onBeforeUnmount(() => {
   cursor: pointer;
   font-size: 1.2rem;
   color: #333;
+
+  backdrop-filter: blur(18px) saturate(180%);
 }
 
 @media (max-width: 768px) {

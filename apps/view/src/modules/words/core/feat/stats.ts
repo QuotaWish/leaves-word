@@ -1,13 +1,17 @@
+import type { ModeType } from '..'
+
 export abstract class Statistics<T extends Record<string, any>> {
   startTime: number
   endTime: number
   cost: number
+  type: ModeType
   data: T
 
-  constructor(startTime: number, endTime: number, cost: number, data: T) {
+  constructor(startTime: number, endTime: number, cost: number, type: ModeType, data: T) {
     this.startTime = startTime
     this.endTime = endTime
     this.cost = cost
+    this.type = type
     this.data = data
   }
 

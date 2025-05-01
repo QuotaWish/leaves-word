@@ -17,7 +17,7 @@ import { useLeafEventBus } from './composables/event'
 import { AuthSuccessEvent } from './composables/event/auth'
 import { ToastEvent } from './composables/event/toast-event'
 import { useBaseRouteStore } from './composables/store/useRouteStore'
-import { globalAuthStorage, initAuthModule } from './modules/auth'
+import { $logout, globalAuthStorage, initAuthModule } from './modules/auth'
 
 modeManager.set(ModeType.COMPREHENSIVE, (dictionaryStorage: LeafDictStorage) => new ComprehensiveMode(dictionaryStorage))
 // modeManager.set(ModeType.PUNCH, (dictionaryStorage: DictStorage) => new PunchMode(dictionaryStorage))
@@ -64,6 +64,10 @@ const { send: refreshUserData } = useRequest(() => Apis.userController.getLoginU
 eventBus.registerListener(AuthSuccessEvent, {
   async handleEvent() {
     const res = await refreshUserData()
+    if (!res) {
+      $logout()
+      return
+    }
 
     globalAuthStorage.value.user = res.data
   },

@@ -1,5 +1,5 @@
 import type { ComprehensivePrepareWord, ComprehensiveWordDetail } from './prepare'
-import { Statistics } from '../..'
+import { ModeType, Statistics } from '../..'
 import ComprehensiveStat from './display/stats/index.vue'
 
 interface IComprehensiveStatData {
@@ -19,10 +19,10 @@ interface IComprehensiveStatData {
 export class ComprehensiveStatistics extends Statistics<Partial<IComprehensiveStatData>> {
   constructor(mode?: ComprehensivePrepareWord, statistics?: Statistics<Partial<IComprehensiveStatData>>) {
     if (statistics) {
-      super(statistics.startTime, statistics.endTime, statistics.cost, statistics.data)
+      super(statistics.startTime, statistics.endTime, statistics.cost, ModeType.COMPREHENSIVE, statistics.data)
       Object.assign(this.data, statistics.data)
     } else if (mode) {
-      super(mode.startTime, mode.endTime, mode.endTime - mode.startTime, {})
+      super(mode.startTime, mode.endTime, mode.endTime - mode.startTime, ModeType.COMPREHENSIVE, {})
     } else {
       throw new Error('ComprehensiveStatistics constructor must be provided with either a mode or a statistics')
     }
