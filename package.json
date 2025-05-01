@@ -57,6 +57,10 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
+    "@fastify/cookie": "^11.0.2",
+    "@fastify/multipart": "^9.0.3",
+    "@nestjs-modules/mailer": "^2.0.2",
+    "@nestjs/elasticsearch": "^11.1.0",
     "@umijs/openapi": "^1.13.0",
     "dayjs": "^1.11.11",
     "leaves-word": "file:"
@@ -67,7 +71,6 @@
     "tsx": "^4.19.3"
   },
   "engines": {
-    "node": ">=22.14.0",
-    "pnpm": ">=9"
+    "node": ">=18.20.7"
   }
 }
