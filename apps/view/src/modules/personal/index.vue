@@ -5,9 +5,13 @@ import { calendarManager } from '~/modules/words'
 import PersonalHeaderDisplay from './PersonalHeaderDisplay.vue'
 import PersonalLayout from './PersonalLayout.vue'
 import { globalAuthStorage } from '~/modules/auth'
+import { ref, computed } from 'vue'
 
 const router = useRouter()
 const { devModeEnabled, toggleDevMode } = useDevMode()
+
+// 添加用户名计算属性
+const userName = computed(() => globalAuthStorage.user?.userName || '')
 
 const clickCount = ref(0)
 const lastClickTime = ref(0)
@@ -93,12 +97,11 @@ const nextWeekPrediction = ref({
             </div>
             <div flex flex-col justify-center class="header-content">
               <p font-size-5 font-bold class="name">
-                {{ globalAuthStorage.user.userName || globalAuthStorage.user.id }}
+                {{ userName }}
               </p>
               <p class="indent-[2px]" font-size-4 op-60>
                 英语学习，随时随地
               </p>
-
             </div>
           </div>
 
@@ -273,6 +276,12 @@ const nextWeekPrediction = ref({
     </template>
   </PersonalLayout>
 </template>
+
+<style lang="scss" scoped>
+.personal-header {
+  min-height: 80px;
+}
+</style>
 
 <style lang="scss">
 .header-img {

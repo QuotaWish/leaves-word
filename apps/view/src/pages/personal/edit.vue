@@ -27,7 +27,12 @@ function handleLogout() {
         <UserAvatar border-rounded size="64px" />
       </PageSettingsItem>
 
-      <PageSettingsItem title="昵称" desc="自定义昵称" :show-arrow="true">
+      <PageSettingsItem 
+        title="昵称" 
+        desc="自定义昵称" 
+        :show-arrow="true"
+        @click="isEditingNickname = true"
+      >
         <div class="PageSettingsItem-right mx-2">
           {{ globalAuthStorage.user.userName || "-" }}
         </div>
