@@ -17,6 +17,9 @@ function handleLogout() {
     type: 'warning',
   }).then(() => {
     eventBus.fireEvent(new TryAuthLogoutEvent())
+  }).catch(() => {
+    // 用户取消或出现异常时可做关闭或其他处理
+    console.log('退出操作已取消或出错')
   })
 }
 </script>
