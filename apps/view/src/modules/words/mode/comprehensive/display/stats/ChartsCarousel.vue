@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import * as echarts from 'echarts'
+import { isDark } from '~/composables/theme'
 import { useCharts } from '~/modules/words/mode/comprehensive/charts'
 
 const props = defineProps<{
@@ -139,6 +140,24 @@ watch(() => props.wordsDetails, () => {
     initAllCharts()
   })
 }, { deep: true })
+
+// 监听暗黑模式变化
+watch(isDark, () => {
+  if (allChartsInitialized) {
+    // 延迟一点执行，确保DOM属性已更新
+    setTimeout(() => {
+      // 清理旧图表
+      for (const chart of charts) {
+        if (chart) chart.dispose();
+      }
+      charts = [null, null, null] as any;
+
+      // 重新初始化所有图表
+      allChartsInitialized = false;
+      initAllCharts();
+    }, 200);
+  }
+})
 
 onMounted(() => {
   // 初始化图表数组
@@ -287,6 +306,21 @@ onBeforeUnmount(() => {
   margin-bottom: 24px;
   position: relative;
   overflow: hidden;
+  --chart-text-color: var(--el-color-black);
+}
+
+/* 暗黑模式适配 */
+html.dark .charts-carousel-container {
+  --chart-text-color: var(--el-color-white);
+}
+
+/* 确保图表中的文字颜色正确 */
+:deep(.echarts) {
+  color: var(--chart-text-color) !important;
+}
+
+:deep(.echarts text) {
+  fill: var(--chart-text-color) !important;
 }
 
 .chart-slider {
@@ -382,7 +416,7 @@ onBeforeUnmount(() => {
   background: rgba(126, 87, 194, 0.08);
   border-radius: 12px;
   font-size: 14px;
-  color: var(--el-text-color-regular);
+  color: var(--chart-text-color);
   line-height: 1.5;
   margin-top: auto;
   /* 将分析固定在底部 */
@@ -465,13 +499,13 @@ onBeforeUnmount(() => {
 
 .tab-title {
   font-size: 13px;
-  color: var(--el-text-color-regular);
+  color: var(--chart-text-color);
   transition: all 0.3s ease;
   white-space: nowrap;
 }
 
 .tab-item.active .tab-title {
-  color: var(--el-text-color-primary);
+  color: var(--chart-text-color);
   font-weight: 500;
 }
 

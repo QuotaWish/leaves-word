@@ -58,14 +58,15 @@ export function useCharts(props: ChartProps) {
     const timeData = props.wordsDetails.map(word => word.timeSpent / 1000)
     const wordLabels = props.wordsDetails.map(word => word.word)
 
-    const isDark = useDark()
+    // 从计算样式中获取颜色变量值
+    const textColor = getComputedStyle(chartElement).getPropertyValue('--chart-text-color').trim() || '#000'
 
     const option: EChartsOption = {
       title: {
         text: '单词耗时分析',
         left: 'center',
         textStyle: {
-          color: isDark ? '#fff' : '#000'
+          color: textColor
         }
       },
       tooltip: {
@@ -81,11 +82,11 @@ export function useCharts(props: ChartProps) {
         axisLabel: {
           interval: 0,
           rotate: 45,
-          color: isDark ? '#fff' : '#000'
+          color: textColor
         },
         axisLine: {
           lineStyle: {
-            color: isDark ? '#fff' : '#000'
+            color: textColor
           }
         }
       },
@@ -93,14 +94,15 @@ export function useCharts(props: ChartProps) {
         type: 'value',
         name: '响应时间 (秒)',
         nameTextStyle: {
-          color: isDark ? '#ffffff80' : '#000'
+          color: textColor
         },
         axisLabel: {
-          color: isDark ? '#ffffff80' : '#000'
+          color: textColor
         },
         splitLine: {
           lineStyle: {
-            color: isDark ? '#ffffff80' : '#000'
+            color: textColor,
+            opacity: 0.1
           }
         }
       },
@@ -154,14 +156,15 @@ export function useCharts(props: ChartProps) {
       return acc
     }, [0, 0, 0, 0])
 
-    const isDark = useDark()
+    // 从计算样式中获取颜色变量值
+    const textColor = getComputedStyle(chartElement).getPropertyValue('--chart-text-color').trim() || '#000'
 
     const option: EChartsOption = {
       title: {
         text: '',
         left: 'center',
         textStyle: {
-          color: isDark ? '#fff' : '#000'
+          color: textColor
         }
       },
       tooltip: {
@@ -173,7 +176,7 @@ export function useCharts(props: ChartProps) {
         left: 'left',
         top: 'middle',
         textStyle: {
-          color: isDark ? '#fff' : '#000'
+          color: textColor
         }
       },
       series: [{
@@ -194,7 +197,7 @@ export function useCharts(props: ChartProps) {
         label: {
           show: true,
           formatter: '{b}: {d}%',
-          color: isDark ? '#fff' : '#000'
+          color: textColor
         }
       }]
     }
@@ -223,14 +226,15 @@ export function useCharts(props: ChartProps) {
     const efficiencyScore = normalizeScore(Math.min(100, props.wordsDetails.length / (props.sessionDuration / 60000) * 8))
     const connectionScore = normalizeScore(props.wordsDetails.filter(w => w.attempts === 1).length / props.wordsDetails.length * 100)
 
-    const isDark = useDark()
+    // 从计算样式中获取颜色变量值
+    const textColor = getComputedStyle(chartElement).getPropertyValue('--chart-text-color').trim() || '#000'
 
     const option: EChartsOption = {
       title: {
         text: '',
         left: 'center',
         textStyle: {
-          color: isDark ? '#fff' : '#000'
+          color: textColor
         }
       },
       radar: {
@@ -247,16 +251,18 @@ export function useCharts(props: ChartProps) {
           }
         },
         axisName: {
-          color: isDark ? '#fff' : '#000'
+          color: textColor
         },
         axisLine: {
           lineStyle: {
-            color: isDark ? '#ffffff30' : '#000'
+            color: textColor,
+            opacity: 0.1
           }
         },
         splitLine: {
           lineStyle: {
-            color: isDark ? '#ffffff30' : '#000'
+            color: textColor,
+            opacity: 0.1
           }
         }
       },
@@ -309,4 +315,4 @@ export function useCharts(props: ChartProps) {
     initTimeDistributionChart,
     initPerformanceRadarChart
   }
-} 
+}
