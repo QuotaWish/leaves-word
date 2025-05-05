@@ -1,13 +1,14 @@
 <script setup lang="ts">
 defineProps<{
+  plain?: boolean
   animated?: boolean
 }>()
 </script>
 
 <template>
-  <button :class="{ animated }" class="LeafButton transition-cubic">
+  <button :class="{ animated, plain }" class="LeafButton transition-cubic">
     <slot />
-    <div class="icon-1">
+    <div v-if="plain === false" class="icon-1">
       <svg
         xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1"
         style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
@@ -23,7 +24,7 @@ defineProps<{
         </g>
       </svg>
     </div>
-    <div class="icon-2">
+    <div v-if="plain === false" class="icon-2">
       <svg
         xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1"
         style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
@@ -39,7 +40,7 @@ defineProps<{
         </g>
       </svg>
     </div>
-    <div class="icon-3">
+    <div v-if="plain === false" class="icon-3">
       <svg
         xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1"
         style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
@@ -70,7 +71,7 @@ defineProps<{
   border-radius: var(--el-border-radius-round);
   filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.2)) brightness(120%);
 
-  background: linear-gradient(125deg, var(--theme-color), var(--theme-color-dark), var(--theme-color));
+  background: linear-gradient(125deg, var(--theme-color-primary), var(--theme-color-dark), var(--theme-color-secondary));
   background-size: 150% 100%;
   background-position: 0% 50%;
 
