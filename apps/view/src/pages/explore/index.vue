@@ -43,10 +43,12 @@ const icons = [{
 }, {
   name: '四六级',
   icon: 'i-carbon-enumeration-usage',
+  path: '/explore/cet',
   color: ['#0DB2B3', '#0B7B8A'],
 }, {
   name: '红色旋风',
   icon: 'i-carbon-tropical-storm-tracks',
+  path: '/explore/red-typhoon',
   color: ['#FE0000', '#F30102'],
 }, {
   name: '休闲娱乐',
@@ -56,6 +58,7 @@ const icons = [{
 }, {
   name: '词汇测试',
   icon: 'i-carbon-request-quote',
+  path: '/explore/vocabulary-test',
   color: ['#FBDC03', '#FEB601'],
 }]
 
