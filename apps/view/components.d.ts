@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AIProcessingMessages: typeof import('./src/components/chore/AIProcessingMessages.vue')['default']
     AIWordAnalysis: typeof import('./src/components/words/mode/AIWordAnalysis.vue')['default']
     AnimateIcon: typeof import('./src/components/icon/AnimateIcon.vue')['default']
     BookLoading: typeof import('./src/components/icon/BookLoading.vue')['default']

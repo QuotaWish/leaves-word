@@ -17,31 +17,31 @@ const slides: CarouselSlide[] = [
     id: 1,
     title: '千叶单词',
     description: '无障碍交流，从一词开始',
-    video: AuthScene1,
+    video: "https://img2.quotawish.com/video/auth_cover/scene1.mp4",
   },
   {
     id: 2,
     title: '千叶单词',
     description: '旅行无国界，单词即向导',
-    video: AuthScene2,
+    video: "https://img2.quotawish.com/video/auth_cover/scene2.mp4",
   },
   {
     id: 3,
     title: '千叶单词',
     description: '生命即课堂，万物皆可学',
-    video: AuthScene3,
+    video: "https://img2.quotawish.com/video/auth_cover/scene3.mp4",
   },
   {
     id: 4,
     title: '千叶单词',
     description: '自信表达，每个场景都是舞台',
-    video: AuthScene4,
+    video: "https://img2.quotawish.com/video/auth_cover/scene4.mp4",
   },
   {
     id: 5,
     title: '千叶单词',
     description: '碎片成金，成长有迹可循',
-    video: AuthScene5,
+    video: "https://img2.quotawish.com/video/auth_cover/scene5.mp4",
   },
 ];
 

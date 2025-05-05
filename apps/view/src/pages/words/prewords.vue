@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { LeafPrepareSign } from '~/modules/words/mode'
 import NumberFlow from '@number-flow/vue'
+import { ElMessage } from 'element-plus'
+import AIProcessingMessages from '~/components/chore/AIProcessingMessages.vue'
 import ModeSelector from '~/components/words/ModeSelector.vue'
 import PlanSelector from '~/components/words/PlanSelector.vue'
 import { useTargetData } from '~/modules/words'
 import { globalPreference } from '~/modules/words/core/feat/preference'
-import { ElMessage } from 'element-plus'
 
 const router = useRouter()
 const { targetSignMode } = useTargetData()
@@ -204,16 +205,20 @@ function handleBack() {
     </div>
 
     <div class="transition-cubic PreWordsPage-Progress">
-      <p mb-1 flex items-center justify-between>
-        <span>正在为您定制学习计划</span>
-        <span v-if="loadingOptions.progress !== -1">
+      <div class="progress-info-row" mb-1 flex items-center justify-between>
+        <div class="ai-message-wrapper">
+          <AIProcessingMessages :display-count="1" :message-interval="1500" />
+        </div>
+        <div v-if="loadingOptions.progress !== -1" class="progress-value">
           <NumberFlow
-            suffix="%" :continuous="true" :will-change="true" :animated="true"
+            suffix="%"
+            :continuous="true"
+            :will-change="true"
+            :animated="true"
             :value="loadingOptions.progress"
           />
-
-        </span>
-      </p>
+        </div>
+      </div>
 
       <LineLoading :progress="loadingOptions.progress" />
     </div>
@@ -306,11 +311,31 @@ function handleBack() {
   left: 7.5%;
 
   width: 85%;
-  bottom: 5%;
+  bottom: 6%;
 
   opacity: 0;
   pointer-events: none;
   color: var(--el-text-color-secondary);
+
+  p {
+    margin-bottom: 4px;
+  }
+
+  .progress-info-row {
+    margin-bottom: 4px;
+  }
+
+  .ai-message-wrapper {
+    max-width: 70%;
+    overflow: hidden;
+  }
+
+  .progress-value {
+    font-weight: 500;
+    min-width: 45px;
+    text-align: right;
+    padding-left: 10px;
+  }
 }
 
 .PreWordsPage-Supper {
