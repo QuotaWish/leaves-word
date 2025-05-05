@@ -1,3 +1,144 @@
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue'
+import type { ExampleStage, ISoundWordItem, SoundWordType } from '..'
+import { WordState } from '..'
+
+const props = defineProps<{
+  currentWord: ISoundWordItem | null
+  onCorrect: () => void
+  onError: () => void
+  onNext: () => void
+}>()
+
+// 状态变量
+const wordState = ref<WordState>(WordState.INIT)
+const userInput = ref('')
+const isPlayingAudio = ref(false)
+const inputRef = ref<HTMLInputElement | null>(null)
+
+// 计算属性
+const currentWordItem = computed(() => {
+  console.log("Current word computed:", props.currentWord);
+  return props.currentWord;
+})
+
+const wordTypeLabel = computed(() => {
+  if (!props.currentWord) {
+    return '';
+  }
+
+  if (props.currentWord.type === 'dictation') {
+    return '听写模式';
+  }
+
+  if (props.currentWord.type === 'example') {
+    const stage = props.currentWord.exampleStage;
+    if (stage === 0) {
+      return '例句学习 (阶段1)';
+    }
+
+    if (stage === 1) {
+      return '例句学习 (阶段2)';
+    }
+
+    if (stage === 2) {
+      return '例句学习 (阶段3)';
+    }
+
+    return '例句学习';
+  }
+
+  return '';
+})
+
+const correctAnswer = computed(() => {
+  if (!props.currentWord) {
+    return '';
+  }
+
+  if (props.currentWord.type === 'dictation') {
+    return props.currentWord.word.word;
+  }
+
+  // 简化的例句答案显示逻辑
+  return props.currentWord.word.word;
+})
+
+// 方法
+function playAudio() {
+  console.log("Play audio called, currentWord:", props.currentWord, "isPlaying:", isPlayingAudio.value);
+  if (!props.currentWord || isPlayingAudio.value) {
+    return;
+  }
+
+  isPlayingAudio.value = true;
+  wordState.value = WordState.PLAYING;
+  console.log("Setting state to PLAYING");
+
+  // 模拟音频播放
+  setTimeout(() => {
+    isPlayingAudio.value = false;
+    wordState.value = WordState.WAITING;
+    console.log("Setting state to WAITING");
+    focusInput();
+  }, 1500);
+}
+
+function checkAnswer() {
+  if (wordState.value !== WordState.WAITING || !props.currentWord) {
+    return;
+  }
+
+  const input = userInput.value.trim().toLowerCase();
+  const expected = correctAnswer.value.trim().toLowerCase();
+
+  if (input === expected) {
+    wordState.value = WordState.CORRECT;
+    props.onCorrect();
+    return;
+  }
+
+  wordState.value = WordState.ERROR;
+  props.onError();
+}
+
+function handleNext() {
+  userInput.value = '';
+  wordState.value = WordState.INIT;
+  props.onNext();
+}
+
+function focusInput() {
+  setTimeout(() => {
+    inputRef.value?.focus();
+  }, 100);
+}
+
+// 生命周期钩子
+onMounted(() => {
+  console.log("Word component mounted, currentWord:", props.currentWord);
+  if (props.currentWord) {
+    wordState.value = WordState.INIT;
+    console.log("Initial state set to INIT");
+    setTimeout(() => {
+      playAudio();
+    }, 300);
+  }
+})
+
+watch(() => props.currentWord, (newWord, oldWord) => {
+  console.log("Watch triggered - New word:", newWord, "Old word:", oldWord);
+  if (newWord) {
+    userInput.value = '';
+    wordState.value = WordState.INIT;
+    console.log("Setting state to INIT after word change");
+    setTimeout(() => {
+      playAudio();
+    }, 300);
+  }
+}, { immediate: true });
+</script>
+
 <template>
   <div class="sound-word-container">
     <div class="word-content">
@@ -23,7 +164,7 @@
               @keyup.enter="checkAnswer"
               ref="inputRef"
               class="sound-input"
-              :class="{ 'correct': wordState === 'correct', 'error': wordState === 'error' }"
+              :class="{ correct: wordState === 'correct', error: wordState === 'error' }"
               autocomplete="off"
               placeholder="请输入听到的单词..."
             />
@@ -55,113 +196,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { computed, ref, onMounted, watch } from 'vue'
-import type { ISoundWordItem, SoundWordType, ExampleStage } from '..'
-import { WordState } from '..'
-
-const props = defineProps<{
-  currentWord: ISoundWordItem | null
-  onCorrect: () => void
-  onError: () => void
-  onNext: () => void
-}>()
-
-// 状态变量
-const wordState = ref<WordState>(WordState.INIT)
-const userInput = ref('')
-const isPlayingAudio = ref(false)
-const inputRef = ref<HTMLInputElement | null>(null)
-
-// 计算属性
-const currentWordItem = computed(() => props.currentWord)
-
-const wordTypeLabel = computed(() => {
-  if (!props.currentWord) return ''
-
-  if (props.currentWord.type === 'dictation') {
-    return '听写模式'
-  } else if (props.currentWord.type === 'example') {
-    const stage = props.currentWord.exampleStage
-    if (stage === 0) return '例句学习 (阶段1)'
-    if (stage === 1) return '例句学习 (阶段2)'
-    if (stage === 2) return '例句学习 (阶段3)'
-    return '例句学习'
-  }
-  return ''
-})
-
-const correctAnswer = computed(() => {
-  if (!props.currentWord) return ''
-  if (props.currentWord.type === 'dictation') {
-    return props.currentWord.word.word
-  } else {
-    // 简化的例句答案显示逻辑
-    return props.currentWord.word.word
-  }
-})
-
-// 方法
-function playAudio() {
-  if (!props.currentWord || isPlayingAudio.value) return
-
-  isPlayingAudio.value = true
-  wordState.value = WordState.PLAYING
-
-  // 模拟音频播放
-  setTimeout(() => {
-    isPlayingAudio.value = false
-    wordState.value = WordState.WAITING
-    focusInput()
-  }, 1500)
-}
-
-function checkAnswer() {
-  if (wordState.value !== WordState.WAITING || !props.currentWord) return
-
-  const input = userInput.value.trim().toLowerCase()
-  const expected = correctAnswer.value.trim().toLowerCase()
-
-  if (input === expected) {
-    wordState.value = WordState.CORRECT
-    props.onCorrect()
-  } else {
-    wordState.value = WordState.ERROR
-    props.onError()
-  }
-}
-
-function handleNext() {
-  userInput.value = ''
-  wordState.value = WordState.INIT
-  props.onNext()
-}
-
-function focusInput() {
-  setTimeout(() => {
-    inputRef.value?.focus()
-  }, 100)
-}
-
-// 生命周期钩子
-onMounted(() => {
-  if (props.currentWord) {
-    wordState.value = WordState.INIT
-    playAudio()
-  }
-})
-
-watch(() => props.currentWord, (newWord) => {
-  if (newWord) {
-    userInput.value = ''
-    wordState.value = WordState.INIT
-    setTimeout(() => {
-      playAudio()
-    }, 300)
-  }
-})
-</script>
 
 <style scoped>
 .sound-word-container {
@@ -305,14 +339,10 @@ watch(() => props.currentWord, (newWord) => {
 }
 
 .no-word {
-  height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: none;
 }
 
 .loading {
-  font-size: 18px;
-  color: #666;
+  display: none;
 }
 </style>

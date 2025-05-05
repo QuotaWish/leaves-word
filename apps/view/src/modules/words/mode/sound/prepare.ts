@@ -1,16 +1,19 @@
-import { Component } from 'vue'
-import type { SoundMode, ISoundWordItem, SoundWordType, ExampleStage } from '.'
+import type { Component } from 'vue'
+import type { ISoundWordItem, SoundMode } from '.'
+import { ExampleStage, SoundWordType } from '.'
 import { LeafPrepareSign } from '..'
-import { LeafWordData } from '../..'
-import { calendarManager, globalPreference, useWordSound } from '../..'
+import { EnglishWordData, LeafWordData, calendarManager, globalPreference, useWordSound } from '../..'
+import type { DictionaryWordWithWordVO } from '~/composables/api/clients/globals'
+import Apis from '~/composables/api/clients'
+import { useRequest } from 'alova/client'
 import SoundWord from './display/Word.vue'
 import { SoundStatistics } from './stat'
-import type { DictionaryWordWithWordVO } from '~/composables/api/clients/globals'
 
-// 预加载的单词数量
 const PRELOAD_WORD_AMO = 5
-// 每次学习新单词的数量
-const NEW_WORDS_PER_SESSION = 10
+
+function logDebug(...args: any[]) {
+  console.log('[SoundPrepare]', ...args);
+}
 
 export interface SoundWordDetail {
   word: string // 单词
@@ -76,10 +79,13 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     this.taskAmount = amo
     this.startTime = Date.now()
     this.wordStartTime = Date.now()
+
+    logDebug('Created with task amount:', this.taskAmount);
   }
 
   async preloadWordData(word: ISoundWordItem) {
     const { word: mainWord } = word
+    logDebug('Preloading word data for:', mainWord.word);
     const res = await useWordSound(mainWord.word)
     return res
   }
@@ -88,73 +94,135 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     this.wordsQueue = []
     this.wordsDisplayed = []
     this.wordsFinished = []
-    this.wordIndex = 0
+    this.wordIndex = -1 // 改为-1，与基类默认值一致
 
-    const storage = this.mode.dictionaryStorage
+    logDebug('Starting preload, dictionary storage:', this.mode.dictionaryStorage);
 
-    // 从API获取单词数据
-    const { send } = useRequest(() => Apis.EnglishWords.listEnglishWordByPageUsingPOST({
-      data: {
-        pageSize: this.taskAmount,
-        dict_id: globalPreference.value.dict.id,
-      },
-    }))
+    logDebug('Fetching words from API with dict_id:', globalPreference.value.dict.id);
+    try {
+      const { send } = useRequest(() => Apis.EnglishWords.listEnglishWordByPageUsingPOST({
+        data: {
+          pageSize: this.taskAmount,
+          dict_id: globalPreference.value.dict.id,
+        },
+      }));
 
-    const { data } = await send()
-    const records: LeafWordData[] = [...(data?.records || [])].map((item: DictionaryWordWithWordVO) => {
-      return new LeafWordData(item.word?.word_head!)
-    })
+      const { data } = await send();
+      logDebug('API response:', data);
 
-    return new Promise((resolve) => {
-      const maxProgress = PRELOAD_WORD_AMO * 2 * this.taskAmount + this.taskAmount
-      let progress = 0
-      const words: ISoundWordItem[] = []
-
-      while (words.length < this.taskAmount) {
-        const word = records.shift()
-        if (!word) break
-
-        // 添加听写模式的单词
-        words.push({
-          word,
-          type: SoundWordType.DICTATION,
-        })
-
-        progress += 1
-        callback(+(progress / maxProgress).toFixed(2))
+      if (!data || !data.records || !data.records.length) {
+        logDebug('No records found in API response');
+        callback(1);
+        return false;
       }
 
-      this.wordsQueue = words
+      const records: LeafWordData[] = [...(data?.records || [])].map((item: DictionaryWordWithWordVO) => {
+        if (!item.word?.word_head) {
+          logDebug('Warning: Missing word_head for item:', item);
+          return null;
+        }
+        return new LeafWordData(item.word.word_head).setData(new EnglishWordData(item.word));
+      }).filter(Boolean) as LeafWordData[];
 
-      const promises = words.filter((_, ind) => ind + 1 <= PRELOAD_WORD_AMO).map(async (item) => {
-        const res = await this.preloadWordData(item)
-        progress += this.taskAmount
-        callback(+(progress / maxProgress).toFixed(2))
-        return res
-      })
+      logDebug('Processed records:', records.length);
 
-      Promise.all(promises).then(() => {
-        this.wordIndex = 0
-        this.startTime = Date.now()
-        resolve(true)
-      })
-    })
+      if (records.length === 0) {
+        logDebug('No valid records after processing');
+        callback(1);
+        return false;
+      }
+
+      return new Promise((resolve) => {
+        const maxProgress = PRELOAD_WORD_AMO * 2 * this.taskAmount + this.taskAmount;
+        let progress = 0;
+        const words: ISoundWordItem[] = [];
+
+        while (words.length < this.taskAmount && records.length > 0) {
+          const word = records.shift();
+          if (!word) {
+            logDebug('No more words available, breaking');
+            break;
+          }
+
+          words.push({
+            word,
+            type: SoundWordType.DICTATION,
+          });
+
+          progress += 1;
+          callback(+(progress / maxProgress).toFixed(2));
+        }
+
+        logDebug('Words queue prepared, length:', words.length);
+
+        if (words.length === 0) {
+          logDebug('No words available to preload');
+          callback(1);
+          resolve(false);
+          return;
+        }
+
+        this.wordsQueue = words;
+        this.wordIndex = 0;
+
+        const promises = words.filter((_, ind) => ind + 1 <= PRELOAD_WORD_AMO).map(async (item) => {
+          try {
+            const res = await this.preloadWordData(item);
+            progress += this.taskAmount;
+            callback(+(progress / maxProgress).toFixed(2));
+            return res;
+          } catch (error) {
+            logDebug('Error preloading word data:', error);
+            return null;
+          }
+        });
+
+        setTimeout(() => {
+          callback(0.95);
+        }, 200);
+
+        Promise.all(promises).then(() => {
+          // 首先设置索引为0，这样基类的getter可以正确返回当前单词
+          this.wordIndex = 0;
+          this.startTime = Date.now();
+          this.wordStartTime = Date.now();
+
+          logDebug('Setting currentWord to first item in queue:', this.wordsQueue[0]);
+          // 检查当前单词是否正确设置
+          const current = this.currentWord;
+          logDebug('Current word from getter:', current);
+
+          callback(1);
+          logDebug('Preload complete, ready to start with', this.wordsQueue.length, 'words');
+          resolve(true);
+        }).catch((error) => {
+          logDebug('Error in preload process:', error);
+          callback(1);
+          resolve(false);
+        });
+      });
+    } catch (error) {
+      logDebug('API request error:', error);
+      callback(1);
+      return false;
+    }
   }
 
   async next(success: boolean): Promise<boolean> {
+    logDebug('next() called, success:', success, 'left words:', this.getLeftWords());
     if (this.getLeftWords() === 0) {
-      return false
+      return false;
     }
 
     if (!this.currentWord) {
-      throw new Error('当前单词不存在，无法获取下一个单词')
+      throw new Error('当前单词不存在，无法获取下一个单词');
     }
 
     // 记录单词学习数据
-    this.recordWordLearningData(success)
+    this.recordWordLearningData(success);
 
     // 添加到已显示单词
-    this.wordsDisplayed = [...new Set([...this.wordsDisplayed, this.currentWord.word.word])]
+    this.wordsDisplayed = [...new Set([...this.wordsDisplayed, this.currentWord.word.word])];
 
     // 如果当前是听写模式且回答正确，添加例句任务
     if (success && this.currentWord.type === SoundWordType.DICTATION) {
@@ -163,10 +231,11 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
         word: this.currentWord.word,
         type: SoundWordType.EXAMPLE,
         exampleStage: ExampleStage.PLUS_ONE,
-      })
+      });
+      logDebug('Added example task for word:', this.currentWord.word.word);
     } else if (success && this.currentWord.type === SoundWordType.EXAMPLE) {
       // 如果是例句模式并回答正确
-      const currentStage = this.currentWord.exampleStage || 0
+      const currentStage = this.currentWord.exampleStage || 0;
 
       if (currentStage < ExampleStage.FULL_SENTENCE) {
         // 如果还没完成所有阶段，添加下一阶段
@@ -174,11 +243,13 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
           word: this.currentWord.word,
           type: SoundWordType.EXAMPLE,
           exampleStage: currentStage + 1,
-        })
+        });
+        logDebug('Added next example stage for word:', this.currentWord.word.word, 'new stage:', currentStage + 1);
       } else {
         // 所有阶段完成，记录为已学习
-        this.wordsFinished.push(this.currentWord.word)
-        this.mode.dictionaryStorage.setLearned(this.currentWord.word.word)
+        this.wordsFinished.push(this.currentWord.word);
+        this.mode.dictionaryStorage.setLearned(this.currentWord.word.word);
+        logDebug('Word completed all stages:', this.currentWord.word.word);
       }
     } else {
       // 回答错误，重新添加到队列
@@ -186,31 +257,35 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
         this.wordsQueue.push({
           word: this.currentWord.word,
           type: SoundWordType.DICTATION,
-        })
+        });
+        logDebug('Word answered incorrectly, re-added for dictation:', this.currentWord.word.word);
       } else {
         // 例句错误，重新添加相同阶段
         this.wordsQueue.push({
           word: this.currentWord.word,
           type: SoundWordType.EXAMPLE,
           exampleStage: this.currentWord.exampleStage,
-        })
+        });
+        logDebug('Example answered incorrectly, re-added for stage:', this.currentWord.exampleStage);
       }
     }
 
     // 从队列中移除当前单词
-    this.wordsQueue.splice(this.wordIndex, 1)
+    this.wordsQueue.splice(this.wordIndex, 1);
 
     // 预加载后续单词
-    const nextIndex = this.wordIndex + PRELOAD_WORD_AMO
+    const nextIndex = this.wordIndex + PRELOAD_WORD_AMO;
     if (nextIndex < this.wordsQueue.length) {
-      this.preloadWordData(this.wordsQueue[nextIndex])
+      this.preloadWordData(this.wordsQueue[nextIndex]);
     }
 
     // 重置单词开始学习时间和音频播放次数
-    this.wordStartTime = Date.now()
-    this.audioPlayCount = 0
+    this.wordStartTime = Date.now();
+    this.audioPlayCount = 0;
 
-    return true
+    logDebug('Updated queue length:', this.wordsQueue.length, 'current index:', this.wordIndex);
+
+    return true;
   }
 
   async previous(): Promise<boolean> {
@@ -260,20 +335,22 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
   }
 
   recordWordLearningData(success: boolean): void {
-    if (!this.currentWord) return
-
-    const timeSpent = Date.now() - this.wordStartTime
-    const stat = this.getStatistics()
-
-    if (!stat.data.wordsDetails) {
-      stat.data.wordsDetails = []
+    if (!this.currentWord) {
+      return;
     }
 
-    const wordDetails = [...stat.data.wordsDetails]
-    const wordText = this.currentWord.word.word
+    const timeSpent = Date.now() - this.wordStartTime;
+    const stat = this.getStatistics();
+
+    if (!stat.data.wordsDetails) {
+      stat.data.wordsDetails = [];
+    }
+
+    const wordDetails = [...stat.data.wordsDetails];
+    const wordText = this.currentWord.word.word;
     const detailIndex = wordDetails.findIndex(d =>
-      d.word === wordText && d.type === this.currentWord?.type
-    )
+      d.word === wordText && d.type === this.currentWord?.type,
+    );
 
     if (detailIndex === -1) {
       const newDetail: SoundWordDetail = {
@@ -284,48 +361,48 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
         timeSpent,
         audioPlays: this.audioPlayCount,
         userInputs: [],
-      }
+      };
 
       if (this.currentWord.type === SoundWordType.EXAMPLE && this.currentWord.exampleStage !== undefined) {
-        newDetail.exampleStage = this.currentWord.exampleStage
-        newDetail.exampleAttempts = []
-        newDetail.exampleAttempts[this.currentWord.exampleStage] = 1
+        newDetail.exampleStage = this.currentWord.exampleStage;
+        newDetail.exampleAttempts = [];
+        newDetail.exampleAttempts[this.currentWord.exampleStage] = 1;
       }
 
-      wordDetails.push(newDetail)
+      wordDetails.push(newDetail);
     } else {
-      const detail = wordDetails[detailIndex]
-      detail.attempts++
-      detail.isCorrect = success
-      detail.timeSpent += timeSpent
-      detail.audioPlays = (detail.audioPlays || 0) + this.audioPlayCount
+      const detail = wordDetails[detailIndex];
+      detail.attempts++;
+      detail.isCorrect = success;
+      detail.timeSpent += timeSpent;
+      detail.audioPlays = (detail.audioPlays || 0) + this.audioPlayCount;
 
       if (this.currentWord.type === SoundWordType.EXAMPLE &&
-          this.currentWord.exampleStage !== undefined) {
-        detail.exampleStage = this.currentWord.exampleStage
+        this.currentWord.exampleStage !== undefined) {
+        detail.exampleStage = this.currentWord.exampleStage;
 
         if (!detail.exampleAttempts) {
-          detail.exampleAttempts = []
+          detail.exampleAttempts = [];
         }
 
-        const stageIndex = this.currentWord.exampleStage
+        const stageIndex = this.currentWord.exampleStage;
         if (!detail.exampleAttempts[stageIndex]) {
-          detail.exampleAttempts[stageIndex] = 1
+          detail.exampleAttempts[stageIndex] = 1;
         } else {
-          detail.exampleAttempts[stageIndex]++
+          detail.exampleAttempts[stageIndex]++;
         }
       }
     }
 
-    stat.data.wordsDetails = wordDetails
-    this.updateBasicStats(success)
-    this.updateSessionStatistics()
+    stat.data.wordsDetails = wordDetails;
+    this.updateBasicStats(success);
+    this.updateSessionStatistics();
   }
 
   updateBasicStats(success: boolean): void {
-    if (!this.currentWord) return
+    if (!this.currentWord) { return; }
 
-    const stat = this.getStatistics()
+    const stat = this.getStatistics();
 
     if (this.currentWord.type === SoundWordType.DICTATION) {
       stat.data.dictationWords = (stat.data.dictationWords || 0) + 1
@@ -358,38 +435,44 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
   }
 
   updateSessionStatistics(): void {
-    const details = this.statistics.data.wordsDetails || []
-    if (details.length === 0) return
+    const details = this.statistics.data.wordsDetails || [];
+    if (details.length === 0) {
+      return;
+    }
 
-    let dictationTotal = 0
-    let dictationCorrect = 0
-    let exampleTotal = 0
-    let exampleCorrect = 0
-    let totalAudioPlays = 0
-    let dictationDuration = 0
-    let exampleDuration = 0
+    let dictationTotal = 0;
+    let dictationCorrect = 0;
+    let exampleTotal = 0;
+    let exampleCorrect = 0;
+    let totalAudioPlays = 0;
+    let dictationDuration = 0;
+    let exampleDuration = 0;
 
     for (const detail of details) {
-      totalAudioPlays += detail.audioPlays || 0
+      totalAudioPlays += detail.audioPlays || 0;
 
       if (detail.type === SoundWordType.DICTATION) {
-        dictationTotal++
-        if (detail.isCorrect) dictationCorrect++
-        dictationDuration += detail.timeSpent
+        dictationTotal++;
+        if (detail.isCorrect) {
+          dictationCorrect++;
+        }
+        dictationDuration += detail.timeSpent;
       } else if (detail.type === SoundWordType.EXAMPLE) {
-        exampleTotal++
-        if (detail.isCorrect) exampleCorrect++
-        exampleDuration += detail.timeSpent
+        exampleTotal++;
+        if (detail.isCorrect) {
+          exampleCorrect++;
+        }
+        exampleDuration += detail.timeSpent;
       }
     }
 
-    const stat = this.statistics
-    stat.data.sessionDuration = Date.now() - this.startTime
-    stat.data.dictationDuration = dictationDuration
-    stat.data.exampleDuration = exampleDuration
-    stat.data.audioPlayCount = totalAudioPlays
+    const stat = this.statistics;
+    stat.data.sessionDuration = Date.now() - this.startTime;
+    stat.data.dictationDuration = dictationDuration;
+    stat.data.exampleDuration = exampleDuration;
+    stat.data.audioPlayCount = totalAudioPlays;
 
-    stat.data.dictationCorrectRate = dictationTotal > 0 ? dictationCorrect / dictationTotal : 0
-    stat.data.exampleCorrectRate = exampleTotal > 0 ? exampleCorrect / exampleTotal : 0
+    stat.data.dictationCorrectRate = dictationTotal > 0 ? dictationCorrect / dictationTotal : 0;
+    stat.data.exampleCorrectRate = exampleTotal > 0 ? exampleCorrect / exampleTotal : 0;
   }
 }

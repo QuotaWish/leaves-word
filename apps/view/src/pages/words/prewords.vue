@@ -179,14 +179,22 @@ async function handleStart() {
     loadingOptions.progress = -1
     loadingOptions.loading = false
 
+    // 显示错误信息
+    abnormalDialog.message = '单词数据加载失败，请稍后重试';
+    abnormalDialog.visible = true;
+
     return
   }
 
+  // 确保进度显示为100%
+  loadingOptions.progress = 100;
+
+  // 加载组件
   loadingOptions.component = prepared.getTargetComponent()
 
   await sleep(500)
 
-  // start
+  // start - 这是关键步骤，设置为true表示开始学习
   loadingOptions.start = true
 
   router.push({
@@ -196,11 +204,6 @@ async function handleStart() {
       mode: globalPreference.value.mode,
     },
   })
-
-  await sleep(500)
-
-  loadingOptions.loading = false
-  loadingOptions.progress = -1
 }
 
 async function handleDone() {
