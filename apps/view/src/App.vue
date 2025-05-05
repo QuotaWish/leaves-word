@@ -10,7 +10,8 @@ import { modeManager } from '~/modules/words/mode'
 import { ComprehensiveMode } from '~/modules/words/mode/comprehensive'
 // import { DictWordMode } from '~/modules/words/mode/dict-word'
 // import { PunchMode } from '~/modules/words/mode/punch'
-// import { SoundMode } from '~/modules/words/mode/sound'
+import { SoundMode } from '~/modules/words/mode/sound'
+import { ReadingMode } from '~/modules/words/mode/reading'
 
 import { initApi } from './composables/api'
 import { useLeafEventBus } from './composables/event'
@@ -21,7 +22,8 @@ import { $logout, globalAuthStorage, initAuthModule } from './modules/auth'
 
 modeManager.set(ModeType.COMPREHENSIVE, (dictionaryStorage: LeafDictStorage) => new ComprehensiveMode(dictionaryStorage))
 // modeManager.set(ModeType.PUNCH, (dictionaryStorage: DictStorage) => new PunchMode(dictionaryStorage))
-// modeManager.set(ModeType.LISTENING, (dictionaryStorage: DictStorage) => new SoundMode(dictionaryStorage))
+modeManager.set(ModeType.SOUND, (dictionaryStorage: LeafDictStorage) => new SoundMode(dictionaryStorage))
+modeManager.set(ModeType.READING, (dictionaryStorage: LeafDictStorage) => new ReadingMode(dictionaryStorage))
 // modeManager.set(ModeType.READING, (dictionaryStorage: DictStorage) => new DictWordMode(dictionaryStorage))
 
 initApi()
