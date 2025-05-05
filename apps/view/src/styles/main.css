@@ -92,3 +92,12 @@ body {
 
   overflow: hidden;
 }
+
+.el-message-box {
+  .el-button {
+    border-radius: 12px !important;
+  }
+
+  padding: 1rem !important;
+  border-radius: 18px !important;
+}

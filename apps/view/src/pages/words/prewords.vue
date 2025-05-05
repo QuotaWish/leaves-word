@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { onActivated, ref } from 'vue'
-import type { LeafPrepareSign } from '~/modules/words/mode'
+import { onActivated, onMounted, onUnmounted, ref } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import NumberFlow from '@number-flow/vue'
-import { ElMessage } from 'element-plus'
 import AIProcessingMessages from '~/components/chore/AIProcessingMessages.vue'
 import ModeSelector from '~/components/words/ModeSelector.vue'
 import PlanSelector from '~/components/words/PlanSelector.vue'
 import { useTargetData } from '~/modules/words'
 import { globalPreference } from '~/modules/words/core/feat/preference'
+import type { LeafPrepareSign } from '~/modules/words/mode'
 
 const router = useRouter()
 const { targetSignMode } = useTargetData()
@@ -46,6 +47,63 @@ const abnormalDialog = reactive({
   visible: false,
   message: '',
 })
+
+// 路由离开拦截
+onBeforeRouteLeave(async (to, from, next) => {
+  if (loadingOptions.start) {
+    try {
+      await ElMessageBox.confirm(
+        '打卡尚未完成，离开页面将导致数据丢失，请确认是否继续？',
+        '风险提示',
+        {
+          confirmButtonText: '确认离开',
+          cancelButtonText: '取消',
+          type: 'warning',
+        },
+      )
+      next() // 用户确认离开
+    } catch {
+      next(false) // 用户取消
+    }
+  } else {
+    next()
+  }
+})
+
+// 浏览器刷新/关闭拦截
+onMounted(() => {
+  window.addEventListener('beforeunload', handleBeforeUnload)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('beforeunload', handleBeforeUnload)
+})
+
+function handleBeforeUnload(event: BeforeUnloadEvent) {
+  if (loadingOptions.start) {
+    const message = '打卡尚未完成，离开将导致数据丢失，确定要离开吗？'
+    event.preventDefault()
+    event.returnValue = message
+    return message
+  }
+}
+
+async function handleQuit() {
+  try {
+    await ElMessageBox.confirm(
+      '打卡尚未完成，退出将导致数据丢失，确定要退出吗？',
+      '风险提示',
+      {
+        confirmButtonText: '确认退出',
+        cancelButtonText: '取消',
+        type: 'warning',
+      },
+    )
+    loadingOptions.start = false
+  } catch {
+    // 用户取消，不做任何操作
+  }
+}
 
 function selectDict() {
   router.push({
@@ -280,7 +338,7 @@ onActivated(() => {
       <div :class="{ wordVisible: loadingOptions.start }" class="transition-cubic PreWordsPage-Word">
         <component
           :is="loadingOptions.component" v-if="loadingOptions.component" :prepare="loadingOptions.prepare"
-          @quit="loadingOptions.start = false" @done="handleDone"
+          @quit="handleQuit" @done="handleDone"
         />
       </div>
     </teleport>
