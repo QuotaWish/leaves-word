@@ -59,11 +59,10 @@ onMounted(async () => {
     }
 
     const statistics = todaySubData.statistics
-    console.log(statistics)
-    // displayComponent.value = statCompMapper[statistics!.type as keyof typeof statCompMapper]
-    data.value = statistics
+    const targetComponent = statistics?.type.toUpperCase() as keyof typeof statCompMapper
 
-    console.log(todaySubData)
+    displayComponent.value = statCompMapper[targetComponent]
+    data.value = statistics
 
     timeText.value = dayjs(new Date(todayData.data!.date)).format('YYYY-MM-DD')
 
@@ -142,7 +141,7 @@ onMounted(async () => {
 
     <template #drawer>
       <div class="drawer-content">
-        <!-- <component :is="displayComponent" :data="data" /> -->
+        <component :is="displayComponent" :data="data" />
       </div>
     </template>
 

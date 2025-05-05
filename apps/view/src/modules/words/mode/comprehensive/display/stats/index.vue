@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import type { Statistics } from '~/modules/words'
 import { ElSkeleton, ElSkeletonItem } from 'element-plus'
 import Logo from '~/components/chore/Logo.vue'
+import { ComprehensiveStatistics } from '../../stat'
 import AIFeatures from './AIFeatures.vue'
 import ChartsCarousel from './ChartsCarousel.vue'
 import EbbinghausSection from './EbbinghausSection.vue'
 import PredictionSection from './PredictionSection.vue'
-import type { Statistics } from '~/modules/words'
 
 const props = defineProps<{
   data: Statistics<any>
@@ -29,12 +30,12 @@ const sessionDuration = computed(() => stat.value.data.sessionDuration || 0)
 const wordsDetails = computed(() => stat.value.data.wordsDetails || [])
 const isLoading = computed(() => !props.data /* || !wordsDetails.value.length */)
 
-const formatTime = (ms: number) => {
+function formatTime(ms: number) {
   const seconds = ms / 1000
   return `${seconds.toFixed(2)}秒`
 }
 
-const formatDuration = (ms: number) => {
+function formatDuration(ms: number) {
   const totalSeconds = ms / 1000
   const minutes = Math.floor(totalSeconds / 60)
   const seconds = (totalSeconds % 60).toFixed(2)
