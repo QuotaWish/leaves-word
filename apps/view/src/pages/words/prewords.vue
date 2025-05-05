@@ -13,12 +13,14 @@ const { targetSignMode } = useTargetData()
 
 const loadingOptions = reactive<{
   loading: boolean
+  preProgress: number
   progress: number
   start: boolean
   component: Component | null
   prepare: LeafPrepareSign<any, any, any> | null
 }>({
   loading: false,
+  preProgress: 0,
   progress: -1,
   start: false,
   component: null,
@@ -75,11 +77,19 @@ async function handleStart() {
 
   loadingOptions.prepare = prepared
 
-  await sleep(1200)
+  loadingOptions.preProgress = 0
 
-  loadingOptions.progress = 0
+  const startTime = Date.now()
+
+  while (Date.now() - startTime < 3800 && loadingOptions.preProgress < 100) {
+    loadingOptions.preProgress += Math.random() * 5
+
+    await sleep(Math.random() * 10 + 10)
+  }
 
   await sleep(500)
+
+  loadingOptions.progress = -1
 
   const done = await prepared.preload((p: number) => {
     loadingOptions.progress = Math.min(p * 100, 100)
@@ -207,7 +217,7 @@ function handleBack() {
     <div class="transition-cubic PreWordsPage-Progress">
       <div class="progress-info-row" mb-1 flex items-center justify-between>
         <div class="ai-message-wrapper">
-          <AIProcessingMessages :display-count="1" :message-interval="1500" />
+          <AIProcessingMessages :percentage="loadingOptions.preProgress / 100" />
         </div>
         <div v-if="loadingOptions.progress !== -1" class="progress-value">
           <NumberFlow
