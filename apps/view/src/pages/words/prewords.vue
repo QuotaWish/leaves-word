@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onActivated, ref } from 'vue'
 import type { LeafPrepareSign } from '~/modules/words/mode'
 import NumberFlow from '@number-flow/vue'
 import { ElMessage } from 'element-plus'
@@ -10,6 +11,15 @@ import { globalPreference } from '~/modules/words/core/feat/preference'
 
 const router = useRouter()
 const { targetSignMode } = useTargetData()
+
+/**
+ * Enum for page status
+ */
+enum PreWordsStatus {
+  Idle = 'idle',
+  Prepared = 'prepared',
+  Started = 'started',
+}
 
 const loadingOptions = reactive<{
   loading: boolean
@@ -30,6 +40,11 @@ const loadingOptions = reactive<{
 const dialogOptions = reactive<any>({
   visible: false,
   component: null,
+})
+
+const abnormalDialog = reactive({
+  visible: false,
+  message: '',
 })
 
 function selectDict() {
@@ -73,6 +88,13 @@ async function handleStart() {
     return
   }
 
+  router.push({
+    query: {
+      status: 'prepared',
+      mode: globalPreference.value.mode,
+    },
+  })
+
   const prepared = signMode.prepareWords()
 
   loadingOptions.prepare = prepared
@@ -109,29 +131,19 @@ async function handleStart() {
   // start
   loadingOptions.start = true
 
+  router.push({
+    query: {
+      status: 'started',
+      start: Date.now(),
+      mode: globalPreference.value.mode,
+    },
+  })
+
   await sleep(500)
 
   loadingOptions.loading = false
   loadingOptions.progress = -1
 }
-
-// useRouter().beforeEach((_to, _from, next) => {
-//   if (loadingOptions.loading) {
-//     next(false)
-
-//     return
-//   }
-
-//   if (loadingOptions.start) {
-//     loadingOptions.start = false
-
-//     next(false)
-
-//     return
-//   }
-
-//   next(true)
-// })
 
 async function handleDone() {
   loadingOptions.start = false
@@ -141,6 +153,33 @@ async function handleDone() {
 function handleBack() {
   router.push('/')
 }
+
+function resetQuery() {
+  router.replace({
+    query: {},
+  })
+}
+
+onActivated(() => {
+  const status = router.currentRoute.value.query.status as string | undefined
+  if (!status) {
+    resetQuery()
+    return
+  }
+  switch (status) {
+    case PreWordsStatus.Prepared:
+      handleStart()
+      break
+    case PreWordsStatus.Started:
+      abnormalDialog.visible = true
+      abnormalDialog.message = '上次打卡未正常完成，数据已丢失，请重新开始。'
+      resetQuery()
+      break
+    default:
+      resetQuery()
+      break
+  }
+})
 </script>
 
 <template>
@@ -249,6 +288,15 @@ function handleBack() {
     <TouchDialog v-model="dialogOptions.visible">
       <template #Main>
         <component :is="dialogOptions.component" v-if="dialogOptions.component" />
+      </template>
+    </TouchDialog>
+
+    <TouchDialog v-model="abnormalDialog.visible">
+      <template #Main>
+        <div style="padding: 24px; text-align: center;">
+          <p>{{ abnormalDialog.message }}</p>
+          <el-button type="primary" style="margin-top: 16px;" @click="abnormalDialog.visible = false">确定</el-button>
+        </div>
       </template>
     </TouchDialog>
   </RoutePage>
