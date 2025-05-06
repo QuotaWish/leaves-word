@@ -49,10 +49,13 @@ export class CalendarManager {
     const dayData = data.day
     const days = dayData.split('')
 
+    const todayInnerData = data.data.find(item => item.day === day)
+
     return {
-      signed: days?.[day] === '1',
+      // TODO 暂时这样 后续交给后端判断
+      signed: days?.[day] === '1' && todayInnerData?.done,
       dataList: data.data,
-      data: data.data.find(item => item.day === day),
+      data: todayInnerData,
       origin: data,
     }
   }

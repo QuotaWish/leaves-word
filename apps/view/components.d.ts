@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AIProcessingMessages: typeof import('./src/components/chore/AIProcessingMessages.vue')['default']
     AIWordAnalysis: typeof import('./src/components/words/mode/AIWordAnalysis.vue')['default']
     AnimateIcon: typeof import('./src/components/icon/AnimateIcon.vue')['default']
     BookLoading: typeof import('./src/components/icon/BookLoading.vue')['default']
@@ -50,11 +51,13 @@ declare module 'vue' {
     PageSettingsSection: typeof import('./src/components/display/settings/PageSettingsSection.vue')['default']
     PlanSelector: typeof import('./src/components/words/PlanSelector.vue')['default']
     PlayIcon: typeof import('./src/components/icon/PlayIcon.vue')['default']
+    PreAIProcessMsg: typeof import('./src/components/chore/PreAIProcessMsg.vue')['default']
     PronounceDisplay: typeof import('./src/components/words/composer/PronounceDisplay.vue')['default']
     RoundInfo: typeof import('./src/components/display/RoundInfo.vue')['default']
     RoutePage: typeof import('./src/components/page/RoutePage.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ScrollFadeContainer: typeof import('./src/components/chore/ScrollFadeContainer.vue')['default']
     SearchBar: typeof import('./src/components/input/SearchBar.vue')['default']
     SettingsCard: typeof import('./src/components/settings/SettingsCard.vue')['default']
     SettingsItem: typeof import('./src/components/settings/SettingsItem.vue')['default']

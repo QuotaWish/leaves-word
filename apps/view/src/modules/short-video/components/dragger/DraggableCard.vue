@@ -23,6 +23,11 @@ export default defineComponent({
     loadingText: {
       type: String,
       default: '加载中...'
+    },
+    // 新增属性：同时预加载的视频数量
+    preloadCount: {
+      type: Number,
+      default: 1 // 默认只预加载当前视频与下一个视频
     }
   },
   emits: ['switch', 'refresh', 'pull-up-refresh'],
@@ -73,6 +78,12 @@ export default defineComponent({
         return [] // 没有函数时返回空数组
       },
       renderCard: (item: any, index: number, isCurrent: boolean) => {
+        // 只有当前视频和预加载数量范围内的视频才设置isCurrent为true
+        // 这样可以减少同时活跃的视频组件数量
+        const inPreloadRange = index >= 0 &&
+                              index <= state.currentIndex + props.preloadCount &&
+                              index >= state.currentIndex - 1;
+
         // 优先使用插槽渲染卡片，如果没有提供插槽，则使用默认渲染
         if (slots.default) {
           const debugInfo = h('div', {
@@ -91,7 +102,7 @@ export default defineComponent({
             }
           }, `${index}`)
 
-          // 渲染内容
+          // 渲染内容，设置正确的isCurrent值
           return h('div', {
             class: 'DraggableCard-Content',
             style: {
@@ -99,7 +110,10 @@ export default defineComponent({
               height: '100%',
               position: 'relative'
             }
-          }, [debugInfo, slots.default({ item, isCurrent })])
+          }, [debugInfo, slots.default({
+            item,
+            isCurrent: isCurrent && inPreloadRange
+          })])
         }
 
         // 默认渲染

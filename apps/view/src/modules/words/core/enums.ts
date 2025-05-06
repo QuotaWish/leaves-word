@@ -3,6 +3,7 @@ export enum ModeType {
   LISTENING = 'listening',
   READING = 'reading',
   PUNCH = 'punch',
+  SOUND = 'sound',
 }
 
 export type ModeIdentifier = ModeType

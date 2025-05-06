@@ -79,14 +79,15 @@ const ins = ref(getCurrentInstance())
       content: '';
       position: absolute;
 
-      top: 20%;
+      top: 15%;
       left: 0;
 
-      width: 3px;
-      height: 60%;
+      width: 5px;
+      height: 70%;
 
       transition: 0.25s;
       transform: scale(0);
+      border-radius: 0 10px 10px 0;
       background-color: var(--theme-color-primary);
     }
     position: relative;

@@ -1,23 +1,37 @@
 <script setup lang="ts">
-import type { LeafPrepareSign } from '~/modules/words/mode'
+import { onActivated, onMounted, onUnmounted, ref } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import NumberFlow from '@number-flow/vue'
+import AIProcessingMessages from '~/components/chore/AIProcessingMessages.vue'
 import ModeSelector from '~/components/words/ModeSelector.vue'
 import PlanSelector from '~/components/words/PlanSelector.vue'
 import { useTargetData } from '~/modules/words'
 import { globalPreference } from '~/modules/words/core/feat/preference'
-import { ElMessage } from 'element-plus'
+import type { LeafPrepareSign } from '~/modules/words/mode'
 
 const router = useRouter()
 const { targetSignMode } = useTargetData()
 
+/**
+ * Enum for page status
+ */
+enum PreWordsStatus {
+  Idle = 'idle',
+  Prepared = 'prepared',
+  Started = 'started',
+}
+
 const loadingOptions = reactive<{
   loading: boolean
+  preProgress: number
   progress: number
   start: boolean
   component: Component | null
   prepare: LeafPrepareSign<any, any, any> | null
 }>({
   loading: false,
+  preProgress: 0,
   progress: -1,
   start: false,
   component: null,
@@ -28,6 +42,68 @@ const dialogOptions = reactive<any>({
   visible: false,
   component: null,
 })
+
+const abnormalDialog = reactive({
+  visible: false,
+  message: '',
+})
+
+// 路由离开拦截
+onBeforeRouteLeave(async (to, from, next) => {
+  if (loadingOptions.start) {
+    try {
+      await ElMessageBox.confirm(
+        '打卡尚未完成，离开页面将导致数据丢失，请确认是否继续？',
+        '风险提示',
+        {
+          confirmButtonText: '确认离开',
+          cancelButtonText: '取消',
+          type: 'warning',
+        },
+      )
+      next() // 用户确认离开
+    } catch {
+      next(false) // 用户取消
+    }
+  } else {
+    next()
+  }
+})
+
+// 浏览器刷新/关闭拦截
+onMounted(() => {
+  window.addEventListener('beforeunload', handleBeforeUnload)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('beforeunload', handleBeforeUnload)
+})
+
+function handleBeforeUnload(event: BeforeUnloadEvent) {
+  if (loadingOptions.start) {
+    const message = '打卡尚未完成，离开将导致数据丢失，确定要离开吗？'
+    event.preventDefault()
+    event.returnValue = message
+    return message
+  }
+}
+
+async function handleQuit() {
+  try {
+    await ElMessageBox.confirm(
+      '打卡尚未完成，退出将导致数据丢失，确定要退出吗？',
+      '风险提示',
+      {
+        confirmButtonText: '确认退出',
+        cancelButtonText: '取消',
+        type: 'warning',
+      },
+    )
+    loadingOptions.start = false
+  } catch {
+    // 用户取消，不做任何操作
+  }
+}
 
 function selectDict() {
   router.push({
@@ -70,15 +146,30 @@ async function handleStart() {
     return
   }
 
+  router.push({
+    query: {
+      status: 'prepared',
+      mode: globalPreference.value.mode,
+    },
+  })
+
   const prepared = signMode.prepareWords()
 
   loadingOptions.prepare = prepared
 
-  await sleep(1200)
+  loadingOptions.preProgress = 0
 
-  loadingOptions.progress = 0
+  const startTime = Date.now()
+
+  while (Date.now() - startTime < 3800 && loadingOptions.preProgress < 100) {
+    loadingOptions.preProgress += Math.random() * 5
+
+    await sleep(Math.random() * 10 + 10)
+  }
 
   await sleep(500)
+
+  loadingOptions.progress = -1
 
   const done = await prepared.preload((p: number) => {
     loadingOptions.progress = Math.min(p * 100, 100)
@@ -88,39 +179,32 @@ async function handleStart() {
     loadingOptions.progress = -1
     loadingOptions.loading = false
 
+    // 显示错误信息
+    abnormalDialog.message = '单词数据加载失败，请稍后重试';
+    abnormalDialog.visible = true;
+
     return
   }
 
+  // 确保进度显示为100%
+  loadingOptions.progress = 100;
+
+  // 加载组件
   loadingOptions.component = prepared.getTargetComponent()
 
   await sleep(500)
 
-  // start
+  // start - 这是关键步骤，设置为true表示开始学习
   loadingOptions.start = true
 
-  await sleep(500)
-
-  loadingOptions.loading = false
-  loadingOptions.progress = -1
+  router.push({
+    query: {
+      status: 'started',
+      start: Date.now(),
+      mode: globalPreference.value.mode,
+    },
+  })
 }
-
-// useRouter().beforeEach((_to, _from, next) => {
-//   if (loadingOptions.loading) {
-//     next(false)
-
-//     return
-//   }
-
-//   if (loadingOptions.start) {
-//     loadingOptions.start = false
-
-//     next(false)
-
-//     return
-//   }
-
-//   next(true)
-// })
 
 async function handleDone() {
   loadingOptions.start = false
@@ -130,6 +214,33 @@ async function handleDone() {
 function handleBack() {
   router.push('/')
 }
+
+function resetQuery() {
+  router.replace({
+    query: {},
+  })
+}
+
+onActivated(() => {
+  const status = router.currentRoute.value.query.status as string | undefined
+  if (!status) {
+    resetQuery()
+    return
+  }
+  switch (status) {
+    case PreWordsStatus.Prepared:
+      handleStart()
+      break
+    case PreWordsStatus.Started:
+      abnormalDialog.visible = true
+      abnormalDialog.message = '上次打卡未正常完成，数据已丢失，请重新开始。'
+      resetQuery()
+      break
+    default:
+      resetQuery()
+      break
+  }
+})
 </script>
 
 <template>
@@ -204,16 +315,20 @@ function handleBack() {
     </div>
 
     <div class="transition-cubic PreWordsPage-Progress">
-      <p mb-1 flex items-center justify-between>
-        <span>正在为您定制学习计划</span>
-        <span v-if="loadingOptions.progress !== -1">
+      <div class="progress-info-row" mb-1 flex items-center justify-between>
+        <div class="ai-message-wrapper">
+          <AIProcessingMessages :percentage="loadingOptions.preProgress / 100" />
+        </div>
+        <div v-if="loadingOptions.progress !== -1" class="progress-value">
           <NumberFlow
-            suffix="%" :continuous="true" :will-change="true" :animated="true"
+            suffix="%"
+            :continuous="true"
+            :will-change="true"
+            :animated="true"
             :value="loadingOptions.progress"
           />
-
-        </span>
-      </p>
+        </div>
+      </div>
 
       <LineLoading :progress="loadingOptions.progress" />
     </div>
@@ -226,7 +341,7 @@ function handleBack() {
       <div :class="{ wordVisible: loadingOptions.start }" class="transition-cubic PreWordsPage-Word">
         <component
           :is="loadingOptions.component" v-if="loadingOptions.component" :prepare="loadingOptions.prepare"
-          @quit="loadingOptions.start = false" @done="handleDone"
+          @quit="handleQuit" @done="handleDone"
         />
       </div>
     </teleport>
@@ -234,6 +349,15 @@ function handleBack() {
     <TouchDialog v-model="dialogOptions.visible">
       <template #Main>
         <component :is="dialogOptions.component" v-if="dialogOptions.component" />
+      </template>
+    </TouchDialog>
+
+    <TouchDialog v-model="abnormalDialog.visible">
+      <template #Main>
+        <div style="padding: 24px; text-align: center;">
+          <p>{{ abnormalDialog.message }}</p>
+          <el-button type="primary" style="margin-top: 16px;" @click="abnormalDialog.visible = false">确定</el-button>
+        </div>
       </template>
     </TouchDialog>
   </RoutePage>
@@ -306,11 +430,31 @@ function handleBack() {
   left: 7.5%;
 
   width: 85%;
-  bottom: 5%;
+  bottom: 6%;
 
   opacity: 0;
   pointer-events: none;
   color: var(--el-text-color-secondary);
+
+  p {
+    margin-bottom: 4px;
+  }
+
+  .progress-info-row {
+    margin-bottom: 4px;
+  }
+
+  .ai-message-wrapper {
+    max-width: 70%;
+    overflow: hidden;
+  }
+
+  .progress-value {
+    font-weight: 500;
+    min-width: 45px;
+    text-align: right;
+    padding-left: 10px;
+  }
 }
 
 .PreWordsPage-Supper {

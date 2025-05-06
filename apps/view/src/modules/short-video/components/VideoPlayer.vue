@@ -75,6 +75,10 @@ const handleVideoLoaded = () => {
   // 如果是当前视频并且没有尝试过自动播放，则尝试播放
   if (isCurrentRef.value && !autoPlayAttempted.value) {
     tryAutoPlay()
+  } else if (!isCurrentRef.value && videoRef.value) {
+    // 确保非当前视频不会播放
+    videoRef.value.pause()
+    isPlaying.value = false
   }
 }
 
@@ -327,14 +331,14 @@ const toggleFollow = () => {
 // 格式化数字（超过1万显示为x.x万）
 const formatNumber = (num: number) => {
   if (num >= 10000) {
-    return (num / 10000).toFixed(1) + '万'
+    return `${(num / 10000).toFixed(1)}万`
   }
   return num.toString()
 }
 
 // 格式化时间（将秒转换为分:秒格式）
 const formatTime = (time: number) => {
-  if (isNaN(time)) return '00:00'
+  if (Number.isNaN(time)) return '00:00'
 
   const minutes = Math.floor(time / 60)
   const seconds = Math.floor(time % 60)
@@ -372,8 +376,18 @@ watchEffect(() => {
     }
     // 否则当视频加载完成后会尝试播放
   } else {
-    // 如果不是当前视频，则暂停
-    pauseCurrentVideo()
+    // 如果不是当前视频，则强制暂停并释放资源
+    if (videoRef.value) {
+      videoRef.value.pause()
+      videoRef.value.currentTime = 0  // 重置播放位置
+      videoRef.value.src = ''  // 清空视频源，阻止预加载
+
+      // 重置状态
+      isPlaying.value = false
+      autoPlayAttempted.value = false
+      currentTime.value = 0
+      isLoading.value = false
+    }
   }
 })
 
@@ -432,6 +446,14 @@ onMounted(() => {
 
     window.addEventListener('resize', handleResize)
   }
+
+  // 初始检查：如果组件挂载时不是当前视频，确保不自动播放
+  if (!isCurrentRef.value && videoRef.value) {
+    videoRef.value.pause()
+    videoRef.value.src = '' // 强制清空视频源，避免资源加载
+    isPlaying.value = false
+    autoPlayAttempted.value = false
+  }
 })
 
 // 组件卸载
@@ -461,12 +483,35 @@ onUnmounted(() => {
 <template>
   <div class="tiktok-player" ref="containerRef" @click="showControlsTemporarily">
     <!-- 视频元素 -->
-    <video ref="videoRef" :src="videoUrl" class="video" loop preload="auto" playsinline webkit-playsinline
-      @click.stop="togglePlay" @ended="handleVideoEnded" @timeupdate="updateProgress" @loadedmetadata="updateProgress"
-      @loadeddata="handleVideoLoaded"></video>
+    <video
+      ref="videoRef"
+      :src="isCurrentRef ? videoUrl : ''"
+      class="video"
+      loop
+      :preload="isCurrentRef ? 'auto' : 'none'"
+      playsinline
+      webkit-playsinline
+      :muted="!isCurrentRef"
+      @click.stop="togglePlay"
+      @ended="handleVideoEnded"
+      @timeupdate="updateProgress"
+      @loadedmetadata="updateProgress"
+      @loadeddata="handleVideoLoaded"
+    ></video>
+
+    <!-- 非当前视频显示预览图 -->
+    <div v-if="!isCurrentRef" class="video-placeholder">
+      <img
+        v-if="item.cover || item.poster"
+        :src="item.cover || item.poster"
+        class="cover-image"
+        alt="视频封面"
+      />
+      <div v-else class="placeholder-bg"></div>
+    </div>
 
     <!-- 加载状态 - 使用Leaf Loading组件 -->
-    <div class="loading-overlay" v-if="isLoading">
+    <div class="loading-overlay" v-if="isLoading && isCurrentRef">
       <Loading />
     </div>
 
@@ -931,5 +976,30 @@ onUnmounted(() => {
   width: 100%;
   background-color: white;
   border-radius: 3px;
+}
+
+.video-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #121212;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cover-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholder-bg {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #1a1a1a, #000);
 }
 </style>

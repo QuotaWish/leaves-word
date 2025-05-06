@@ -10,10 +10,18 @@ import 'wc-waterfall'
 import { useRequest } from 'alova/client'
 import type { Category, EnglishDictionary } from '~/composables/api/clients/globals'
 
+/**
+ * Category with books for display.
+ */
+export interface DisplayCategory extends Category {
+  books: EnglishDictionary[];
+  children?: DisplayCategory[];
+}
+
 const route = useRoute()
 const router = useRouter()
-const bookData = ref<Category[]>([])
-const selectCategory = ref<Category>()
+const bookData = ref<DisplayCategory[]>([])
+const selectCategory = ref<DisplayCategory>()
 
 const type = computed(() => route.query.type)
 
@@ -35,7 +43,7 @@ const handleSearch = useDebounceFn(() => {
   // 搜索逻辑...
 }, 300)
 
-function handleSelectCategory(category: Category) {
+function handleSelectCategory(category: DisplayCategory) {
   selectCategory.value = category
 }
 
@@ -51,7 +59,9 @@ function handleBookClick(book: EnglishDictionary) {
   }
 }
 
-send()
+onMounted(() => {
+  send()
+})
 </script>
 
 <template>
@@ -103,13 +113,20 @@ send()
           </div>
         </div>
       </template>
-      <wc-waterfall
-        :gap="12"
-        :cols="2"
-        :key="selectCategory?.id"
-      >
-        <DictionaryBookDisplay :active="book.id === globalPreference.dict.id" v-for="book in (selectCategory?.books || [])" :key="book.id" :model-value="book" @click="handleBookClick(book)" />
-      </wc-waterfall>
+      <template v-if="selectCategory?.books?.length">
+        <wc-waterfall :gap="12" :cols="2" :key="selectCategory?.id">
+          <DictionaryBookDisplay
+            :active="String(book.id) === globalPreference.dict.id"
+            v-for="book in selectCategory.books"
+            :key="book.id"
+            :model-value="book"
+            @click="handleBookClick(book)"
+          />
+        </wc-waterfall>
+      </template>
+      <template v-else-if="!loading">
+        <div class="empty-tip">暂无词典</div>
+      </template>
     </el-skeleton>
   </DictionaryHolder>
 </template>

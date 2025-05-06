@@ -187,9 +187,9 @@ async function handleCheckSign() {
         <div class="WordSignInfo-Empty-Desc">
           选择词书以立即开始
         </div>
-        <el-button type="primary" class="WordSignInfo-Empty-Button" @click="selectDict">
+        <LeafButton plain class="WordSignInfo-Empty-Button" @click="selectDict">
           选择词书
-        </el-button>
+        </LeafButton>
       </div>
     </template>
 
@@ -202,6 +202,11 @@ async function handleCheckSign() {
 </template>
 
 <style lang="scss">
+.WordSignInfo-Empty-Button {
+  width: 80%;
+  margin: 0 auto;
+}
+
 .WordSignInfo-Checked {
   position: absolute;
 
@@ -621,7 +626,7 @@ async function handleCheckSign() {
     .empty-book-svg {
       width: 100%;
       height: 100%;
-      fill: var(--el-color-primary);
+      fill: var(--theme-color-primary);
       opacity: 0.8;
     }
   }

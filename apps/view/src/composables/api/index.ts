@@ -17,7 +17,13 @@ const eventBus = useLeafEventBus()
 const { onAuthRequired, onResponseRefreshToken } = createClientTokenAuthentication<typeof VueHook, typeof axiosRequestAdapter>({
   login: {
     handler: (response, method) => {
-      const { data } = response.data
+      const { code, data, message } = response.data
+
+      if (code !== 0) {
+        eventBus.fireEvent(new ToastEvent(message, 'error'))
+        throw new Error(message)
+      }
+
       const { token, user } = data
 
       globalAuthStorage.value.user = user

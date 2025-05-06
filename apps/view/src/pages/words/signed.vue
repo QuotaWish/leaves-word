@@ -1,83 +1,83 @@
 <script setup lang="ts">
-// import NumberFlow from '@number-flow/vue'
-// import { dayjs } from 'element-plus'
-// import { calendarManager, Statistics, useVictoryAudio } from '~/composables/words'
-// import Astronaut from '/svg/astronaut.svg'
-// import Mello from '/svg/mello.svg'
-// import CoffettiParticle from '~/components/chore/CoffettiParticle.vue'
-// import ComprehensiveStat from '~/components/words/mode/comprehensive/index.vue'
-// import DrawerPage from '~/components/page/DrawerPage.vue'
-
-// const num = ref(0)
-// const score = ref(0)
-// const days = ref(0)
-// const timeText = ref('')
-// const data = ref<Statistics<any>>()
-// const displayComponent = ref<Component>()
-// const drawerPage = useInstanceRef(DrawerPage)
-
-// const router = useRouter()
-// // const globalSplashState = useGlobalSplashState()
-
-// const victoryAudio = useVictoryAudio()
-
-// const statCompMapper = {
-//   ['COMPREHENSIVE']: ComprehensiveStat,
-// }
-
-// setTimeout(() => {
-//   drawerPage.value?.drawerControl.show()
-// }, 1800)
-
-// setTimeout(() => {
-//   drawerPage.value?.drawerControl.expand()
-// }, 3800)
-
-// onMounted(() => {
-//   victoryAudio.play()
-
-//   // 其他逻辑...
-//   setTimeout(async () => {
-//     const todayData = calendarManager.getTodayData()!
-
-//     if (!todayData?.signed) {
-//       router.push('/')
-//       return
-//     }
-
-//     // process todayData
-//     const originDataList = todayData.origin.data
-//     const todaySubData = originDataList.at(-1)
-
-//     if (!todaySubData) {
-//       router.push('/')
-//       return
-//     }
-
-//     const statistics = todaySubData.statistics
-//     displayComponent.value = statCompMapper[statistics!.type as keyof typeof statCompMapper]
-//     data.value = statistics
-
-//     console.log(todaySubData)
-
-//     timeText.value = dayjs(new Date(todayData.data!.date)).format('YYYY-MM-DD')
-
-//     await sleep(100)
-
-//     days.value = 1
-
-//     await sleep(300)
-
-//     num.value = todaySubData.words.length
-
-//     await sleep(100)
-
-//     score.value = todaySubData.words.length * 1.5
-//   }, 800)
-// })
+import NumberFlow from '@number-flow/vue'
+import { dayjs } from 'element-plus'
+import CoffettiParticle from '~/components/chore/CoffettiParticle.vue'
+import DrawerPage from '~/components/page/DrawerPage.vue'
+import { calendarManager, type Statistics, useVictoryAudio } from '~/modules/words'
+import ComprehensiveStat from '~/modules/words/mode/comprehensive/display/stats/index.vue'
+import Astronaut from '/svg/astronaut.svg'
+import Mello from '/svg/mello.svg'
 
 defineOptions({
   name: 'SignedPage',
+})
+
+const num = ref(0)
+const score = ref(0)
+const days = ref(0)
+const timeText = ref('')
+const data = ref<Statistics<any>>()
+const displayComponent = ref<Component>()
+const drawerPage = useInstanceRef(DrawerPage)
+
+const router = useRouter()
+// const globalSplashState = useGlobalSplashState()
+
+const victoryAudio = useVictoryAudio()
+
+const statCompMapper = {
+  COMPREHENSIVE: ComprehensiveStat,
+}
+
+setTimeout(() => {
+  drawerPage.value?.drawerControl.show()
+}, 1800)
+
+setTimeout(() => {
+  drawerPage.value?.drawerControl.expand()
+}, 3800)
+
+onMounted(async () => {
+  (await victoryAudio).play()
+
+  // 其他逻辑...
+  setTimeout(async () => {
+    const todayData = calendarManager.getTodayData()!
+
+    if (!todayData?.signed) {
+      router.push('/')
+      return
+    }
+
+    // process todayData
+    const originDataList = todayData.origin.data
+    const todaySubData = originDataList.at(-1)
+
+    if (!todaySubData) {
+      router.push('/')
+      return
+    }
+
+    const statistics = todaySubData.statistics
+    const targetComponent = statistics?.type.toUpperCase() as keyof typeof statCompMapper
+
+    displayComponent.value = statCompMapper[targetComponent]
+    data.value = statistics
+
+    timeText.value = dayjs(new Date(todayData.data!.date)).format('YYYY-MM-DD')
+
+    await sleep(100)
+
+    days.value = 1
+
+    await sleep(300)
+
+    num.value = todaySubData.words.length
+
+    await sleep(100)
+
+    score.value = todaySubData.words.length * 1.5
+  }, 800)
 })
 </script>
 
@@ -91,7 +91,7 @@ defineOptions({
         </div>
       </div>
 
-      <!-- <div class="Signed-MainCard fake-background">
+      <div class="Signed-MainCard fake-background">
         <div class="Signed-MainCard-Svg">
           <img :src="Astronaut">
         </div>
@@ -102,8 +102,7 @@ defineOptions({
 
         <h1>
           <div class="number-flow-container">
-            <NumberFlow :prefix="days < 10 ? '0' : ''" :continuous="true" :will-change="true" :animated="true"
-              :value="days" />
+            <NumberFlow :prefix="days < 10 ? '0' : ''" :continuous="true" :will-change="true" :animated="true" :value="days" />
           </div>
           <span>天</span>
         </h1>
@@ -137,12 +136,12 @@ defineOptions({
           </div>
           </p>
         </div>
-      </div> -->
+      </div>
     </template>
 
     <template #drawer>
       <div class="drawer-content">
-        <!-- <component :is="displayComponent" :data="data" /> -->
+        <component :is="displayComponent" :data="data" />
       </div>
     </template>
 
