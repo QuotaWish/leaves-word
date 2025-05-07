@@ -1,63 +1,72 @@
 <script setup lang="ts">
-import { Popup } from 'vant'
-
-const showPoster = ref(false)
-const currentPoster = ref('')
+const router = useRouter();
 
 const banners = reactive([
   {
-    id: 'understand',
-    title: '懂你英语课程',
-    desc: '英语如何学？死记单词？开不了口？',
-    image: 'https://img2.quotawish.com/2024/12/21/6766dfbc685ec.png',
-    poster: '/images/understand-poster.png',
+    id: "understand",
+    title: "懂你英语课程",
+    desc: "英语如何学？死记单词？开不了口？",
+    image: "https://img2.quotawish.com/2024/12/21/6766dfbc685ec.png",
+    poster: "https://img2.quotawish.com/2025/05/07/681ad3964a8e2.webp",
   },
   {
-    id: 'basic_camp',
-    title: '英语基础训练营',
-    desc: '每天五个小任务，从词到句到题，轻松突破，全面提升。',
-    image: 'https://img2.quotawish.com/2024/12/22/6766e7d84a499.png',
-    poster: '/images/basic-camp-poster.png',
+    id: "basic_camp",
+    title: "英语基础训练营",
+    desc: "每天五个小任务，从词到句到题，轻松突破，全面提升。",
+    image: "https://img2.quotawish.com/2024/12/22/6766e7d84a499.png",
+    poster: "https://img2.quotawish.com/2025/05/07/681ad3974bea2.webp",
   },
   {
-    id: 'listening',
-    title: '美剧精听，听说专练',
-    desc: '无障碍看美剧、英剧，地道表达！',
-    image: 'https://img2.quotawish.com/2024/12/22/6766e8482b500.png',
-    poster: '/images/listening-poster.png',
+    id: "listening",
+    title: "美剧精听，听说专练",
+    desc: "无障碍看美剧、英剧，地道表达！",
+    image: "https://img2.quotawish.com/2024/12/22/6766e8482b500.png",
+    poster: "https://img2.quotawish.com/2025/05/07/681ad397f2520.webp",
   },
   {
-    id: '3',
-    title: '流利口语速成课',
-    desc: '专业外教一对一指导，快速改善发音问题。',
-    image: 'https://img2.quotawish.com/2025/03/04/67c717b7c4634.webp',
-    poster: '/images/speaking-poster.png',
+    id: "3",
+    title: "流利口语速成课",
+    desc: "专业外教一对一指导，快速改善发音问题。",
+    image: "https://img2.quotawish.com/2025/03/04/67c717b7c4634.webp",
+    poster: "https://img2.quotawish.com/2025/05/07/681b0f4d360f8.webp",
   },
   {
-    id: '4',
-    title: '写作能力进阶课',
-    desc: '系统讲解写作结构与常用句式。',
-    image: 'https://img2.quotawish.com/2025/03/04/67c7184aaa0f2.webp',
-    poster: '/images/writing-poster.png',
+    id: "4",
+    title: "写作能力进阶课",
+    desc: "系统讲解写作结构与常用句式。",
+    image: "https://img2.quotawish.com/2025/03/04/67c7184aaa0f2.webp",
+    poster: "https://img2.quotawish.com/2025/05/07/681b0f4d29796.webp",
   },
-])
+]);
+
+function handleDirectPoster(banner: any) {
+  router.push({
+    path: "/explore/poster",
+    query: {
+      title: banner.title,
+      path: banner.poster,
+    },
+  });
+}
 </script>
 
 <template>
   <div class="WordIndexBanner">
-    <div v-for="(banner, ind) in banners" :key="ind" class="WordIndexBanner-Item" @click="currentPoster = banner.poster; showPoster = true">
+    <div
+      v-for="(banner, ind) in banners"
+      :key="ind"
+      class="WordIndexBanner-Item"
+      @click="handleDirectPoster(banner)"
+    >
       <div flex flex-col gap-1 class="WordIndexBanner-Item-Main">
         <span font-bold>{{ banner.title }}</span>
         <span font-size-3 op-75>{{ banner.desc }}</span>
       </div>
       <div class="WordIndexBanner-Item-Image">
-        <img :src="banner.image" :alt="banner.title">
+        <img :src="banner.image" :alt="banner.title" />
       </div>
     </div>
   </div>
-  <Popup v-model:show="showPoster" class="poster-popup" position="center">
-    <img :src="currentPoster" class="poster-image" @click="showPoster = false" />
-  </Popup>
 </template>
 
 <style lang="scss">
@@ -76,7 +85,7 @@ const banners = reactive([
 
     // 做遮罩
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
