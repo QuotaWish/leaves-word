@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import NumberFlow from "@number-flow/vue";
+import { ElMessageBox } from "element-plus";
 
 const route = useRoute("/explore/poster/");
 
@@ -49,6 +50,19 @@ onMounted(() => {
     times.value.second = 59;
 
     times.value.lastTime = now.getTime(); // 24 hours
+  }
+});
+
+onBeforeRouteLeave(async (to, from, next) => {
+  try {
+    await ElMessageBox.confirm("你真的要放弃优惠吗？", "风险提示", {
+      confirmButtonText: "放弃优惠",
+      cancelButtonText: "继续浏览",
+      type: "warning",
+    });
+    next();
+  } catch {
+    next(false);
   }
 });
 </script>
