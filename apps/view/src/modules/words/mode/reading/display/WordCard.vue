@@ -1,145 +1,163 @@
 <script name="Words" setup lang="ts">
-import type { IReadingWordItem } from '~/modules/words/mode/reading'
-import { Swipe, SwipeItem } from 'vant'
-import { LeafWordData, useErrorAudio, useSuccessAudio, formatDisplayType } from '~/modules/words'
+import type { IReadingWordItem } from "~/modules/words/mode/reading";
+import { Swipe, SwipeItem } from "vant";
+import {
+  LeafWordData,
+  useErrorAudio,
+  useSuccessAudio,
+  formatDisplayType,
+} from "~/modules/words";
 
 const props = defineProps<{
-  data: IReadingWordItem
-  right: IReadingWordItem
-}>()
+  data: IReadingWordItem;
+  right: IReadingWordItem;
+}>();
 
 const emits = defineEmits<{
-  (e: 'choose', wrong: boolean): void
-  (e: 'previous'): void
-}>()
+  (e: "choose", wrong: boolean): void;
+  (e: "previous"): void;
+}>();
 const options = reactive({
   content: false,
   display: false,
   wrongAmo: 0,
   showExample: false, // 新增：控制是否显示例句
   showContext: false, // 新增：控制是否显示上下文
-})
+});
 
 const finalOptions = computed(() => {
-  if (!props.data?.mainWord)
-    return null
+  if (!props.data?.mainWord) return null;
 
-  const res = [props.data.mainWord, ...props.data.options]
+  const res = [props.data.mainWord, ...props.data.options];
 
   // shuffle
   for (let i = res.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-      ;[res[i], res[j]] = [res[j], res[i]]
+    const j = Math.floor(Math.random() * (i + 1));
+    [res[i], res[j]] = [res[j], res[i]];
   }
 
-  return res
-})
+  return res;
+});
 
 function handleEmit() {
-  const wrong = options.wrongAmo !== 0
+  const wrong = options.wrongAmo !== 0;
 
-  options.wrongAmo = 0
-  options.display = false
-  options.showExample = false
-  options.showContext = false
+  options.wrongAmo = 0;
+  options.display = false;
+  options.showExample = false;
+  options.showContext = false;
 
-  emits('choose', wrong)
+  emits("choose", wrong);
 }
 
 async function handleChooseWord(word: LeafWordData) {
-  const right = props.right.mainWord.word === word.word
+  const right = props.right.mainWord.word === word.word;
 
   if (right) {
-    useVibrate('bit')
-      ; (await useSuccessAudio()).play()
+    useVibrate("bit");
+    (await useSuccessAudio()).play();
 
-    options.display = true
+    options.display = true;
 
     // 对于阅读模式，正确后显示例句
-    options.showExample = true
+    options.showExample = true;
 
-    await sleep(800)
+    await sleep(800);
 
-    options.display = false
+    options.display = false;
 
-    await sleep(100)
+    await sleep(100);
 
-    if (props.data.type === 'new' || !!options.wrongAmo) {
-      options.content = true
+    if (props.data.type === "new" || !!options.wrongAmo) {
+      options.content = true;
 
-      whenever(() => options.content === false, handleEmit, { once: true })
+      whenever(() => options.content === false, handleEmit, { once: true });
+    } else {
+      handleEmit();
     }
-    else {
-      handleEmit()
-    }
-  }
-  else {
-    useVibrate('heavy')
-      ; (await useErrorAudio()).play()
+  } else {
+    useVibrate("heavy");
+    (await useErrorAudio()).play();
 
     if (options.wrongAmo > 1) {
-      options.display = true
+      options.display = true;
 
       // 对于阅读模式，多次错误后显示上下文
-      options.showContext = true
+      options.showContext = true;
 
-      await sleep(800)
+      await sleep(800);
 
-      options.display = false
+      options.display = false;
 
-      await sleep(100)
-      options.content = true
+      await sleep(100);
+      options.content = true;
 
-      whenever(() => options.content === false, handleEmit, { once: true })
+      whenever(() => options.content === false, handleEmit, { once: true });
     }
 
-    options.wrongAmo++
+    options.wrongAmo++;
   }
 }
 
 const wordContent = computed(() => {
-  return props.data.mainWord.data?.content
-})
+  return props.data.mainWord.data?.content;
+});
 
 // 获取单词例句
 const wordExamples = computed(() => {
-  return props.data.mainWord.data?.content.sentences || []
-})
+  return props.data.mainWord.data?.content.sentences || [];
+});
 
 // 提供单词的上下文（模拟数据，实际项目中应该从后端获取）
 const wordContext = computed(() => {
-  const examples = wordExamples.value
+  const examples = wordExamples.value;
   if (examples && examples.length > 0) {
     // 使用第一个例句作为上下文
-    return examples[0].sentence
+    return examples[0].sentence;
   }
-  return `This is a context paragraph containing the word "${props.data.mainWord.word}" in a natural reading environment.`
-})
+  return `This is a context paragraph containing the word "${props.data.mainWord.word}" in a natural reading environment.`;
+});
 
 // 切换显示例句
 function toggleExamples() {
-  options.showExample = !options.showExample
+  options.showExample = !options.showExample;
 }
 
 // 切换显示上下文
 function toggleContext() {
-  options.showContext = !options.showContext
+  options.showContext = !options.showContext;
 }
 </script>
 
 <template>
-  <div :class="{ imagable: !!options.wrongAmo, review: data?.type === 'review' }" class="WordCard">
+  <div
+    :class="{ imagable: !!options.wrongAmo, review: data?.type === 'review' }"
+    class="WordCard"
+  >
     <div v-if="data" class="WordsCard">
       <!-- 阅读模式特有：单词在上下文中的展示 -->
       <div v-if="options.showContext" class="WordsCard-Context transition-cubic">
         <div class="context-container">
           <h3>Context</h3>
-          <p v-html="wordContext.replace(data.mainWord.word, `<span class='highlight'>${data.mainWord.word}</span>`)"></p>
+          <p
+            v-html="
+              wordContext.replace(
+                data.mainWord.word,
+                `<span class='highlight'>${data.mainWord.word}</span>`
+              )
+            "
+          ></p>
         </div>
       </div>
 
       <div class="WordsCard-Image transition-cubic">
-        <Swipe v-if="!!options.wrongAmo" lazy-render h-full :autoplay="3000" indicator-color="red">
+        <Swipe
+          v-if="!!options.wrongAmo"
+          lazy-render
+          h-full
+          :autoplay="3000"
+          indicator-color="red"
+        >
           <SwipeItem v-for="item in wordContent?.img" :key="item">
             <el-image fit="fill" loading="lazy" :src="item" />
             <el-image fit="fill" loading="lazy" :src="item" />
@@ -148,29 +166,51 @@ function toggleContext() {
       </div>
 
       <p class="transition-cubic word">
-        <span class="transition-cubic word-inner">{{ data.mainWord.word }}<span class="transition-cubic word-type">{{
+        <span class="transition-cubic word-inner"
+          >{{ data.mainWord.word
+          }}<span class="transition-cubic word-type"
+            >{{
           formatDisplayType(wordContent!)
-            }}.</span></span>
-        <span class="phonetic" flex items-center gap-2>{{ data.mainWord.data?.content.britishPronounce.content }}
+
+
+            }}.</span
+          ></span
+        >
+        <span class="phonetic" flex items-center gap-2
+          >{{ data.mainWord.data?.content.britishPronounce.content }}
         </span>
       </p>
 
       <!-- 阅读模式特有：例句展示 -->
-      <div v-if="options.showExample && wordExamples.length > 0" class="WordsCard-Examples transition-cubic">
+      <div
+        v-if="options.showExample && wordExamples.length > 0"
+        class="WordsCard-Examples transition-cubic"
+      >
         <h3>Examples</h3>
         <ul>
-          <li v-for="(example, index) in wordExamples.slice(0, 2)" :key="index"
-              v-html="example.sentence.replace(data.mainWord.word, `<span class='highlight'>${data.mainWord.word}</span>`)">
-          </li>
+          <li
+            v-for="(example, index) in wordExamples.slice(0, 2)"
+            :key="index"
+            v-html="
+              example.sentence.replace(
+                data.mainWord.word,
+                `<span class='highlight'>${data.mainWord.word}</span>`
+              )
+            "
+          ></li>
         </ul>
       </div>
     </div>
 
     <ul v-if="finalOptions" class="WordsOptions">
       <!-- {{ formateType(word.type, 1) }}.  -->
-      <li v-for="word in finalOptions" :key="word.word"
-        :class="{ right: options.display && word.word === right.mainWord.word }" class="transition-cubic WordOption"
-        @click="handleChooseWord(word)">
+      <li
+        v-for="word in finalOptions"
+        :key="word.word"
+        :class="{ right: options.display && word.word === right.mainWord.word }"
+        class="transition-cubic WordOption"
+        @click="handleChooseWord(word)"
+      >
         <p>
           <span text-sm>{{ formatDisplayType(word.data?.content!) }}</span>
           {{ word.data?.content.translation[0].translation }}
@@ -179,17 +219,38 @@ function toggleContext() {
     </ul>
 
     <div class="WordCard-Footer">
-      <div mr-auto flex items-center gap-1 class="WordCard-Footer-Button" @click="emits('previous')">
+      <div
+        mr-auto
+        flex
+        items-center
+        gap-1
+        class="WordCard-Footer-Button"
+        @click="emits('previous')"
+      >
         <div i-carbon-arrow-left />
         上一个
       </div>
 
-      <div v-if="data?.mainWord" flex items-center gap-1 class="WordCard-Footer-Button" @click="toggleExamples">
+      <div
+        v-if="data?.mainWord"
+        flex
+        items-center
+        gap-1
+        class="WordCard-Footer-Button"
+        @click="toggleExamples"
+      >
         <div i-carbon-document-add />
         例句
       </div>
 
-      <div v-if="data?.mainWord" flex items-center gap-1 class="WordCard-Footer-Button" @click="toggleContext">
+      <div
+        v-if="data?.mainWord"
+        flex
+        items-center
+        gap-1
+        class="WordCard-Footer-Button"
+        @click="toggleContext"
+      >
         <div i-carbon-text-link />
         语境
       </div>
@@ -200,14 +261,22 @@ function toggleContext() {
     </div>
 
     <teleport to="#rootMain">
-      <div v-if="data?.mainWord.data" :class="{ visible: options.content }" class="transition-cubic WordContent">
-        <WordDetailContent :key="data.mainWord.word" :word="data.mainWord.data" @close="options.content = false" />
+      <div
+        v-if="data?.mainWord.data"
+        :class="{ visible: options.content }"
+        class="transition-cubic WordContent"
+      >
+        <WordDetailContent
+          :key="data.mainWord.word"
+          :word="data.mainWord.data"
+          @close="options.content = false"
+        />
       </div>
     </teleport>
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .WordCard.review {
   span.word-type {
     position: relative;
@@ -230,7 +299,8 @@ function toggleContext() {
 }
 
 // 阅读模式特定样式
-.WordsCard-Context, .WordsCard-Examples {
+.WordsCard-Context,
+.WordsCard-Examples {
   padding: 1rem;
   margin: 0.5rem 0;
   border-radius: 8px;
@@ -243,7 +313,8 @@ function toggleContext() {
     color: var(--el-color-primary);
   }
 
-  p, li {
+  p,
+  li {
     font-size: 14px;
     line-height: 1.6;
     color: var(--el-text-color-primary);
@@ -311,7 +382,7 @@ function toggleContext() {
   bottom: 0.5rem;
 
   justify-items: center;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .WordsOptions {

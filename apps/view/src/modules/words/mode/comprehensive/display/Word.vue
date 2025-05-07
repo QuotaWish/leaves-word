@@ -1,7 +1,7 @@
 <script name="Words" setup lang="ts">
-import WordCard from './WordCard.vue'
 import type { ComprehensivePrepareWord, IComprehensiveWordItem } from '~/modules/words/mode/comprehensive'
-import { type EnglishWordData, globalPreference, useTargetData, useWordSound } from '~/modules/words'
+import { type EnglishWordData, globalPreference, useWordSound } from '~/modules/words'
+import WordCard from './WordCard.vue'
 
 const props = defineProps<{
   prepare: ComprehensivePrepareWord
@@ -40,8 +40,6 @@ async function spokenWord(word: EnglishWordData) {
 function refreshData() {
   data.current = prepareData.currentWord
   Object.assign(prepareData, props.prepare)
-
-  console.log(data.current, props.prepare)
 
   if (data.current) {
     spokenWord(data.current.mainWord.data!)
@@ -186,10 +184,21 @@ onMounted(() => {
       </div>
 
       <div v-if="data.current" class="WordCard-Container">
-        <WordCard ref="mainCard" :right="data.current" class="transition-cubic WordCard WordCard-Main"
-          :data="data.current!" @choose="handleChoose" @previous="handlePrevious" />
-        <WordCard ref="moveCard" pointer-events-none :right="data.current"
-          class="WordCard transition-cubic WordCard-Next" :data="data.next!" />
+        <WordCard
+          ref="mainCard"
+          :right="data.current"
+          class="transition-cubic WordCard WordCard-Main"
+          :data="data.current!"
+          @choose="handleChoose"
+          @previous="handlePrevious"
+        />
+        <WordCard
+          ref="moveCard"
+          pointer-events-none
+          :right="data.current"
+          class="WordCard transition-cubic WordCard-Next"
+          :data="data.next!"
+        />
       </div>
     </div>
   </WithPage>

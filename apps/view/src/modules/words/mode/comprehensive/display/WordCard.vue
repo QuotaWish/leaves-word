@@ -1,102 +1,113 @@
 <script name="Words" setup lang="ts">
-import type { IComprehensiveWordItem } from '~/modules/words/mode/comprehensive'
-import { Swipe, SwipeItem } from 'vant'
-import { LeafWordData, useErrorAudio, useSuccessAudio, formatDisplayType } from '~/modules/words'
+import type { IComprehensiveWordItem } from "~/modules/words/mode/comprehensive";
+import { Swipe, SwipeItem } from "vant";
+import {
+  LeafWordData,
+  useErrorAudio,
+  useSuccessAudio,
+  formatDisplayType,
+} from "~/modules/words";
 
 const props = defineProps<{
-  data: IComprehensiveWordItem
-  right: IComprehensiveWordItem
-}>()
+  data: IComprehensiveWordItem;
+  right: IComprehensiveWordItem;
+}>();
 
 const emits = defineEmits<{
-  (e: 'choose', wrong: boolean): void
-  (e: 'previous'): void
-}>()
+  (e: "choose", wrong: boolean): void;
+  (e: "previous"): void;
+}>();
 const options = reactive({
   content: false,
   display: false,
   wrongAmo: 0,
-})
+});
 
 const finalOptions = computed(() => {
-  if (!props.data?.mainWord)
-    return null
+  if (!props.data?.mainWord) return null;
 
-  const res = [props.data.mainWord, ...props.data.options]
+  const res = [props.data.mainWord, ...props.data.options];
 
   // shuffle
   for (let i = res.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-      ;[res[i], res[j]] = [res[j], res[i]]
+    const j = Math.floor(Math.random() * (i + 1));
+    [res[i], res[j]] = [res[j], res[i]];
   }
 
-  return res
-})
+  return res;
+});
 
 function handleEmit() {
-  const wrong = options.wrongAmo !== 0
+  const wrong = options.wrongAmo !== 0;
 
-  options.wrongAmo = 0
-  options.display = false
+  options.wrongAmo = 0;
+  options.display = false;
 
-  emits('choose', wrong)
+  emits("choose", wrong);
 }
 
 async function handleChooseWord(word: LeafWordData) {
-  const right = props.right.mainWord.word === word.word
+  const right = props.right.mainWord.word === word.word;
 
   if (right) {
-    useVibrate('bit')
-      ; (await useSuccessAudio()).play()
+    useVibrate("bit");
+    (await useSuccessAudio()).play();
 
-    options.display = true
+    options.display = true;
 
-    await sleep(800)
+    await sleep(800);
 
-    options.display = false
+    options.display = false;
 
-    await sleep(100)
+    await sleep(100);
 
-    if (props.data.type === 'new' || !!options.wrongAmo) {
-      options.content = true
+    if (props.data.type === "new" || !!options.wrongAmo) {
+      options.content = true;
 
-      whenever(() => options.content === false, handleEmit, { once: true })
+      whenever(() => options.content === false, handleEmit, { once: true });
+    } else {
+      handleEmit();
     }
-    else {
-      handleEmit()
-    }
-  }
-  else {
-    useVibrate('heavy')
-      ; (await useErrorAudio()).play()
+  } else {
+    useVibrate("heavy");
+    (await useErrorAudio()).play();
 
     if (options.wrongAmo > 1) {
-      options.display = true
+      options.display = true;
 
-      await sleep(800)
+      await sleep(800);
 
-      options.display = false
+      options.display = false;
 
-      await sleep(100)
-      options.content = true
+      await sleep(100);
+      options.content = true;
 
-      whenever(() => options.content === false, handleEmit, { once: true })
+      whenever(() => options.content === false, handleEmit, { once: true });
     }
 
-    options.wrongAmo++
+    options.wrongAmo++;
   }
 }
 
 const wordContent = computed(() => {
-  return props.data.mainWord.data?.content
-})
+  return props.data.mainWord.data?.content;
+});
 </script>
 
 <template>
-  <div :class="{ imagable: !!options.wrongAmo, review: data?.type === 'review' }" class="WordCard">
+  <div
+    :class="{ imagable: !!options.wrongAmo, review: data?.type === 'review' }"
+    class="WordCard"
+  >
     <div v-if="data" class="WordsCard">
       <div class="WordsCard-Image transition-cubic">
-        <Swipe v-if="!!options.wrongAmo" lazy-render h-full :autoplay="3000" indicator-color="red">
+        <Swipe
+          v-if="!!options.wrongAmo"
+          lazy-render
+          h-full
+          :autoplay="3000"
+          indicator-color="red"
+        >
           <SwipeItem v-for="item in wordContent?.img" :key="item">
             <el-image fit="fill" loading="lazy" :src="item" />
             <el-image fit="fill" loading="lazy" :src="item" />
@@ -105,19 +116,27 @@ const wordContent = computed(() => {
       </div>
 
       <p class="transition-cubic word">
-        <span class="transition-cubic word-inner">{{ data.mainWord.word }}<span class="transition-cubic word-type">{{
+        <span class="transition-cubic word-inner"
+          >{{ data.mainWord.word
+          }}<span class="transition-cubic word-type">{{
           formatDisplayType(wordContent!)
-            }}.</span></span>
-        <span class="phonetic" flex items-center gap-2>{{ data.mainWord.data?.content.britishPronounce.content }}
+          }}</span></span
+        >
+        <span class="phonetic" flex items-center gap-2
+          >{{ data.mainWord.data?.content.britishPronounce.content }}
         </span>
       </p>
     </div>
 
     <ul v-if="finalOptions" class="WordsOptions">
       <!-- {{ formateType(word.type, 1) }}.  -->
-      <li v-for="word in finalOptions" :key="word.word"
-        :class="{ right: options.display && word.word === right.mainWord.word }" class="transition-cubic WordOption"
-        @click="handleChooseWord(word)">
+      <li
+        v-for="word in finalOptions"
+        :key="word.word"
+        :class="{ right: options.display && word.word === right.mainWord.word }"
+        class="transition-cubic WordOption"
+        @click="handleChooseWord(word)"
+      >
         <p>
           <span text-sm>{{ formatDisplayType(word.data?.content!) }}</span>
           {{ word.data?.content.translation[0].translation }}
@@ -126,7 +145,14 @@ const wordContent = computed(() => {
     </ul>
 
     <div class="WordCard-Footer">
-      <div mr-auto flex items-center gap-1 class="WordCard-Footer-Button" @click="emits('previous')">
+      <div
+        mr-auto
+        flex
+        items-center
+        gap-1
+        class="WordCard-Footer-Button"
+        @click="emits('previous')"
+      >
         <div i-carbon-arrow-left />
         上一个
       </div>
@@ -142,8 +168,16 @@ const wordContent = computed(() => {
     </div>
 
     <teleport to="#rootMain">
-      <div v-if="data?.mainWord.data" :class="{ visible: options.content }" class="transition-cubic WordContent">
-        <WordDetailContent :key="data.mainWord.word" :word="data.mainWord.data" @close="options.content = false" />
+      <div
+        v-if="data?.mainWord.data"
+        :class="{ visible: options.content }"
+        class="transition-cubic WordContent"
+      >
+        <WordDetailContent
+          :key="data.mainWord.word"
+          :word="data.mainWord.data"
+          @close="options.content = false"
+        />
       </div>
     </teleport>
   </div>
@@ -227,6 +261,7 @@ const wordContent = computed(() => {
     &:active {
       background-color: var(--el-fill-color);
       border: 1px solid var(--el-color-primary);
+      box-shadow: 0 0 0px 2px var(--el-color-primary-light-7);
     }
 
     p {
@@ -299,6 +334,7 @@ const wordContent = computed(() => {
     }
 
     .phonetic {
+      margin: 0.5rem 0;
       color: var(--el-text-color-secondary);
 
       font-size: 18px;
