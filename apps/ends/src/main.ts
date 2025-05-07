@@ -45,7 +45,7 @@ async function bootstrap() {
   useContainer(app.select(AppModule), { fallbackOnErrors: true })
 
   app.enableCors({
-    origin: true /* ['https://ai.quotawish.com', 'https://dev.quotawish.com', 'https://quotawish.com', 'https://devpage.quotawish.com', 'http://localhost:3000'] */,
+    origin: ['https://ai.quotawish.com', 'https://dev.quotawish.com', 'https://quotawish.com', 'https://devpage.quotawish.com', 'http://localhost:3000', 'http://localhost:3333'],
     maxAge: 3600,
     credentials: true,
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],

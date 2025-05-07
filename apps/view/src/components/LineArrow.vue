@@ -29,11 +29,12 @@ section {
   user-select: none;
 
   &:active {
-    background-color: rgba(0, 128, 0, 0.05);
+    background-color: var(--theme-color-dark);
   }
 
   &.with-gradient {
-    background: linear-gradient(135deg, rgba(144, 238, 144, 0.2), rgba(0, 128, 0, 0.1));
+    background: linear-gradient(135deg, var(--theme-color-light), var(--theme-color-dark));
+    color: white;
 
     .head-icon {
       background: linear-gradient(135deg, var(--theme-color-primary), var(--theme-color-light));
@@ -52,11 +53,12 @@ section {
     width: 60px;
     height: 60px;
     opacity: 0.1;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23228B22" d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>');
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>');
     background-size: contain;
     background-repeat: no-repeat;
     transform: rotate(45deg);
     pointer-events: none;
+    color: var(--theme-color);
   }
 
   .head-icon {
@@ -90,19 +92,8 @@ section {
     }
   }
 
-  // margin: 0.75rem 0;
-  padding: 0.75rem 1rem;
-  display: flex;
-  width: 100%;
-  cursor: pointer;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 12px;
-  background-color: #fafff9;
-  border: 1px solid rgba(0, 128, 0, 0.1);
-
   .dark & {
-    background-color: #1e1e1e;
+    background-color: rgba(var(--theme-color-rgb), 0.05);
   }
 }
 </style>

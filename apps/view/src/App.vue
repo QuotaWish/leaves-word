@@ -96,7 +96,7 @@ router.beforeEach((to, from) => {
       const filterMatched = from.matched.filter(item => item.components)
       const fromComponentName = filterMatched?.[0]?.components?.default.name
       if (fromComponentName) {
-        baseRouteStore.updateExcludeRoutes({ type: 'remove', value: fromComponentName })
+        baseRouteStore.updateExcludeRoutes({ type: 'add', value: fromComponentName })
       }
     }
   }
