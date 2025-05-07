@@ -10,15 +10,15 @@ export default {
     try {
       // 对单词进行处理和编码
       const processedWord = word.trim().replaceAll(" ", "+");
-      
+
       // 优先使用有道词典API
       const url = new URL('https://dict.youdao.com/dictvoice');
       url.searchParams.append('type', '2'); // 美式发音
       url.searchParams.append('audio', processedWord);
-      
+
       // 备用TTS API (备注：不使用它，仅作为备用)
       // const fallbackUrl = `/api/tts?text=${encodeURIComponent(word.trim())}`;
-      
+
       console.log(`获取单词 "${word}" 的发音`);
       return url.toString();
     } catch (error) {
@@ -28,7 +28,8 @@ export default {
     }
   },
   getDailyQuote() {
-    const url = `https://dailyquote.quotawish.com/weapps/dailyquote/quote`
+    // const url = `https://dailyquote.quotawish.com/weapps/dailyquote/quote`
+    const url = `http://101.126.90.236:8103/weapps/dailyquote/quote`
 
     return endHttp.get(url)
   }
