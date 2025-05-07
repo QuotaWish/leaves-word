@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@alova/adapter-axios": "^2.0.13",
+    "@leaves-word/app-view": "file:",
     "@number-flow/vue": "^0.3.2",
     "@sentry/vite-plugin": "^3.1.1",
     "@sentry/vue": "^8.53.0",

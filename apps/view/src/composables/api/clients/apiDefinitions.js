@@ -135,7 +135,11 @@ export default {
   'userController.userRegisterUsingPOST': ['POST', '/api/user/register'],
   'userController.updateUserUsingPOST': ['POST', '/api/user/update'],
   'userController.updateMyUserUsingPOST': ['POST', '/api/user/update/my'],
+  'userConfigController.getCurrentUserConfigUsingGET': ['GET', '/api/user_config/get'],
+  'userConfigController.getPublicUserConfigUsingGET': ['GET', '/api/user_config/public'],
+  'userConfigController.selectOneUsingGET_11': ['GET', '/api/user_config/select'],
+  'userConfigController.updateCurrentUserConfigUsingPOST': ['POST', '/api/user_config/update'],
   'wordStatusChangeController.listStatusChangeByPageUsingPOST': ['POST', '/api/word_status_change/list/page'],
   'wordStatusChangeController.listRecordUsingGET': ['GET', '/api/word_status_change/list/record'],
-  'wordStatusChangeController.selectOneUsingGET_11': ['GET', '/api/word_status_change/selectOne']
+  'wordStatusChangeController.selectOneUsingGET_12': ['GET', '/api/word_status_change/selectOne']
 };

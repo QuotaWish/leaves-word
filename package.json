@@ -58,7 +58,8 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
     "@umijs/openapi": "^1.13.0",
-    "dayjs": "^1.11.11"
+    "dayjs": "^1.11.11",
+    "leaves-word": "file:"
   },
   "devDependencies": {
     "@umijs/plugins": "^4.4.6",

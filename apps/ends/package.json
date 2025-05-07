@@ -44,6 +44,7 @@
     "@fastify/static": "^7.0.4",
     "@langchain/community": "^0.2.17",
     "@langchain/openai": "^0.2.1",
+    "@leaves-word/app-ends": "file:",
     "@liaoliaots/nestjs-redis": "^9.0.5",
     "@nestjs/axios": "^3.0.2",
     "@nestjs/bull": "^10.1.1",

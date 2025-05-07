@@ -97,7 +97,7 @@ async function handleCheckSign() {
     <template #lower>
       <p w-full flex items-center justify-between>
         <span font-bold class="title">今日计划</span>
-        <!-- <span text-sm>随时随地，单词好记</span> -->
+        <span text-sm op-50>随时随地，单词好记</span>
         <span flex items-center text-sm font-normal op-75 active:op-100 @click="selectPlan">
           调整计划
           <i i-carbon-chevron-right block />

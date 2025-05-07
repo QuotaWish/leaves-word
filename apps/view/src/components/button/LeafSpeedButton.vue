@@ -1,10 +1,16 @@
 <script setup lang="ts">
+const emits = defineEmits(['click'])
 
+async function handleClick() {
+  await sleep(200)
+
+  emits('click')
+}
 </script>
 
 <template>
   <!-- From Uiverse.io by ilkhoeri -->
-  <button type="button" class="button LeafButton">
+  <button @click="handleClick" type="button" class="button LeafSpeedButton">
     <span class="fold" />
 
     <div class="points_wrapper">
@@ -51,11 +57,12 @@
   transition: all 0.25s ease;
   background: radial-gradient(65.28% 65.28% at 50% 100%, rgba(223, 113, 255, 0.8) 0%, rgba(223, 113, 255, 0) 100%),
     linear-gradient(0deg, #7a5af8, #7a5af8);
-  filter: hue-rotate(275deg);
+  // filter: hue-rotate(325deg);
+  filter: hue-rotate(325deg) drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.2)) brightness(110%);
   border-radius: var(--round);
   border: none;
   outline: none;
-  padding: 12px 18px;
+  padding: 0.85rem 18px;
 }
 .button::before,
 .button::after {

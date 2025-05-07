@@ -1283,6 +1283,19 @@ export type UserUpdateMyRequest = {
   userName?: string;
   userProfile?: string;
 };
+export type UserConfigVO = {
+  privateConfig?: object;
+  publicConfig?: object;
+};
+export type BaseResponse_UserConfigVO_ = {
+  code?: number;
+  /**
+   * UserConfigVO
+   * ---
+   */
+  data?: UserConfigVO;
+  message?: string;
+};
 export type WordStatusChangeVO = {
   comment?: string;
   createTime?: string;
@@ -6327,6 +6340,160 @@ declare global {
         config: Config
       ): Alova2Method<BaseResponse_boolean_, 'userController.updateMyUserUsingPOST', Config>;
     };
+    userConfigController: {
+      /**
+       * ---
+       *
+       * [GET] getCurrentUserConfig
+       *
+       * **path:** /api/user_config/get
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = {
+       *   code?: number
+       *   // [title] UserConfigVO
+       *   data?: {
+       *     privateConfig?: object
+       *     publicConfig?: object
+       *   }
+       *   message?: string
+       * }
+       * ```
+       */
+      getCurrentUserConfigUsingGET<Config extends Alova2MethodConfig<BaseResponse_UserConfigVO_>>(
+        config?: Config
+      ): Alova2Method<BaseResponse_UserConfigVO_, 'userConfigController.getCurrentUserConfigUsingGET', Config>;
+      /**
+       * ---
+       *
+       * [GET] getPublicUserConfig
+       *
+       * **path:** /api/user_config/public
+       *
+       * ---
+       *
+       * **Query Parameters**
+       * ```ts
+       * type QueryParameters = {
+       *   // id
+       *   // [required]
+       *   id: number
+       * }
+       * ```
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = {
+       *   code?: number
+       *   // [title] UserConfigVO
+       *   data?: {
+       *     privateConfig?: object
+       *     publicConfig?: object
+       *   }
+       *   message?: string
+       * }
+       * ```
+       */
+      getPublicUserConfigUsingGET<
+        Config extends Alova2MethodConfig<BaseResponse_UserConfigVO_> & {
+          params: {
+            /**
+             * id
+             * [required]
+             */
+            id: number;
+          };
+        }
+      >(
+        config: Config
+      ): Alova2Method<BaseResponse_UserConfigVO_, 'userConfigController.getPublicUserConfigUsingGET', Config>;
+      /**
+       * ---
+       *
+       * [GET] selectOne
+       *
+       * **path:** /api/user_config/select
+       *
+       * ---
+       *
+       * **Query Parameters**
+       * ```ts
+       * type QueryParameters = {
+       *   // id
+       *   // [required]
+       *   id: number
+       * }
+       * ```
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = {
+       *   code?: number
+       *   // [title] UserConfigVO
+       *   data?: {
+       *     privateConfig?: object
+       *     publicConfig?: object
+       *   }
+       *   message?: string
+       * }
+       * ```
+       */
+      selectOneUsingGET_11<
+        Config extends Alova2MethodConfig<BaseResponse_UserConfigVO_> & {
+          params: {
+            /**
+             * id
+             * [required]
+             */
+            id: number;
+          };
+        }
+      >(
+        config: Config
+      ): Alova2Method<BaseResponse_UserConfigVO_, 'userConfigController.selectOneUsingGET_11', Config>;
+      /**
+       * ---
+       *
+       * [POST] updateCurrentUserConfig
+       *
+       * **path:** /api/user_config/update
+       *
+       * ---
+       *
+       * **RequestBody**
+       * ```ts
+       * type RequestBody = {
+       *   privateConfig?: object
+       *   publicConfig?: object
+       * }
+       * ```
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = {
+       *   code?: number
+       *   data?: boolean
+       *   message?: string
+       * }
+       * ```
+       */
+      updateCurrentUserConfigUsingPOST<
+        Config extends Alova2MethodConfig<BaseResponse_boolean_> & {
+          data: UserConfigVO;
+        }
+      >(
+        config: Config
+      ): Alova2Method<BaseResponse_boolean_, 'userConfigController.updateCurrentUserConfigUsingPOST', Config>;
+    };
     wordStatusChangeController: {
       /**
        * ---
@@ -6497,7 +6664,7 @@ declare global {
        * }
        * ```
        */
-      selectOneUsingGET_11<
+      selectOneUsingGET_12<
         Config extends Alova2MethodConfig<WordStatusChange> & {
           params: {
             /**
@@ -6508,7 +6675,7 @@ declare global {
         }
       >(
         config: Config
-      ): Alova2Method<WordStatusChange, 'wordStatusChangeController.selectOneUsingGET_11', Config>;
+      ): Alova2Method<WordStatusChange, 'wordStatusChangeController.selectOneUsingGET_12', Config>;
     };
   }
 
