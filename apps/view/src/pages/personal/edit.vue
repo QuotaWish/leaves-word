@@ -1,23 +1,22 @@
 <script setup lang="ts">
-import PageNavHolder from '~/components/page/holder/PageNavHolder.vue'
-import PageSettingsItem from '~/components/display/settings/PageSettingsItem.vue'
-import { useRouter } from 'vue-router'
-import { globalAuthStorage } from '~/modules/auth'
-import { useLeafEventBus } from '~/composables/event'
-import { TryAuthLogoutEvent } from '~/composables/event/auth'
-import { ElMessageBox } from 'element-plus'
+import PageNavHolder from "~/components/page/holder/PageNavHolder.vue";
+import PageSettingsItem from "~/components/display/settings/PageSettingsItem.vue";
+import { globalAuthStorage } from "~/modules/auth";
+import { useLeafEventBus } from "~/composables/event";
+import { TryAuthLogoutEvent } from "~/composables/event/auth";
+import { ElMessageBox } from "element-plus";
 
 // const router = useRouter()
-const eventBus = useLeafEventBus()
+const eventBus = useLeafEventBus();
 
 function handleLogout() {
-  ElMessageBox.confirm('确定退出登录吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning',
+  ElMessageBox.confirm("确定退出登录吗？", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
   }).then(() => {
-    eventBus.fireEvent(new TryAuthLogoutEvent())
-  })
+    eventBus.fireEvent(new TryAuthLogoutEvent());
+  });
 }
 </script>
 
@@ -30,32 +29,37 @@ function handleLogout() {
 
       <PageSettingsItem title="昵称" desc="自定义昵称" :show-arrow="true">
         <div class="PageSettingsItem-right mx-2">
-          {{ globalAuthStorage.user.userName || '-' }}
+          {{ globalAuthStorage.user.userName || "-" }}
         </div>
       </PageSettingsItem>
 
       <PageSettingsItem title="个性签名" desc="自定义个性签名" :show-arrow="true">
         <div class="PageSettingsItem-right mx-2">
-          {{ globalAuthStorage.user.userProfile || '-' }}
+          {{ globalAuthStorage.user.userProfile || "-" }}
         </div>
       </PageSettingsItem>
 
       <PageSettingsItem title="UnionID" desc="自定义唯一标识符" :show-arrow="true">
         <div class="PageSettingsItem-right mx-2">
-          {{ globalAuthStorage.user.unionId || '-' }}
+          {{ globalAuthStorage.user.unionId || "-" }}
         </div>
       </PageSettingsItem>
 
       <PageSettingsItem title="IdentifyID" desc="自定义唯一标识符">
         <div class="PageSettingsItem-right mx-2">
-          #{{ globalAuthStorage.user.id || '-' }}
+          #{{ globalAuthStorage.user.id || "-" }}
         </div>
       </PageSettingsItem>
 
-      <PageSettingsItem danger title="退出登录" desc="退出登录" :show-arrow="true" @click="handleLogout" />
+      <PageSettingsItem
+        danger
+        title="退出登录"
+        desc="退出登录"
+        :show-arrow="true"
+        @click="handleLogout"
+      />
     </div>
   </PageNavHolder>
 </template>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

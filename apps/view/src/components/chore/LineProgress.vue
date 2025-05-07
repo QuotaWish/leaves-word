@@ -76,7 +76,7 @@ defineProps<{
       width: 3px;
       height: 100%;
       background: var(--theme-color-light);
-      opacity: 0.8;
+      opacity: 0.3;
       filter: blur(1px);
     }
   }

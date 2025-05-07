@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
-  type: 'success' | 'warning' | 'danger'
-}>()
+  type: "success" | "warning" | "danger";
+}>();
 </script>
 
 <template>

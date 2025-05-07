@@ -69,5 +69,5 @@ export function $logout() {
 }
 
 export function initAuthModule() {
-  console.log('%c 初始化认证模块', 'color: #000; background-color: #fff;')
+  console.log('%c 初始化认证模块 ', 'color: #000; background-color: #fff;')
 }
