@@ -95,19 +95,13 @@ async function handleCheckSign() {
           </span>
         </p>
         <p w-full flex items-center justify-between class="WordSignInfo-Content-Desc">
-          <span>{{ learnedAmo }} /{{ totalAmo }} 已学习</span>
+          <span>{{ learnedAmo }}/{{ totalAmo }} 已学习</span>
           <span mr-4 text-sm op-75
             >剩余
             {{ Math.ceil((totalAmo - learnedAmo) / globalPreference.amount) }} 天</span
           >
         </p>
-        <div :style="`--p: ${progress * 100}%`" class="WordSignInfo-Content-Progress">
-          <div class="WordSignInfo-Content-Progress-Bg" />
-          <div
-            v-if="progress"
-            class="transition-cubic WordSignInfo-Content-Progress-Inner"
-          />
-        </div>
+        <LineProgress :progress="progress" />
       </div>
     </template>
 
@@ -284,76 +278,6 @@ async function handleCheckSign() {
 
     .WordSignInfo-Content-Desc {
       color: rgba(255, 255, 255, 0.7);
-    }
-  }
-}
-
-.WordSignInfo-Content-Progress {
-  position: relative;
-  width: 90%;
-  height: 8px;
-  // margin: 8px 0;
-
-  // --progress-color: #028d81;
-  // --progress-color-dark: #179bc2;
-
-  --progress-color: var(--theme-color-primary);
-  --progress-color-dark: var(--theme-color-dark);
-
-  .WordSignInfo-Content-Progress-Bg {
-    position: absolute;
-    inset: 0;
-    opacity: 0.8;
-    border-radius: 12px;
-    background-color: vary(--progress-color);
-    overflow: hidden;
-
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.05),
-        rgba(255, 255, 255, 0.2),
-        rgba(255, 255, 255, 0.05)
-      );
-    }
-  }
-
-  .WordSignInfo-Content-Progress-Inner {
-    position: absolute;
-    width: var(--p);
-    height: 100%;
-    border-radius: 12px;
-    background: linear-gradient(90deg, var(--progress-color), var(--progress-color-dark));
-    box-shadow: 0 0 10px var(--progress-color);
-    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-
-    &::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.3),
-        transparent
-      );
-      animation: shimmer 2s linear infinite;
-    }
-
-    &::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 3px;
-      height: 100%;
-      background: var(--theme-color-light);
-      opacity: 0.8;
-      filter: blur(1px);
     }
   }
 }
