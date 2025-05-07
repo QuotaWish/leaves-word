@@ -80,7 +80,7 @@ async function slideCard(direction: 'left' | 'right', nextCardData: IComprehensi
   await sleep(10)
 
   // 3. 设置过渡动画样式
-  const transitionStyle = 'transform 0.4s cubic-bezier(0.33, 1, 0.68, 1)'
+  const transitionStyle = 'transform 0.2s cubic-bezier(0.33, 1, 0.68, 1)'
   currentDom.style.transition = transitionStyle
   nextDom.style.transition = transitionStyle
 
@@ -96,7 +96,7 @@ async function slideCard(direction: 'left' | 'right', nextCardData: IComprehensi
   }
 
   // 5. 等待动画完成
-  await sleep(400)
+  await sleep(200)
 
   // 6. 更新当前卡片数据
   data.current = nextCardData

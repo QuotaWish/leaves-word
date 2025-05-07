@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import PlanSelector from "~/components/words/PlanSelector.vue";
-import {
-  calendarManager,
-  globalPreference,
-  useTargetData,
-} from "~/modules/words";
+import { calendarManager, globalPreference, useTargetData } from "~/modules/words";
 
 import LeafSpeedButton from "../button/LeafSpeedButton.vue";
 import WordSignInfoCard from "./card/WordSignInfoCard.vue";
@@ -13,12 +9,12 @@ import Checked from "/svg/complete.svg";
 
 const router = useRouter();
 
-const { targetDict, targetSignMode } = useTargetData();
+const { targetSignMode } = useTargetData();
 const dictionary = computed(() => globalPreference.value.dict);
 
 // const storage = computed(() => dictionary.value?.storage);
-const learnedAmo = computed(() => 0)// storage.value?.getLearnedWords().length ?? 0);
-const totalAmo = computed(() => dictionary.value.data?.published_words ?? 0)
+const learnedAmo = computed(() => 5); // storage.value?.getLearnedWords().length ?? 0);
+const totalAmo = computed(() => dictionary.value.data?.published_words ?? 0);
 
 const progress = computed(() => learnedAmo.value / totalAmo.value);
 const todayData = computed(() => calendarManager.getTodayData());
@@ -29,7 +25,7 @@ function calculateTime(amo: number) {
     return 0;
   }
 
-  return 0// mode.getEstimateCost(amo);
+  return 0; // mode.getEstimateCost(amo);
 }
 
 const dialogOptions = reactive({
@@ -41,7 +37,7 @@ function selectDict() {
   router.push({
     path: "/words/dict-select-page",
     query: {
-      type: 'select',
+      type: "select",
     },
   });
 }
@@ -61,8 +57,11 @@ async function handleCheckSign() {
 </script>
 
 <template>
-  <WordSignInfoCard :class="{ signed: todayData?.signed }" text-black
-    class="transition-cubic WordSignInfo-Wrapper transition-duration-500">
+  <WordSignInfoCard
+    :class="{ signed: todayData?.signed }"
+    text-black
+    class="transition-cubic WordSignInfo-Wrapper transition-duration-500"
+  >
     <div class="leaf-decoration top-left" />
     <div class="leaf-decoration bottom-right" />
 
@@ -71,25 +70,43 @@ async function handleCheckSign() {
         <img :src="Cat" />
       </div>
 
-      <div class="WordSignInfo-Dictionary" @click="router.push(`/dictionary/${dictionary.id}`)">
+      <div
+        class="WordSignInfo-Dictionary"
+        @click="router.push(`/dictionary/${dictionary.id}`)"
+      >
         <DictionaryBookDisplay onlyImage :model-value="dictionary.data" />
       </div>
 
       <div class="WordSignInfo-Content">
         <p w-full flex justify-between class="WordSignInfo-Content-Title">
           <span>{{ dictionary.data?.name }}</span>
-          <span mr-4 flex items-center text-sm font-normal op-75 active:op-100 @click="selectDict">
+          <span
+            mr-4
+            flex
+            items-center
+            text-sm
+            font-normal
+            op-75
+            active:op-100
+            @click="selectDict"
+          >
             调整词书
             <i i-carbon-chevron-right block />
           </span>
         </p>
         <p w-full flex items-center justify-between class="WordSignInfo-Content-Desc">
           <span>{{ learnedAmo }} /{{ totalAmo }} 已学习</span>
-          <span mr-4 text-sm op-75>剩余 {{ Math.ceil((totalAmo - learnedAmo) / globalPreference.amount) }} 天</span>
+          <span mr-4 text-sm op-75
+            >剩余
+            {{ Math.ceil((totalAmo - learnedAmo) / globalPreference.amount) }} 天</span
+          >
         </p>
         <div :style="`--p: ${progress * 100}%`" class="WordSignInfo-Content-Progress">
           <div class="WordSignInfo-Content-Progress-Bg" />
-          <div v-if="progress" class="transition-cubic WordSignInfo-Content-Progress-Inner" />
+          <div
+            v-if="progress"
+            class="transition-cubic WordSignInfo-Content-Progress-Inner"
+          />
         </div>
       </div>
     </template>
@@ -97,8 +114,16 @@ async function handleCheckSign() {
     <template #lower>
       <p w-full flex items-center justify-between>
         <span font-bold class="title">今日计划</span>
-        <span text-sm op-50>随时随地，单词好记</span>
-        <span flex items-center text-sm font-normal op-75 active:op-100 @click="selectPlan">
+        <span v-if="!todayData?.signed" text-sm op-50>随时随地，单词好记</span>
+        <span
+          flex
+          items-center
+          text-sm
+          font-normal
+          op-75
+          active:op-100
+          @click="selectPlan"
+        >
           调整计划
           <i i-carbon-chevron-right block />
         </span>
@@ -106,7 +131,7 @@ async function handleCheckSign() {
 
       <div my-4 flex items-center justify-between class="WordSignInfo-DetailBlockWrapper">
         <template v-if="todayData?.signed">
-          <div class="WordSignInfo-DetailBlock coffee-font">
+          <div class="WordSignInfo-DetailBlock">
             <p text-sm font-bold op-75>已学习</p>
 
             <p>
@@ -132,8 +157,7 @@ async function handleCheckSign() {
             <p text-sm op-75>需复习</p>
 
             <p>
-              <span mr-3 text-3xl font-bold>
-                {{ globalPreference.amount }} </span>词
+              <span mr-3 text-3xl font-bold> {{ globalPreference.amount }} </span>词
             </p>
           </div>
         </template>
@@ -154,11 +178,11 @@ async function handleCheckSign() {
       </template>
 
       <template v-else>
-        <el-button w="30%" size="large" type="primary" @click="router.push('/words/signed')">
-          <span>打卡</span>
-        </el-button>
+        <LeafButton class="w-[30%]" plain @click="router.push('/words/signed')">
+          打卡
+        </LeafButton>
 
-        <div my-2 ml-1 flex items-center gap-1 text-sm op-75>随时随地，单词好记。</div>
+        <div my-4 ml-1 flex items-center gap-1 text-sm op-75>随时随地，单词好记。</div>
 
         <div class="WordSignInfo-Checked">
           <img :src="Checked" />
@@ -176,17 +200,18 @@ async function handleCheckSign() {
     <template #empty>
       <div class="WordSignInfo-Empty">
         <div class="WordSignInfo-Empty-Icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="empty-book-svg">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            class="empty-book-svg"
+          >
             <path
-              d="M21,4H3C1.9,4,1,4.9,1,6v13c0,1.1,0.9,2,2,2h18c1.1,0,2-0.9,2-2V6C23,4.9,22.1,4,21,4z M21,19H3V6h18V19z M10,14h8v2h-8V14z M10,10h8v2h-8V10z M5,10h3v2H5V10z M5,14h3v2H5V14z" />
+              d="M21,4H3C1.9,4,1,4.9,1,6v13c0,1.1,0.9,2,2,2h18c1.1,0,2-0.9,2-2V6C23,4.9,22.1,4,21,4z M21,19H3V6h18V19z M10,14h8v2h-8V14z M10,10h8v2h-8V10z M5,10h3v2H5V10z M5,14h3v2H5V14z"
+            />
           </svg>
         </div>
-        <div class="WordSignInfo-Empty-Title">
-          暂未选择词书
-        </div>
-        <div class="WordSignInfo-Empty-Desc">
-          选择词书以立即开始
-        </div>
+        <div class="WordSignInfo-Empty-Title">暂未选择词书</div>
+        <div class="WordSignInfo-Empty-Desc">选择词书以立即开始</div>
         <LeafButton plain class="WordSignInfo-Empty-Button" @click="selectDict">
           选择词书
         </LeafButton>
@@ -269,8 +294,11 @@ async function handleCheckSign() {
   height: 8px;
   // margin: 8px 0;
 
-  --progress-color: #028d81;
-  --progress-color-dark: #179bc2;
+  // --progress-color: #028d81;
+  // --progress-color-dark: #179bc2;
+
+  --progress-color: var(--theme-color-primary);
+  --progress-color-dark: var(--theme-color-dark);
 
   .WordSignInfo-Content-Progress-Bg {
     position: absolute;
@@ -284,10 +312,12 @@ async function handleCheckSign() {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg,
-          rgba(255, 255, 255, 0.05),
-          rgba(255, 255, 255, 0.2),
-          rgba(255, 255, 255, 0.05));
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.05)
+      );
     }
   }
 
@@ -305,10 +335,12 @@ async function handleCheckSign() {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg,
-          transparent,
-          rgba(255, 255, 255, 0.3),
-          transparent);
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+      );
       animation: shimmer 2s linear infinite;
     }
 
@@ -319,7 +351,7 @@ async function handleCheckSign() {
       right: 0;
       width: 3px;
       height: 100%;
-      background: #fff;
+      background: var(--theme-color-light);
       opacity: 0.8;
       filter: blur(1px);
     }
@@ -639,8 +671,9 @@ async function handleCheckSign() {
   }
 
   .WordSignInfo-Empty-Desc {
+    opacity: 0.75;
     font-size: 0.95rem;
-    color: var(--el-text-color-secondary);
+    color: var(--el-text-color-primary);
     margin-bottom: 1.5rem;
   }
 
