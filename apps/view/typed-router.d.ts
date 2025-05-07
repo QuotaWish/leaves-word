@@ -37,6 +37,7 @@ declare module 'vue-router/auto-routes' {
     '/explore/short-video': RouteRecordInfo<'/explore/short-video', '/explore/short-video', Record<never, never>, Record<never, never>>,
     '/explore/speech': RouteRecordInfo<'/explore/speech', '/explore/speech', Record<never, never>, Record<never, never>>,
     '/explore/vocabulary-test': RouteRecordInfo<'/explore/vocabulary-test', '/explore/vocabulary-test', Record<never, never>, Record<never, never>>,
+    '/explore/word-test': RouteRecordInfo<'/explore/word-test', '/explore/word-test', Record<never, never>, Record<never, never>>,
     '/games/2048/': RouteRecordInfo<'/games/2048/', '/games/2048', Record<never, never>, Record<never, never>>,
     '/games/2048/Block': RouteRecordInfo<'/games/2048/Block', '/games/2048/Block', Record<never, never>, Record<never, never>>,
     '/games/2048/footer/Footer': RouteRecordInfo<'/games/2048/footer/Footer', '/games/2048/footer/Footer', Record<never, never>, Record<never, never>>,
@@ -64,11 +65,5 @@ declare module 'vue-router/auto-routes' {
     '/words/prewords': RouteRecordInfo<'/words/prewords', '/words/prewords', Record<never, never>, Record<never, never>>,
     '/words/search/[word]': RouteRecordInfo<'/words/search/[word]', '/words/search/:word', { word: ParamValue<true> }, { word: ParamValue<false> }>,
     '/words/signed': RouteRecordInfo<'/words/signed', '/words/signed', Record<never, never>, Record<never, never>>,
-  }
-}
-'/words/dictation': RouteRecordInfo<'/words/dictation', '/words/dictation', Record<never, never>, Record<never, never>>,
-  '/words/prewords': RouteRecordInfo<'/words/prewords', '/words/prewords', Record<never, never>, Record<never, never>>,
-    '/words/search/[word]': RouteRecordInfo<'/words/search/[word]', '/words/search/:word', { word: ParamValue<true> }, { word: ParamValue<false> }>,
-      '/words/signed': RouteRecordInfo<'/words/signed', '/words/signed', Record<never, never>, Record<never, never>>,
   }
 }

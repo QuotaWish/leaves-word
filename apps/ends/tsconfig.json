@@ -1,27 +1,21 @@
 {
   "compilerOptions": {
-    "incremental": true,
-    "target": "ES2022",
-    "lib": ["ESNext"],
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "baseUrl": "./",
-    "module": "commonjs",
-    "paths": {
-      "~/*": ["src/*"]
-    },
-    "strictBindCallApply": false,
-    "strictNullChecks": false,
-    "noFallthroughCasesInSwitch": false,
-    "noImplicitAny": false,
-    "declaration": true,
-    "outDir": "./dist",
-    "removeComments": true,
-    "sourceMap": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
+    "target": "ES2021",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "skipLibCheck": true
-  },
-  "exclude": ["node_modules", "scripts", "dist"]
+    "noFallthroughCasesInSwitch": false
+  }
 }
