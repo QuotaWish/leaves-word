@@ -1,8 +1,0 @@
-},
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    // ... rest of jest config ...

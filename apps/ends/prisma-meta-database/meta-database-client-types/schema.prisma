@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../prisma-meta-database/meta-database-client-types"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("META_DATABASE_URL")
+}
+
+// 2. 玩家表（扩展游戏场景）
+model Player {
+  playerId  BigInt        @id @default(autoincrement())
+  userId    BigInt        @unique
+  nickname  String?
+  createdAt DateTime      @default(now())
+  // user      AuthUser      @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  sessions  GameSession[]
+
+  @@index([userId])
+}
+
+// 3. 游戏类型表
+model Game {
+  gameId    Int           @id @default(autoincrement())
+  code      String        @unique
+  name      String
+  config    Json?
+  createdAt DateTime      @default(now())
+  sessions  GameSession[]
+}
+
+// 4. 对局记录表
+model GameSession {
+  sessionId BigInt   @id @default(autoincrement())
+  playerId  BigInt
+  gameId    Int
+  score     Int
+  duration  Int
+  extra     Json?
+  playedAt  DateTime @default(now())
+  player    Player   @relation(fields: [playerId], references: [playerId], onDelete: Cascade)
+  game      Game     @relation(fields: [gameId], references: [gameId])
+
+  @@index([playerId])
+  @@index([gameId])
+  @@index([score])
+  @@index([duration])
+}

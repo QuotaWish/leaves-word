@@ -7,7 +7,6 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -17,12 +16,20 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "postinstall": "npx prisma generate --schema ./prisma-common-database/schema.prisma && npx prisma generate --schema ./prisma-meta-database/schema.prisma --no-engine",
+    "generate": "npx prisma generate --schema ./prisma-common-database/schema.prisma && npx prisma generate --schema ./prisma-meta-database/schema.prisma --no-engine",
+    "migrate": "npx prisma migrate dev --schema ./prisma-common-database/schema.prisma && npx prisma migrate dev --schema ./prisma-meta-database/schema.prisma",
+    "deploy": "npx prisma migrate deploy --schema ./prisma-common-database/schema.prisma && npx prisma migrate deploy --schema ./prisma-meta-database/schema.prisma",
+    "studio": "npx prisma studio --schema ./prisma-common-database/schema.prisma --port 5555 & npx prisma studio --schema ./prisma-meta-database/schema.prisma --port 5556"
   },
   "dependencies": {
+    "@cozeloop/ai": "^0.0.4",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
+    "@prisma/client": "^6.7.0",
+    "@prisma/instrumentation": "^6.7.0",
     "ends": "file:",
     "prisma": "^6.7.0",
     "reflect-metadata": "^0.2.0",
@@ -42,7 +49,6 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "jest": "^29.5.0",
-    "prettier": "^3.0.0",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
     "ts-jest": "^29.1.0",

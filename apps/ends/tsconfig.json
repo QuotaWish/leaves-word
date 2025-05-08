@@ -16,6 +16,12 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@prisma/client": [
+        "./prisma-common-database/common-database-client-types/client",
+        "./prisma-meta-database/meta-database-client-types/client"
+      ]
+    }
   }
 }

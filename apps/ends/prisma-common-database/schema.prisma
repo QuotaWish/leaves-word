@@ -1,0 +1,208 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../prisma-common-database/common-database-client-types"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("COMMON_DATABASE_URL")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model audio_file {
+  id          BigInt    @id @default(autoincrement())
+  path        String?   @db.VarChar(255)
+  content     String?   @db.MediumText
+  creator_id  BigInt?
+  create_time DateTime? @default(now()) @db.DateTime(0)
+  update_time DateTime? @default(now()) @db.DateTime(0)
+  is_delete   Int?      @default(0)
+  status      String    @default("UNKNOWN") @db.VarChar(50)
+  name        String    @default("默认音频文件") @db.VarChar(255)
+  user        user?     @relation(fields: [creator_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "audio_file_ibfk_1")
+
+  @@index([creator_id], map: "creator_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model category {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  parent_id   Int?      @default(0) @db.UnsignedInt
+  name        String    @db.VarChar(100)
+  sort_order  Int?      @default(0)
+  description String?   @db.VarChar(500)
+  is_root     Boolean?  @default(false)
+  created_at  DateTime? @default(now()) @db.DateTime(0)
+  updated_at  DateTime? @default(now()) @db.DateTime(0)
+
+  @@index([parent_id], map: "idx_parent_id")
+  @@index([sort_order], map: "idx_sort_order")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model dictionary_category {
+  id            Int       @id @default(autoincrement()) @db.UnsignedInt
+  dictionary_id BigInt    @db.UnsignedBigInt
+  category_id   Int       @db.UnsignedInt
+  sort_order    Int?      @default(0)
+  created_at    DateTime? @default(now()) @db.DateTime(0)
+
+  @@index([category_id], map: "idx_category_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model dictionary_word {
+  dictionary_id      BigInt
+  word_id            BigInt
+  created_at         DateTime?          @default(now()) @db.Timestamp(0)
+  id                 BigInt?
+  english_dictionary english_dictionary @relation(fields: [dictionary_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "dictionary_word_ibfk_1")
+  english_word       english_word       @relation(fields: [word_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "dictionary_word_ibfk_2")
+
+  @@id([dictionary_id, word_id])
+  @@index([word_id], map: "word_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model english_dictionary {
+  id               BigInt            @id
+  name             String?           @db.VarChar(255)
+  description      String?           @db.Text
+  image_url        String?           @db.VarChar(255)
+  author           String?           @db.VarChar(255)
+  isbn             String?           @db.VarChar(13)
+  publication_date DateTime?         @db.Date
+  publisher        String?           @db.VarChar(255)
+  create_time      DateTime?         @default(now()) @db.Timestamp(0)
+  update_time      DateTime?         @default(now()) @db.Timestamp(0)
+  is_delete        Boolean?          @default(false)
+  total_words      Int?              @default(0)
+  published_words  Int?              @default(0)
+  approved_words   Int?              @default(0)
+  dictionary_word  dictionary_word[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model english_word {
+  id                      BigInt                    @id
+  word_head               String?                   @db.VarChar(255)
+  thumbnail               String?                   @db.VarChar(255)
+  info                    Json?
+  create_time             DateTime?                 @default(now()) @db.Timestamp(0)
+  update_time             DateTime?                 @default(now()) @db.Timestamp(0)
+  is_delete               Boolean?                  @default(false)
+  status                  String?                   @db.VarChar(255)
+  manual_score            Int?                      @default(0)
+  ai_score                Int?
+  reviewer                BigInt?
+  dictionary_word         dictionary_word[]
+  english_word_change_log english_word_change_log[]
+  media_creator           media_creator[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model english_word_change_log {
+  id              BigInt       @id
+  english_word_id BigInt
+  field_name      String       @db.VarChar(255)
+  old_value       String?      @db.Text
+  new_value       String?      @db.Text
+  change_time     DateTime     @default(now()) @db.Timestamp(0)
+  changed_by      BigInt?
+  english_word    english_word @relation(fields: [english_word_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "english_word_change_log_ibfk_1")
+
+  @@index([english_word_id], map: "english_word_id")
+}
+
+model media_creator {
+  id           BigInt       @id @default(autoincrement())
+  word_id      BigInt
+  media_type   String       @db.VarChar(50)
+  media_url    String?      @db.VarChar(255)
+  creator_id   BigInt?
+  info         String?      @db.Text
+  created_at   DateTime?    @default(now()) @db.Timestamp(0)
+  english_word english_word @relation(fields: [word_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "media_creator_ibfk_1")
+
+  @@index([word_id], map: "word_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model post {
+  id         BigInt   @id @default(autoincrement())
+  title      String?  @db.VarChar(512)
+  content    String?  @db.Text
+  tags       String?  @db.VarChar(1024)
+  thumbNum   Int      @default(0)
+  favourNum  Int      @default(0)
+  userId     BigInt
+  createTime DateTime @default(now()) @db.DateTime(0)
+  updateTime DateTime @default(now()) @db.DateTime(0)
+  isDelete   Int      @default(0) @db.TinyInt
+
+  @@index([userId], map: "idx_userId")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model post_favour {
+  id         BigInt   @id @default(autoincrement())
+  postId     BigInt
+  userId     BigInt
+  createTime DateTime @default(now()) @db.DateTime(0)
+  updateTime DateTime @default(now()) @db.DateTime(0)
+
+  @@index([postId], map: "idx_postId")
+  @@index([userId], map: "idx_userId")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model post_thumb {
+  id         BigInt   @id @default(autoincrement())
+  postId     BigInt
+  userId     BigInt
+  createTime DateTime @default(now()) @db.DateTime(0)
+  updateTime DateTime @default(now()) @db.DateTime(0)
+
+  @@index([postId], map: "idx_postId")
+  @@index([userId], map: "idx_userId")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model user {
+  id           BigInt       @id @default(autoincrement())
+  userAccount  String       @db.VarChar(256)
+  userPassword String       @db.VarChar(512)
+  unionId      String?      @db.VarChar(256)
+  mpOpenId     String?      @db.VarChar(256)
+  userName     String?      @db.VarChar(256)
+  userAvatar   String?      @db.VarChar(1024)
+  userProfile  String?      @db.VarChar(512)
+  userRole     String       @default("user") @db.VarChar(256)
+  createTime   DateTime     @default(now()) @db.DateTime(0)
+  updateTime   DateTime     @default(now()) @db.DateTime(0)
+  isDelete     Int          @default(0) @db.TinyInt
+  audio_file   audio_file[]
+  user_config  user_config?
+
+  @@index([unionId], map: "idx_unionId")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model user_config {
+  user_id     BigInt    @id
+  config_json Json
+  update_time DateTime? @default(now()) @db.DateTime(0)
+  user        user      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "user_config_ibfk_1")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model word_status_change {
+  id          BigInt    @id @default(autoincrement())
+  word_id     BigInt
+  status      String    @db.VarChar(255)
+  info        Json?
+  comment     String?   @db.VarChar(255)
+  create_time DateTime? @default(now()) @db.DateTime(0)
+  update_time DateTime? @default(now()) @db.DateTime(0)
+  is_delete   Int?      @default(0)
+}
