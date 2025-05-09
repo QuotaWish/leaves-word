@@ -11,7 +11,7 @@ const router = useRouter()
 const { devModeEnabled, toggleDevMode } = useDevMode()
 
 // 添加用户名计算属性
-const userName = computed(() => globalAuthStorage.user?.userName || '')
+const userName = computed(() => globalAuthStorage.value?.user?.userName || '未设置昵称')
 
 const clickCount = ref(0)
 const lastClickTime = ref(0)
