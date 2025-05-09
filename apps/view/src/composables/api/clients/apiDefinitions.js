@@ -122,6 +122,7 @@ export default {
   'postThumbController.doThumbUsingPOST': ['POST', '/api/post_thumb/'],
   'wxMpController.setMenuUsingGET': ['GET', '/api/setMenu'],
   'userController.addUserUsingPOST': ['POST', '/api/user/add'],
+  'userController.getDailyQuoteUsingGET': ['GET', '/api/user/dailyquote'],
   'userController.deleteUserUsingPOST': ['POST', '/api/user/delete'],
   'userController.getUserByIdUsingGET': ['GET', '/api/user/get'],
   'userController.getLoginUserUsingGET': ['GET', '/api/user/get/login'],

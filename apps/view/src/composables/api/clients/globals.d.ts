@@ -5753,6 +5753,23 @@ declare global {
       /**
        * ---
        *
+       * [GET] getDailyQuote
+       *
+       * **path:** /api/user/dailyquote
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = string
+       * ```
+       */
+      getDailyQuoteUsingGET<Config extends Alova2MethodConfig<string>>(
+        config?: Config
+      ): Alova2Method<string, 'userController.getDailyQuoteUsingGET', Config>;
+      /**
+       * ---
+       *
        * [POST] deleteUser
        *
        * **path:** /api/user/delete

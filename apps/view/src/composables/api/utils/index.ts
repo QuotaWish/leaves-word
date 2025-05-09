@@ -29,7 +29,8 @@ export default {
   },
   getDailyQuote() {
     // const url = `https://dailyquote.quotawish.com/weapps/dailyquote/quote`
-    const url = `http://101.126.90.236:8103/weapps/dailyquote/quote`
+    const obj = Apis.userController.getDailyQuoteUsingGET()
+    const url = `${obj.baseURL}${obj.url}`
 
     return endHttp.get(url)
   }

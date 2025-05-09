@@ -1,43 +1,44 @@
 <script setup lang="ts">
-import { $api } from '~/composables/api'
+import { $api } from "~/composables/api";
 
 const data = reactive({
-  poster: '',
-  content: '',
-  author: '',
-  translation: '',
-})
+  poster: "",
+  content: "",
+  author: "",
+  translation: "",
+});
 
 $api.utils.getDailyQuote().then((res: any) => {
-  if (!res?.content)
-    return
-  const { content, author, translation, origin_img_urls } = res
+  if (!res?.content) return;
+  const { content, author, translation, origin_img_urls } = res;
 
   Object.assign(data, {
     content,
     author,
     translation,
     poster: origin_img_urls?.[0],
-  })
-})
+  });
+});
 
 // 根据内容长度获取基准字体大小
 const baseFontSize = computed(() => {
-  return data.content.length > 80 ? '1.2rem' : '1.5rem'
-})
+  return data.content.length > 80 ? "1.2rem" : "1.5rem";
+});
 </script>
 
 <template>
   <div class="PlanCover absolute-layout">
     <div v-if="data?.poster" class="fake-background PlanCover-Bg absolute-layout">
-      <img :src="data.poster" alt="Cover">
+      <img :src="data.poster" alt="Cover" />
     </div>
     <!-- Card Placeholder -->
     <!-- <div class="card-placeholder">
       <slot name="card" />
     </div> -->
     <div v-if="data?.content" class="fake-background PlanCover-Main absolute-layout">
-      <div class="PlanCover-Main-Inner transition-cubic absolute left-1/2 w-full flex flex-col items-start justify-end px-8 -translate-x-1/2">
+      <div
+        class="PlanCover-Main-Inner transition-cubic absolute left-1/2 w-full flex flex-col items-start justify-end px-8 -translate-x-1/2"
+      >
         <p class="content-text transition-cubic">
           {{ data.content }}
         </p>
