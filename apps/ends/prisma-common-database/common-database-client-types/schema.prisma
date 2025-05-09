@@ -95,8 +95,10 @@ model english_word {
   manual_score            Int?                      @default(0)
   ai_score                Int?
   reviewer                BigInt?
+  collection_word         collection_word[]
   dictionary_word         dictionary_word[]
   english_word_change_log english_word_change_log[]
+  learning_progress       learning_progress[]
   media_creator           media_creator[]
 }
 
@@ -169,20 +171,27 @@ model post_thumb {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model user {
-  id           BigInt       @id @default(autoincrement())
-  userAccount  String       @db.VarChar(256)
-  userPassword String       @db.VarChar(512)
-  unionId      String?      @db.VarChar(256)
-  mpOpenId     String?      @db.VarChar(256)
-  userName     String?      @db.VarChar(256)
-  userAvatar   String?      @db.VarChar(1024)
-  userProfile  String?      @db.VarChar(512)
-  userRole     String       @default("user") @db.VarChar(256)
-  createTime   DateTime     @default(now()) @db.DateTime(0)
-  updateTime   DateTime     @default(now()) @db.DateTime(0)
-  isDelete     Int          @default(0) @db.TinyInt
-  audio_file   audio_file[]
-  user_config  user_config?
+  id                BigInt              @id @default(autoincrement())
+  userAccount       String              @db.VarChar(256)
+  userPassword      String              @db.VarChar(512)
+  unionId           String?             @db.VarChar(256)
+  mpOpenId          String?             @db.VarChar(256)
+  userName          String?             @db.VarChar(256)
+  userAvatar        String?             @db.VarChar(1024)
+  userProfile       String?             @db.VarChar(512)
+  userRole          String              @default("user") @db.VarChar(256)
+  createTime        DateTime            @default(now()) @db.DateTime(0)
+  updateTime        DateTime            @default(now()) @db.DateTime(0)
+  isDelete          Int                 @default(0) @db.TinyInt
+  audio_file        audio_file[]
+  game_record       game_record[]
+  learning_progress learning_progress[]
+  learning_stats    learning_stats?
+  study_plan        study_plan[]
+  user_achievement  user_achievement[]
+  user_config       user_config?
+  user_points       user_points?
+  word_collection   word_collection[]
 
   @@index([unionId], map: "idx_unionId")
 }
@@ -205,4 +214,183 @@ model word_status_change {
   create_time DateTime? @default(now()) @db.DateTime(0)
   update_time DateTime? @default(now()) @db.DateTime(0)
   is_delete   Int?      @default(0)
+}
+
+model achievement {
+  id               BigInt             @id @default(autoincrement())
+  name             String             @db.VarChar(100)
+  description      String             @db.VarChar(500)
+  icon_url         String?            @db.VarChar(255)
+  category         String             @db.VarChar(50)
+  points           Int                @default(10)
+  requirements     Json?
+  created_at       DateTime           @default(now()) @db.DateTime(0)
+  update_time      DateTime           @default(now()) @db.DateTime(0)
+  is_delete        Int                @default(0) @db.TinyInt
+  user_achievement user_achievement[]
+
+  @@index([category], map: "idx_achievement_category")
+}
+
+model collection_word {
+  id              BigInt          @id @default(autoincrement())
+  collection_id   BigInt
+  word_id         BigInt
+  added_time      DateTime        @default(now()) @db.DateTime(0)
+  sort_order      Int             @default(0)
+  note            String?         @db.VarChar(500)
+  word_collection word_collection @relation(fields: [collection_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  english_word    english_word    @relation(fields: [word_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([collection_id, word_id])
+  @@index([word_id], map: "idx_collection_word_id")
+}
+
+model game_record {
+  id            BigInt   @id @default(autoincrement())
+  user_id       BigInt
+  game_type     String   @db.VarChar(50)
+  score         Int      @default(0)
+  duration      Int      @default(0)
+  words_count   Int      @default(0)
+  correct_count Int      @default(0)
+  wrong_count   Int      @default(0)
+  level         Int      @default(1)
+  game_data     Json?
+  created_at    DateTime @default(now()) @db.DateTime(0)
+  update_time   DateTime @default(now()) @db.DateTime(0)
+  is_delete     Int      @default(0) @db.TinyInt
+  user          user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([created_at], map: "idx_created_at")
+  @@index([game_type], map: "idx_game_type")
+  @@index([user_id], map: "idx_user_id")
+}
+
+model learning_progress {
+  id               BigInt       @id @default(autoincrement())
+  user_id          BigInt
+  word_id          BigInt
+  action_type      String
+  learning_details Json?
+  created_at       DateTime     @default(now()) @db.DateTime(0)
+  update_time      DateTime     @default(now()) @db.DateTime(0)
+  is_delete        Int          @default(0) @db.TinyInt
+  study_plan_id    BigInt?
+  source           String?      @db.VarChar(50)
+  device_info      Json?
+  attempt_count    Int          @default(1)
+  start_time       DateTime?    @db.DateTime(0)
+  end_time         DateTime?    @db.DateTime(0)
+  study_plan       study_plan?  @relation(fields: [study_plan_id], references: [id], onUpdate: NoAction)
+  user             user         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  english_word     english_word @relation(fields: [word_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([study_plan_id], map: "idx_learning_study_plan_id")
+  @@index([user_id], map: "idx_learning_user_id")
+  @@index([word_id], map: "idx_learning_word_id")
+}
+
+model learning_stats {
+  id                  BigInt             @id @default(autoincrement())
+  user_id             BigInt             @unique
+  total_words_learned Int                @default(0)
+  total_review_time   Int                @default(0)
+  daily_streak        Int                @default(0)
+  longest_streak      Int                @default(0)
+  last_study_date     DateTime?          @db.Date
+  total_study_days    Int                @default(0)
+  created_at          DateTime           @default(now()) @db.DateTime(0)
+  update_time         DateTime           @default(now()) @db.DateTime(0)
+  user                user               @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user_achievement    user_achievement[]
+
+  @@index([daily_streak], map: "idx_daily_streak")
+}
+
+model point_transaction {
+  id             BigInt      @id @default(autoincrement())
+  user_points_id BigInt
+  amount         Int
+  type           String      @db.VarChar(50)
+  description    String?     @db.VarChar(255)
+  reference_id   String?     @db.VarChar(100)
+  created_at     DateTime    @default(now()) @db.DateTime(0)
+  user_points    user_points @relation(fields: [user_points_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([created_at], map: "idx_transaction_time")
+  @@index([type], map: "idx_transaction_type")
+  @@index([user_points_id], map: "idx_user_points_id")
+}
+
+model study_plan {
+  id                BigInt              @id @default(autoincrement())
+  user_id           BigInt
+  name              String              @db.VarChar(100)
+  description       String?             @db.VarChar(500)
+  target_words      Int                 @default(0)
+  daily_words       Int                 @default(10)
+  start_date        DateTime?           @db.Date
+  end_date          DateTime?           @db.Date
+  status            String              @default("ACTIVE") @db.VarChar(20)
+  created_at        DateTime            @default(now()) @db.DateTime(0)
+  update_time       DateTime            @default(now()) @db.DateTime(0)
+  is_delete         Int                 @default(0) @db.TinyInt
+  learning_progress learning_progress[]
+  user              user                @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  word_collection   word_collection[]
+
+  @@index([status], map: "idx_plan_status")
+  @@index([user_id], map: "idx_plan_user_id")
+}
+
+model user_achievement {
+  id                BigInt          @id @default(autoincrement())
+  user_id           BigInt
+  achievement_id    BigInt
+  achieved_date     DateTime        @default(now()) @db.DateTime(0)
+  progress          Int?            @default(0)
+  learning_stats_id BigInt?
+  achievement       achievement     @relation(fields: [achievement_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  learning_stats    learning_stats? @relation(fields: [learning_stats_id], references: [id], onUpdate: NoAction)
+  user              user            @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([user_id, achievement_id])
+  @@index([achieved_date], map: "idx_achieved_date")
+  @@index([achievement_id], map: "idx_achievement_id")
+  @@index([learning_stats_id], map: "user_achievement_learning_stats_id_fkey")
+}
+
+model user_points {
+  id                BigInt              @id @default(autoincrement())
+  user_id           BigInt              @unique
+  total_points      Int                 @default(0)
+  available_points  Int                 @default(0)
+  level             Int                 @default(1)
+  created_at        DateTime            @default(now()) @db.DateTime(0)
+  update_time       DateTime            @default(now()) @db.DateTime(0)
+  point_transaction point_transaction[]
+  user              user                @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([level], map: "idx_level")
+}
+
+model word_collection {
+  id              BigInt            @id @default(autoincrement())
+  user_id         BigInt
+  plan_id         BigInt?
+  name            String            @db.VarChar(100)
+  description     String?           @db.VarChar(500)
+  is_public       Boolean           @default(false)
+  word_count      Int               @default(0)
+  created_at      DateTime          @default(now()) @db.DateTime(0)
+  update_time     DateTime          @default(now()) @db.DateTime(0)
+  is_delete       Int               @default(0) @db.TinyInt
+  collection_word collection_word[]
+  study_plan      study_plan?       @relation(fields: [plan_id], references: [id], onUpdate: NoAction)
+  user            user              @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([user_id], map: "idx_collection_user_id")
+  @@index([is_public], map: "idx_is_public")
+  @@index([plan_id], map: "word_collection_plan_id_fkey")
 }

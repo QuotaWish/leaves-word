@@ -83,6 +83,56 @@ export type user_config = $Result.DefaultSelection<Prisma.$user_configPayload>
  * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
  */
 export type word_status_change = $Result.DefaultSelection<Prisma.$word_status_changePayload>
+/**
+ * Model achievement
+ * 
+ */
+export type achievement = $Result.DefaultSelection<Prisma.$achievementPayload>
+/**
+ * Model collection_word
+ * 
+ */
+export type collection_word = $Result.DefaultSelection<Prisma.$collection_wordPayload>
+/**
+ * Model game_record
+ * 
+ */
+export type game_record = $Result.DefaultSelection<Prisma.$game_recordPayload>
+/**
+ * Model learning_progress
+ * 
+ */
+export type learning_progress = $Result.DefaultSelection<Prisma.$learning_progressPayload>
+/**
+ * Model learning_stats
+ * 
+ */
+export type learning_stats = $Result.DefaultSelection<Prisma.$learning_statsPayload>
+/**
+ * Model point_transaction
+ * 
+ */
+export type point_transaction = $Result.DefaultSelection<Prisma.$point_transactionPayload>
+/**
+ * Model study_plan
+ * 
+ */
+export type study_plan = $Result.DefaultSelection<Prisma.$study_planPayload>
+/**
+ * Model user_achievement
+ * 
+ */
+export type user_achievement = $Result.DefaultSelection<Prisma.$user_achievementPayload>
+/**
+ * Model user_points
+ * 
+ */
+export type user_points = $Result.DefaultSelection<Prisma.$user_pointsPayload>
+/**
+ * Model word_collection
+ * 
+ */
+export type word_collection = $Result.DefaultSelection<Prisma.$word_collectionPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -348,6 +398,106 @@ export class PrismaClient<
     * ```
     */
   get word_status_change(): Prisma.word_status_changeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.achievement`: Exposes CRUD operations for the **achievement** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Achievements
+    * const achievements = await prisma.achievement.findMany()
+    * ```
+    */
+  get achievement(): Prisma.achievementDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.collection_word`: Exposes CRUD operations for the **collection_word** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Collection_words
+    * const collection_words = await prisma.collection_word.findMany()
+    * ```
+    */
+  get collection_word(): Prisma.collection_wordDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.game_record`: Exposes CRUD operations for the **game_record** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Game_records
+    * const game_records = await prisma.game_record.findMany()
+    * ```
+    */
+  get game_record(): Prisma.game_recordDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.learning_progress`: Exposes CRUD operations for the **learning_progress** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Learning_progresses
+    * const learning_progresses = await prisma.learning_progress.findMany()
+    * ```
+    */
+  get learning_progress(): Prisma.learning_progressDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.learning_stats`: Exposes CRUD operations for the **learning_stats** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Learning_stats
+    * const learning_stats = await prisma.learning_stats.findMany()
+    * ```
+    */
+  get learning_stats(): Prisma.learning_statsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.point_transaction`: Exposes CRUD operations for the **point_transaction** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Point_transactions
+    * const point_transactions = await prisma.point_transaction.findMany()
+    * ```
+    */
+  get point_transaction(): Prisma.point_transactionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.study_plan`: Exposes CRUD operations for the **study_plan** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Study_plans
+    * const study_plans = await prisma.study_plan.findMany()
+    * ```
+    */
+  get study_plan(): Prisma.study_planDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.user_achievement`: Exposes CRUD operations for the **user_achievement** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more User_achievements
+    * const user_achievements = await prisma.user_achievement.findMany()
+    * ```
+    */
+  get user_achievement(): Prisma.user_achievementDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.user_points`: Exposes CRUD operations for the **user_points** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more User_points
+    * const user_points = await prisma.user_points.findMany()
+    * ```
+    */
+  get user_points(): Prisma.user_pointsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.word_collection`: Exposes CRUD operations for the **word_collection** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Word_collections
+    * const word_collections = await prisma.word_collection.findMany()
+    * ```
+    */
+  get word_collection(): Prisma.word_collectionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -801,7 +951,17 @@ export namespace Prisma {
     post_thumb: 'post_thumb',
     user: 'user',
     user_config: 'user_config',
-    word_status_change: 'word_status_change'
+    word_status_change: 'word_status_change',
+    achievement: 'achievement',
+    collection_word: 'collection_word',
+    game_record: 'game_record',
+    learning_progress: 'learning_progress',
+    learning_stats: 'learning_stats',
+    point_transaction: 'point_transaction',
+    study_plan: 'study_plan',
+    user_achievement: 'user_achievement',
+    user_points: 'user_points',
+    word_collection: 'word_collection'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -820,7 +980,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "audio_file" | "category" | "dictionary_category" | "dictionary_word" | "english_dictionary" | "english_word" | "english_word_change_log" | "media_creator" | "post" | "post_favour" | "post_thumb" | "user" | "user_config" | "word_status_change"
+      modelProps: "audio_file" | "category" | "dictionary_category" | "dictionary_word" | "english_dictionary" | "english_word" | "english_word_change_log" | "media_creator" | "post" | "post_favour" | "post_thumb" | "user" | "user_config" | "word_status_change" | "achievement" | "collection_word" | "game_record" | "learning_progress" | "learning_stats" | "point_transaction" | "study_plan" | "user_achievement" | "user_points" | "word_collection"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1748,6 +1908,666 @@ export namespace Prisma {
           }
         }
       }
+      achievement: {
+        payload: Prisma.$achievementPayload<ExtArgs>
+        fields: Prisma.achievementFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.achievementFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$achievementPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.achievementFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$achievementPayload>
+          }
+          findFirst: {
+            args: Prisma.achievementFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$achievementPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.achievementFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$achievementPayload>
+          }
+          findMany: {
+            args: Prisma.achievementFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$achievementPayload>[]
+          }
+          create: {
+            args: Prisma.achievementCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$achievementPayload>
+          }
+          createMany: {
+            args: Prisma.achievementCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.achievementDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$achievementPayload>
+          }
+          update: {
+            args: Prisma.achievementUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$achievementPayload>
+          }
+          deleteMany: {
+            args: Prisma.achievementDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.achievementUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.achievementUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$achievementPayload>
+          }
+          aggregate: {
+            args: Prisma.AchievementAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAchievement>
+          }
+          groupBy: {
+            args: Prisma.achievementGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AchievementGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.achievementCountArgs<ExtArgs>
+            result: $Utils.Optional<AchievementCountAggregateOutputType> | number
+          }
+        }
+      }
+      collection_word: {
+        payload: Prisma.$collection_wordPayload<ExtArgs>
+        fields: Prisma.collection_wordFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.collection_wordFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$collection_wordPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.collection_wordFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$collection_wordPayload>
+          }
+          findFirst: {
+            args: Prisma.collection_wordFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$collection_wordPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.collection_wordFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$collection_wordPayload>
+          }
+          findMany: {
+            args: Prisma.collection_wordFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$collection_wordPayload>[]
+          }
+          create: {
+            args: Prisma.collection_wordCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$collection_wordPayload>
+          }
+          createMany: {
+            args: Prisma.collection_wordCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.collection_wordDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$collection_wordPayload>
+          }
+          update: {
+            args: Prisma.collection_wordUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$collection_wordPayload>
+          }
+          deleteMany: {
+            args: Prisma.collection_wordDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.collection_wordUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.collection_wordUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$collection_wordPayload>
+          }
+          aggregate: {
+            args: Prisma.Collection_wordAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCollection_word>
+          }
+          groupBy: {
+            args: Prisma.collection_wordGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Collection_wordGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.collection_wordCountArgs<ExtArgs>
+            result: $Utils.Optional<Collection_wordCountAggregateOutputType> | number
+          }
+        }
+      }
+      game_record: {
+        payload: Prisma.$game_recordPayload<ExtArgs>
+        fields: Prisma.game_recordFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.game_recordFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$game_recordPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.game_recordFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$game_recordPayload>
+          }
+          findFirst: {
+            args: Prisma.game_recordFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$game_recordPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.game_recordFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$game_recordPayload>
+          }
+          findMany: {
+            args: Prisma.game_recordFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$game_recordPayload>[]
+          }
+          create: {
+            args: Prisma.game_recordCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$game_recordPayload>
+          }
+          createMany: {
+            args: Prisma.game_recordCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.game_recordDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$game_recordPayload>
+          }
+          update: {
+            args: Prisma.game_recordUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$game_recordPayload>
+          }
+          deleteMany: {
+            args: Prisma.game_recordDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.game_recordUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.game_recordUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$game_recordPayload>
+          }
+          aggregate: {
+            args: Prisma.Game_recordAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGame_record>
+          }
+          groupBy: {
+            args: Prisma.game_recordGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Game_recordGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.game_recordCountArgs<ExtArgs>
+            result: $Utils.Optional<Game_recordCountAggregateOutputType> | number
+          }
+        }
+      }
+      learning_progress: {
+        payload: Prisma.$learning_progressPayload<ExtArgs>
+        fields: Prisma.learning_progressFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.learning_progressFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_progressPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.learning_progressFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_progressPayload>
+          }
+          findFirst: {
+            args: Prisma.learning_progressFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_progressPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.learning_progressFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_progressPayload>
+          }
+          findMany: {
+            args: Prisma.learning_progressFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_progressPayload>[]
+          }
+          create: {
+            args: Prisma.learning_progressCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_progressPayload>
+          }
+          createMany: {
+            args: Prisma.learning_progressCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.learning_progressDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_progressPayload>
+          }
+          update: {
+            args: Prisma.learning_progressUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_progressPayload>
+          }
+          deleteMany: {
+            args: Prisma.learning_progressDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.learning_progressUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.learning_progressUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_progressPayload>
+          }
+          aggregate: {
+            args: Prisma.Learning_progressAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLearning_progress>
+          }
+          groupBy: {
+            args: Prisma.learning_progressGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Learning_progressGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.learning_progressCountArgs<ExtArgs>
+            result: $Utils.Optional<Learning_progressCountAggregateOutputType> | number
+          }
+        }
+      }
+      learning_stats: {
+        payload: Prisma.$learning_statsPayload<ExtArgs>
+        fields: Prisma.learning_statsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.learning_statsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_statsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.learning_statsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_statsPayload>
+          }
+          findFirst: {
+            args: Prisma.learning_statsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_statsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.learning_statsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_statsPayload>
+          }
+          findMany: {
+            args: Prisma.learning_statsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_statsPayload>[]
+          }
+          create: {
+            args: Prisma.learning_statsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_statsPayload>
+          }
+          createMany: {
+            args: Prisma.learning_statsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.learning_statsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_statsPayload>
+          }
+          update: {
+            args: Prisma.learning_statsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_statsPayload>
+          }
+          deleteMany: {
+            args: Prisma.learning_statsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.learning_statsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.learning_statsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$learning_statsPayload>
+          }
+          aggregate: {
+            args: Prisma.Learning_statsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLearning_stats>
+          }
+          groupBy: {
+            args: Prisma.learning_statsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Learning_statsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.learning_statsCountArgs<ExtArgs>
+            result: $Utils.Optional<Learning_statsCountAggregateOutputType> | number
+          }
+        }
+      }
+      point_transaction: {
+        payload: Prisma.$point_transactionPayload<ExtArgs>
+        fields: Prisma.point_transactionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.point_transactionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$point_transactionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.point_transactionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$point_transactionPayload>
+          }
+          findFirst: {
+            args: Prisma.point_transactionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$point_transactionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.point_transactionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$point_transactionPayload>
+          }
+          findMany: {
+            args: Prisma.point_transactionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$point_transactionPayload>[]
+          }
+          create: {
+            args: Prisma.point_transactionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$point_transactionPayload>
+          }
+          createMany: {
+            args: Prisma.point_transactionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.point_transactionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$point_transactionPayload>
+          }
+          update: {
+            args: Prisma.point_transactionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$point_transactionPayload>
+          }
+          deleteMany: {
+            args: Prisma.point_transactionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.point_transactionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.point_transactionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$point_transactionPayload>
+          }
+          aggregate: {
+            args: Prisma.Point_transactionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePoint_transaction>
+          }
+          groupBy: {
+            args: Prisma.point_transactionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Point_transactionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.point_transactionCountArgs<ExtArgs>
+            result: $Utils.Optional<Point_transactionCountAggregateOutputType> | number
+          }
+        }
+      }
+      study_plan: {
+        payload: Prisma.$study_planPayload<ExtArgs>
+        fields: Prisma.study_planFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.study_planFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$study_planPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.study_planFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$study_planPayload>
+          }
+          findFirst: {
+            args: Prisma.study_planFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$study_planPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.study_planFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$study_planPayload>
+          }
+          findMany: {
+            args: Prisma.study_planFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$study_planPayload>[]
+          }
+          create: {
+            args: Prisma.study_planCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$study_planPayload>
+          }
+          createMany: {
+            args: Prisma.study_planCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.study_planDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$study_planPayload>
+          }
+          update: {
+            args: Prisma.study_planUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$study_planPayload>
+          }
+          deleteMany: {
+            args: Prisma.study_planDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.study_planUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.study_planUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$study_planPayload>
+          }
+          aggregate: {
+            args: Prisma.Study_planAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStudy_plan>
+          }
+          groupBy: {
+            args: Prisma.study_planGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Study_planGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.study_planCountArgs<ExtArgs>
+            result: $Utils.Optional<Study_planCountAggregateOutputType> | number
+          }
+        }
+      }
+      user_achievement: {
+        payload: Prisma.$user_achievementPayload<ExtArgs>
+        fields: Prisma.user_achievementFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.user_achievementFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_achievementPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.user_achievementFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_achievementPayload>
+          }
+          findFirst: {
+            args: Prisma.user_achievementFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_achievementPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.user_achievementFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_achievementPayload>
+          }
+          findMany: {
+            args: Prisma.user_achievementFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_achievementPayload>[]
+          }
+          create: {
+            args: Prisma.user_achievementCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_achievementPayload>
+          }
+          createMany: {
+            args: Prisma.user_achievementCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.user_achievementDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_achievementPayload>
+          }
+          update: {
+            args: Prisma.user_achievementUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_achievementPayload>
+          }
+          deleteMany: {
+            args: Prisma.user_achievementDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.user_achievementUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.user_achievementUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_achievementPayload>
+          }
+          aggregate: {
+            args: Prisma.User_achievementAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUser_achievement>
+          }
+          groupBy: {
+            args: Prisma.user_achievementGroupByArgs<ExtArgs>
+            result: $Utils.Optional<User_achievementGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.user_achievementCountArgs<ExtArgs>
+            result: $Utils.Optional<User_achievementCountAggregateOutputType> | number
+          }
+        }
+      }
+      user_points: {
+        payload: Prisma.$user_pointsPayload<ExtArgs>
+        fields: Prisma.user_pointsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.user_pointsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_pointsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.user_pointsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_pointsPayload>
+          }
+          findFirst: {
+            args: Prisma.user_pointsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_pointsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.user_pointsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_pointsPayload>
+          }
+          findMany: {
+            args: Prisma.user_pointsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_pointsPayload>[]
+          }
+          create: {
+            args: Prisma.user_pointsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_pointsPayload>
+          }
+          createMany: {
+            args: Prisma.user_pointsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.user_pointsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_pointsPayload>
+          }
+          update: {
+            args: Prisma.user_pointsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_pointsPayload>
+          }
+          deleteMany: {
+            args: Prisma.user_pointsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.user_pointsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.user_pointsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$user_pointsPayload>
+          }
+          aggregate: {
+            args: Prisma.User_pointsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUser_points>
+          }
+          groupBy: {
+            args: Prisma.user_pointsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<User_pointsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.user_pointsCountArgs<ExtArgs>
+            result: $Utils.Optional<User_pointsCountAggregateOutputType> | number
+          }
+        }
+      }
+      word_collection: {
+        payload: Prisma.$word_collectionPayload<ExtArgs>
+        fields: Prisma.word_collectionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.word_collectionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$word_collectionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.word_collectionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$word_collectionPayload>
+          }
+          findFirst: {
+            args: Prisma.word_collectionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$word_collectionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.word_collectionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$word_collectionPayload>
+          }
+          findMany: {
+            args: Prisma.word_collectionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$word_collectionPayload>[]
+          }
+          create: {
+            args: Prisma.word_collectionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$word_collectionPayload>
+          }
+          createMany: {
+            args: Prisma.word_collectionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.word_collectionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$word_collectionPayload>
+          }
+          update: {
+            args: Prisma.word_collectionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$word_collectionPayload>
+          }
+          deleteMany: {
+            args: Prisma.word_collectionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.word_collectionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.word_collectionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$word_collectionPayload>
+          }
+          aggregate: {
+            args: Prisma.Word_collectionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWord_collection>
+          }
+          groupBy: {
+            args: Prisma.word_collectionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Word_collectionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.word_collectionCountArgs<ExtArgs>
+            result: $Utils.Optional<Word_collectionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1846,6 +2666,16 @@ export namespace Prisma {
     user?: userOmit
     user_config?: user_configOmit
     word_status_change?: word_status_changeOmit
+    achievement?: achievementOmit
+    collection_word?: collection_wordOmit
+    game_record?: game_recordOmit
+    learning_progress?: learning_progressOmit
+    learning_stats?: learning_statsOmit
+    point_transaction?: point_transactionOmit
+    study_plan?: study_planOmit
+    user_achievement?: user_achievementOmit
+    user_points?: user_pointsOmit
+    word_collection?: word_collectionOmit
   }
 
   /* Types for Logging */
@@ -1971,14 +2801,18 @@ export namespace Prisma {
    */
 
   export type English_wordCountOutputType = {
+    collection_word: number
     dictionary_word: number
     english_word_change_log: number
+    learning_progress: number
     media_creator: number
   }
 
   export type English_wordCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    collection_word?: boolean | English_wordCountOutputTypeCountCollection_wordArgs
     dictionary_word?: boolean | English_wordCountOutputTypeCountDictionary_wordArgs
     english_word_change_log?: boolean | English_wordCountOutputTypeCountEnglish_word_change_logArgs
+    learning_progress?: boolean | English_wordCountOutputTypeCountLearning_progressArgs
     media_creator?: boolean | English_wordCountOutputTypeCountMedia_creatorArgs
   }
 
@@ -1991,6 +2825,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the English_wordCountOutputType
      */
     select?: English_wordCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * English_wordCountOutputType without action
+   */
+  export type English_wordCountOutputTypeCountCollection_wordArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: collection_wordWhereInput
   }
 
   /**
@@ -2010,6 +2851,13 @@ export namespace Prisma {
   /**
    * English_wordCountOutputType without action
    */
+  export type English_wordCountOutputTypeCountLearning_progressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: learning_progressWhereInput
+  }
+
+  /**
+   * English_wordCountOutputType without action
+   */
   export type English_wordCountOutputTypeCountMedia_creatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: media_creatorWhereInput
   }
@@ -2021,10 +2869,20 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     audio_file: number
+    game_record: number
+    learning_progress: number
+    study_plan: number
+    user_achievement: number
+    word_collection: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     audio_file?: boolean | UserCountOutputTypeCountAudio_fileArgs
+    game_record?: boolean | UserCountOutputTypeCountGame_recordArgs
+    learning_progress?: boolean | UserCountOutputTypeCountLearning_progressArgs
+    study_plan?: boolean | UserCountOutputTypeCountStudy_planArgs
+    user_achievement?: boolean | UserCountOutputTypeCountUser_achievementArgs
+    word_collection?: boolean | UserCountOutputTypeCountWord_collectionArgs
   }
 
   // Custom InputTypes
@@ -2043,6 +2901,205 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountAudio_fileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: audio_fileWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountGame_recordArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: game_recordWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountLearning_progressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: learning_progressWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountStudy_planArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: study_planWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountUser_achievementArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: user_achievementWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountWord_collectionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: word_collectionWhereInput
+  }
+
+
+  /**
+   * Count Type AchievementCountOutputType
+   */
+
+  export type AchievementCountOutputType = {
+    user_achievement: number
+  }
+
+  export type AchievementCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user_achievement?: boolean | AchievementCountOutputTypeCountUser_achievementArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AchievementCountOutputType without action
+   */
+  export type AchievementCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AchievementCountOutputType
+     */
+    select?: AchievementCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AchievementCountOutputType without action
+   */
+  export type AchievementCountOutputTypeCountUser_achievementArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: user_achievementWhereInput
+  }
+
+
+  /**
+   * Count Type Learning_statsCountOutputType
+   */
+
+  export type Learning_statsCountOutputType = {
+    user_achievement: number
+  }
+
+  export type Learning_statsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user_achievement?: boolean | Learning_statsCountOutputTypeCountUser_achievementArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * Learning_statsCountOutputType without action
+   */
+  export type Learning_statsCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Learning_statsCountOutputType
+     */
+    select?: Learning_statsCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * Learning_statsCountOutputType without action
+   */
+  export type Learning_statsCountOutputTypeCountUser_achievementArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: user_achievementWhereInput
+  }
+
+
+  /**
+   * Count Type Study_planCountOutputType
+   */
+
+  export type Study_planCountOutputType = {
+    learning_progress: number
+    word_collection: number
+  }
+
+  export type Study_planCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    learning_progress?: boolean | Study_planCountOutputTypeCountLearning_progressArgs
+    word_collection?: boolean | Study_planCountOutputTypeCountWord_collectionArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * Study_planCountOutputType without action
+   */
+  export type Study_planCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Study_planCountOutputType
+     */
+    select?: Study_planCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * Study_planCountOutputType without action
+   */
+  export type Study_planCountOutputTypeCountLearning_progressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: learning_progressWhereInput
+  }
+
+  /**
+   * Study_planCountOutputType without action
+   */
+  export type Study_planCountOutputTypeCountWord_collectionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: word_collectionWhereInput
+  }
+
+
+  /**
+   * Count Type User_pointsCountOutputType
+   */
+
+  export type User_pointsCountOutputType = {
+    point_transaction: number
+  }
+
+  export type User_pointsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    point_transaction?: boolean | User_pointsCountOutputTypeCountPoint_transactionArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * User_pointsCountOutputType without action
+   */
+  export type User_pointsCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User_pointsCountOutputType
+     */
+    select?: User_pointsCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * User_pointsCountOutputType without action
+   */
+  export type User_pointsCountOutputTypeCountPoint_transactionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: point_transactionWhereInput
+  }
+
+
+  /**
+   * Count Type Word_collectionCountOutputType
+   */
+
+  export type Word_collectionCountOutputType = {
+    collection_word: number
+  }
+
+  export type Word_collectionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    collection_word?: boolean | Word_collectionCountOutputTypeCountCollection_wordArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * Word_collectionCountOutputType without action
+   */
+  export type Word_collectionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Word_collectionCountOutputType
+     */
+    select?: Word_collectionCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * Word_collectionCountOutputType without action
+   */
+  export type Word_collectionCountOutputTypeCountCollection_wordArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: collection_wordWhereInput
   }
 
 
@@ -7287,8 +8344,10 @@ export namespace Prisma {
     manual_score?: boolean
     ai_score?: boolean
     reviewer?: boolean
+    collection_word?: boolean | english_word$collection_wordArgs<ExtArgs>
     dictionary_word?: boolean | english_word$dictionary_wordArgs<ExtArgs>
     english_word_change_log?: boolean | english_word$english_word_change_logArgs<ExtArgs>
+    learning_progress?: boolean | english_word$learning_progressArgs<ExtArgs>
     media_creator?: boolean | english_word$media_creatorArgs<ExtArgs>
     _count?: boolean | English_wordCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["english_word"]>
@@ -7311,8 +8370,10 @@ export namespace Prisma {
 
   export type english_wordOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "word_head" | "thumbnail" | "info" | "create_time" | "update_time" | "is_delete" | "status" | "manual_score" | "ai_score" | "reviewer", ExtArgs["result"]["english_word"]>
   export type english_wordInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    collection_word?: boolean | english_word$collection_wordArgs<ExtArgs>
     dictionary_word?: boolean | english_word$dictionary_wordArgs<ExtArgs>
     english_word_change_log?: boolean | english_word$english_word_change_logArgs<ExtArgs>
+    learning_progress?: boolean | english_word$learning_progressArgs<ExtArgs>
     media_creator?: boolean | english_word$media_creatorArgs<ExtArgs>
     _count?: boolean | English_wordCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -7320,8 +8381,10 @@ export namespace Prisma {
   export type $english_wordPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "english_word"
     objects: {
+      collection_word: Prisma.$collection_wordPayload<ExtArgs>[]
       dictionary_word: Prisma.$dictionary_wordPayload<ExtArgs>[]
       english_word_change_log: Prisma.$english_word_change_logPayload<ExtArgs>[]
+      learning_progress: Prisma.$learning_progressPayload<ExtArgs>[]
       media_creator: Prisma.$media_creatorPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -7676,8 +8739,10 @@ export namespace Prisma {
    */
   export interface Prisma__english_wordClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    collection_word<T extends english_word$collection_wordArgs<ExtArgs> = {}>(args?: Subset<T, english_word$collection_wordArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$collection_wordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dictionary_word<T extends english_word$dictionary_wordArgs<ExtArgs> = {}>(args?: Subset<T, english_word$dictionary_wordArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$dictionary_wordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     english_word_change_log<T extends english_word$english_word_change_logArgs<ExtArgs> = {}>(args?: Subset<T, english_word$english_word_change_logArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$english_word_change_logPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    learning_progress<T extends english_word$learning_progressArgs<ExtArgs> = {}>(args?: Subset<T, english_word$learning_progressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$learning_progressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     media_creator<T extends english_word$media_creatorArgs<ExtArgs> = {}>(args?: Subset<T, english_word$media_creatorArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$media_creatorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -8062,6 +9127,30 @@ export namespace Prisma {
   }
 
   /**
+   * english_word.collection_word
+   */
+  export type english_word$collection_wordArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the collection_word
+     */
+    select?: collection_wordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the collection_word
+     */
+    omit?: collection_wordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: collection_wordInclude<ExtArgs> | null
+    where?: collection_wordWhereInput
+    orderBy?: collection_wordOrderByWithRelationInput | collection_wordOrderByWithRelationInput[]
+    cursor?: collection_wordWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Collection_wordScalarFieldEnum | Collection_wordScalarFieldEnum[]
+  }
+
+  /**
    * english_word.dictionary_word
    */
   export type english_word$dictionary_wordArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8107,6 +9196,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: English_word_change_logScalarFieldEnum | English_word_change_logScalarFieldEnum[]
+  }
+
+  /**
+   * english_word.learning_progress
+   */
+  export type english_word$learning_progressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_progress
+     */
+    select?: learning_progressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_progress
+     */
+    omit?: learning_progressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_progressInclude<ExtArgs> | null
+    where?: learning_progressWhereInput
+    orderBy?: learning_progressOrderByWithRelationInput | learning_progressOrderByWithRelationInput[]
+    cursor?: learning_progressWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Learning_progressScalarFieldEnum | Learning_progressScalarFieldEnum[]
   }
 
   /**
@@ -13232,7 +14345,14 @@ export namespace Prisma {
     updateTime?: boolean
     isDelete?: boolean
     audio_file?: boolean | user$audio_fileArgs<ExtArgs>
+    game_record?: boolean | user$game_recordArgs<ExtArgs>
+    learning_progress?: boolean | user$learning_progressArgs<ExtArgs>
+    learning_stats?: boolean | user$learning_statsArgs<ExtArgs>
+    study_plan?: boolean | user$study_planArgs<ExtArgs>
+    user_achievement?: boolean | user$user_achievementArgs<ExtArgs>
     user_config?: boolean | user$user_configArgs<ExtArgs>
+    user_points?: boolean | user$user_pointsArgs<ExtArgs>
+    word_collection?: boolean | user$word_collectionArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -13256,7 +14376,14 @@ export namespace Prisma {
   export type userOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userAccount" | "userPassword" | "unionId" | "mpOpenId" | "userName" | "userAvatar" | "userProfile" | "userRole" | "createTime" | "updateTime" | "isDelete", ExtArgs["result"]["user"]>
   export type userInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     audio_file?: boolean | user$audio_fileArgs<ExtArgs>
+    game_record?: boolean | user$game_recordArgs<ExtArgs>
+    learning_progress?: boolean | user$learning_progressArgs<ExtArgs>
+    learning_stats?: boolean | user$learning_statsArgs<ExtArgs>
+    study_plan?: boolean | user$study_planArgs<ExtArgs>
+    user_achievement?: boolean | user$user_achievementArgs<ExtArgs>
     user_config?: boolean | user$user_configArgs<ExtArgs>
+    user_points?: boolean | user$user_pointsArgs<ExtArgs>
+    word_collection?: boolean | user$word_collectionArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -13264,7 +14391,14 @@ export namespace Prisma {
     name: "user"
     objects: {
       audio_file: Prisma.$audio_filePayload<ExtArgs>[]
+      game_record: Prisma.$game_recordPayload<ExtArgs>[]
+      learning_progress: Prisma.$learning_progressPayload<ExtArgs>[]
+      learning_stats: Prisma.$learning_statsPayload<ExtArgs> | null
+      study_plan: Prisma.$study_planPayload<ExtArgs>[]
+      user_achievement: Prisma.$user_achievementPayload<ExtArgs>[]
       user_config: Prisma.$user_configPayload<ExtArgs> | null
+      user_points: Prisma.$user_pointsPayload<ExtArgs> | null
+      word_collection: Prisma.$word_collectionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: bigint
@@ -13620,7 +14754,14 @@ export namespace Prisma {
   export interface Prisma__userClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     audio_file<T extends user$audio_fileArgs<ExtArgs> = {}>(args?: Subset<T, user$audio_fileArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$audio_filePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    game_record<T extends user$game_recordArgs<ExtArgs> = {}>(args?: Subset<T, user$game_recordArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$game_recordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    learning_progress<T extends user$learning_progressArgs<ExtArgs> = {}>(args?: Subset<T, user$learning_progressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$learning_progressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    learning_stats<T extends user$learning_statsArgs<ExtArgs> = {}>(args?: Subset<T, user$learning_statsArgs<ExtArgs>>): Prisma__learning_statsClient<$Result.GetResult<Prisma.$learning_statsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    study_plan<T extends user$study_planArgs<ExtArgs> = {}>(args?: Subset<T, user$study_planArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$study_planPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user_achievement<T extends user$user_achievementArgs<ExtArgs> = {}>(args?: Subset<T, user$user_achievementArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_achievementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user_config<T extends user$user_configArgs<ExtArgs> = {}>(args?: Subset<T, user$user_configArgs<ExtArgs>>): Prisma__user_configClient<$Result.GetResult<Prisma.$user_configPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user_points<T extends user$user_pointsArgs<ExtArgs> = {}>(args?: Subset<T, user$user_pointsArgs<ExtArgs>>): Prisma__user_pointsClient<$Result.GetResult<Prisma.$user_pointsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    word_collection<T extends user$word_collectionArgs<ExtArgs> = {}>(args?: Subset<T, user$word_collectionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$word_collectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14029,6 +15170,121 @@ export namespace Prisma {
   }
 
   /**
+   * user.game_record
+   */
+  export type user$game_recordArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the game_record
+     */
+    select?: game_recordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the game_record
+     */
+    omit?: game_recordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: game_recordInclude<ExtArgs> | null
+    where?: game_recordWhereInput
+    orderBy?: game_recordOrderByWithRelationInput | game_recordOrderByWithRelationInput[]
+    cursor?: game_recordWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Game_recordScalarFieldEnum | Game_recordScalarFieldEnum[]
+  }
+
+  /**
+   * user.learning_progress
+   */
+  export type user$learning_progressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_progress
+     */
+    select?: learning_progressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_progress
+     */
+    omit?: learning_progressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_progressInclude<ExtArgs> | null
+    where?: learning_progressWhereInput
+    orderBy?: learning_progressOrderByWithRelationInput | learning_progressOrderByWithRelationInput[]
+    cursor?: learning_progressWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Learning_progressScalarFieldEnum | Learning_progressScalarFieldEnum[]
+  }
+
+  /**
+   * user.learning_stats
+   */
+  export type user$learning_statsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_stats
+     */
+    select?: learning_statsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_stats
+     */
+    omit?: learning_statsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_statsInclude<ExtArgs> | null
+    where?: learning_statsWhereInput
+  }
+
+  /**
+   * user.study_plan
+   */
+  export type user$study_planArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the study_plan
+     */
+    select?: study_planSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the study_plan
+     */
+    omit?: study_planOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: study_planInclude<ExtArgs> | null
+    where?: study_planWhereInput
+    orderBy?: study_planOrderByWithRelationInput | study_planOrderByWithRelationInput[]
+    cursor?: study_planWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Study_planScalarFieldEnum | Study_planScalarFieldEnum[]
+  }
+
+  /**
+   * user.user_achievement
+   */
+  export type user$user_achievementArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_achievement
+     */
+    select?: user_achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_achievement
+     */
+    omit?: user_achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_achievementInclude<ExtArgs> | null
+    where?: user_achievementWhereInput
+    orderBy?: user_achievementOrderByWithRelationInput | user_achievementOrderByWithRelationInput[]
+    cursor?: user_achievementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: User_achievementScalarFieldEnum | User_achievementScalarFieldEnum[]
+  }
+
+  /**
    * user.user_config
    */
   export type user$user_configArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -14045,6 +15301,49 @@ export namespace Prisma {
      */
     include?: user_configInclude<ExtArgs> | null
     where?: user_configWhereInput
+  }
+
+  /**
+   * user.user_points
+   */
+  export type user$user_pointsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_points
+     */
+    select?: user_pointsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_points
+     */
+    omit?: user_pointsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_pointsInclude<ExtArgs> | null
+    where?: user_pointsWhereInput
+  }
+
+  /**
+   * user.word_collection
+   */
+  export type user$word_collectionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the word_collection
+     */
+    select?: word_collectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the word_collection
+     */
+    omit?: word_collectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: word_collectionInclude<ExtArgs> | null
+    where?: word_collectionWhereInput
+    orderBy?: word_collectionOrderByWithRelationInput | word_collectionOrderByWithRelationInput[]
+    cursor?: word_collectionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Word_collectionScalarFieldEnum | Word_collectionScalarFieldEnum[]
   }
 
   /**
@@ -15957,6 +17256,10538 @@ export namespace Prisma {
 
 
   /**
+   * Model achievement
+   */
+
+  export type AggregateAchievement = {
+    _count: AchievementCountAggregateOutputType | null
+    _avg: AchievementAvgAggregateOutputType | null
+    _sum: AchievementSumAggregateOutputType | null
+    _min: AchievementMinAggregateOutputType | null
+    _max: AchievementMaxAggregateOutputType | null
+  }
+
+  export type AchievementAvgAggregateOutputType = {
+    id: number | null
+    points: number | null
+    is_delete: number | null
+  }
+
+  export type AchievementSumAggregateOutputType = {
+    id: bigint | null
+    points: number | null
+    is_delete: number | null
+  }
+
+  export type AchievementMinAggregateOutputType = {
+    id: bigint | null
+    name: string | null
+    description: string | null
+    icon_url: string | null
+    category: string | null
+    points: number | null
+    created_at: Date | null
+    update_time: Date | null
+    is_delete: number | null
+  }
+
+  export type AchievementMaxAggregateOutputType = {
+    id: bigint | null
+    name: string | null
+    description: string | null
+    icon_url: string | null
+    category: string | null
+    points: number | null
+    created_at: Date | null
+    update_time: Date | null
+    is_delete: number | null
+  }
+
+  export type AchievementCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    icon_url: number
+    category: number
+    points: number
+    requirements: number
+    created_at: number
+    update_time: number
+    is_delete: number
+    _all: number
+  }
+
+
+  export type AchievementAvgAggregateInputType = {
+    id?: true
+    points?: true
+    is_delete?: true
+  }
+
+  export type AchievementSumAggregateInputType = {
+    id?: true
+    points?: true
+    is_delete?: true
+  }
+
+  export type AchievementMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    icon_url?: true
+    category?: true
+    points?: true
+    created_at?: true
+    update_time?: true
+    is_delete?: true
+  }
+
+  export type AchievementMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    icon_url?: true
+    category?: true
+    points?: true
+    created_at?: true
+    update_time?: true
+    is_delete?: true
+  }
+
+  export type AchievementCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    icon_url?: true
+    category?: true
+    points?: true
+    requirements?: true
+    created_at?: true
+    update_time?: true
+    is_delete?: true
+    _all?: true
+  }
+
+  export type AchievementAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which achievement to aggregate.
+     */
+    where?: achievementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of achievements to fetch.
+     */
+    orderBy?: achievementOrderByWithRelationInput | achievementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: achievementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` achievements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` achievements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned achievements
+    **/
+    _count?: true | AchievementCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AchievementAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AchievementSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AchievementMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AchievementMaxAggregateInputType
+  }
+
+  export type GetAchievementAggregateType<T extends AchievementAggregateArgs> = {
+        [P in keyof T & keyof AggregateAchievement]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAchievement[P]>
+      : GetScalarType<T[P], AggregateAchievement[P]>
+  }
+
+
+
+
+  export type achievementGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: achievementWhereInput
+    orderBy?: achievementOrderByWithAggregationInput | achievementOrderByWithAggregationInput[]
+    by: AchievementScalarFieldEnum[] | AchievementScalarFieldEnum
+    having?: achievementScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AchievementCountAggregateInputType | true
+    _avg?: AchievementAvgAggregateInputType
+    _sum?: AchievementSumAggregateInputType
+    _min?: AchievementMinAggregateInputType
+    _max?: AchievementMaxAggregateInputType
+  }
+
+  export type AchievementGroupByOutputType = {
+    id: bigint
+    name: string
+    description: string
+    icon_url: string | null
+    category: string
+    points: number
+    requirements: JsonValue | null
+    created_at: Date
+    update_time: Date
+    is_delete: number
+    _count: AchievementCountAggregateOutputType | null
+    _avg: AchievementAvgAggregateOutputType | null
+    _sum: AchievementSumAggregateOutputType | null
+    _min: AchievementMinAggregateOutputType | null
+    _max: AchievementMaxAggregateOutputType | null
+  }
+
+  type GetAchievementGroupByPayload<T extends achievementGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AchievementGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AchievementGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AchievementGroupByOutputType[P]>
+            : GetScalarType<T[P], AchievementGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type achievementSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    icon_url?: boolean
+    category?: boolean
+    points?: boolean
+    requirements?: boolean
+    created_at?: boolean
+    update_time?: boolean
+    is_delete?: boolean
+    user_achievement?: boolean | achievement$user_achievementArgs<ExtArgs>
+    _count?: boolean | AchievementCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["achievement"]>
+
+
+
+  export type achievementSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    icon_url?: boolean
+    category?: boolean
+    points?: boolean
+    requirements?: boolean
+    created_at?: boolean
+    update_time?: boolean
+    is_delete?: boolean
+  }
+
+  export type achievementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "icon_url" | "category" | "points" | "requirements" | "created_at" | "update_time" | "is_delete", ExtArgs["result"]["achievement"]>
+  export type achievementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user_achievement?: boolean | achievement$user_achievementArgs<ExtArgs>
+    _count?: boolean | AchievementCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $achievementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "achievement"
+    objects: {
+      user_achievement: Prisma.$user_achievementPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      name: string
+      description: string
+      icon_url: string | null
+      category: string
+      points: number
+      requirements: Prisma.JsonValue | null
+      created_at: Date
+      update_time: Date
+      is_delete: number
+    }, ExtArgs["result"]["achievement"]>
+    composites: {}
+  }
+
+  type achievementGetPayload<S extends boolean | null | undefined | achievementDefaultArgs> = $Result.GetResult<Prisma.$achievementPayload, S>
+
+  type achievementCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<achievementFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AchievementCountAggregateInputType | true
+    }
+
+  export interface achievementDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['achievement'], meta: { name: 'achievement' } }
+    /**
+     * Find zero or one Achievement that matches the filter.
+     * @param {achievementFindUniqueArgs} args - Arguments to find a Achievement
+     * @example
+     * // Get one Achievement
+     * const achievement = await prisma.achievement.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends achievementFindUniqueArgs>(args: SelectSubset<T, achievementFindUniqueArgs<ExtArgs>>): Prisma__achievementClient<$Result.GetResult<Prisma.$achievementPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Achievement that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {achievementFindUniqueOrThrowArgs} args - Arguments to find a Achievement
+     * @example
+     * // Get one Achievement
+     * const achievement = await prisma.achievement.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends achievementFindUniqueOrThrowArgs>(args: SelectSubset<T, achievementFindUniqueOrThrowArgs<ExtArgs>>): Prisma__achievementClient<$Result.GetResult<Prisma.$achievementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Achievement that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {achievementFindFirstArgs} args - Arguments to find a Achievement
+     * @example
+     * // Get one Achievement
+     * const achievement = await prisma.achievement.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends achievementFindFirstArgs>(args?: SelectSubset<T, achievementFindFirstArgs<ExtArgs>>): Prisma__achievementClient<$Result.GetResult<Prisma.$achievementPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Achievement that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {achievementFindFirstOrThrowArgs} args - Arguments to find a Achievement
+     * @example
+     * // Get one Achievement
+     * const achievement = await prisma.achievement.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends achievementFindFirstOrThrowArgs>(args?: SelectSubset<T, achievementFindFirstOrThrowArgs<ExtArgs>>): Prisma__achievementClient<$Result.GetResult<Prisma.$achievementPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Achievements that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {achievementFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Achievements
+     * const achievements = await prisma.achievement.findMany()
+     * 
+     * // Get first 10 Achievements
+     * const achievements = await prisma.achievement.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const achievementWithIdOnly = await prisma.achievement.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends achievementFindManyArgs>(args?: SelectSubset<T, achievementFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$achievementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Achievement.
+     * @param {achievementCreateArgs} args - Arguments to create a Achievement.
+     * @example
+     * // Create one Achievement
+     * const Achievement = await prisma.achievement.create({
+     *   data: {
+     *     // ... data to create a Achievement
+     *   }
+     * })
+     * 
+     */
+    create<T extends achievementCreateArgs>(args: SelectSubset<T, achievementCreateArgs<ExtArgs>>): Prisma__achievementClient<$Result.GetResult<Prisma.$achievementPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Achievements.
+     * @param {achievementCreateManyArgs} args - Arguments to create many Achievements.
+     * @example
+     * // Create many Achievements
+     * const achievement = await prisma.achievement.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends achievementCreateManyArgs>(args?: SelectSubset<T, achievementCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Achievement.
+     * @param {achievementDeleteArgs} args - Arguments to delete one Achievement.
+     * @example
+     * // Delete one Achievement
+     * const Achievement = await prisma.achievement.delete({
+     *   where: {
+     *     // ... filter to delete one Achievement
+     *   }
+     * })
+     * 
+     */
+    delete<T extends achievementDeleteArgs>(args: SelectSubset<T, achievementDeleteArgs<ExtArgs>>): Prisma__achievementClient<$Result.GetResult<Prisma.$achievementPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Achievement.
+     * @param {achievementUpdateArgs} args - Arguments to update one Achievement.
+     * @example
+     * // Update one Achievement
+     * const achievement = await prisma.achievement.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends achievementUpdateArgs>(args: SelectSubset<T, achievementUpdateArgs<ExtArgs>>): Prisma__achievementClient<$Result.GetResult<Prisma.$achievementPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Achievements.
+     * @param {achievementDeleteManyArgs} args - Arguments to filter Achievements to delete.
+     * @example
+     * // Delete a few Achievements
+     * const { count } = await prisma.achievement.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends achievementDeleteManyArgs>(args?: SelectSubset<T, achievementDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Achievements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {achievementUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Achievements
+     * const achievement = await prisma.achievement.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends achievementUpdateManyArgs>(args: SelectSubset<T, achievementUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Achievement.
+     * @param {achievementUpsertArgs} args - Arguments to update or create a Achievement.
+     * @example
+     * // Update or create a Achievement
+     * const achievement = await prisma.achievement.upsert({
+     *   create: {
+     *     // ... data to create a Achievement
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Achievement we want to update
+     *   }
+     * })
+     */
+    upsert<T extends achievementUpsertArgs>(args: SelectSubset<T, achievementUpsertArgs<ExtArgs>>): Prisma__achievementClient<$Result.GetResult<Prisma.$achievementPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Achievements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {achievementCountArgs} args - Arguments to filter Achievements to count.
+     * @example
+     * // Count the number of Achievements
+     * const count = await prisma.achievement.count({
+     *   where: {
+     *     // ... the filter for the Achievements we want to count
+     *   }
+     * })
+    **/
+    count<T extends achievementCountArgs>(
+      args?: Subset<T, achievementCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AchievementCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Achievement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AchievementAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AchievementAggregateArgs>(args: Subset<T, AchievementAggregateArgs>): Prisma.PrismaPromise<GetAchievementAggregateType<T>>
+
+    /**
+     * Group by Achievement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {achievementGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends achievementGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: achievementGroupByArgs['orderBy'] }
+        : { orderBy?: achievementGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, achievementGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAchievementGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the achievement model
+   */
+  readonly fields: achievementFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for achievement.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__achievementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user_achievement<T extends achievement$user_achievementArgs<ExtArgs> = {}>(args?: Subset<T, achievement$user_achievementArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_achievementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the achievement model
+   */
+  interface achievementFieldRefs {
+    readonly id: FieldRef<"achievement", 'BigInt'>
+    readonly name: FieldRef<"achievement", 'String'>
+    readonly description: FieldRef<"achievement", 'String'>
+    readonly icon_url: FieldRef<"achievement", 'String'>
+    readonly category: FieldRef<"achievement", 'String'>
+    readonly points: FieldRef<"achievement", 'Int'>
+    readonly requirements: FieldRef<"achievement", 'Json'>
+    readonly created_at: FieldRef<"achievement", 'DateTime'>
+    readonly update_time: FieldRef<"achievement", 'DateTime'>
+    readonly is_delete: FieldRef<"achievement", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * achievement findUnique
+   */
+  export type achievementFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the achievement
+     */
+    select?: achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the achievement
+     */
+    omit?: achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: achievementInclude<ExtArgs> | null
+    /**
+     * Filter, which achievement to fetch.
+     */
+    where: achievementWhereUniqueInput
+  }
+
+  /**
+   * achievement findUniqueOrThrow
+   */
+  export type achievementFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the achievement
+     */
+    select?: achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the achievement
+     */
+    omit?: achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: achievementInclude<ExtArgs> | null
+    /**
+     * Filter, which achievement to fetch.
+     */
+    where: achievementWhereUniqueInput
+  }
+
+  /**
+   * achievement findFirst
+   */
+  export type achievementFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the achievement
+     */
+    select?: achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the achievement
+     */
+    omit?: achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: achievementInclude<ExtArgs> | null
+    /**
+     * Filter, which achievement to fetch.
+     */
+    where?: achievementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of achievements to fetch.
+     */
+    orderBy?: achievementOrderByWithRelationInput | achievementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for achievements.
+     */
+    cursor?: achievementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` achievements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` achievements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of achievements.
+     */
+    distinct?: AchievementScalarFieldEnum | AchievementScalarFieldEnum[]
+  }
+
+  /**
+   * achievement findFirstOrThrow
+   */
+  export type achievementFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the achievement
+     */
+    select?: achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the achievement
+     */
+    omit?: achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: achievementInclude<ExtArgs> | null
+    /**
+     * Filter, which achievement to fetch.
+     */
+    where?: achievementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of achievements to fetch.
+     */
+    orderBy?: achievementOrderByWithRelationInput | achievementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for achievements.
+     */
+    cursor?: achievementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` achievements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` achievements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of achievements.
+     */
+    distinct?: AchievementScalarFieldEnum | AchievementScalarFieldEnum[]
+  }
+
+  /**
+   * achievement findMany
+   */
+  export type achievementFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the achievement
+     */
+    select?: achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the achievement
+     */
+    omit?: achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: achievementInclude<ExtArgs> | null
+    /**
+     * Filter, which achievements to fetch.
+     */
+    where?: achievementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of achievements to fetch.
+     */
+    orderBy?: achievementOrderByWithRelationInput | achievementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing achievements.
+     */
+    cursor?: achievementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` achievements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` achievements.
+     */
+    skip?: number
+    distinct?: AchievementScalarFieldEnum | AchievementScalarFieldEnum[]
+  }
+
+  /**
+   * achievement create
+   */
+  export type achievementCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the achievement
+     */
+    select?: achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the achievement
+     */
+    omit?: achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: achievementInclude<ExtArgs> | null
+    /**
+     * The data needed to create a achievement.
+     */
+    data: XOR<achievementCreateInput, achievementUncheckedCreateInput>
+  }
+
+  /**
+   * achievement createMany
+   */
+  export type achievementCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many achievements.
+     */
+    data: achievementCreateManyInput | achievementCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * achievement update
+   */
+  export type achievementUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the achievement
+     */
+    select?: achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the achievement
+     */
+    omit?: achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: achievementInclude<ExtArgs> | null
+    /**
+     * The data needed to update a achievement.
+     */
+    data: XOR<achievementUpdateInput, achievementUncheckedUpdateInput>
+    /**
+     * Choose, which achievement to update.
+     */
+    where: achievementWhereUniqueInput
+  }
+
+  /**
+   * achievement updateMany
+   */
+  export type achievementUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update achievements.
+     */
+    data: XOR<achievementUpdateManyMutationInput, achievementUncheckedUpdateManyInput>
+    /**
+     * Filter which achievements to update
+     */
+    where?: achievementWhereInput
+    /**
+     * Limit how many achievements to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * achievement upsert
+   */
+  export type achievementUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the achievement
+     */
+    select?: achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the achievement
+     */
+    omit?: achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: achievementInclude<ExtArgs> | null
+    /**
+     * The filter to search for the achievement to update in case it exists.
+     */
+    where: achievementWhereUniqueInput
+    /**
+     * In case the achievement found by the `where` argument doesn't exist, create a new achievement with this data.
+     */
+    create: XOR<achievementCreateInput, achievementUncheckedCreateInput>
+    /**
+     * In case the achievement was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<achievementUpdateInput, achievementUncheckedUpdateInput>
+  }
+
+  /**
+   * achievement delete
+   */
+  export type achievementDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the achievement
+     */
+    select?: achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the achievement
+     */
+    omit?: achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: achievementInclude<ExtArgs> | null
+    /**
+     * Filter which achievement to delete.
+     */
+    where: achievementWhereUniqueInput
+  }
+
+  /**
+   * achievement deleteMany
+   */
+  export type achievementDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which achievements to delete
+     */
+    where?: achievementWhereInput
+    /**
+     * Limit how many achievements to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * achievement.user_achievement
+   */
+  export type achievement$user_achievementArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_achievement
+     */
+    select?: user_achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_achievement
+     */
+    omit?: user_achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_achievementInclude<ExtArgs> | null
+    where?: user_achievementWhereInput
+    orderBy?: user_achievementOrderByWithRelationInput | user_achievementOrderByWithRelationInput[]
+    cursor?: user_achievementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: User_achievementScalarFieldEnum | User_achievementScalarFieldEnum[]
+  }
+
+  /**
+   * achievement without action
+   */
+  export type achievementDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the achievement
+     */
+    select?: achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the achievement
+     */
+    omit?: achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: achievementInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model collection_word
+   */
+
+  export type AggregateCollection_word = {
+    _count: Collection_wordCountAggregateOutputType | null
+    _avg: Collection_wordAvgAggregateOutputType | null
+    _sum: Collection_wordSumAggregateOutputType | null
+    _min: Collection_wordMinAggregateOutputType | null
+    _max: Collection_wordMaxAggregateOutputType | null
+  }
+
+  export type Collection_wordAvgAggregateOutputType = {
+    id: number | null
+    collection_id: number | null
+    word_id: number | null
+    sort_order: number | null
+  }
+
+  export type Collection_wordSumAggregateOutputType = {
+    id: bigint | null
+    collection_id: bigint | null
+    word_id: bigint | null
+    sort_order: number | null
+  }
+
+  export type Collection_wordMinAggregateOutputType = {
+    id: bigint | null
+    collection_id: bigint | null
+    word_id: bigint | null
+    added_time: Date | null
+    sort_order: number | null
+    note: string | null
+  }
+
+  export type Collection_wordMaxAggregateOutputType = {
+    id: bigint | null
+    collection_id: bigint | null
+    word_id: bigint | null
+    added_time: Date | null
+    sort_order: number | null
+    note: string | null
+  }
+
+  export type Collection_wordCountAggregateOutputType = {
+    id: number
+    collection_id: number
+    word_id: number
+    added_time: number
+    sort_order: number
+    note: number
+    _all: number
+  }
+
+
+  export type Collection_wordAvgAggregateInputType = {
+    id?: true
+    collection_id?: true
+    word_id?: true
+    sort_order?: true
+  }
+
+  export type Collection_wordSumAggregateInputType = {
+    id?: true
+    collection_id?: true
+    word_id?: true
+    sort_order?: true
+  }
+
+  export type Collection_wordMinAggregateInputType = {
+    id?: true
+    collection_id?: true
+    word_id?: true
+    added_time?: true
+    sort_order?: true
+    note?: true
+  }
+
+  export type Collection_wordMaxAggregateInputType = {
+    id?: true
+    collection_id?: true
+    word_id?: true
+    added_time?: true
+    sort_order?: true
+    note?: true
+  }
+
+  export type Collection_wordCountAggregateInputType = {
+    id?: true
+    collection_id?: true
+    word_id?: true
+    added_time?: true
+    sort_order?: true
+    note?: true
+    _all?: true
+  }
+
+  export type Collection_wordAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which collection_word to aggregate.
+     */
+    where?: collection_wordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of collection_words to fetch.
+     */
+    orderBy?: collection_wordOrderByWithRelationInput | collection_wordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: collection_wordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` collection_words from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` collection_words.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned collection_words
+    **/
+    _count?: true | Collection_wordCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Collection_wordAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Collection_wordSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Collection_wordMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Collection_wordMaxAggregateInputType
+  }
+
+  export type GetCollection_wordAggregateType<T extends Collection_wordAggregateArgs> = {
+        [P in keyof T & keyof AggregateCollection_word]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCollection_word[P]>
+      : GetScalarType<T[P], AggregateCollection_word[P]>
+  }
+
+
+
+
+  export type collection_wordGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: collection_wordWhereInput
+    orderBy?: collection_wordOrderByWithAggregationInput | collection_wordOrderByWithAggregationInput[]
+    by: Collection_wordScalarFieldEnum[] | Collection_wordScalarFieldEnum
+    having?: collection_wordScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Collection_wordCountAggregateInputType | true
+    _avg?: Collection_wordAvgAggregateInputType
+    _sum?: Collection_wordSumAggregateInputType
+    _min?: Collection_wordMinAggregateInputType
+    _max?: Collection_wordMaxAggregateInputType
+  }
+
+  export type Collection_wordGroupByOutputType = {
+    id: bigint
+    collection_id: bigint
+    word_id: bigint
+    added_time: Date
+    sort_order: number
+    note: string | null
+    _count: Collection_wordCountAggregateOutputType | null
+    _avg: Collection_wordAvgAggregateOutputType | null
+    _sum: Collection_wordSumAggregateOutputType | null
+    _min: Collection_wordMinAggregateOutputType | null
+    _max: Collection_wordMaxAggregateOutputType | null
+  }
+
+  type GetCollection_wordGroupByPayload<T extends collection_wordGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Collection_wordGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Collection_wordGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Collection_wordGroupByOutputType[P]>
+            : GetScalarType<T[P], Collection_wordGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type collection_wordSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    collection_id?: boolean
+    word_id?: boolean
+    added_time?: boolean
+    sort_order?: boolean
+    note?: boolean
+    word_collection?: boolean | word_collectionDefaultArgs<ExtArgs>
+    english_word?: boolean | english_wordDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["collection_word"]>
+
+
+
+  export type collection_wordSelectScalar = {
+    id?: boolean
+    collection_id?: boolean
+    word_id?: boolean
+    added_time?: boolean
+    sort_order?: boolean
+    note?: boolean
+  }
+
+  export type collection_wordOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "collection_id" | "word_id" | "added_time" | "sort_order" | "note", ExtArgs["result"]["collection_word"]>
+  export type collection_wordInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    word_collection?: boolean | word_collectionDefaultArgs<ExtArgs>
+    english_word?: boolean | english_wordDefaultArgs<ExtArgs>
+  }
+
+  export type $collection_wordPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "collection_word"
+    objects: {
+      word_collection: Prisma.$word_collectionPayload<ExtArgs>
+      english_word: Prisma.$english_wordPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      collection_id: bigint
+      word_id: bigint
+      added_time: Date
+      sort_order: number
+      note: string | null
+    }, ExtArgs["result"]["collection_word"]>
+    composites: {}
+  }
+
+  type collection_wordGetPayload<S extends boolean | null | undefined | collection_wordDefaultArgs> = $Result.GetResult<Prisma.$collection_wordPayload, S>
+
+  type collection_wordCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<collection_wordFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Collection_wordCountAggregateInputType | true
+    }
+
+  export interface collection_wordDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['collection_word'], meta: { name: 'collection_word' } }
+    /**
+     * Find zero or one Collection_word that matches the filter.
+     * @param {collection_wordFindUniqueArgs} args - Arguments to find a Collection_word
+     * @example
+     * // Get one Collection_word
+     * const collection_word = await prisma.collection_word.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends collection_wordFindUniqueArgs>(args: SelectSubset<T, collection_wordFindUniqueArgs<ExtArgs>>): Prisma__collection_wordClient<$Result.GetResult<Prisma.$collection_wordPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Collection_word that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {collection_wordFindUniqueOrThrowArgs} args - Arguments to find a Collection_word
+     * @example
+     * // Get one Collection_word
+     * const collection_word = await prisma.collection_word.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends collection_wordFindUniqueOrThrowArgs>(args: SelectSubset<T, collection_wordFindUniqueOrThrowArgs<ExtArgs>>): Prisma__collection_wordClient<$Result.GetResult<Prisma.$collection_wordPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Collection_word that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {collection_wordFindFirstArgs} args - Arguments to find a Collection_word
+     * @example
+     * // Get one Collection_word
+     * const collection_word = await prisma.collection_word.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends collection_wordFindFirstArgs>(args?: SelectSubset<T, collection_wordFindFirstArgs<ExtArgs>>): Prisma__collection_wordClient<$Result.GetResult<Prisma.$collection_wordPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Collection_word that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {collection_wordFindFirstOrThrowArgs} args - Arguments to find a Collection_word
+     * @example
+     * // Get one Collection_word
+     * const collection_word = await prisma.collection_word.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends collection_wordFindFirstOrThrowArgs>(args?: SelectSubset<T, collection_wordFindFirstOrThrowArgs<ExtArgs>>): Prisma__collection_wordClient<$Result.GetResult<Prisma.$collection_wordPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Collection_words that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {collection_wordFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Collection_words
+     * const collection_words = await prisma.collection_word.findMany()
+     * 
+     * // Get first 10 Collection_words
+     * const collection_words = await prisma.collection_word.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const collection_wordWithIdOnly = await prisma.collection_word.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends collection_wordFindManyArgs>(args?: SelectSubset<T, collection_wordFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$collection_wordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Collection_word.
+     * @param {collection_wordCreateArgs} args - Arguments to create a Collection_word.
+     * @example
+     * // Create one Collection_word
+     * const Collection_word = await prisma.collection_word.create({
+     *   data: {
+     *     // ... data to create a Collection_word
+     *   }
+     * })
+     * 
+     */
+    create<T extends collection_wordCreateArgs>(args: SelectSubset<T, collection_wordCreateArgs<ExtArgs>>): Prisma__collection_wordClient<$Result.GetResult<Prisma.$collection_wordPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Collection_words.
+     * @param {collection_wordCreateManyArgs} args - Arguments to create many Collection_words.
+     * @example
+     * // Create many Collection_words
+     * const collection_word = await prisma.collection_word.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends collection_wordCreateManyArgs>(args?: SelectSubset<T, collection_wordCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Collection_word.
+     * @param {collection_wordDeleteArgs} args - Arguments to delete one Collection_word.
+     * @example
+     * // Delete one Collection_word
+     * const Collection_word = await prisma.collection_word.delete({
+     *   where: {
+     *     // ... filter to delete one Collection_word
+     *   }
+     * })
+     * 
+     */
+    delete<T extends collection_wordDeleteArgs>(args: SelectSubset<T, collection_wordDeleteArgs<ExtArgs>>): Prisma__collection_wordClient<$Result.GetResult<Prisma.$collection_wordPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Collection_word.
+     * @param {collection_wordUpdateArgs} args - Arguments to update one Collection_word.
+     * @example
+     * // Update one Collection_word
+     * const collection_word = await prisma.collection_word.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends collection_wordUpdateArgs>(args: SelectSubset<T, collection_wordUpdateArgs<ExtArgs>>): Prisma__collection_wordClient<$Result.GetResult<Prisma.$collection_wordPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Collection_words.
+     * @param {collection_wordDeleteManyArgs} args - Arguments to filter Collection_words to delete.
+     * @example
+     * // Delete a few Collection_words
+     * const { count } = await prisma.collection_word.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends collection_wordDeleteManyArgs>(args?: SelectSubset<T, collection_wordDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Collection_words.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {collection_wordUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Collection_words
+     * const collection_word = await prisma.collection_word.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends collection_wordUpdateManyArgs>(args: SelectSubset<T, collection_wordUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Collection_word.
+     * @param {collection_wordUpsertArgs} args - Arguments to update or create a Collection_word.
+     * @example
+     * // Update or create a Collection_word
+     * const collection_word = await prisma.collection_word.upsert({
+     *   create: {
+     *     // ... data to create a Collection_word
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Collection_word we want to update
+     *   }
+     * })
+     */
+    upsert<T extends collection_wordUpsertArgs>(args: SelectSubset<T, collection_wordUpsertArgs<ExtArgs>>): Prisma__collection_wordClient<$Result.GetResult<Prisma.$collection_wordPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Collection_words.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {collection_wordCountArgs} args - Arguments to filter Collection_words to count.
+     * @example
+     * // Count the number of Collection_words
+     * const count = await prisma.collection_word.count({
+     *   where: {
+     *     // ... the filter for the Collection_words we want to count
+     *   }
+     * })
+    **/
+    count<T extends collection_wordCountArgs>(
+      args?: Subset<T, collection_wordCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Collection_wordCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Collection_word.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Collection_wordAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Collection_wordAggregateArgs>(args: Subset<T, Collection_wordAggregateArgs>): Prisma.PrismaPromise<GetCollection_wordAggregateType<T>>
+
+    /**
+     * Group by Collection_word.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {collection_wordGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends collection_wordGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: collection_wordGroupByArgs['orderBy'] }
+        : { orderBy?: collection_wordGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, collection_wordGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCollection_wordGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the collection_word model
+   */
+  readonly fields: collection_wordFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for collection_word.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__collection_wordClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    word_collection<T extends word_collectionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, word_collectionDefaultArgs<ExtArgs>>): Prisma__word_collectionClient<$Result.GetResult<Prisma.$word_collectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    english_word<T extends english_wordDefaultArgs<ExtArgs> = {}>(args?: Subset<T, english_wordDefaultArgs<ExtArgs>>): Prisma__english_wordClient<$Result.GetResult<Prisma.$english_wordPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the collection_word model
+   */
+  interface collection_wordFieldRefs {
+    readonly id: FieldRef<"collection_word", 'BigInt'>
+    readonly collection_id: FieldRef<"collection_word", 'BigInt'>
+    readonly word_id: FieldRef<"collection_word", 'BigInt'>
+    readonly added_time: FieldRef<"collection_word", 'DateTime'>
+    readonly sort_order: FieldRef<"collection_word", 'Int'>
+    readonly note: FieldRef<"collection_word", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * collection_word findUnique
+   */
+  export type collection_wordFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the collection_word
+     */
+    select?: collection_wordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the collection_word
+     */
+    omit?: collection_wordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: collection_wordInclude<ExtArgs> | null
+    /**
+     * Filter, which collection_word to fetch.
+     */
+    where: collection_wordWhereUniqueInput
+  }
+
+  /**
+   * collection_word findUniqueOrThrow
+   */
+  export type collection_wordFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the collection_word
+     */
+    select?: collection_wordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the collection_word
+     */
+    omit?: collection_wordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: collection_wordInclude<ExtArgs> | null
+    /**
+     * Filter, which collection_word to fetch.
+     */
+    where: collection_wordWhereUniqueInput
+  }
+
+  /**
+   * collection_word findFirst
+   */
+  export type collection_wordFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the collection_word
+     */
+    select?: collection_wordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the collection_word
+     */
+    omit?: collection_wordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: collection_wordInclude<ExtArgs> | null
+    /**
+     * Filter, which collection_word to fetch.
+     */
+    where?: collection_wordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of collection_words to fetch.
+     */
+    orderBy?: collection_wordOrderByWithRelationInput | collection_wordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for collection_words.
+     */
+    cursor?: collection_wordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` collection_words from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` collection_words.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of collection_words.
+     */
+    distinct?: Collection_wordScalarFieldEnum | Collection_wordScalarFieldEnum[]
+  }
+
+  /**
+   * collection_word findFirstOrThrow
+   */
+  export type collection_wordFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the collection_word
+     */
+    select?: collection_wordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the collection_word
+     */
+    omit?: collection_wordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: collection_wordInclude<ExtArgs> | null
+    /**
+     * Filter, which collection_word to fetch.
+     */
+    where?: collection_wordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of collection_words to fetch.
+     */
+    orderBy?: collection_wordOrderByWithRelationInput | collection_wordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for collection_words.
+     */
+    cursor?: collection_wordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` collection_words from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` collection_words.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of collection_words.
+     */
+    distinct?: Collection_wordScalarFieldEnum | Collection_wordScalarFieldEnum[]
+  }
+
+  /**
+   * collection_word findMany
+   */
+  export type collection_wordFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the collection_word
+     */
+    select?: collection_wordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the collection_word
+     */
+    omit?: collection_wordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: collection_wordInclude<ExtArgs> | null
+    /**
+     * Filter, which collection_words to fetch.
+     */
+    where?: collection_wordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of collection_words to fetch.
+     */
+    orderBy?: collection_wordOrderByWithRelationInput | collection_wordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing collection_words.
+     */
+    cursor?: collection_wordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` collection_words from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` collection_words.
+     */
+    skip?: number
+    distinct?: Collection_wordScalarFieldEnum | Collection_wordScalarFieldEnum[]
+  }
+
+  /**
+   * collection_word create
+   */
+  export type collection_wordCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the collection_word
+     */
+    select?: collection_wordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the collection_word
+     */
+    omit?: collection_wordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: collection_wordInclude<ExtArgs> | null
+    /**
+     * The data needed to create a collection_word.
+     */
+    data: XOR<collection_wordCreateInput, collection_wordUncheckedCreateInput>
+  }
+
+  /**
+   * collection_word createMany
+   */
+  export type collection_wordCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many collection_words.
+     */
+    data: collection_wordCreateManyInput | collection_wordCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * collection_word update
+   */
+  export type collection_wordUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the collection_word
+     */
+    select?: collection_wordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the collection_word
+     */
+    omit?: collection_wordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: collection_wordInclude<ExtArgs> | null
+    /**
+     * The data needed to update a collection_word.
+     */
+    data: XOR<collection_wordUpdateInput, collection_wordUncheckedUpdateInput>
+    /**
+     * Choose, which collection_word to update.
+     */
+    where: collection_wordWhereUniqueInput
+  }
+
+  /**
+   * collection_word updateMany
+   */
+  export type collection_wordUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update collection_words.
+     */
+    data: XOR<collection_wordUpdateManyMutationInput, collection_wordUncheckedUpdateManyInput>
+    /**
+     * Filter which collection_words to update
+     */
+    where?: collection_wordWhereInput
+    /**
+     * Limit how many collection_words to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * collection_word upsert
+   */
+  export type collection_wordUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the collection_word
+     */
+    select?: collection_wordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the collection_word
+     */
+    omit?: collection_wordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: collection_wordInclude<ExtArgs> | null
+    /**
+     * The filter to search for the collection_word to update in case it exists.
+     */
+    where: collection_wordWhereUniqueInput
+    /**
+     * In case the collection_word found by the `where` argument doesn't exist, create a new collection_word with this data.
+     */
+    create: XOR<collection_wordCreateInput, collection_wordUncheckedCreateInput>
+    /**
+     * In case the collection_word was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<collection_wordUpdateInput, collection_wordUncheckedUpdateInput>
+  }
+
+  /**
+   * collection_word delete
+   */
+  export type collection_wordDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the collection_word
+     */
+    select?: collection_wordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the collection_word
+     */
+    omit?: collection_wordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: collection_wordInclude<ExtArgs> | null
+    /**
+     * Filter which collection_word to delete.
+     */
+    where: collection_wordWhereUniqueInput
+  }
+
+  /**
+   * collection_word deleteMany
+   */
+  export type collection_wordDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which collection_words to delete
+     */
+    where?: collection_wordWhereInput
+    /**
+     * Limit how many collection_words to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * collection_word without action
+   */
+  export type collection_wordDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the collection_word
+     */
+    select?: collection_wordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the collection_word
+     */
+    omit?: collection_wordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: collection_wordInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model game_record
+   */
+
+  export type AggregateGame_record = {
+    _count: Game_recordCountAggregateOutputType | null
+    _avg: Game_recordAvgAggregateOutputType | null
+    _sum: Game_recordSumAggregateOutputType | null
+    _min: Game_recordMinAggregateOutputType | null
+    _max: Game_recordMaxAggregateOutputType | null
+  }
+
+  export type Game_recordAvgAggregateOutputType = {
+    id: number | null
+    user_id: number | null
+    score: number | null
+    duration: number | null
+    words_count: number | null
+    correct_count: number | null
+    wrong_count: number | null
+    level: number | null
+    is_delete: number | null
+  }
+
+  export type Game_recordSumAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    score: number | null
+    duration: number | null
+    words_count: number | null
+    correct_count: number | null
+    wrong_count: number | null
+    level: number | null
+    is_delete: number | null
+  }
+
+  export type Game_recordMinAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    game_type: string | null
+    score: number | null
+    duration: number | null
+    words_count: number | null
+    correct_count: number | null
+    wrong_count: number | null
+    level: number | null
+    created_at: Date | null
+    update_time: Date | null
+    is_delete: number | null
+  }
+
+  export type Game_recordMaxAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    game_type: string | null
+    score: number | null
+    duration: number | null
+    words_count: number | null
+    correct_count: number | null
+    wrong_count: number | null
+    level: number | null
+    created_at: Date | null
+    update_time: Date | null
+    is_delete: number | null
+  }
+
+  export type Game_recordCountAggregateOutputType = {
+    id: number
+    user_id: number
+    game_type: number
+    score: number
+    duration: number
+    words_count: number
+    correct_count: number
+    wrong_count: number
+    level: number
+    game_data: number
+    created_at: number
+    update_time: number
+    is_delete: number
+    _all: number
+  }
+
+
+  export type Game_recordAvgAggregateInputType = {
+    id?: true
+    user_id?: true
+    score?: true
+    duration?: true
+    words_count?: true
+    correct_count?: true
+    wrong_count?: true
+    level?: true
+    is_delete?: true
+  }
+
+  export type Game_recordSumAggregateInputType = {
+    id?: true
+    user_id?: true
+    score?: true
+    duration?: true
+    words_count?: true
+    correct_count?: true
+    wrong_count?: true
+    level?: true
+    is_delete?: true
+  }
+
+  export type Game_recordMinAggregateInputType = {
+    id?: true
+    user_id?: true
+    game_type?: true
+    score?: true
+    duration?: true
+    words_count?: true
+    correct_count?: true
+    wrong_count?: true
+    level?: true
+    created_at?: true
+    update_time?: true
+    is_delete?: true
+  }
+
+  export type Game_recordMaxAggregateInputType = {
+    id?: true
+    user_id?: true
+    game_type?: true
+    score?: true
+    duration?: true
+    words_count?: true
+    correct_count?: true
+    wrong_count?: true
+    level?: true
+    created_at?: true
+    update_time?: true
+    is_delete?: true
+  }
+
+  export type Game_recordCountAggregateInputType = {
+    id?: true
+    user_id?: true
+    game_type?: true
+    score?: true
+    duration?: true
+    words_count?: true
+    correct_count?: true
+    wrong_count?: true
+    level?: true
+    game_data?: true
+    created_at?: true
+    update_time?: true
+    is_delete?: true
+    _all?: true
+  }
+
+  export type Game_recordAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which game_record to aggregate.
+     */
+    where?: game_recordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of game_records to fetch.
+     */
+    orderBy?: game_recordOrderByWithRelationInput | game_recordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: game_recordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` game_records from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` game_records.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned game_records
+    **/
+    _count?: true | Game_recordCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Game_recordAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Game_recordSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Game_recordMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Game_recordMaxAggregateInputType
+  }
+
+  export type GetGame_recordAggregateType<T extends Game_recordAggregateArgs> = {
+        [P in keyof T & keyof AggregateGame_record]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGame_record[P]>
+      : GetScalarType<T[P], AggregateGame_record[P]>
+  }
+
+
+
+
+  export type game_recordGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: game_recordWhereInput
+    orderBy?: game_recordOrderByWithAggregationInput | game_recordOrderByWithAggregationInput[]
+    by: Game_recordScalarFieldEnum[] | Game_recordScalarFieldEnum
+    having?: game_recordScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Game_recordCountAggregateInputType | true
+    _avg?: Game_recordAvgAggregateInputType
+    _sum?: Game_recordSumAggregateInputType
+    _min?: Game_recordMinAggregateInputType
+    _max?: Game_recordMaxAggregateInputType
+  }
+
+  export type Game_recordGroupByOutputType = {
+    id: bigint
+    user_id: bigint
+    game_type: string
+    score: number
+    duration: number
+    words_count: number
+    correct_count: number
+    wrong_count: number
+    level: number
+    game_data: JsonValue | null
+    created_at: Date
+    update_time: Date
+    is_delete: number
+    _count: Game_recordCountAggregateOutputType | null
+    _avg: Game_recordAvgAggregateOutputType | null
+    _sum: Game_recordSumAggregateOutputType | null
+    _min: Game_recordMinAggregateOutputType | null
+    _max: Game_recordMaxAggregateOutputType | null
+  }
+
+  type GetGame_recordGroupByPayload<T extends game_recordGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Game_recordGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Game_recordGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Game_recordGroupByOutputType[P]>
+            : GetScalarType<T[P], Game_recordGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type game_recordSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    game_type?: boolean
+    score?: boolean
+    duration?: boolean
+    words_count?: boolean
+    correct_count?: boolean
+    wrong_count?: boolean
+    level?: boolean
+    game_data?: boolean
+    created_at?: boolean
+    update_time?: boolean
+    is_delete?: boolean
+    user?: boolean | userDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["game_record"]>
+
+
+
+  export type game_recordSelectScalar = {
+    id?: boolean
+    user_id?: boolean
+    game_type?: boolean
+    score?: boolean
+    duration?: boolean
+    words_count?: boolean
+    correct_count?: boolean
+    wrong_count?: boolean
+    level?: boolean
+    game_data?: boolean
+    created_at?: boolean
+    update_time?: boolean
+    is_delete?: boolean
+  }
+
+  export type game_recordOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "game_type" | "score" | "duration" | "words_count" | "correct_count" | "wrong_count" | "level" | "game_data" | "created_at" | "update_time" | "is_delete", ExtArgs["result"]["game_record"]>
+  export type game_recordInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | userDefaultArgs<ExtArgs>
+  }
+
+  export type $game_recordPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "game_record"
+    objects: {
+      user: Prisma.$userPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      user_id: bigint
+      game_type: string
+      score: number
+      duration: number
+      words_count: number
+      correct_count: number
+      wrong_count: number
+      level: number
+      game_data: Prisma.JsonValue | null
+      created_at: Date
+      update_time: Date
+      is_delete: number
+    }, ExtArgs["result"]["game_record"]>
+    composites: {}
+  }
+
+  type game_recordGetPayload<S extends boolean | null | undefined | game_recordDefaultArgs> = $Result.GetResult<Prisma.$game_recordPayload, S>
+
+  type game_recordCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<game_recordFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Game_recordCountAggregateInputType | true
+    }
+
+  export interface game_recordDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['game_record'], meta: { name: 'game_record' } }
+    /**
+     * Find zero or one Game_record that matches the filter.
+     * @param {game_recordFindUniqueArgs} args - Arguments to find a Game_record
+     * @example
+     * // Get one Game_record
+     * const game_record = await prisma.game_record.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends game_recordFindUniqueArgs>(args: SelectSubset<T, game_recordFindUniqueArgs<ExtArgs>>): Prisma__game_recordClient<$Result.GetResult<Prisma.$game_recordPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Game_record that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {game_recordFindUniqueOrThrowArgs} args - Arguments to find a Game_record
+     * @example
+     * // Get one Game_record
+     * const game_record = await prisma.game_record.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends game_recordFindUniqueOrThrowArgs>(args: SelectSubset<T, game_recordFindUniqueOrThrowArgs<ExtArgs>>): Prisma__game_recordClient<$Result.GetResult<Prisma.$game_recordPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Game_record that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {game_recordFindFirstArgs} args - Arguments to find a Game_record
+     * @example
+     * // Get one Game_record
+     * const game_record = await prisma.game_record.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends game_recordFindFirstArgs>(args?: SelectSubset<T, game_recordFindFirstArgs<ExtArgs>>): Prisma__game_recordClient<$Result.GetResult<Prisma.$game_recordPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Game_record that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {game_recordFindFirstOrThrowArgs} args - Arguments to find a Game_record
+     * @example
+     * // Get one Game_record
+     * const game_record = await prisma.game_record.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends game_recordFindFirstOrThrowArgs>(args?: SelectSubset<T, game_recordFindFirstOrThrowArgs<ExtArgs>>): Prisma__game_recordClient<$Result.GetResult<Prisma.$game_recordPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Game_records that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {game_recordFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Game_records
+     * const game_records = await prisma.game_record.findMany()
+     * 
+     * // Get first 10 Game_records
+     * const game_records = await prisma.game_record.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const game_recordWithIdOnly = await prisma.game_record.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends game_recordFindManyArgs>(args?: SelectSubset<T, game_recordFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$game_recordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Game_record.
+     * @param {game_recordCreateArgs} args - Arguments to create a Game_record.
+     * @example
+     * // Create one Game_record
+     * const Game_record = await prisma.game_record.create({
+     *   data: {
+     *     // ... data to create a Game_record
+     *   }
+     * })
+     * 
+     */
+    create<T extends game_recordCreateArgs>(args: SelectSubset<T, game_recordCreateArgs<ExtArgs>>): Prisma__game_recordClient<$Result.GetResult<Prisma.$game_recordPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Game_records.
+     * @param {game_recordCreateManyArgs} args - Arguments to create many Game_records.
+     * @example
+     * // Create many Game_records
+     * const game_record = await prisma.game_record.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends game_recordCreateManyArgs>(args?: SelectSubset<T, game_recordCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Game_record.
+     * @param {game_recordDeleteArgs} args - Arguments to delete one Game_record.
+     * @example
+     * // Delete one Game_record
+     * const Game_record = await prisma.game_record.delete({
+     *   where: {
+     *     // ... filter to delete one Game_record
+     *   }
+     * })
+     * 
+     */
+    delete<T extends game_recordDeleteArgs>(args: SelectSubset<T, game_recordDeleteArgs<ExtArgs>>): Prisma__game_recordClient<$Result.GetResult<Prisma.$game_recordPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Game_record.
+     * @param {game_recordUpdateArgs} args - Arguments to update one Game_record.
+     * @example
+     * // Update one Game_record
+     * const game_record = await prisma.game_record.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends game_recordUpdateArgs>(args: SelectSubset<T, game_recordUpdateArgs<ExtArgs>>): Prisma__game_recordClient<$Result.GetResult<Prisma.$game_recordPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Game_records.
+     * @param {game_recordDeleteManyArgs} args - Arguments to filter Game_records to delete.
+     * @example
+     * // Delete a few Game_records
+     * const { count } = await prisma.game_record.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends game_recordDeleteManyArgs>(args?: SelectSubset<T, game_recordDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Game_records.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {game_recordUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Game_records
+     * const game_record = await prisma.game_record.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends game_recordUpdateManyArgs>(args: SelectSubset<T, game_recordUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Game_record.
+     * @param {game_recordUpsertArgs} args - Arguments to update or create a Game_record.
+     * @example
+     * // Update or create a Game_record
+     * const game_record = await prisma.game_record.upsert({
+     *   create: {
+     *     // ... data to create a Game_record
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Game_record we want to update
+     *   }
+     * })
+     */
+    upsert<T extends game_recordUpsertArgs>(args: SelectSubset<T, game_recordUpsertArgs<ExtArgs>>): Prisma__game_recordClient<$Result.GetResult<Prisma.$game_recordPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Game_records.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {game_recordCountArgs} args - Arguments to filter Game_records to count.
+     * @example
+     * // Count the number of Game_records
+     * const count = await prisma.game_record.count({
+     *   where: {
+     *     // ... the filter for the Game_records we want to count
+     *   }
+     * })
+    **/
+    count<T extends game_recordCountArgs>(
+      args?: Subset<T, game_recordCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Game_recordCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Game_record.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Game_recordAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Game_recordAggregateArgs>(args: Subset<T, Game_recordAggregateArgs>): Prisma.PrismaPromise<GetGame_recordAggregateType<T>>
+
+    /**
+     * Group by Game_record.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {game_recordGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends game_recordGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: game_recordGroupByArgs['orderBy'] }
+        : { orderBy?: game_recordGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, game_recordGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGame_recordGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the game_record model
+   */
+  readonly fields: game_recordFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for game_record.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__game_recordClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends userDefaultArgs<ExtArgs> = {}>(args?: Subset<T, userDefaultArgs<ExtArgs>>): Prisma__userClient<$Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the game_record model
+   */
+  interface game_recordFieldRefs {
+    readonly id: FieldRef<"game_record", 'BigInt'>
+    readonly user_id: FieldRef<"game_record", 'BigInt'>
+    readonly game_type: FieldRef<"game_record", 'String'>
+    readonly score: FieldRef<"game_record", 'Int'>
+    readonly duration: FieldRef<"game_record", 'Int'>
+    readonly words_count: FieldRef<"game_record", 'Int'>
+    readonly correct_count: FieldRef<"game_record", 'Int'>
+    readonly wrong_count: FieldRef<"game_record", 'Int'>
+    readonly level: FieldRef<"game_record", 'Int'>
+    readonly game_data: FieldRef<"game_record", 'Json'>
+    readonly created_at: FieldRef<"game_record", 'DateTime'>
+    readonly update_time: FieldRef<"game_record", 'DateTime'>
+    readonly is_delete: FieldRef<"game_record", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * game_record findUnique
+   */
+  export type game_recordFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the game_record
+     */
+    select?: game_recordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the game_record
+     */
+    omit?: game_recordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: game_recordInclude<ExtArgs> | null
+    /**
+     * Filter, which game_record to fetch.
+     */
+    where: game_recordWhereUniqueInput
+  }
+
+  /**
+   * game_record findUniqueOrThrow
+   */
+  export type game_recordFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the game_record
+     */
+    select?: game_recordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the game_record
+     */
+    omit?: game_recordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: game_recordInclude<ExtArgs> | null
+    /**
+     * Filter, which game_record to fetch.
+     */
+    where: game_recordWhereUniqueInput
+  }
+
+  /**
+   * game_record findFirst
+   */
+  export type game_recordFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the game_record
+     */
+    select?: game_recordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the game_record
+     */
+    omit?: game_recordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: game_recordInclude<ExtArgs> | null
+    /**
+     * Filter, which game_record to fetch.
+     */
+    where?: game_recordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of game_records to fetch.
+     */
+    orderBy?: game_recordOrderByWithRelationInput | game_recordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for game_records.
+     */
+    cursor?: game_recordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` game_records from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` game_records.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of game_records.
+     */
+    distinct?: Game_recordScalarFieldEnum | Game_recordScalarFieldEnum[]
+  }
+
+  /**
+   * game_record findFirstOrThrow
+   */
+  export type game_recordFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the game_record
+     */
+    select?: game_recordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the game_record
+     */
+    omit?: game_recordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: game_recordInclude<ExtArgs> | null
+    /**
+     * Filter, which game_record to fetch.
+     */
+    where?: game_recordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of game_records to fetch.
+     */
+    orderBy?: game_recordOrderByWithRelationInput | game_recordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for game_records.
+     */
+    cursor?: game_recordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` game_records from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` game_records.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of game_records.
+     */
+    distinct?: Game_recordScalarFieldEnum | Game_recordScalarFieldEnum[]
+  }
+
+  /**
+   * game_record findMany
+   */
+  export type game_recordFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the game_record
+     */
+    select?: game_recordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the game_record
+     */
+    omit?: game_recordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: game_recordInclude<ExtArgs> | null
+    /**
+     * Filter, which game_records to fetch.
+     */
+    where?: game_recordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of game_records to fetch.
+     */
+    orderBy?: game_recordOrderByWithRelationInput | game_recordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing game_records.
+     */
+    cursor?: game_recordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` game_records from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` game_records.
+     */
+    skip?: number
+    distinct?: Game_recordScalarFieldEnum | Game_recordScalarFieldEnum[]
+  }
+
+  /**
+   * game_record create
+   */
+  export type game_recordCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the game_record
+     */
+    select?: game_recordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the game_record
+     */
+    omit?: game_recordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: game_recordInclude<ExtArgs> | null
+    /**
+     * The data needed to create a game_record.
+     */
+    data: XOR<game_recordCreateInput, game_recordUncheckedCreateInput>
+  }
+
+  /**
+   * game_record createMany
+   */
+  export type game_recordCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many game_records.
+     */
+    data: game_recordCreateManyInput | game_recordCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * game_record update
+   */
+  export type game_recordUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the game_record
+     */
+    select?: game_recordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the game_record
+     */
+    omit?: game_recordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: game_recordInclude<ExtArgs> | null
+    /**
+     * The data needed to update a game_record.
+     */
+    data: XOR<game_recordUpdateInput, game_recordUncheckedUpdateInput>
+    /**
+     * Choose, which game_record to update.
+     */
+    where: game_recordWhereUniqueInput
+  }
+
+  /**
+   * game_record updateMany
+   */
+  export type game_recordUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update game_records.
+     */
+    data: XOR<game_recordUpdateManyMutationInput, game_recordUncheckedUpdateManyInput>
+    /**
+     * Filter which game_records to update
+     */
+    where?: game_recordWhereInput
+    /**
+     * Limit how many game_records to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * game_record upsert
+   */
+  export type game_recordUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the game_record
+     */
+    select?: game_recordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the game_record
+     */
+    omit?: game_recordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: game_recordInclude<ExtArgs> | null
+    /**
+     * The filter to search for the game_record to update in case it exists.
+     */
+    where: game_recordWhereUniqueInput
+    /**
+     * In case the game_record found by the `where` argument doesn't exist, create a new game_record with this data.
+     */
+    create: XOR<game_recordCreateInput, game_recordUncheckedCreateInput>
+    /**
+     * In case the game_record was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<game_recordUpdateInput, game_recordUncheckedUpdateInput>
+  }
+
+  /**
+   * game_record delete
+   */
+  export type game_recordDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the game_record
+     */
+    select?: game_recordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the game_record
+     */
+    omit?: game_recordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: game_recordInclude<ExtArgs> | null
+    /**
+     * Filter which game_record to delete.
+     */
+    where: game_recordWhereUniqueInput
+  }
+
+  /**
+   * game_record deleteMany
+   */
+  export type game_recordDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which game_records to delete
+     */
+    where?: game_recordWhereInput
+    /**
+     * Limit how many game_records to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * game_record without action
+   */
+  export type game_recordDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the game_record
+     */
+    select?: game_recordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the game_record
+     */
+    omit?: game_recordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: game_recordInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model learning_progress
+   */
+
+  export type AggregateLearning_progress = {
+    _count: Learning_progressCountAggregateOutputType | null
+    _avg: Learning_progressAvgAggregateOutputType | null
+    _sum: Learning_progressSumAggregateOutputType | null
+    _min: Learning_progressMinAggregateOutputType | null
+    _max: Learning_progressMaxAggregateOutputType | null
+  }
+
+  export type Learning_progressAvgAggregateOutputType = {
+    id: number | null
+    user_id: number | null
+    word_id: number | null
+    is_delete: number | null
+    study_plan_id: number | null
+    attempt_count: number | null
+  }
+
+  export type Learning_progressSumAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    word_id: bigint | null
+    is_delete: number | null
+    study_plan_id: bigint | null
+    attempt_count: number | null
+  }
+
+  export type Learning_progressMinAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    word_id: bigint | null
+    action_type: string | null
+    created_at: Date | null
+    update_time: Date | null
+    is_delete: number | null
+    study_plan_id: bigint | null
+    source: string | null
+    attempt_count: number | null
+    start_time: Date | null
+    end_time: Date | null
+  }
+
+  export type Learning_progressMaxAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    word_id: bigint | null
+    action_type: string | null
+    created_at: Date | null
+    update_time: Date | null
+    is_delete: number | null
+    study_plan_id: bigint | null
+    source: string | null
+    attempt_count: number | null
+    start_time: Date | null
+    end_time: Date | null
+  }
+
+  export type Learning_progressCountAggregateOutputType = {
+    id: number
+    user_id: number
+    word_id: number
+    action_type: number
+    learning_details: number
+    created_at: number
+    update_time: number
+    is_delete: number
+    study_plan_id: number
+    source: number
+    device_info: number
+    attempt_count: number
+    start_time: number
+    end_time: number
+    _all: number
+  }
+
+
+  export type Learning_progressAvgAggregateInputType = {
+    id?: true
+    user_id?: true
+    word_id?: true
+    is_delete?: true
+    study_plan_id?: true
+    attempt_count?: true
+  }
+
+  export type Learning_progressSumAggregateInputType = {
+    id?: true
+    user_id?: true
+    word_id?: true
+    is_delete?: true
+    study_plan_id?: true
+    attempt_count?: true
+  }
+
+  export type Learning_progressMinAggregateInputType = {
+    id?: true
+    user_id?: true
+    word_id?: true
+    action_type?: true
+    created_at?: true
+    update_time?: true
+    is_delete?: true
+    study_plan_id?: true
+    source?: true
+    attempt_count?: true
+    start_time?: true
+    end_time?: true
+  }
+
+  export type Learning_progressMaxAggregateInputType = {
+    id?: true
+    user_id?: true
+    word_id?: true
+    action_type?: true
+    created_at?: true
+    update_time?: true
+    is_delete?: true
+    study_plan_id?: true
+    source?: true
+    attempt_count?: true
+    start_time?: true
+    end_time?: true
+  }
+
+  export type Learning_progressCountAggregateInputType = {
+    id?: true
+    user_id?: true
+    word_id?: true
+    action_type?: true
+    learning_details?: true
+    created_at?: true
+    update_time?: true
+    is_delete?: true
+    study_plan_id?: true
+    source?: true
+    device_info?: true
+    attempt_count?: true
+    start_time?: true
+    end_time?: true
+    _all?: true
+  }
+
+  export type Learning_progressAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which learning_progress to aggregate.
+     */
+    where?: learning_progressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of learning_progresses to fetch.
+     */
+    orderBy?: learning_progressOrderByWithRelationInput | learning_progressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: learning_progressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` learning_progresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` learning_progresses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned learning_progresses
+    **/
+    _count?: true | Learning_progressCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Learning_progressAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Learning_progressSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Learning_progressMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Learning_progressMaxAggregateInputType
+  }
+
+  export type GetLearning_progressAggregateType<T extends Learning_progressAggregateArgs> = {
+        [P in keyof T & keyof AggregateLearning_progress]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLearning_progress[P]>
+      : GetScalarType<T[P], AggregateLearning_progress[P]>
+  }
+
+
+
+
+  export type learning_progressGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: learning_progressWhereInput
+    orderBy?: learning_progressOrderByWithAggregationInput | learning_progressOrderByWithAggregationInput[]
+    by: Learning_progressScalarFieldEnum[] | Learning_progressScalarFieldEnum
+    having?: learning_progressScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Learning_progressCountAggregateInputType | true
+    _avg?: Learning_progressAvgAggregateInputType
+    _sum?: Learning_progressSumAggregateInputType
+    _min?: Learning_progressMinAggregateInputType
+    _max?: Learning_progressMaxAggregateInputType
+  }
+
+  export type Learning_progressGroupByOutputType = {
+    id: bigint
+    user_id: bigint
+    word_id: bigint
+    action_type: string
+    learning_details: JsonValue | null
+    created_at: Date
+    update_time: Date
+    is_delete: number
+    study_plan_id: bigint | null
+    source: string | null
+    device_info: JsonValue | null
+    attempt_count: number
+    start_time: Date | null
+    end_time: Date | null
+    _count: Learning_progressCountAggregateOutputType | null
+    _avg: Learning_progressAvgAggregateOutputType | null
+    _sum: Learning_progressSumAggregateOutputType | null
+    _min: Learning_progressMinAggregateOutputType | null
+    _max: Learning_progressMaxAggregateOutputType | null
+  }
+
+  type GetLearning_progressGroupByPayload<T extends learning_progressGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Learning_progressGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Learning_progressGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Learning_progressGroupByOutputType[P]>
+            : GetScalarType<T[P], Learning_progressGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type learning_progressSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    word_id?: boolean
+    action_type?: boolean
+    learning_details?: boolean
+    created_at?: boolean
+    update_time?: boolean
+    is_delete?: boolean
+    study_plan_id?: boolean
+    source?: boolean
+    device_info?: boolean
+    attempt_count?: boolean
+    start_time?: boolean
+    end_time?: boolean
+    study_plan?: boolean | learning_progress$study_planArgs<ExtArgs>
+    user?: boolean | userDefaultArgs<ExtArgs>
+    english_word?: boolean | english_wordDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["learning_progress"]>
+
+
+
+  export type learning_progressSelectScalar = {
+    id?: boolean
+    user_id?: boolean
+    word_id?: boolean
+    action_type?: boolean
+    learning_details?: boolean
+    created_at?: boolean
+    update_time?: boolean
+    is_delete?: boolean
+    study_plan_id?: boolean
+    source?: boolean
+    device_info?: boolean
+    attempt_count?: boolean
+    start_time?: boolean
+    end_time?: boolean
+  }
+
+  export type learning_progressOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "word_id" | "action_type" | "learning_details" | "created_at" | "update_time" | "is_delete" | "study_plan_id" | "source" | "device_info" | "attempt_count" | "start_time" | "end_time", ExtArgs["result"]["learning_progress"]>
+  export type learning_progressInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    study_plan?: boolean | learning_progress$study_planArgs<ExtArgs>
+    user?: boolean | userDefaultArgs<ExtArgs>
+    english_word?: boolean | english_wordDefaultArgs<ExtArgs>
+  }
+
+  export type $learning_progressPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "learning_progress"
+    objects: {
+      study_plan: Prisma.$study_planPayload<ExtArgs> | null
+      user: Prisma.$userPayload<ExtArgs>
+      english_word: Prisma.$english_wordPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      user_id: bigint
+      word_id: bigint
+      action_type: string
+      learning_details: Prisma.JsonValue | null
+      created_at: Date
+      update_time: Date
+      is_delete: number
+      study_plan_id: bigint | null
+      source: string | null
+      device_info: Prisma.JsonValue | null
+      attempt_count: number
+      start_time: Date | null
+      end_time: Date | null
+    }, ExtArgs["result"]["learning_progress"]>
+    composites: {}
+  }
+
+  type learning_progressGetPayload<S extends boolean | null | undefined | learning_progressDefaultArgs> = $Result.GetResult<Prisma.$learning_progressPayload, S>
+
+  type learning_progressCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<learning_progressFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Learning_progressCountAggregateInputType | true
+    }
+
+  export interface learning_progressDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['learning_progress'], meta: { name: 'learning_progress' } }
+    /**
+     * Find zero or one Learning_progress that matches the filter.
+     * @param {learning_progressFindUniqueArgs} args - Arguments to find a Learning_progress
+     * @example
+     * // Get one Learning_progress
+     * const learning_progress = await prisma.learning_progress.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends learning_progressFindUniqueArgs>(args: SelectSubset<T, learning_progressFindUniqueArgs<ExtArgs>>): Prisma__learning_progressClient<$Result.GetResult<Prisma.$learning_progressPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Learning_progress that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {learning_progressFindUniqueOrThrowArgs} args - Arguments to find a Learning_progress
+     * @example
+     * // Get one Learning_progress
+     * const learning_progress = await prisma.learning_progress.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends learning_progressFindUniqueOrThrowArgs>(args: SelectSubset<T, learning_progressFindUniqueOrThrowArgs<ExtArgs>>): Prisma__learning_progressClient<$Result.GetResult<Prisma.$learning_progressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Learning_progress that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {learning_progressFindFirstArgs} args - Arguments to find a Learning_progress
+     * @example
+     * // Get one Learning_progress
+     * const learning_progress = await prisma.learning_progress.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends learning_progressFindFirstArgs>(args?: SelectSubset<T, learning_progressFindFirstArgs<ExtArgs>>): Prisma__learning_progressClient<$Result.GetResult<Prisma.$learning_progressPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Learning_progress that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {learning_progressFindFirstOrThrowArgs} args - Arguments to find a Learning_progress
+     * @example
+     * // Get one Learning_progress
+     * const learning_progress = await prisma.learning_progress.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends learning_progressFindFirstOrThrowArgs>(args?: SelectSubset<T, learning_progressFindFirstOrThrowArgs<ExtArgs>>): Prisma__learning_progressClient<$Result.GetResult<Prisma.$learning_progressPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Learning_progresses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {learning_progressFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Learning_progresses
+     * const learning_progresses = await prisma.learning_progress.findMany()
+     * 
+     * // Get first 10 Learning_progresses
+     * const learning_progresses = await prisma.learning_progress.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const learning_progressWithIdOnly = await prisma.learning_progress.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends learning_progressFindManyArgs>(args?: SelectSubset<T, learning_progressFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$learning_progressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Learning_progress.
+     * @param {learning_progressCreateArgs} args - Arguments to create a Learning_progress.
+     * @example
+     * // Create one Learning_progress
+     * const Learning_progress = await prisma.learning_progress.create({
+     *   data: {
+     *     // ... data to create a Learning_progress
+     *   }
+     * })
+     * 
+     */
+    create<T extends learning_progressCreateArgs>(args: SelectSubset<T, learning_progressCreateArgs<ExtArgs>>): Prisma__learning_progressClient<$Result.GetResult<Prisma.$learning_progressPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Learning_progresses.
+     * @param {learning_progressCreateManyArgs} args - Arguments to create many Learning_progresses.
+     * @example
+     * // Create many Learning_progresses
+     * const learning_progress = await prisma.learning_progress.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends learning_progressCreateManyArgs>(args?: SelectSubset<T, learning_progressCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Learning_progress.
+     * @param {learning_progressDeleteArgs} args - Arguments to delete one Learning_progress.
+     * @example
+     * // Delete one Learning_progress
+     * const Learning_progress = await prisma.learning_progress.delete({
+     *   where: {
+     *     // ... filter to delete one Learning_progress
+     *   }
+     * })
+     * 
+     */
+    delete<T extends learning_progressDeleteArgs>(args: SelectSubset<T, learning_progressDeleteArgs<ExtArgs>>): Prisma__learning_progressClient<$Result.GetResult<Prisma.$learning_progressPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Learning_progress.
+     * @param {learning_progressUpdateArgs} args - Arguments to update one Learning_progress.
+     * @example
+     * // Update one Learning_progress
+     * const learning_progress = await prisma.learning_progress.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends learning_progressUpdateArgs>(args: SelectSubset<T, learning_progressUpdateArgs<ExtArgs>>): Prisma__learning_progressClient<$Result.GetResult<Prisma.$learning_progressPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Learning_progresses.
+     * @param {learning_progressDeleteManyArgs} args - Arguments to filter Learning_progresses to delete.
+     * @example
+     * // Delete a few Learning_progresses
+     * const { count } = await prisma.learning_progress.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends learning_progressDeleteManyArgs>(args?: SelectSubset<T, learning_progressDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Learning_progresses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {learning_progressUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Learning_progresses
+     * const learning_progress = await prisma.learning_progress.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends learning_progressUpdateManyArgs>(args: SelectSubset<T, learning_progressUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Learning_progress.
+     * @param {learning_progressUpsertArgs} args - Arguments to update or create a Learning_progress.
+     * @example
+     * // Update or create a Learning_progress
+     * const learning_progress = await prisma.learning_progress.upsert({
+     *   create: {
+     *     // ... data to create a Learning_progress
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Learning_progress we want to update
+     *   }
+     * })
+     */
+    upsert<T extends learning_progressUpsertArgs>(args: SelectSubset<T, learning_progressUpsertArgs<ExtArgs>>): Prisma__learning_progressClient<$Result.GetResult<Prisma.$learning_progressPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Learning_progresses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {learning_progressCountArgs} args - Arguments to filter Learning_progresses to count.
+     * @example
+     * // Count the number of Learning_progresses
+     * const count = await prisma.learning_progress.count({
+     *   where: {
+     *     // ... the filter for the Learning_progresses we want to count
+     *   }
+     * })
+    **/
+    count<T extends learning_progressCountArgs>(
+      args?: Subset<T, learning_progressCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Learning_progressCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Learning_progress.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Learning_progressAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Learning_progressAggregateArgs>(args: Subset<T, Learning_progressAggregateArgs>): Prisma.PrismaPromise<GetLearning_progressAggregateType<T>>
+
+    /**
+     * Group by Learning_progress.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {learning_progressGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends learning_progressGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: learning_progressGroupByArgs['orderBy'] }
+        : { orderBy?: learning_progressGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, learning_progressGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLearning_progressGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the learning_progress model
+   */
+  readonly fields: learning_progressFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for learning_progress.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__learning_progressClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    study_plan<T extends learning_progress$study_planArgs<ExtArgs> = {}>(args?: Subset<T, learning_progress$study_planArgs<ExtArgs>>): Prisma__study_planClient<$Result.GetResult<Prisma.$study_planPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user<T extends userDefaultArgs<ExtArgs> = {}>(args?: Subset<T, userDefaultArgs<ExtArgs>>): Prisma__userClient<$Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    english_word<T extends english_wordDefaultArgs<ExtArgs> = {}>(args?: Subset<T, english_wordDefaultArgs<ExtArgs>>): Prisma__english_wordClient<$Result.GetResult<Prisma.$english_wordPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the learning_progress model
+   */
+  interface learning_progressFieldRefs {
+    readonly id: FieldRef<"learning_progress", 'BigInt'>
+    readonly user_id: FieldRef<"learning_progress", 'BigInt'>
+    readonly word_id: FieldRef<"learning_progress", 'BigInt'>
+    readonly action_type: FieldRef<"learning_progress", 'String'>
+    readonly learning_details: FieldRef<"learning_progress", 'Json'>
+    readonly created_at: FieldRef<"learning_progress", 'DateTime'>
+    readonly update_time: FieldRef<"learning_progress", 'DateTime'>
+    readonly is_delete: FieldRef<"learning_progress", 'Int'>
+    readonly study_plan_id: FieldRef<"learning_progress", 'BigInt'>
+    readonly source: FieldRef<"learning_progress", 'String'>
+    readonly device_info: FieldRef<"learning_progress", 'Json'>
+    readonly attempt_count: FieldRef<"learning_progress", 'Int'>
+    readonly start_time: FieldRef<"learning_progress", 'DateTime'>
+    readonly end_time: FieldRef<"learning_progress", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * learning_progress findUnique
+   */
+  export type learning_progressFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_progress
+     */
+    select?: learning_progressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_progress
+     */
+    omit?: learning_progressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_progressInclude<ExtArgs> | null
+    /**
+     * Filter, which learning_progress to fetch.
+     */
+    where: learning_progressWhereUniqueInput
+  }
+
+  /**
+   * learning_progress findUniqueOrThrow
+   */
+  export type learning_progressFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_progress
+     */
+    select?: learning_progressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_progress
+     */
+    omit?: learning_progressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_progressInclude<ExtArgs> | null
+    /**
+     * Filter, which learning_progress to fetch.
+     */
+    where: learning_progressWhereUniqueInput
+  }
+
+  /**
+   * learning_progress findFirst
+   */
+  export type learning_progressFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_progress
+     */
+    select?: learning_progressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_progress
+     */
+    omit?: learning_progressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_progressInclude<ExtArgs> | null
+    /**
+     * Filter, which learning_progress to fetch.
+     */
+    where?: learning_progressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of learning_progresses to fetch.
+     */
+    orderBy?: learning_progressOrderByWithRelationInput | learning_progressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for learning_progresses.
+     */
+    cursor?: learning_progressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` learning_progresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` learning_progresses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of learning_progresses.
+     */
+    distinct?: Learning_progressScalarFieldEnum | Learning_progressScalarFieldEnum[]
+  }
+
+  /**
+   * learning_progress findFirstOrThrow
+   */
+  export type learning_progressFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_progress
+     */
+    select?: learning_progressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_progress
+     */
+    omit?: learning_progressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_progressInclude<ExtArgs> | null
+    /**
+     * Filter, which learning_progress to fetch.
+     */
+    where?: learning_progressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of learning_progresses to fetch.
+     */
+    orderBy?: learning_progressOrderByWithRelationInput | learning_progressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for learning_progresses.
+     */
+    cursor?: learning_progressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` learning_progresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` learning_progresses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of learning_progresses.
+     */
+    distinct?: Learning_progressScalarFieldEnum | Learning_progressScalarFieldEnum[]
+  }
+
+  /**
+   * learning_progress findMany
+   */
+  export type learning_progressFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_progress
+     */
+    select?: learning_progressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_progress
+     */
+    omit?: learning_progressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_progressInclude<ExtArgs> | null
+    /**
+     * Filter, which learning_progresses to fetch.
+     */
+    where?: learning_progressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of learning_progresses to fetch.
+     */
+    orderBy?: learning_progressOrderByWithRelationInput | learning_progressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing learning_progresses.
+     */
+    cursor?: learning_progressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` learning_progresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` learning_progresses.
+     */
+    skip?: number
+    distinct?: Learning_progressScalarFieldEnum | Learning_progressScalarFieldEnum[]
+  }
+
+  /**
+   * learning_progress create
+   */
+  export type learning_progressCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_progress
+     */
+    select?: learning_progressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_progress
+     */
+    omit?: learning_progressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_progressInclude<ExtArgs> | null
+    /**
+     * The data needed to create a learning_progress.
+     */
+    data: XOR<learning_progressCreateInput, learning_progressUncheckedCreateInput>
+  }
+
+  /**
+   * learning_progress createMany
+   */
+  export type learning_progressCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many learning_progresses.
+     */
+    data: learning_progressCreateManyInput | learning_progressCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * learning_progress update
+   */
+  export type learning_progressUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_progress
+     */
+    select?: learning_progressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_progress
+     */
+    omit?: learning_progressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_progressInclude<ExtArgs> | null
+    /**
+     * The data needed to update a learning_progress.
+     */
+    data: XOR<learning_progressUpdateInput, learning_progressUncheckedUpdateInput>
+    /**
+     * Choose, which learning_progress to update.
+     */
+    where: learning_progressWhereUniqueInput
+  }
+
+  /**
+   * learning_progress updateMany
+   */
+  export type learning_progressUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update learning_progresses.
+     */
+    data: XOR<learning_progressUpdateManyMutationInput, learning_progressUncheckedUpdateManyInput>
+    /**
+     * Filter which learning_progresses to update
+     */
+    where?: learning_progressWhereInput
+    /**
+     * Limit how many learning_progresses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * learning_progress upsert
+   */
+  export type learning_progressUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_progress
+     */
+    select?: learning_progressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_progress
+     */
+    omit?: learning_progressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_progressInclude<ExtArgs> | null
+    /**
+     * The filter to search for the learning_progress to update in case it exists.
+     */
+    where: learning_progressWhereUniqueInput
+    /**
+     * In case the learning_progress found by the `where` argument doesn't exist, create a new learning_progress with this data.
+     */
+    create: XOR<learning_progressCreateInput, learning_progressUncheckedCreateInput>
+    /**
+     * In case the learning_progress was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<learning_progressUpdateInput, learning_progressUncheckedUpdateInput>
+  }
+
+  /**
+   * learning_progress delete
+   */
+  export type learning_progressDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_progress
+     */
+    select?: learning_progressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_progress
+     */
+    omit?: learning_progressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_progressInclude<ExtArgs> | null
+    /**
+     * Filter which learning_progress to delete.
+     */
+    where: learning_progressWhereUniqueInput
+  }
+
+  /**
+   * learning_progress deleteMany
+   */
+  export type learning_progressDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which learning_progresses to delete
+     */
+    where?: learning_progressWhereInput
+    /**
+     * Limit how many learning_progresses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * learning_progress.study_plan
+   */
+  export type learning_progress$study_planArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the study_plan
+     */
+    select?: study_planSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the study_plan
+     */
+    omit?: study_planOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: study_planInclude<ExtArgs> | null
+    where?: study_planWhereInput
+  }
+
+  /**
+   * learning_progress without action
+   */
+  export type learning_progressDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_progress
+     */
+    select?: learning_progressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_progress
+     */
+    omit?: learning_progressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_progressInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model learning_stats
+   */
+
+  export type AggregateLearning_stats = {
+    _count: Learning_statsCountAggregateOutputType | null
+    _avg: Learning_statsAvgAggregateOutputType | null
+    _sum: Learning_statsSumAggregateOutputType | null
+    _min: Learning_statsMinAggregateOutputType | null
+    _max: Learning_statsMaxAggregateOutputType | null
+  }
+
+  export type Learning_statsAvgAggregateOutputType = {
+    id: number | null
+    user_id: number | null
+    total_words_learned: number | null
+    total_review_time: number | null
+    daily_streak: number | null
+    longest_streak: number | null
+    total_study_days: number | null
+  }
+
+  export type Learning_statsSumAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    total_words_learned: number | null
+    total_review_time: number | null
+    daily_streak: number | null
+    longest_streak: number | null
+    total_study_days: number | null
+  }
+
+  export type Learning_statsMinAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    total_words_learned: number | null
+    total_review_time: number | null
+    daily_streak: number | null
+    longest_streak: number | null
+    last_study_date: Date | null
+    total_study_days: number | null
+    created_at: Date | null
+    update_time: Date | null
+  }
+
+  export type Learning_statsMaxAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    total_words_learned: number | null
+    total_review_time: number | null
+    daily_streak: number | null
+    longest_streak: number | null
+    last_study_date: Date | null
+    total_study_days: number | null
+    created_at: Date | null
+    update_time: Date | null
+  }
+
+  export type Learning_statsCountAggregateOutputType = {
+    id: number
+    user_id: number
+    total_words_learned: number
+    total_review_time: number
+    daily_streak: number
+    longest_streak: number
+    last_study_date: number
+    total_study_days: number
+    created_at: number
+    update_time: number
+    _all: number
+  }
+
+
+  export type Learning_statsAvgAggregateInputType = {
+    id?: true
+    user_id?: true
+    total_words_learned?: true
+    total_review_time?: true
+    daily_streak?: true
+    longest_streak?: true
+    total_study_days?: true
+  }
+
+  export type Learning_statsSumAggregateInputType = {
+    id?: true
+    user_id?: true
+    total_words_learned?: true
+    total_review_time?: true
+    daily_streak?: true
+    longest_streak?: true
+    total_study_days?: true
+  }
+
+  export type Learning_statsMinAggregateInputType = {
+    id?: true
+    user_id?: true
+    total_words_learned?: true
+    total_review_time?: true
+    daily_streak?: true
+    longest_streak?: true
+    last_study_date?: true
+    total_study_days?: true
+    created_at?: true
+    update_time?: true
+  }
+
+  export type Learning_statsMaxAggregateInputType = {
+    id?: true
+    user_id?: true
+    total_words_learned?: true
+    total_review_time?: true
+    daily_streak?: true
+    longest_streak?: true
+    last_study_date?: true
+    total_study_days?: true
+    created_at?: true
+    update_time?: true
+  }
+
+  export type Learning_statsCountAggregateInputType = {
+    id?: true
+    user_id?: true
+    total_words_learned?: true
+    total_review_time?: true
+    daily_streak?: true
+    longest_streak?: true
+    last_study_date?: true
+    total_study_days?: true
+    created_at?: true
+    update_time?: true
+    _all?: true
+  }
+
+  export type Learning_statsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which learning_stats to aggregate.
+     */
+    where?: learning_statsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of learning_stats to fetch.
+     */
+    orderBy?: learning_statsOrderByWithRelationInput | learning_statsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: learning_statsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` learning_stats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` learning_stats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned learning_stats
+    **/
+    _count?: true | Learning_statsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Learning_statsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Learning_statsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Learning_statsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Learning_statsMaxAggregateInputType
+  }
+
+  export type GetLearning_statsAggregateType<T extends Learning_statsAggregateArgs> = {
+        [P in keyof T & keyof AggregateLearning_stats]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLearning_stats[P]>
+      : GetScalarType<T[P], AggregateLearning_stats[P]>
+  }
+
+
+
+
+  export type learning_statsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: learning_statsWhereInput
+    orderBy?: learning_statsOrderByWithAggregationInput | learning_statsOrderByWithAggregationInput[]
+    by: Learning_statsScalarFieldEnum[] | Learning_statsScalarFieldEnum
+    having?: learning_statsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Learning_statsCountAggregateInputType | true
+    _avg?: Learning_statsAvgAggregateInputType
+    _sum?: Learning_statsSumAggregateInputType
+    _min?: Learning_statsMinAggregateInputType
+    _max?: Learning_statsMaxAggregateInputType
+  }
+
+  export type Learning_statsGroupByOutputType = {
+    id: bigint
+    user_id: bigint
+    total_words_learned: number
+    total_review_time: number
+    daily_streak: number
+    longest_streak: number
+    last_study_date: Date | null
+    total_study_days: number
+    created_at: Date
+    update_time: Date
+    _count: Learning_statsCountAggregateOutputType | null
+    _avg: Learning_statsAvgAggregateOutputType | null
+    _sum: Learning_statsSumAggregateOutputType | null
+    _min: Learning_statsMinAggregateOutputType | null
+    _max: Learning_statsMaxAggregateOutputType | null
+  }
+
+  type GetLearning_statsGroupByPayload<T extends learning_statsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Learning_statsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Learning_statsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Learning_statsGroupByOutputType[P]>
+            : GetScalarType<T[P], Learning_statsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type learning_statsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    total_words_learned?: boolean
+    total_review_time?: boolean
+    daily_streak?: boolean
+    longest_streak?: boolean
+    last_study_date?: boolean
+    total_study_days?: boolean
+    created_at?: boolean
+    update_time?: boolean
+    user?: boolean | userDefaultArgs<ExtArgs>
+    user_achievement?: boolean | learning_stats$user_achievementArgs<ExtArgs>
+    _count?: boolean | Learning_statsCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["learning_stats"]>
+
+
+
+  export type learning_statsSelectScalar = {
+    id?: boolean
+    user_id?: boolean
+    total_words_learned?: boolean
+    total_review_time?: boolean
+    daily_streak?: boolean
+    longest_streak?: boolean
+    last_study_date?: boolean
+    total_study_days?: boolean
+    created_at?: boolean
+    update_time?: boolean
+  }
+
+  export type learning_statsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "total_words_learned" | "total_review_time" | "daily_streak" | "longest_streak" | "last_study_date" | "total_study_days" | "created_at" | "update_time", ExtArgs["result"]["learning_stats"]>
+  export type learning_statsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | userDefaultArgs<ExtArgs>
+    user_achievement?: boolean | learning_stats$user_achievementArgs<ExtArgs>
+    _count?: boolean | Learning_statsCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $learning_statsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "learning_stats"
+    objects: {
+      user: Prisma.$userPayload<ExtArgs>
+      user_achievement: Prisma.$user_achievementPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      user_id: bigint
+      total_words_learned: number
+      total_review_time: number
+      daily_streak: number
+      longest_streak: number
+      last_study_date: Date | null
+      total_study_days: number
+      created_at: Date
+      update_time: Date
+    }, ExtArgs["result"]["learning_stats"]>
+    composites: {}
+  }
+
+  type learning_statsGetPayload<S extends boolean | null | undefined | learning_statsDefaultArgs> = $Result.GetResult<Prisma.$learning_statsPayload, S>
+
+  type learning_statsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<learning_statsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Learning_statsCountAggregateInputType | true
+    }
+
+  export interface learning_statsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['learning_stats'], meta: { name: 'learning_stats' } }
+    /**
+     * Find zero or one Learning_stats that matches the filter.
+     * @param {learning_statsFindUniqueArgs} args - Arguments to find a Learning_stats
+     * @example
+     * // Get one Learning_stats
+     * const learning_stats = await prisma.learning_stats.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends learning_statsFindUniqueArgs>(args: SelectSubset<T, learning_statsFindUniqueArgs<ExtArgs>>): Prisma__learning_statsClient<$Result.GetResult<Prisma.$learning_statsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Learning_stats that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {learning_statsFindUniqueOrThrowArgs} args - Arguments to find a Learning_stats
+     * @example
+     * // Get one Learning_stats
+     * const learning_stats = await prisma.learning_stats.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends learning_statsFindUniqueOrThrowArgs>(args: SelectSubset<T, learning_statsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__learning_statsClient<$Result.GetResult<Prisma.$learning_statsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Learning_stats that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {learning_statsFindFirstArgs} args - Arguments to find a Learning_stats
+     * @example
+     * // Get one Learning_stats
+     * const learning_stats = await prisma.learning_stats.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends learning_statsFindFirstArgs>(args?: SelectSubset<T, learning_statsFindFirstArgs<ExtArgs>>): Prisma__learning_statsClient<$Result.GetResult<Prisma.$learning_statsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Learning_stats that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {learning_statsFindFirstOrThrowArgs} args - Arguments to find a Learning_stats
+     * @example
+     * // Get one Learning_stats
+     * const learning_stats = await prisma.learning_stats.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends learning_statsFindFirstOrThrowArgs>(args?: SelectSubset<T, learning_statsFindFirstOrThrowArgs<ExtArgs>>): Prisma__learning_statsClient<$Result.GetResult<Prisma.$learning_statsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Learning_stats that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {learning_statsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Learning_stats
+     * const learning_stats = await prisma.learning_stats.findMany()
+     * 
+     * // Get first 10 Learning_stats
+     * const learning_stats = await prisma.learning_stats.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const learning_statsWithIdOnly = await prisma.learning_stats.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends learning_statsFindManyArgs>(args?: SelectSubset<T, learning_statsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$learning_statsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Learning_stats.
+     * @param {learning_statsCreateArgs} args - Arguments to create a Learning_stats.
+     * @example
+     * // Create one Learning_stats
+     * const Learning_stats = await prisma.learning_stats.create({
+     *   data: {
+     *     // ... data to create a Learning_stats
+     *   }
+     * })
+     * 
+     */
+    create<T extends learning_statsCreateArgs>(args: SelectSubset<T, learning_statsCreateArgs<ExtArgs>>): Prisma__learning_statsClient<$Result.GetResult<Prisma.$learning_statsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Learning_stats.
+     * @param {learning_statsCreateManyArgs} args - Arguments to create many Learning_stats.
+     * @example
+     * // Create many Learning_stats
+     * const learning_stats = await prisma.learning_stats.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends learning_statsCreateManyArgs>(args?: SelectSubset<T, learning_statsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Learning_stats.
+     * @param {learning_statsDeleteArgs} args - Arguments to delete one Learning_stats.
+     * @example
+     * // Delete one Learning_stats
+     * const Learning_stats = await prisma.learning_stats.delete({
+     *   where: {
+     *     // ... filter to delete one Learning_stats
+     *   }
+     * })
+     * 
+     */
+    delete<T extends learning_statsDeleteArgs>(args: SelectSubset<T, learning_statsDeleteArgs<ExtArgs>>): Prisma__learning_statsClient<$Result.GetResult<Prisma.$learning_statsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Learning_stats.
+     * @param {learning_statsUpdateArgs} args - Arguments to update one Learning_stats.
+     * @example
+     * // Update one Learning_stats
+     * const learning_stats = await prisma.learning_stats.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends learning_statsUpdateArgs>(args: SelectSubset<T, learning_statsUpdateArgs<ExtArgs>>): Prisma__learning_statsClient<$Result.GetResult<Prisma.$learning_statsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Learning_stats.
+     * @param {learning_statsDeleteManyArgs} args - Arguments to filter Learning_stats to delete.
+     * @example
+     * // Delete a few Learning_stats
+     * const { count } = await prisma.learning_stats.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends learning_statsDeleteManyArgs>(args?: SelectSubset<T, learning_statsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Learning_stats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {learning_statsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Learning_stats
+     * const learning_stats = await prisma.learning_stats.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends learning_statsUpdateManyArgs>(args: SelectSubset<T, learning_statsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Learning_stats.
+     * @param {learning_statsUpsertArgs} args - Arguments to update or create a Learning_stats.
+     * @example
+     * // Update or create a Learning_stats
+     * const learning_stats = await prisma.learning_stats.upsert({
+     *   create: {
+     *     // ... data to create a Learning_stats
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Learning_stats we want to update
+     *   }
+     * })
+     */
+    upsert<T extends learning_statsUpsertArgs>(args: SelectSubset<T, learning_statsUpsertArgs<ExtArgs>>): Prisma__learning_statsClient<$Result.GetResult<Prisma.$learning_statsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Learning_stats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {learning_statsCountArgs} args - Arguments to filter Learning_stats to count.
+     * @example
+     * // Count the number of Learning_stats
+     * const count = await prisma.learning_stats.count({
+     *   where: {
+     *     // ... the filter for the Learning_stats we want to count
+     *   }
+     * })
+    **/
+    count<T extends learning_statsCountArgs>(
+      args?: Subset<T, learning_statsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Learning_statsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Learning_stats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Learning_statsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Learning_statsAggregateArgs>(args: Subset<T, Learning_statsAggregateArgs>): Prisma.PrismaPromise<GetLearning_statsAggregateType<T>>
+
+    /**
+     * Group by Learning_stats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {learning_statsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends learning_statsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: learning_statsGroupByArgs['orderBy'] }
+        : { orderBy?: learning_statsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, learning_statsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLearning_statsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the learning_stats model
+   */
+  readonly fields: learning_statsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for learning_stats.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__learning_statsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends userDefaultArgs<ExtArgs> = {}>(args?: Subset<T, userDefaultArgs<ExtArgs>>): Prisma__userClient<$Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user_achievement<T extends learning_stats$user_achievementArgs<ExtArgs> = {}>(args?: Subset<T, learning_stats$user_achievementArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_achievementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the learning_stats model
+   */
+  interface learning_statsFieldRefs {
+    readonly id: FieldRef<"learning_stats", 'BigInt'>
+    readonly user_id: FieldRef<"learning_stats", 'BigInt'>
+    readonly total_words_learned: FieldRef<"learning_stats", 'Int'>
+    readonly total_review_time: FieldRef<"learning_stats", 'Int'>
+    readonly daily_streak: FieldRef<"learning_stats", 'Int'>
+    readonly longest_streak: FieldRef<"learning_stats", 'Int'>
+    readonly last_study_date: FieldRef<"learning_stats", 'DateTime'>
+    readonly total_study_days: FieldRef<"learning_stats", 'Int'>
+    readonly created_at: FieldRef<"learning_stats", 'DateTime'>
+    readonly update_time: FieldRef<"learning_stats", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * learning_stats findUnique
+   */
+  export type learning_statsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_stats
+     */
+    select?: learning_statsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_stats
+     */
+    omit?: learning_statsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_statsInclude<ExtArgs> | null
+    /**
+     * Filter, which learning_stats to fetch.
+     */
+    where: learning_statsWhereUniqueInput
+  }
+
+  /**
+   * learning_stats findUniqueOrThrow
+   */
+  export type learning_statsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_stats
+     */
+    select?: learning_statsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_stats
+     */
+    omit?: learning_statsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_statsInclude<ExtArgs> | null
+    /**
+     * Filter, which learning_stats to fetch.
+     */
+    where: learning_statsWhereUniqueInput
+  }
+
+  /**
+   * learning_stats findFirst
+   */
+  export type learning_statsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_stats
+     */
+    select?: learning_statsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_stats
+     */
+    omit?: learning_statsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_statsInclude<ExtArgs> | null
+    /**
+     * Filter, which learning_stats to fetch.
+     */
+    where?: learning_statsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of learning_stats to fetch.
+     */
+    orderBy?: learning_statsOrderByWithRelationInput | learning_statsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for learning_stats.
+     */
+    cursor?: learning_statsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` learning_stats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` learning_stats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of learning_stats.
+     */
+    distinct?: Learning_statsScalarFieldEnum | Learning_statsScalarFieldEnum[]
+  }
+
+  /**
+   * learning_stats findFirstOrThrow
+   */
+  export type learning_statsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_stats
+     */
+    select?: learning_statsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_stats
+     */
+    omit?: learning_statsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_statsInclude<ExtArgs> | null
+    /**
+     * Filter, which learning_stats to fetch.
+     */
+    where?: learning_statsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of learning_stats to fetch.
+     */
+    orderBy?: learning_statsOrderByWithRelationInput | learning_statsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for learning_stats.
+     */
+    cursor?: learning_statsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` learning_stats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` learning_stats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of learning_stats.
+     */
+    distinct?: Learning_statsScalarFieldEnum | Learning_statsScalarFieldEnum[]
+  }
+
+  /**
+   * learning_stats findMany
+   */
+  export type learning_statsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_stats
+     */
+    select?: learning_statsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_stats
+     */
+    omit?: learning_statsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_statsInclude<ExtArgs> | null
+    /**
+     * Filter, which learning_stats to fetch.
+     */
+    where?: learning_statsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of learning_stats to fetch.
+     */
+    orderBy?: learning_statsOrderByWithRelationInput | learning_statsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing learning_stats.
+     */
+    cursor?: learning_statsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` learning_stats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` learning_stats.
+     */
+    skip?: number
+    distinct?: Learning_statsScalarFieldEnum | Learning_statsScalarFieldEnum[]
+  }
+
+  /**
+   * learning_stats create
+   */
+  export type learning_statsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_stats
+     */
+    select?: learning_statsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_stats
+     */
+    omit?: learning_statsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_statsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a learning_stats.
+     */
+    data: XOR<learning_statsCreateInput, learning_statsUncheckedCreateInput>
+  }
+
+  /**
+   * learning_stats createMany
+   */
+  export type learning_statsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many learning_stats.
+     */
+    data: learning_statsCreateManyInput | learning_statsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * learning_stats update
+   */
+  export type learning_statsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_stats
+     */
+    select?: learning_statsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_stats
+     */
+    omit?: learning_statsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_statsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a learning_stats.
+     */
+    data: XOR<learning_statsUpdateInput, learning_statsUncheckedUpdateInput>
+    /**
+     * Choose, which learning_stats to update.
+     */
+    where: learning_statsWhereUniqueInput
+  }
+
+  /**
+   * learning_stats updateMany
+   */
+  export type learning_statsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update learning_stats.
+     */
+    data: XOR<learning_statsUpdateManyMutationInput, learning_statsUncheckedUpdateManyInput>
+    /**
+     * Filter which learning_stats to update
+     */
+    where?: learning_statsWhereInput
+    /**
+     * Limit how many learning_stats to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * learning_stats upsert
+   */
+  export type learning_statsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_stats
+     */
+    select?: learning_statsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_stats
+     */
+    omit?: learning_statsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_statsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the learning_stats to update in case it exists.
+     */
+    where: learning_statsWhereUniqueInput
+    /**
+     * In case the learning_stats found by the `where` argument doesn't exist, create a new learning_stats with this data.
+     */
+    create: XOR<learning_statsCreateInput, learning_statsUncheckedCreateInput>
+    /**
+     * In case the learning_stats was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<learning_statsUpdateInput, learning_statsUncheckedUpdateInput>
+  }
+
+  /**
+   * learning_stats delete
+   */
+  export type learning_statsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_stats
+     */
+    select?: learning_statsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_stats
+     */
+    omit?: learning_statsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_statsInclude<ExtArgs> | null
+    /**
+     * Filter which learning_stats to delete.
+     */
+    where: learning_statsWhereUniqueInput
+  }
+
+  /**
+   * learning_stats deleteMany
+   */
+  export type learning_statsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which learning_stats to delete
+     */
+    where?: learning_statsWhereInput
+    /**
+     * Limit how many learning_stats to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * learning_stats.user_achievement
+   */
+  export type learning_stats$user_achievementArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_achievement
+     */
+    select?: user_achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_achievement
+     */
+    omit?: user_achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_achievementInclude<ExtArgs> | null
+    where?: user_achievementWhereInput
+    orderBy?: user_achievementOrderByWithRelationInput | user_achievementOrderByWithRelationInput[]
+    cursor?: user_achievementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: User_achievementScalarFieldEnum | User_achievementScalarFieldEnum[]
+  }
+
+  /**
+   * learning_stats without action
+   */
+  export type learning_statsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_stats
+     */
+    select?: learning_statsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_stats
+     */
+    omit?: learning_statsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_statsInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model point_transaction
+   */
+
+  export type AggregatePoint_transaction = {
+    _count: Point_transactionCountAggregateOutputType | null
+    _avg: Point_transactionAvgAggregateOutputType | null
+    _sum: Point_transactionSumAggregateOutputType | null
+    _min: Point_transactionMinAggregateOutputType | null
+    _max: Point_transactionMaxAggregateOutputType | null
+  }
+
+  export type Point_transactionAvgAggregateOutputType = {
+    id: number | null
+    user_points_id: number | null
+    amount: number | null
+  }
+
+  export type Point_transactionSumAggregateOutputType = {
+    id: bigint | null
+    user_points_id: bigint | null
+    amount: number | null
+  }
+
+  export type Point_transactionMinAggregateOutputType = {
+    id: bigint | null
+    user_points_id: bigint | null
+    amount: number | null
+    type: string | null
+    description: string | null
+    reference_id: string | null
+    created_at: Date | null
+  }
+
+  export type Point_transactionMaxAggregateOutputType = {
+    id: bigint | null
+    user_points_id: bigint | null
+    amount: number | null
+    type: string | null
+    description: string | null
+    reference_id: string | null
+    created_at: Date | null
+  }
+
+  export type Point_transactionCountAggregateOutputType = {
+    id: number
+    user_points_id: number
+    amount: number
+    type: number
+    description: number
+    reference_id: number
+    created_at: number
+    _all: number
+  }
+
+
+  export type Point_transactionAvgAggregateInputType = {
+    id?: true
+    user_points_id?: true
+    amount?: true
+  }
+
+  export type Point_transactionSumAggregateInputType = {
+    id?: true
+    user_points_id?: true
+    amount?: true
+  }
+
+  export type Point_transactionMinAggregateInputType = {
+    id?: true
+    user_points_id?: true
+    amount?: true
+    type?: true
+    description?: true
+    reference_id?: true
+    created_at?: true
+  }
+
+  export type Point_transactionMaxAggregateInputType = {
+    id?: true
+    user_points_id?: true
+    amount?: true
+    type?: true
+    description?: true
+    reference_id?: true
+    created_at?: true
+  }
+
+  export type Point_transactionCountAggregateInputType = {
+    id?: true
+    user_points_id?: true
+    amount?: true
+    type?: true
+    description?: true
+    reference_id?: true
+    created_at?: true
+    _all?: true
+  }
+
+  export type Point_transactionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which point_transaction to aggregate.
+     */
+    where?: point_transactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of point_transactions to fetch.
+     */
+    orderBy?: point_transactionOrderByWithRelationInput | point_transactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: point_transactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` point_transactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` point_transactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned point_transactions
+    **/
+    _count?: true | Point_transactionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Point_transactionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Point_transactionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Point_transactionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Point_transactionMaxAggregateInputType
+  }
+
+  export type GetPoint_transactionAggregateType<T extends Point_transactionAggregateArgs> = {
+        [P in keyof T & keyof AggregatePoint_transaction]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePoint_transaction[P]>
+      : GetScalarType<T[P], AggregatePoint_transaction[P]>
+  }
+
+
+
+
+  export type point_transactionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: point_transactionWhereInput
+    orderBy?: point_transactionOrderByWithAggregationInput | point_transactionOrderByWithAggregationInput[]
+    by: Point_transactionScalarFieldEnum[] | Point_transactionScalarFieldEnum
+    having?: point_transactionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Point_transactionCountAggregateInputType | true
+    _avg?: Point_transactionAvgAggregateInputType
+    _sum?: Point_transactionSumAggregateInputType
+    _min?: Point_transactionMinAggregateInputType
+    _max?: Point_transactionMaxAggregateInputType
+  }
+
+  export type Point_transactionGroupByOutputType = {
+    id: bigint
+    user_points_id: bigint
+    amount: number
+    type: string
+    description: string | null
+    reference_id: string | null
+    created_at: Date
+    _count: Point_transactionCountAggregateOutputType | null
+    _avg: Point_transactionAvgAggregateOutputType | null
+    _sum: Point_transactionSumAggregateOutputType | null
+    _min: Point_transactionMinAggregateOutputType | null
+    _max: Point_transactionMaxAggregateOutputType | null
+  }
+
+  type GetPoint_transactionGroupByPayload<T extends point_transactionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Point_transactionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Point_transactionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Point_transactionGroupByOutputType[P]>
+            : GetScalarType<T[P], Point_transactionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type point_transactionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_points_id?: boolean
+    amount?: boolean
+    type?: boolean
+    description?: boolean
+    reference_id?: boolean
+    created_at?: boolean
+    user_points?: boolean | user_pointsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["point_transaction"]>
+
+
+
+  export type point_transactionSelectScalar = {
+    id?: boolean
+    user_points_id?: boolean
+    amount?: boolean
+    type?: boolean
+    description?: boolean
+    reference_id?: boolean
+    created_at?: boolean
+  }
+
+  export type point_transactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_points_id" | "amount" | "type" | "description" | "reference_id" | "created_at", ExtArgs["result"]["point_transaction"]>
+  export type point_transactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user_points?: boolean | user_pointsDefaultArgs<ExtArgs>
+  }
+
+  export type $point_transactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "point_transaction"
+    objects: {
+      user_points: Prisma.$user_pointsPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      user_points_id: bigint
+      amount: number
+      type: string
+      description: string | null
+      reference_id: string | null
+      created_at: Date
+    }, ExtArgs["result"]["point_transaction"]>
+    composites: {}
+  }
+
+  type point_transactionGetPayload<S extends boolean | null | undefined | point_transactionDefaultArgs> = $Result.GetResult<Prisma.$point_transactionPayload, S>
+
+  type point_transactionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<point_transactionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Point_transactionCountAggregateInputType | true
+    }
+
+  export interface point_transactionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['point_transaction'], meta: { name: 'point_transaction' } }
+    /**
+     * Find zero or one Point_transaction that matches the filter.
+     * @param {point_transactionFindUniqueArgs} args - Arguments to find a Point_transaction
+     * @example
+     * // Get one Point_transaction
+     * const point_transaction = await prisma.point_transaction.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends point_transactionFindUniqueArgs>(args: SelectSubset<T, point_transactionFindUniqueArgs<ExtArgs>>): Prisma__point_transactionClient<$Result.GetResult<Prisma.$point_transactionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Point_transaction that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {point_transactionFindUniqueOrThrowArgs} args - Arguments to find a Point_transaction
+     * @example
+     * // Get one Point_transaction
+     * const point_transaction = await prisma.point_transaction.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends point_transactionFindUniqueOrThrowArgs>(args: SelectSubset<T, point_transactionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__point_transactionClient<$Result.GetResult<Prisma.$point_transactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Point_transaction that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {point_transactionFindFirstArgs} args - Arguments to find a Point_transaction
+     * @example
+     * // Get one Point_transaction
+     * const point_transaction = await prisma.point_transaction.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends point_transactionFindFirstArgs>(args?: SelectSubset<T, point_transactionFindFirstArgs<ExtArgs>>): Prisma__point_transactionClient<$Result.GetResult<Prisma.$point_transactionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Point_transaction that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {point_transactionFindFirstOrThrowArgs} args - Arguments to find a Point_transaction
+     * @example
+     * // Get one Point_transaction
+     * const point_transaction = await prisma.point_transaction.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends point_transactionFindFirstOrThrowArgs>(args?: SelectSubset<T, point_transactionFindFirstOrThrowArgs<ExtArgs>>): Prisma__point_transactionClient<$Result.GetResult<Prisma.$point_transactionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Point_transactions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {point_transactionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Point_transactions
+     * const point_transactions = await prisma.point_transaction.findMany()
+     * 
+     * // Get first 10 Point_transactions
+     * const point_transactions = await prisma.point_transaction.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const point_transactionWithIdOnly = await prisma.point_transaction.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends point_transactionFindManyArgs>(args?: SelectSubset<T, point_transactionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$point_transactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Point_transaction.
+     * @param {point_transactionCreateArgs} args - Arguments to create a Point_transaction.
+     * @example
+     * // Create one Point_transaction
+     * const Point_transaction = await prisma.point_transaction.create({
+     *   data: {
+     *     // ... data to create a Point_transaction
+     *   }
+     * })
+     * 
+     */
+    create<T extends point_transactionCreateArgs>(args: SelectSubset<T, point_transactionCreateArgs<ExtArgs>>): Prisma__point_transactionClient<$Result.GetResult<Prisma.$point_transactionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Point_transactions.
+     * @param {point_transactionCreateManyArgs} args - Arguments to create many Point_transactions.
+     * @example
+     * // Create many Point_transactions
+     * const point_transaction = await prisma.point_transaction.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends point_transactionCreateManyArgs>(args?: SelectSubset<T, point_transactionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Point_transaction.
+     * @param {point_transactionDeleteArgs} args - Arguments to delete one Point_transaction.
+     * @example
+     * // Delete one Point_transaction
+     * const Point_transaction = await prisma.point_transaction.delete({
+     *   where: {
+     *     // ... filter to delete one Point_transaction
+     *   }
+     * })
+     * 
+     */
+    delete<T extends point_transactionDeleteArgs>(args: SelectSubset<T, point_transactionDeleteArgs<ExtArgs>>): Prisma__point_transactionClient<$Result.GetResult<Prisma.$point_transactionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Point_transaction.
+     * @param {point_transactionUpdateArgs} args - Arguments to update one Point_transaction.
+     * @example
+     * // Update one Point_transaction
+     * const point_transaction = await prisma.point_transaction.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends point_transactionUpdateArgs>(args: SelectSubset<T, point_transactionUpdateArgs<ExtArgs>>): Prisma__point_transactionClient<$Result.GetResult<Prisma.$point_transactionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Point_transactions.
+     * @param {point_transactionDeleteManyArgs} args - Arguments to filter Point_transactions to delete.
+     * @example
+     * // Delete a few Point_transactions
+     * const { count } = await prisma.point_transaction.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends point_transactionDeleteManyArgs>(args?: SelectSubset<T, point_transactionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Point_transactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {point_transactionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Point_transactions
+     * const point_transaction = await prisma.point_transaction.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends point_transactionUpdateManyArgs>(args: SelectSubset<T, point_transactionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Point_transaction.
+     * @param {point_transactionUpsertArgs} args - Arguments to update or create a Point_transaction.
+     * @example
+     * // Update or create a Point_transaction
+     * const point_transaction = await prisma.point_transaction.upsert({
+     *   create: {
+     *     // ... data to create a Point_transaction
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Point_transaction we want to update
+     *   }
+     * })
+     */
+    upsert<T extends point_transactionUpsertArgs>(args: SelectSubset<T, point_transactionUpsertArgs<ExtArgs>>): Prisma__point_transactionClient<$Result.GetResult<Prisma.$point_transactionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Point_transactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {point_transactionCountArgs} args - Arguments to filter Point_transactions to count.
+     * @example
+     * // Count the number of Point_transactions
+     * const count = await prisma.point_transaction.count({
+     *   where: {
+     *     // ... the filter for the Point_transactions we want to count
+     *   }
+     * })
+    **/
+    count<T extends point_transactionCountArgs>(
+      args?: Subset<T, point_transactionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Point_transactionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Point_transaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Point_transactionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Point_transactionAggregateArgs>(args: Subset<T, Point_transactionAggregateArgs>): Prisma.PrismaPromise<GetPoint_transactionAggregateType<T>>
+
+    /**
+     * Group by Point_transaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {point_transactionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends point_transactionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: point_transactionGroupByArgs['orderBy'] }
+        : { orderBy?: point_transactionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, point_transactionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPoint_transactionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the point_transaction model
+   */
+  readonly fields: point_transactionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for point_transaction.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__point_transactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user_points<T extends user_pointsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, user_pointsDefaultArgs<ExtArgs>>): Prisma__user_pointsClient<$Result.GetResult<Prisma.$user_pointsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the point_transaction model
+   */
+  interface point_transactionFieldRefs {
+    readonly id: FieldRef<"point_transaction", 'BigInt'>
+    readonly user_points_id: FieldRef<"point_transaction", 'BigInt'>
+    readonly amount: FieldRef<"point_transaction", 'Int'>
+    readonly type: FieldRef<"point_transaction", 'String'>
+    readonly description: FieldRef<"point_transaction", 'String'>
+    readonly reference_id: FieldRef<"point_transaction", 'String'>
+    readonly created_at: FieldRef<"point_transaction", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * point_transaction findUnique
+   */
+  export type point_transactionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the point_transaction
+     */
+    select?: point_transactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the point_transaction
+     */
+    omit?: point_transactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: point_transactionInclude<ExtArgs> | null
+    /**
+     * Filter, which point_transaction to fetch.
+     */
+    where: point_transactionWhereUniqueInput
+  }
+
+  /**
+   * point_transaction findUniqueOrThrow
+   */
+  export type point_transactionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the point_transaction
+     */
+    select?: point_transactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the point_transaction
+     */
+    omit?: point_transactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: point_transactionInclude<ExtArgs> | null
+    /**
+     * Filter, which point_transaction to fetch.
+     */
+    where: point_transactionWhereUniqueInput
+  }
+
+  /**
+   * point_transaction findFirst
+   */
+  export type point_transactionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the point_transaction
+     */
+    select?: point_transactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the point_transaction
+     */
+    omit?: point_transactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: point_transactionInclude<ExtArgs> | null
+    /**
+     * Filter, which point_transaction to fetch.
+     */
+    where?: point_transactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of point_transactions to fetch.
+     */
+    orderBy?: point_transactionOrderByWithRelationInput | point_transactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for point_transactions.
+     */
+    cursor?: point_transactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` point_transactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` point_transactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of point_transactions.
+     */
+    distinct?: Point_transactionScalarFieldEnum | Point_transactionScalarFieldEnum[]
+  }
+
+  /**
+   * point_transaction findFirstOrThrow
+   */
+  export type point_transactionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the point_transaction
+     */
+    select?: point_transactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the point_transaction
+     */
+    omit?: point_transactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: point_transactionInclude<ExtArgs> | null
+    /**
+     * Filter, which point_transaction to fetch.
+     */
+    where?: point_transactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of point_transactions to fetch.
+     */
+    orderBy?: point_transactionOrderByWithRelationInput | point_transactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for point_transactions.
+     */
+    cursor?: point_transactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` point_transactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` point_transactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of point_transactions.
+     */
+    distinct?: Point_transactionScalarFieldEnum | Point_transactionScalarFieldEnum[]
+  }
+
+  /**
+   * point_transaction findMany
+   */
+  export type point_transactionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the point_transaction
+     */
+    select?: point_transactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the point_transaction
+     */
+    omit?: point_transactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: point_transactionInclude<ExtArgs> | null
+    /**
+     * Filter, which point_transactions to fetch.
+     */
+    where?: point_transactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of point_transactions to fetch.
+     */
+    orderBy?: point_transactionOrderByWithRelationInput | point_transactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing point_transactions.
+     */
+    cursor?: point_transactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` point_transactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` point_transactions.
+     */
+    skip?: number
+    distinct?: Point_transactionScalarFieldEnum | Point_transactionScalarFieldEnum[]
+  }
+
+  /**
+   * point_transaction create
+   */
+  export type point_transactionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the point_transaction
+     */
+    select?: point_transactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the point_transaction
+     */
+    omit?: point_transactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: point_transactionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a point_transaction.
+     */
+    data: XOR<point_transactionCreateInput, point_transactionUncheckedCreateInput>
+  }
+
+  /**
+   * point_transaction createMany
+   */
+  export type point_transactionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many point_transactions.
+     */
+    data: point_transactionCreateManyInput | point_transactionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * point_transaction update
+   */
+  export type point_transactionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the point_transaction
+     */
+    select?: point_transactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the point_transaction
+     */
+    omit?: point_transactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: point_transactionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a point_transaction.
+     */
+    data: XOR<point_transactionUpdateInput, point_transactionUncheckedUpdateInput>
+    /**
+     * Choose, which point_transaction to update.
+     */
+    where: point_transactionWhereUniqueInput
+  }
+
+  /**
+   * point_transaction updateMany
+   */
+  export type point_transactionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update point_transactions.
+     */
+    data: XOR<point_transactionUpdateManyMutationInput, point_transactionUncheckedUpdateManyInput>
+    /**
+     * Filter which point_transactions to update
+     */
+    where?: point_transactionWhereInput
+    /**
+     * Limit how many point_transactions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * point_transaction upsert
+   */
+  export type point_transactionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the point_transaction
+     */
+    select?: point_transactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the point_transaction
+     */
+    omit?: point_transactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: point_transactionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the point_transaction to update in case it exists.
+     */
+    where: point_transactionWhereUniqueInput
+    /**
+     * In case the point_transaction found by the `where` argument doesn't exist, create a new point_transaction with this data.
+     */
+    create: XOR<point_transactionCreateInput, point_transactionUncheckedCreateInput>
+    /**
+     * In case the point_transaction was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<point_transactionUpdateInput, point_transactionUncheckedUpdateInput>
+  }
+
+  /**
+   * point_transaction delete
+   */
+  export type point_transactionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the point_transaction
+     */
+    select?: point_transactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the point_transaction
+     */
+    omit?: point_transactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: point_transactionInclude<ExtArgs> | null
+    /**
+     * Filter which point_transaction to delete.
+     */
+    where: point_transactionWhereUniqueInput
+  }
+
+  /**
+   * point_transaction deleteMany
+   */
+  export type point_transactionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which point_transactions to delete
+     */
+    where?: point_transactionWhereInput
+    /**
+     * Limit how many point_transactions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * point_transaction without action
+   */
+  export type point_transactionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the point_transaction
+     */
+    select?: point_transactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the point_transaction
+     */
+    omit?: point_transactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: point_transactionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model study_plan
+   */
+
+  export type AggregateStudy_plan = {
+    _count: Study_planCountAggregateOutputType | null
+    _avg: Study_planAvgAggregateOutputType | null
+    _sum: Study_planSumAggregateOutputType | null
+    _min: Study_planMinAggregateOutputType | null
+    _max: Study_planMaxAggregateOutputType | null
+  }
+
+  export type Study_planAvgAggregateOutputType = {
+    id: number | null
+    user_id: number | null
+    target_words: number | null
+    daily_words: number | null
+    is_delete: number | null
+  }
+
+  export type Study_planSumAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    target_words: number | null
+    daily_words: number | null
+    is_delete: number | null
+  }
+
+  export type Study_planMinAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    name: string | null
+    description: string | null
+    target_words: number | null
+    daily_words: number | null
+    start_date: Date | null
+    end_date: Date | null
+    status: string | null
+    created_at: Date | null
+    update_time: Date | null
+    is_delete: number | null
+  }
+
+  export type Study_planMaxAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    name: string | null
+    description: string | null
+    target_words: number | null
+    daily_words: number | null
+    start_date: Date | null
+    end_date: Date | null
+    status: string | null
+    created_at: Date | null
+    update_time: Date | null
+    is_delete: number | null
+  }
+
+  export type Study_planCountAggregateOutputType = {
+    id: number
+    user_id: number
+    name: number
+    description: number
+    target_words: number
+    daily_words: number
+    start_date: number
+    end_date: number
+    status: number
+    created_at: number
+    update_time: number
+    is_delete: number
+    _all: number
+  }
+
+
+  export type Study_planAvgAggregateInputType = {
+    id?: true
+    user_id?: true
+    target_words?: true
+    daily_words?: true
+    is_delete?: true
+  }
+
+  export type Study_planSumAggregateInputType = {
+    id?: true
+    user_id?: true
+    target_words?: true
+    daily_words?: true
+    is_delete?: true
+  }
+
+  export type Study_planMinAggregateInputType = {
+    id?: true
+    user_id?: true
+    name?: true
+    description?: true
+    target_words?: true
+    daily_words?: true
+    start_date?: true
+    end_date?: true
+    status?: true
+    created_at?: true
+    update_time?: true
+    is_delete?: true
+  }
+
+  export type Study_planMaxAggregateInputType = {
+    id?: true
+    user_id?: true
+    name?: true
+    description?: true
+    target_words?: true
+    daily_words?: true
+    start_date?: true
+    end_date?: true
+    status?: true
+    created_at?: true
+    update_time?: true
+    is_delete?: true
+  }
+
+  export type Study_planCountAggregateInputType = {
+    id?: true
+    user_id?: true
+    name?: true
+    description?: true
+    target_words?: true
+    daily_words?: true
+    start_date?: true
+    end_date?: true
+    status?: true
+    created_at?: true
+    update_time?: true
+    is_delete?: true
+    _all?: true
+  }
+
+  export type Study_planAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which study_plan to aggregate.
+     */
+    where?: study_planWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of study_plans to fetch.
+     */
+    orderBy?: study_planOrderByWithRelationInput | study_planOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: study_planWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` study_plans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` study_plans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned study_plans
+    **/
+    _count?: true | Study_planCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Study_planAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Study_planSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Study_planMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Study_planMaxAggregateInputType
+  }
+
+  export type GetStudy_planAggregateType<T extends Study_planAggregateArgs> = {
+        [P in keyof T & keyof AggregateStudy_plan]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStudy_plan[P]>
+      : GetScalarType<T[P], AggregateStudy_plan[P]>
+  }
+
+
+
+
+  export type study_planGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: study_planWhereInput
+    orderBy?: study_planOrderByWithAggregationInput | study_planOrderByWithAggregationInput[]
+    by: Study_planScalarFieldEnum[] | Study_planScalarFieldEnum
+    having?: study_planScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Study_planCountAggregateInputType | true
+    _avg?: Study_planAvgAggregateInputType
+    _sum?: Study_planSumAggregateInputType
+    _min?: Study_planMinAggregateInputType
+    _max?: Study_planMaxAggregateInputType
+  }
+
+  export type Study_planGroupByOutputType = {
+    id: bigint
+    user_id: bigint
+    name: string
+    description: string | null
+    target_words: number
+    daily_words: number
+    start_date: Date | null
+    end_date: Date | null
+    status: string
+    created_at: Date
+    update_time: Date
+    is_delete: number
+    _count: Study_planCountAggregateOutputType | null
+    _avg: Study_planAvgAggregateOutputType | null
+    _sum: Study_planSumAggregateOutputType | null
+    _min: Study_planMinAggregateOutputType | null
+    _max: Study_planMaxAggregateOutputType | null
+  }
+
+  type GetStudy_planGroupByPayload<T extends study_planGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Study_planGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Study_planGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Study_planGroupByOutputType[P]>
+            : GetScalarType<T[P], Study_planGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type study_planSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    name?: boolean
+    description?: boolean
+    target_words?: boolean
+    daily_words?: boolean
+    start_date?: boolean
+    end_date?: boolean
+    status?: boolean
+    created_at?: boolean
+    update_time?: boolean
+    is_delete?: boolean
+    learning_progress?: boolean | study_plan$learning_progressArgs<ExtArgs>
+    user?: boolean | userDefaultArgs<ExtArgs>
+    word_collection?: boolean | study_plan$word_collectionArgs<ExtArgs>
+    _count?: boolean | Study_planCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["study_plan"]>
+
+
+
+  export type study_planSelectScalar = {
+    id?: boolean
+    user_id?: boolean
+    name?: boolean
+    description?: boolean
+    target_words?: boolean
+    daily_words?: boolean
+    start_date?: boolean
+    end_date?: boolean
+    status?: boolean
+    created_at?: boolean
+    update_time?: boolean
+    is_delete?: boolean
+  }
+
+  export type study_planOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "name" | "description" | "target_words" | "daily_words" | "start_date" | "end_date" | "status" | "created_at" | "update_time" | "is_delete", ExtArgs["result"]["study_plan"]>
+  export type study_planInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    learning_progress?: boolean | study_plan$learning_progressArgs<ExtArgs>
+    user?: boolean | userDefaultArgs<ExtArgs>
+    word_collection?: boolean | study_plan$word_collectionArgs<ExtArgs>
+    _count?: boolean | Study_planCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $study_planPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "study_plan"
+    objects: {
+      learning_progress: Prisma.$learning_progressPayload<ExtArgs>[]
+      user: Prisma.$userPayload<ExtArgs>
+      word_collection: Prisma.$word_collectionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      user_id: bigint
+      name: string
+      description: string | null
+      target_words: number
+      daily_words: number
+      start_date: Date | null
+      end_date: Date | null
+      status: string
+      created_at: Date
+      update_time: Date
+      is_delete: number
+    }, ExtArgs["result"]["study_plan"]>
+    composites: {}
+  }
+
+  type study_planGetPayload<S extends boolean | null | undefined | study_planDefaultArgs> = $Result.GetResult<Prisma.$study_planPayload, S>
+
+  type study_planCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<study_planFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Study_planCountAggregateInputType | true
+    }
+
+  export interface study_planDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['study_plan'], meta: { name: 'study_plan' } }
+    /**
+     * Find zero or one Study_plan that matches the filter.
+     * @param {study_planFindUniqueArgs} args - Arguments to find a Study_plan
+     * @example
+     * // Get one Study_plan
+     * const study_plan = await prisma.study_plan.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends study_planFindUniqueArgs>(args: SelectSubset<T, study_planFindUniqueArgs<ExtArgs>>): Prisma__study_planClient<$Result.GetResult<Prisma.$study_planPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Study_plan that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {study_planFindUniqueOrThrowArgs} args - Arguments to find a Study_plan
+     * @example
+     * // Get one Study_plan
+     * const study_plan = await prisma.study_plan.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends study_planFindUniqueOrThrowArgs>(args: SelectSubset<T, study_planFindUniqueOrThrowArgs<ExtArgs>>): Prisma__study_planClient<$Result.GetResult<Prisma.$study_planPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Study_plan that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {study_planFindFirstArgs} args - Arguments to find a Study_plan
+     * @example
+     * // Get one Study_plan
+     * const study_plan = await prisma.study_plan.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends study_planFindFirstArgs>(args?: SelectSubset<T, study_planFindFirstArgs<ExtArgs>>): Prisma__study_planClient<$Result.GetResult<Prisma.$study_planPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Study_plan that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {study_planFindFirstOrThrowArgs} args - Arguments to find a Study_plan
+     * @example
+     * // Get one Study_plan
+     * const study_plan = await prisma.study_plan.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends study_planFindFirstOrThrowArgs>(args?: SelectSubset<T, study_planFindFirstOrThrowArgs<ExtArgs>>): Prisma__study_planClient<$Result.GetResult<Prisma.$study_planPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Study_plans that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {study_planFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Study_plans
+     * const study_plans = await prisma.study_plan.findMany()
+     * 
+     * // Get first 10 Study_plans
+     * const study_plans = await prisma.study_plan.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const study_planWithIdOnly = await prisma.study_plan.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends study_planFindManyArgs>(args?: SelectSubset<T, study_planFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$study_planPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Study_plan.
+     * @param {study_planCreateArgs} args - Arguments to create a Study_plan.
+     * @example
+     * // Create one Study_plan
+     * const Study_plan = await prisma.study_plan.create({
+     *   data: {
+     *     // ... data to create a Study_plan
+     *   }
+     * })
+     * 
+     */
+    create<T extends study_planCreateArgs>(args: SelectSubset<T, study_planCreateArgs<ExtArgs>>): Prisma__study_planClient<$Result.GetResult<Prisma.$study_planPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Study_plans.
+     * @param {study_planCreateManyArgs} args - Arguments to create many Study_plans.
+     * @example
+     * // Create many Study_plans
+     * const study_plan = await prisma.study_plan.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends study_planCreateManyArgs>(args?: SelectSubset<T, study_planCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Study_plan.
+     * @param {study_planDeleteArgs} args - Arguments to delete one Study_plan.
+     * @example
+     * // Delete one Study_plan
+     * const Study_plan = await prisma.study_plan.delete({
+     *   where: {
+     *     // ... filter to delete one Study_plan
+     *   }
+     * })
+     * 
+     */
+    delete<T extends study_planDeleteArgs>(args: SelectSubset<T, study_planDeleteArgs<ExtArgs>>): Prisma__study_planClient<$Result.GetResult<Prisma.$study_planPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Study_plan.
+     * @param {study_planUpdateArgs} args - Arguments to update one Study_plan.
+     * @example
+     * // Update one Study_plan
+     * const study_plan = await prisma.study_plan.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends study_planUpdateArgs>(args: SelectSubset<T, study_planUpdateArgs<ExtArgs>>): Prisma__study_planClient<$Result.GetResult<Prisma.$study_planPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Study_plans.
+     * @param {study_planDeleteManyArgs} args - Arguments to filter Study_plans to delete.
+     * @example
+     * // Delete a few Study_plans
+     * const { count } = await prisma.study_plan.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends study_planDeleteManyArgs>(args?: SelectSubset<T, study_planDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Study_plans.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {study_planUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Study_plans
+     * const study_plan = await prisma.study_plan.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends study_planUpdateManyArgs>(args: SelectSubset<T, study_planUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Study_plan.
+     * @param {study_planUpsertArgs} args - Arguments to update or create a Study_plan.
+     * @example
+     * // Update or create a Study_plan
+     * const study_plan = await prisma.study_plan.upsert({
+     *   create: {
+     *     // ... data to create a Study_plan
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Study_plan we want to update
+     *   }
+     * })
+     */
+    upsert<T extends study_planUpsertArgs>(args: SelectSubset<T, study_planUpsertArgs<ExtArgs>>): Prisma__study_planClient<$Result.GetResult<Prisma.$study_planPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Study_plans.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {study_planCountArgs} args - Arguments to filter Study_plans to count.
+     * @example
+     * // Count the number of Study_plans
+     * const count = await prisma.study_plan.count({
+     *   where: {
+     *     // ... the filter for the Study_plans we want to count
+     *   }
+     * })
+    **/
+    count<T extends study_planCountArgs>(
+      args?: Subset<T, study_planCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Study_planCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Study_plan.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Study_planAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Study_planAggregateArgs>(args: Subset<T, Study_planAggregateArgs>): Prisma.PrismaPromise<GetStudy_planAggregateType<T>>
+
+    /**
+     * Group by Study_plan.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {study_planGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends study_planGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: study_planGroupByArgs['orderBy'] }
+        : { orderBy?: study_planGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, study_planGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStudy_planGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the study_plan model
+   */
+  readonly fields: study_planFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for study_plan.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__study_planClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    learning_progress<T extends study_plan$learning_progressArgs<ExtArgs> = {}>(args?: Subset<T, study_plan$learning_progressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$learning_progressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user<T extends userDefaultArgs<ExtArgs> = {}>(args?: Subset<T, userDefaultArgs<ExtArgs>>): Prisma__userClient<$Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    word_collection<T extends study_plan$word_collectionArgs<ExtArgs> = {}>(args?: Subset<T, study_plan$word_collectionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$word_collectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the study_plan model
+   */
+  interface study_planFieldRefs {
+    readonly id: FieldRef<"study_plan", 'BigInt'>
+    readonly user_id: FieldRef<"study_plan", 'BigInt'>
+    readonly name: FieldRef<"study_plan", 'String'>
+    readonly description: FieldRef<"study_plan", 'String'>
+    readonly target_words: FieldRef<"study_plan", 'Int'>
+    readonly daily_words: FieldRef<"study_plan", 'Int'>
+    readonly start_date: FieldRef<"study_plan", 'DateTime'>
+    readonly end_date: FieldRef<"study_plan", 'DateTime'>
+    readonly status: FieldRef<"study_plan", 'String'>
+    readonly created_at: FieldRef<"study_plan", 'DateTime'>
+    readonly update_time: FieldRef<"study_plan", 'DateTime'>
+    readonly is_delete: FieldRef<"study_plan", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * study_plan findUnique
+   */
+  export type study_planFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the study_plan
+     */
+    select?: study_planSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the study_plan
+     */
+    omit?: study_planOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: study_planInclude<ExtArgs> | null
+    /**
+     * Filter, which study_plan to fetch.
+     */
+    where: study_planWhereUniqueInput
+  }
+
+  /**
+   * study_plan findUniqueOrThrow
+   */
+  export type study_planFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the study_plan
+     */
+    select?: study_planSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the study_plan
+     */
+    omit?: study_planOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: study_planInclude<ExtArgs> | null
+    /**
+     * Filter, which study_plan to fetch.
+     */
+    where: study_planWhereUniqueInput
+  }
+
+  /**
+   * study_plan findFirst
+   */
+  export type study_planFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the study_plan
+     */
+    select?: study_planSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the study_plan
+     */
+    omit?: study_planOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: study_planInclude<ExtArgs> | null
+    /**
+     * Filter, which study_plan to fetch.
+     */
+    where?: study_planWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of study_plans to fetch.
+     */
+    orderBy?: study_planOrderByWithRelationInput | study_planOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for study_plans.
+     */
+    cursor?: study_planWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` study_plans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` study_plans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of study_plans.
+     */
+    distinct?: Study_planScalarFieldEnum | Study_planScalarFieldEnum[]
+  }
+
+  /**
+   * study_plan findFirstOrThrow
+   */
+  export type study_planFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the study_plan
+     */
+    select?: study_planSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the study_plan
+     */
+    omit?: study_planOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: study_planInclude<ExtArgs> | null
+    /**
+     * Filter, which study_plan to fetch.
+     */
+    where?: study_planWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of study_plans to fetch.
+     */
+    orderBy?: study_planOrderByWithRelationInput | study_planOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for study_plans.
+     */
+    cursor?: study_planWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` study_plans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` study_plans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of study_plans.
+     */
+    distinct?: Study_planScalarFieldEnum | Study_planScalarFieldEnum[]
+  }
+
+  /**
+   * study_plan findMany
+   */
+  export type study_planFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the study_plan
+     */
+    select?: study_planSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the study_plan
+     */
+    omit?: study_planOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: study_planInclude<ExtArgs> | null
+    /**
+     * Filter, which study_plans to fetch.
+     */
+    where?: study_planWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of study_plans to fetch.
+     */
+    orderBy?: study_planOrderByWithRelationInput | study_planOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing study_plans.
+     */
+    cursor?: study_planWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` study_plans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` study_plans.
+     */
+    skip?: number
+    distinct?: Study_planScalarFieldEnum | Study_planScalarFieldEnum[]
+  }
+
+  /**
+   * study_plan create
+   */
+  export type study_planCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the study_plan
+     */
+    select?: study_planSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the study_plan
+     */
+    omit?: study_planOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: study_planInclude<ExtArgs> | null
+    /**
+     * The data needed to create a study_plan.
+     */
+    data: XOR<study_planCreateInput, study_planUncheckedCreateInput>
+  }
+
+  /**
+   * study_plan createMany
+   */
+  export type study_planCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many study_plans.
+     */
+    data: study_planCreateManyInput | study_planCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * study_plan update
+   */
+  export type study_planUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the study_plan
+     */
+    select?: study_planSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the study_plan
+     */
+    omit?: study_planOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: study_planInclude<ExtArgs> | null
+    /**
+     * The data needed to update a study_plan.
+     */
+    data: XOR<study_planUpdateInput, study_planUncheckedUpdateInput>
+    /**
+     * Choose, which study_plan to update.
+     */
+    where: study_planWhereUniqueInput
+  }
+
+  /**
+   * study_plan updateMany
+   */
+  export type study_planUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update study_plans.
+     */
+    data: XOR<study_planUpdateManyMutationInput, study_planUncheckedUpdateManyInput>
+    /**
+     * Filter which study_plans to update
+     */
+    where?: study_planWhereInput
+    /**
+     * Limit how many study_plans to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * study_plan upsert
+   */
+  export type study_planUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the study_plan
+     */
+    select?: study_planSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the study_plan
+     */
+    omit?: study_planOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: study_planInclude<ExtArgs> | null
+    /**
+     * The filter to search for the study_plan to update in case it exists.
+     */
+    where: study_planWhereUniqueInput
+    /**
+     * In case the study_plan found by the `where` argument doesn't exist, create a new study_plan with this data.
+     */
+    create: XOR<study_planCreateInput, study_planUncheckedCreateInput>
+    /**
+     * In case the study_plan was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<study_planUpdateInput, study_planUncheckedUpdateInput>
+  }
+
+  /**
+   * study_plan delete
+   */
+  export type study_planDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the study_plan
+     */
+    select?: study_planSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the study_plan
+     */
+    omit?: study_planOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: study_planInclude<ExtArgs> | null
+    /**
+     * Filter which study_plan to delete.
+     */
+    where: study_planWhereUniqueInput
+  }
+
+  /**
+   * study_plan deleteMany
+   */
+  export type study_planDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which study_plans to delete
+     */
+    where?: study_planWhereInput
+    /**
+     * Limit how many study_plans to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * study_plan.learning_progress
+   */
+  export type study_plan$learning_progressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_progress
+     */
+    select?: learning_progressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_progress
+     */
+    omit?: learning_progressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_progressInclude<ExtArgs> | null
+    where?: learning_progressWhereInput
+    orderBy?: learning_progressOrderByWithRelationInput | learning_progressOrderByWithRelationInput[]
+    cursor?: learning_progressWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Learning_progressScalarFieldEnum | Learning_progressScalarFieldEnum[]
+  }
+
+  /**
+   * study_plan.word_collection
+   */
+  export type study_plan$word_collectionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the word_collection
+     */
+    select?: word_collectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the word_collection
+     */
+    omit?: word_collectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: word_collectionInclude<ExtArgs> | null
+    where?: word_collectionWhereInput
+    orderBy?: word_collectionOrderByWithRelationInput | word_collectionOrderByWithRelationInput[]
+    cursor?: word_collectionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Word_collectionScalarFieldEnum | Word_collectionScalarFieldEnum[]
+  }
+
+  /**
+   * study_plan without action
+   */
+  export type study_planDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the study_plan
+     */
+    select?: study_planSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the study_plan
+     */
+    omit?: study_planOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: study_planInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model user_achievement
+   */
+
+  export type AggregateUser_achievement = {
+    _count: User_achievementCountAggregateOutputType | null
+    _avg: User_achievementAvgAggregateOutputType | null
+    _sum: User_achievementSumAggregateOutputType | null
+    _min: User_achievementMinAggregateOutputType | null
+    _max: User_achievementMaxAggregateOutputType | null
+  }
+
+  export type User_achievementAvgAggregateOutputType = {
+    id: number | null
+    user_id: number | null
+    achievement_id: number | null
+    progress: number | null
+    learning_stats_id: number | null
+  }
+
+  export type User_achievementSumAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    achievement_id: bigint | null
+    progress: number | null
+    learning_stats_id: bigint | null
+  }
+
+  export type User_achievementMinAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    achievement_id: bigint | null
+    achieved_date: Date | null
+    progress: number | null
+    learning_stats_id: bigint | null
+  }
+
+  export type User_achievementMaxAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    achievement_id: bigint | null
+    achieved_date: Date | null
+    progress: number | null
+    learning_stats_id: bigint | null
+  }
+
+  export type User_achievementCountAggregateOutputType = {
+    id: number
+    user_id: number
+    achievement_id: number
+    achieved_date: number
+    progress: number
+    learning_stats_id: number
+    _all: number
+  }
+
+
+  export type User_achievementAvgAggregateInputType = {
+    id?: true
+    user_id?: true
+    achievement_id?: true
+    progress?: true
+    learning_stats_id?: true
+  }
+
+  export type User_achievementSumAggregateInputType = {
+    id?: true
+    user_id?: true
+    achievement_id?: true
+    progress?: true
+    learning_stats_id?: true
+  }
+
+  export type User_achievementMinAggregateInputType = {
+    id?: true
+    user_id?: true
+    achievement_id?: true
+    achieved_date?: true
+    progress?: true
+    learning_stats_id?: true
+  }
+
+  export type User_achievementMaxAggregateInputType = {
+    id?: true
+    user_id?: true
+    achievement_id?: true
+    achieved_date?: true
+    progress?: true
+    learning_stats_id?: true
+  }
+
+  export type User_achievementCountAggregateInputType = {
+    id?: true
+    user_id?: true
+    achievement_id?: true
+    achieved_date?: true
+    progress?: true
+    learning_stats_id?: true
+    _all?: true
+  }
+
+  export type User_achievementAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which user_achievement to aggregate.
+     */
+    where?: user_achievementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of user_achievements to fetch.
+     */
+    orderBy?: user_achievementOrderByWithRelationInput | user_achievementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: user_achievementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` user_achievements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` user_achievements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned user_achievements
+    **/
+    _count?: true | User_achievementCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: User_achievementAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: User_achievementSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: User_achievementMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: User_achievementMaxAggregateInputType
+  }
+
+  export type GetUser_achievementAggregateType<T extends User_achievementAggregateArgs> = {
+        [P in keyof T & keyof AggregateUser_achievement]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUser_achievement[P]>
+      : GetScalarType<T[P], AggregateUser_achievement[P]>
+  }
+
+
+
+
+  export type user_achievementGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: user_achievementWhereInput
+    orderBy?: user_achievementOrderByWithAggregationInput | user_achievementOrderByWithAggregationInput[]
+    by: User_achievementScalarFieldEnum[] | User_achievementScalarFieldEnum
+    having?: user_achievementScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: User_achievementCountAggregateInputType | true
+    _avg?: User_achievementAvgAggregateInputType
+    _sum?: User_achievementSumAggregateInputType
+    _min?: User_achievementMinAggregateInputType
+    _max?: User_achievementMaxAggregateInputType
+  }
+
+  export type User_achievementGroupByOutputType = {
+    id: bigint
+    user_id: bigint
+    achievement_id: bigint
+    achieved_date: Date
+    progress: number | null
+    learning_stats_id: bigint | null
+    _count: User_achievementCountAggregateOutputType | null
+    _avg: User_achievementAvgAggregateOutputType | null
+    _sum: User_achievementSumAggregateOutputType | null
+    _min: User_achievementMinAggregateOutputType | null
+    _max: User_achievementMaxAggregateOutputType | null
+  }
+
+  type GetUser_achievementGroupByPayload<T extends user_achievementGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<User_achievementGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof User_achievementGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], User_achievementGroupByOutputType[P]>
+            : GetScalarType<T[P], User_achievementGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type user_achievementSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    achievement_id?: boolean
+    achieved_date?: boolean
+    progress?: boolean
+    learning_stats_id?: boolean
+    achievement?: boolean | achievementDefaultArgs<ExtArgs>
+    learning_stats?: boolean | user_achievement$learning_statsArgs<ExtArgs>
+    user?: boolean | userDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["user_achievement"]>
+
+
+
+  export type user_achievementSelectScalar = {
+    id?: boolean
+    user_id?: boolean
+    achievement_id?: boolean
+    achieved_date?: boolean
+    progress?: boolean
+    learning_stats_id?: boolean
+  }
+
+  export type user_achievementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "achievement_id" | "achieved_date" | "progress" | "learning_stats_id", ExtArgs["result"]["user_achievement"]>
+  export type user_achievementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    achievement?: boolean | achievementDefaultArgs<ExtArgs>
+    learning_stats?: boolean | user_achievement$learning_statsArgs<ExtArgs>
+    user?: boolean | userDefaultArgs<ExtArgs>
+  }
+
+  export type $user_achievementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "user_achievement"
+    objects: {
+      achievement: Prisma.$achievementPayload<ExtArgs>
+      learning_stats: Prisma.$learning_statsPayload<ExtArgs> | null
+      user: Prisma.$userPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      user_id: bigint
+      achievement_id: bigint
+      achieved_date: Date
+      progress: number | null
+      learning_stats_id: bigint | null
+    }, ExtArgs["result"]["user_achievement"]>
+    composites: {}
+  }
+
+  type user_achievementGetPayload<S extends boolean | null | undefined | user_achievementDefaultArgs> = $Result.GetResult<Prisma.$user_achievementPayload, S>
+
+  type user_achievementCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<user_achievementFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: User_achievementCountAggregateInputType | true
+    }
+
+  export interface user_achievementDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['user_achievement'], meta: { name: 'user_achievement' } }
+    /**
+     * Find zero or one User_achievement that matches the filter.
+     * @param {user_achievementFindUniqueArgs} args - Arguments to find a User_achievement
+     * @example
+     * // Get one User_achievement
+     * const user_achievement = await prisma.user_achievement.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends user_achievementFindUniqueArgs>(args: SelectSubset<T, user_achievementFindUniqueArgs<ExtArgs>>): Prisma__user_achievementClient<$Result.GetResult<Prisma.$user_achievementPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one User_achievement that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {user_achievementFindUniqueOrThrowArgs} args - Arguments to find a User_achievement
+     * @example
+     * // Get one User_achievement
+     * const user_achievement = await prisma.user_achievement.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends user_achievementFindUniqueOrThrowArgs>(args: SelectSubset<T, user_achievementFindUniqueOrThrowArgs<ExtArgs>>): Prisma__user_achievementClient<$Result.GetResult<Prisma.$user_achievementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first User_achievement that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {user_achievementFindFirstArgs} args - Arguments to find a User_achievement
+     * @example
+     * // Get one User_achievement
+     * const user_achievement = await prisma.user_achievement.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends user_achievementFindFirstArgs>(args?: SelectSubset<T, user_achievementFindFirstArgs<ExtArgs>>): Prisma__user_achievementClient<$Result.GetResult<Prisma.$user_achievementPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first User_achievement that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {user_achievementFindFirstOrThrowArgs} args - Arguments to find a User_achievement
+     * @example
+     * // Get one User_achievement
+     * const user_achievement = await prisma.user_achievement.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends user_achievementFindFirstOrThrowArgs>(args?: SelectSubset<T, user_achievementFindFirstOrThrowArgs<ExtArgs>>): Prisma__user_achievementClient<$Result.GetResult<Prisma.$user_achievementPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more User_achievements that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {user_achievementFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all User_achievements
+     * const user_achievements = await prisma.user_achievement.findMany()
+     * 
+     * // Get first 10 User_achievements
+     * const user_achievements = await prisma.user_achievement.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const user_achievementWithIdOnly = await prisma.user_achievement.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends user_achievementFindManyArgs>(args?: SelectSubset<T, user_achievementFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_achievementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a User_achievement.
+     * @param {user_achievementCreateArgs} args - Arguments to create a User_achievement.
+     * @example
+     * // Create one User_achievement
+     * const User_achievement = await prisma.user_achievement.create({
+     *   data: {
+     *     // ... data to create a User_achievement
+     *   }
+     * })
+     * 
+     */
+    create<T extends user_achievementCreateArgs>(args: SelectSubset<T, user_achievementCreateArgs<ExtArgs>>): Prisma__user_achievementClient<$Result.GetResult<Prisma.$user_achievementPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many User_achievements.
+     * @param {user_achievementCreateManyArgs} args - Arguments to create many User_achievements.
+     * @example
+     * // Create many User_achievements
+     * const user_achievement = await prisma.user_achievement.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends user_achievementCreateManyArgs>(args?: SelectSubset<T, user_achievementCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a User_achievement.
+     * @param {user_achievementDeleteArgs} args - Arguments to delete one User_achievement.
+     * @example
+     * // Delete one User_achievement
+     * const User_achievement = await prisma.user_achievement.delete({
+     *   where: {
+     *     // ... filter to delete one User_achievement
+     *   }
+     * })
+     * 
+     */
+    delete<T extends user_achievementDeleteArgs>(args: SelectSubset<T, user_achievementDeleteArgs<ExtArgs>>): Prisma__user_achievementClient<$Result.GetResult<Prisma.$user_achievementPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one User_achievement.
+     * @param {user_achievementUpdateArgs} args - Arguments to update one User_achievement.
+     * @example
+     * // Update one User_achievement
+     * const user_achievement = await prisma.user_achievement.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends user_achievementUpdateArgs>(args: SelectSubset<T, user_achievementUpdateArgs<ExtArgs>>): Prisma__user_achievementClient<$Result.GetResult<Prisma.$user_achievementPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more User_achievements.
+     * @param {user_achievementDeleteManyArgs} args - Arguments to filter User_achievements to delete.
+     * @example
+     * // Delete a few User_achievements
+     * const { count } = await prisma.user_achievement.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends user_achievementDeleteManyArgs>(args?: SelectSubset<T, user_achievementDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more User_achievements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {user_achievementUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many User_achievements
+     * const user_achievement = await prisma.user_achievement.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends user_achievementUpdateManyArgs>(args: SelectSubset<T, user_achievementUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one User_achievement.
+     * @param {user_achievementUpsertArgs} args - Arguments to update or create a User_achievement.
+     * @example
+     * // Update or create a User_achievement
+     * const user_achievement = await prisma.user_achievement.upsert({
+     *   create: {
+     *     // ... data to create a User_achievement
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the User_achievement we want to update
+     *   }
+     * })
+     */
+    upsert<T extends user_achievementUpsertArgs>(args: SelectSubset<T, user_achievementUpsertArgs<ExtArgs>>): Prisma__user_achievementClient<$Result.GetResult<Prisma.$user_achievementPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of User_achievements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {user_achievementCountArgs} args - Arguments to filter User_achievements to count.
+     * @example
+     * // Count the number of User_achievements
+     * const count = await prisma.user_achievement.count({
+     *   where: {
+     *     // ... the filter for the User_achievements we want to count
+     *   }
+     * })
+    **/
+    count<T extends user_achievementCountArgs>(
+      args?: Subset<T, user_achievementCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], User_achievementCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a User_achievement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {User_achievementAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends User_achievementAggregateArgs>(args: Subset<T, User_achievementAggregateArgs>): Prisma.PrismaPromise<GetUser_achievementAggregateType<T>>
+
+    /**
+     * Group by User_achievement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {user_achievementGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends user_achievementGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: user_achievementGroupByArgs['orderBy'] }
+        : { orderBy?: user_achievementGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, user_achievementGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUser_achievementGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the user_achievement model
+   */
+  readonly fields: user_achievementFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for user_achievement.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__user_achievementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    achievement<T extends achievementDefaultArgs<ExtArgs> = {}>(args?: Subset<T, achievementDefaultArgs<ExtArgs>>): Prisma__achievementClient<$Result.GetResult<Prisma.$achievementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    learning_stats<T extends user_achievement$learning_statsArgs<ExtArgs> = {}>(args?: Subset<T, user_achievement$learning_statsArgs<ExtArgs>>): Prisma__learning_statsClient<$Result.GetResult<Prisma.$learning_statsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user<T extends userDefaultArgs<ExtArgs> = {}>(args?: Subset<T, userDefaultArgs<ExtArgs>>): Prisma__userClient<$Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the user_achievement model
+   */
+  interface user_achievementFieldRefs {
+    readonly id: FieldRef<"user_achievement", 'BigInt'>
+    readonly user_id: FieldRef<"user_achievement", 'BigInt'>
+    readonly achievement_id: FieldRef<"user_achievement", 'BigInt'>
+    readonly achieved_date: FieldRef<"user_achievement", 'DateTime'>
+    readonly progress: FieldRef<"user_achievement", 'Int'>
+    readonly learning_stats_id: FieldRef<"user_achievement", 'BigInt'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * user_achievement findUnique
+   */
+  export type user_achievementFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_achievement
+     */
+    select?: user_achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_achievement
+     */
+    omit?: user_achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_achievementInclude<ExtArgs> | null
+    /**
+     * Filter, which user_achievement to fetch.
+     */
+    where: user_achievementWhereUniqueInput
+  }
+
+  /**
+   * user_achievement findUniqueOrThrow
+   */
+  export type user_achievementFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_achievement
+     */
+    select?: user_achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_achievement
+     */
+    omit?: user_achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_achievementInclude<ExtArgs> | null
+    /**
+     * Filter, which user_achievement to fetch.
+     */
+    where: user_achievementWhereUniqueInput
+  }
+
+  /**
+   * user_achievement findFirst
+   */
+  export type user_achievementFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_achievement
+     */
+    select?: user_achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_achievement
+     */
+    omit?: user_achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_achievementInclude<ExtArgs> | null
+    /**
+     * Filter, which user_achievement to fetch.
+     */
+    where?: user_achievementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of user_achievements to fetch.
+     */
+    orderBy?: user_achievementOrderByWithRelationInput | user_achievementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for user_achievements.
+     */
+    cursor?: user_achievementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` user_achievements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` user_achievements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of user_achievements.
+     */
+    distinct?: User_achievementScalarFieldEnum | User_achievementScalarFieldEnum[]
+  }
+
+  /**
+   * user_achievement findFirstOrThrow
+   */
+  export type user_achievementFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_achievement
+     */
+    select?: user_achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_achievement
+     */
+    omit?: user_achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_achievementInclude<ExtArgs> | null
+    /**
+     * Filter, which user_achievement to fetch.
+     */
+    where?: user_achievementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of user_achievements to fetch.
+     */
+    orderBy?: user_achievementOrderByWithRelationInput | user_achievementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for user_achievements.
+     */
+    cursor?: user_achievementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` user_achievements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` user_achievements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of user_achievements.
+     */
+    distinct?: User_achievementScalarFieldEnum | User_achievementScalarFieldEnum[]
+  }
+
+  /**
+   * user_achievement findMany
+   */
+  export type user_achievementFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_achievement
+     */
+    select?: user_achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_achievement
+     */
+    omit?: user_achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_achievementInclude<ExtArgs> | null
+    /**
+     * Filter, which user_achievements to fetch.
+     */
+    where?: user_achievementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of user_achievements to fetch.
+     */
+    orderBy?: user_achievementOrderByWithRelationInput | user_achievementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing user_achievements.
+     */
+    cursor?: user_achievementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` user_achievements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` user_achievements.
+     */
+    skip?: number
+    distinct?: User_achievementScalarFieldEnum | User_achievementScalarFieldEnum[]
+  }
+
+  /**
+   * user_achievement create
+   */
+  export type user_achievementCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_achievement
+     */
+    select?: user_achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_achievement
+     */
+    omit?: user_achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_achievementInclude<ExtArgs> | null
+    /**
+     * The data needed to create a user_achievement.
+     */
+    data: XOR<user_achievementCreateInput, user_achievementUncheckedCreateInput>
+  }
+
+  /**
+   * user_achievement createMany
+   */
+  export type user_achievementCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many user_achievements.
+     */
+    data: user_achievementCreateManyInput | user_achievementCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * user_achievement update
+   */
+  export type user_achievementUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_achievement
+     */
+    select?: user_achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_achievement
+     */
+    omit?: user_achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_achievementInclude<ExtArgs> | null
+    /**
+     * The data needed to update a user_achievement.
+     */
+    data: XOR<user_achievementUpdateInput, user_achievementUncheckedUpdateInput>
+    /**
+     * Choose, which user_achievement to update.
+     */
+    where: user_achievementWhereUniqueInput
+  }
+
+  /**
+   * user_achievement updateMany
+   */
+  export type user_achievementUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update user_achievements.
+     */
+    data: XOR<user_achievementUpdateManyMutationInput, user_achievementUncheckedUpdateManyInput>
+    /**
+     * Filter which user_achievements to update
+     */
+    where?: user_achievementWhereInput
+    /**
+     * Limit how many user_achievements to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * user_achievement upsert
+   */
+  export type user_achievementUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_achievement
+     */
+    select?: user_achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_achievement
+     */
+    omit?: user_achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_achievementInclude<ExtArgs> | null
+    /**
+     * The filter to search for the user_achievement to update in case it exists.
+     */
+    where: user_achievementWhereUniqueInput
+    /**
+     * In case the user_achievement found by the `where` argument doesn't exist, create a new user_achievement with this data.
+     */
+    create: XOR<user_achievementCreateInput, user_achievementUncheckedCreateInput>
+    /**
+     * In case the user_achievement was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<user_achievementUpdateInput, user_achievementUncheckedUpdateInput>
+  }
+
+  /**
+   * user_achievement delete
+   */
+  export type user_achievementDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_achievement
+     */
+    select?: user_achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_achievement
+     */
+    omit?: user_achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_achievementInclude<ExtArgs> | null
+    /**
+     * Filter which user_achievement to delete.
+     */
+    where: user_achievementWhereUniqueInput
+  }
+
+  /**
+   * user_achievement deleteMany
+   */
+  export type user_achievementDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which user_achievements to delete
+     */
+    where?: user_achievementWhereInput
+    /**
+     * Limit how many user_achievements to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * user_achievement.learning_stats
+   */
+  export type user_achievement$learning_statsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the learning_stats
+     */
+    select?: learning_statsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the learning_stats
+     */
+    omit?: learning_statsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: learning_statsInclude<ExtArgs> | null
+    where?: learning_statsWhereInput
+  }
+
+  /**
+   * user_achievement without action
+   */
+  export type user_achievementDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_achievement
+     */
+    select?: user_achievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_achievement
+     */
+    omit?: user_achievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_achievementInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model user_points
+   */
+
+  export type AggregateUser_points = {
+    _count: User_pointsCountAggregateOutputType | null
+    _avg: User_pointsAvgAggregateOutputType | null
+    _sum: User_pointsSumAggregateOutputType | null
+    _min: User_pointsMinAggregateOutputType | null
+    _max: User_pointsMaxAggregateOutputType | null
+  }
+
+  export type User_pointsAvgAggregateOutputType = {
+    id: number | null
+    user_id: number | null
+    total_points: number | null
+    available_points: number | null
+    level: number | null
+  }
+
+  export type User_pointsSumAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    total_points: number | null
+    available_points: number | null
+    level: number | null
+  }
+
+  export type User_pointsMinAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    total_points: number | null
+    available_points: number | null
+    level: number | null
+    created_at: Date | null
+    update_time: Date | null
+  }
+
+  export type User_pointsMaxAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    total_points: number | null
+    available_points: number | null
+    level: number | null
+    created_at: Date | null
+    update_time: Date | null
+  }
+
+  export type User_pointsCountAggregateOutputType = {
+    id: number
+    user_id: number
+    total_points: number
+    available_points: number
+    level: number
+    created_at: number
+    update_time: number
+    _all: number
+  }
+
+
+  export type User_pointsAvgAggregateInputType = {
+    id?: true
+    user_id?: true
+    total_points?: true
+    available_points?: true
+    level?: true
+  }
+
+  export type User_pointsSumAggregateInputType = {
+    id?: true
+    user_id?: true
+    total_points?: true
+    available_points?: true
+    level?: true
+  }
+
+  export type User_pointsMinAggregateInputType = {
+    id?: true
+    user_id?: true
+    total_points?: true
+    available_points?: true
+    level?: true
+    created_at?: true
+    update_time?: true
+  }
+
+  export type User_pointsMaxAggregateInputType = {
+    id?: true
+    user_id?: true
+    total_points?: true
+    available_points?: true
+    level?: true
+    created_at?: true
+    update_time?: true
+  }
+
+  export type User_pointsCountAggregateInputType = {
+    id?: true
+    user_id?: true
+    total_points?: true
+    available_points?: true
+    level?: true
+    created_at?: true
+    update_time?: true
+    _all?: true
+  }
+
+  export type User_pointsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which user_points to aggregate.
+     */
+    where?: user_pointsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of user_points to fetch.
+     */
+    orderBy?: user_pointsOrderByWithRelationInput | user_pointsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: user_pointsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` user_points from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` user_points.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned user_points
+    **/
+    _count?: true | User_pointsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: User_pointsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: User_pointsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: User_pointsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: User_pointsMaxAggregateInputType
+  }
+
+  export type GetUser_pointsAggregateType<T extends User_pointsAggregateArgs> = {
+        [P in keyof T & keyof AggregateUser_points]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUser_points[P]>
+      : GetScalarType<T[P], AggregateUser_points[P]>
+  }
+
+
+
+
+  export type user_pointsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: user_pointsWhereInput
+    orderBy?: user_pointsOrderByWithAggregationInput | user_pointsOrderByWithAggregationInput[]
+    by: User_pointsScalarFieldEnum[] | User_pointsScalarFieldEnum
+    having?: user_pointsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: User_pointsCountAggregateInputType | true
+    _avg?: User_pointsAvgAggregateInputType
+    _sum?: User_pointsSumAggregateInputType
+    _min?: User_pointsMinAggregateInputType
+    _max?: User_pointsMaxAggregateInputType
+  }
+
+  export type User_pointsGroupByOutputType = {
+    id: bigint
+    user_id: bigint
+    total_points: number
+    available_points: number
+    level: number
+    created_at: Date
+    update_time: Date
+    _count: User_pointsCountAggregateOutputType | null
+    _avg: User_pointsAvgAggregateOutputType | null
+    _sum: User_pointsSumAggregateOutputType | null
+    _min: User_pointsMinAggregateOutputType | null
+    _max: User_pointsMaxAggregateOutputType | null
+  }
+
+  type GetUser_pointsGroupByPayload<T extends user_pointsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<User_pointsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof User_pointsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], User_pointsGroupByOutputType[P]>
+            : GetScalarType<T[P], User_pointsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type user_pointsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    total_points?: boolean
+    available_points?: boolean
+    level?: boolean
+    created_at?: boolean
+    update_time?: boolean
+    point_transaction?: boolean | user_points$point_transactionArgs<ExtArgs>
+    user?: boolean | userDefaultArgs<ExtArgs>
+    _count?: boolean | User_pointsCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["user_points"]>
+
+
+
+  export type user_pointsSelectScalar = {
+    id?: boolean
+    user_id?: boolean
+    total_points?: boolean
+    available_points?: boolean
+    level?: boolean
+    created_at?: boolean
+    update_time?: boolean
+  }
+
+  export type user_pointsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "total_points" | "available_points" | "level" | "created_at" | "update_time", ExtArgs["result"]["user_points"]>
+  export type user_pointsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    point_transaction?: boolean | user_points$point_transactionArgs<ExtArgs>
+    user?: boolean | userDefaultArgs<ExtArgs>
+    _count?: boolean | User_pointsCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $user_pointsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "user_points"
+    objects: {
+      point_transaction: Prisma.$point_transactionPayload<ExtArgs>[]
+      user: Prisma.$userPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      user_id: bigint
+      total_points: number
+      available_points: number
+      level: number
+      created_at: Date
+      update_time: Date
+    }, ExtArgs["result"]["user_points"]>
+    composites: {}
+  }
+
+  type user_pointsGetPayload<S extends boolean | null | undefined | user_pointsDefaultArgs> = $Result.GetResult<Prisma.$user_pointsPayload, S>
+
+  type user_pointsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<user_pointsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: User_pointsCountAggregateInputType | true
+    }
+
+  export interface user_pointsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['user_points'], meta: { name: 'user_points' } }
+    /**
+     * Find zero or one User_points that matches the filter.
+     * @param {user_pointsFindUniqueArgs} args - Arguments to find a User_points
+     * @example
+     * // Get one User_points
+     * const user_points = await prisma.user_points.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends user_pointsFindUniqueArgs>(args: SelectSubset<T, user_pointsFindUniqueArgs<ExtArgs>>): Prisma__user_pointsClient<$Result.GetResult<Prisma.$user_pointsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one User_points that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {user_pointsFindUniqueOrThrowArgs} args - Arguments to find a User_points
+     * @example
+     * // Get one User_points
+     * const user_points = await prisma.user_points.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends user_pointsFindUniqueOrThrowArgs>(args: SelectSubset<T, user_pointsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__user_pointsClient<$Result.GetResult<Prisma.$user_pointsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first User_points that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {user_pointsFindFirstArgs} args - Arguments to find a User_points
+     * @example
+     * // Get one User_points
+     * const user_points = await prisma.user_points.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends user_pointsFindFirstArgs>(args?: SelectSubset<T, user_pointsFindFirstArgs<ExtArgs>>): Prisma__user_pointsClient<$Result.GetResult<Prisma.$user_pointsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first User_points that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {user_pointsFindFirstOrThrowArgs} args - Arguments to find a User_points
+     * @example
+     * // Get one User_points
+     * const user_points = await prisma.user_points.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends user_pointsFindFirstOrThrowArgs>(args?: SelectSubset<T, user_pointsFindFirstOrThrowArgs<ExtArgs>>): Prisma__user_pointsClient<$Result.GetResult<Prisma.$user_pointsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more User_points that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {user_pointsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all User_points
+     * const user_points = await prisma.user_points.findMany()
+     * 
+     * // Get first 10 User_points
+     * const user_points = await prisma.user_points.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const user_pointsWithIdOnly = await prisma.user_points.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends user_pointsFindManyArgs>(args?: SelectSubset<T, user_pointsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_pointsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a User_points.
+     * @param {user_pointsCreateArgs} args - Arguments to create a User_points.
+     * @example
+     * // Create one User_points
+     * const User_points = await prisma.user_points.create({
+     *   data: {
+     *     // ... data to create a User_points
+     *   }
+     * })
+     * 
+     */
+    create<T extends user_pointsCreateArgs>(args: SelectSubset<T, user_pointsCreateArgs<ExtArgs>>): Prisma__user_pointsClient<$Result.GetResult<Prisma.$user_pointsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many User_points.
+     * @param {user_pointsCreateManyArgs} args - Arguments to create many User_points.
+     * @example
+     * // Create many User_points
+     * const user_points = await prisma.user_points.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends user_pointsCreateManyArgs>(args?: SelectSubset<T, user_pointsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a User_points.
+     * @param {user_pointsDeleteArgs} args - Arguments to delete one User_points.
+     * @example
+     * // Delete one User_points
+     * const User_points = await prisma.user_points.delete({
+     *   where: {
+     *     // ... filter to delete one User_points
+     *   }
+     * })
+     * 
+     */
+    delete<T extends user_pointsDeleteArgs>(args: SelectSubset<T, user_pointsDeleteArgs<ExtArgs>>): Prisma__user_pointsClient<$Result.GetResult<Prisma.$user_pointsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one User_points.
+     * @param {user_pointsUpdateArgs} args - Arguments to update one User_points.
+     * @example
+     * // Update one User_points
+     * const user_points = await prisma.user_points.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends user_pointsUpdateArgs>(args: SelectSubset<T, user_pointsUpdateArgs<ExtArgs>>): Prisma__user_pointsClient<$Result.GetResult<Prisma.$user_pointsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more User_points.
+     * @param {user_pointsDeleteManyArgs} args - Arguments to filter User_points to delete.
+     * @example
+     * // Delete a few User_points
+     * const { count } = await prisma.user_points.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends user_pointsDeleteManyArgs>(args?: SelectSubset<T, user_pointsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more User_points.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {user_pointsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many User_points
+     * const user_points = await prisma.user_points.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends user_pointsUpdateManyArgs>(args: SelectSubset<T, user_pointsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one User_points.
+     * @param {user_pointsUpsertArgs} args - Arguments to update or create a User_points.
+     * @example
+     * // Update or create a User_points
+     * const user_points = await prisma.user_points.upsert({
+     *   create: {
+     *     // ... data to create a User_points
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the User_points we want to update
+     *   }
+     * })
+     */
+    upsert<T extends user_pointsUpsertArgs>(args: SelectSubset<T, user_pointsUpsertArgs<ExtArgs>>): Prisma__user_pointsClient<$Result.GetResult<Prisma.$user_pointsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of User_points.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {user_pointsCountArgs} args - Arguments to filter User_points to count.
+     * @example
+     * // Count the number of User_points
+     * const count = await prisma.user_points.count({
+     *   where: {
+     *     // ... the filter for the User_points we want to count
+     *   }
+     * })
+    **/
+    count<T extends user_pointsCountArgs>(
+      args?: Subset<T, user_pointsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], User_pointsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a User_points.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {User_pointsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends User_pointsAggregateArgs>(args: Subset<T, User_pointsAggregateArgs>): Prisma.PrismaPromise<GetUser_pointsAggregateType<T>>
+
+    /**
+     * Group by User_points.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {user_pointsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends user_pointsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: user_pointsGroupByArgs['orderBy'] }
+        : { orderBy?: user_pointsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, user_pointsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUser_pointsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the user_points model
+   */
+  readonly fields: user_pointsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for user_points.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__user_pointsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    point_transaction<T extends user_points$point_transactionArgs<ExtArgs> = {}>(args?: Subset<T, user_points$point_transactionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$point_transactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user<T extends userDefaultArgs<ExtArgs> = {}>(args?: Subset<T, userDefaultArgs<ExtArgs>>): Prisma__userClient<$Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the user_points model
+   */
+  interface user_pointsFieldRefs {
+    readonly id: FieldRef<"user_points", 'BigInt'>
+    readonly user_id: FieldRef<"user_points", 'BigInt'>
+    readonly total_points: FieldRef<"user_points", 'Int'>
+    readonly available_points: FieldRef<"user_points", 'Int'>
+    readonly level: FieldRef<"user_points", 'Int'>
+    readonly created_at: FieldRef<"user_points", 'DateTime'>
+    readonly update_time: FieldRef<"user_points", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * user_points findUnique
+   */
+  export type user_pointsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_points
+     */
+    select?: user_pointsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_points
+     */
+    omit?: user_pointsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_pointsInclude<ExtArgs> | null
+    /**
+     * Filter, which user_points to fetch.
+     */
+    where: user_pointsWhereUniqueInput
+  }
+
+  /**
+   * user_points findUniqueOrThrow
+   */
+  export type user_pointsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_points
+     */
+    select?: user_pointsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_points
+     */
+    omit?: user_pointsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_pointsInclude<ExtArgs> | null
+    /**
+     * Filter, which user_points to fetch.
+     */
+    where: user_pointsWhereUniqueInput
+  }
+
+  /**
+   * user_points findFirst
+   */
+  export type user_pointsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_points
+     */
+    select?: user_pointsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_points
+     */
+    omit?: user_pointsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_pointsInclude<ExtArgs> | null
+    /**
+     * Filter, which user_points to fetch.
+     */
+    where?: user_pointsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of user_points to fetch.
+     */
+    orderBy?: user_pointsOrderByWithRelationInput | user_pointsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for user_points.
+     */
+    cursor?: user_pointsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` user_points from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` user_points.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of user_points.
+     */
+    distinct?: User_pointsScalarFieldEnum | User_pointsScalarFieldEnum[]
+  }
+
+  /**
+   * user_points findFirstOrThrow
+   */
+  export type user_pointsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_points
+     */
+    select?: user_pointsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_points
+     */
+    omit?: user_pointsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_pointsInclude<ExtArgs> | null
+    /**
+     * Filter, which user_points to fetch.
+     */
+    where?: user_pointsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of user_points to fetch.
+     */
+    orderBy?: user_pointsOrderByWithRelationInput | user_pointsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for user_points.
+     */
+    cursor?: user_pointsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` user_points from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` user_points.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of user_points.
+     */
+    distinct?: User_pointsScalarFieldEnum | User_pointsScalarFieldEnum[]
+  }
+
+  /**
+   * user_points findMany
+   */
+  export type user_pointsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_points
+     */
+    select?: user_pointsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_points
+     */
+    omit?: user_pointsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_pointsInclude<ExtArgs> | null
+    /**
+     * Filter, which user_points to fetch.
+     */
+    where?: user_pointsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of user_points to fetch.
+     */
+    orderBy?: user_pointsOrderByWithRelationInput | user_pointsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing user_points.
+     */
+    cursor?: user_pointsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` user_points from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` user_points.
+     */
+    skip?: number
+    distinct?: User_pointsScalarFieldEnum | User_pointsScalarFieldEnum[]
+  }
+
+  /**
+   * user_points create
+   */
+  export type user_pointsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_points
+     */
+    select?: user_pointsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_points
+     */
+    omit?: user_pointsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_pointsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a user_points.
+     */
+    data: XOR<user_pointsCreateInput, user_pointsUncheckedCreateInput>
+  }
+
+  /**
+   * user_points createMany
+   */
+  export type user_pointsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many user_points.
+     */
+    data: user_pointsCreateManyInput | user_pointsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * user_points update
+   */
+  export type user_pointsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_points
+     */
+    select?: user_pointsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_points
+     */
+    omit?: user_pointsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_pointsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a user_points.
+     */
+    data: XOR<user_pointsUpdateInput, user_pointsUncheckedUpdateInput>
+    /**
+     * Choose, which user_points to update.
+     */
+    where: user_pointsWhereUniqueInput
+  }
+
+  /**
+   * user_points updateMany
+   */
+  export type user_pointsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update user_points.
+     */
+    data: XOR<user_pointsUpdateManyMutationInput, user_pointsUncheckedUpdateManyInput>
+    /**
+     * Filter which user_points to update
+     */
+    where?: user_pointsWhereInput
+    /**
+     * Limit how many user_points to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * user_points upsert
+   */
+  export type user_pointsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_points
+     */
+    select?: user_pointsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_points
+     */
+    omit?: user_pointsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_pointsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the user_points to update in case it exists.
+     */
+    where: user_pointsWhereUniqueInput
+    /**
+     * In case the user_points found by the `where` argument doesn't exist, create a new user_points with this data.
+     */
+    create: XOR<user_pointsCreateInput, user_pointsUncheckedCreateInput>
+    /**
+     * In case the user_points was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<user_pointsUpdateInput, user_pointsUncheckedUpdateInput>
+  }
+
+  /**
+   * user_points delete
+   */
+  export type user_pointsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_points
+     */
+    select?: user_pointsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_points
+     */
+    omit?: user_pointsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_pointsInclude<ExtArgs> | null
+    /**
+     * Filter which user_points to delete.
+     */
+    where: user_pointsWhereUniqueInput
+  }
+
+  /**
+   * user_points deleteMany
+   */
+  export type user_pointsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which user_points to delete
+     */
+    where?: user_pointsWhereInput
+    /**
+     * Limit how many user_points to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * user_points.point_transaction
+   */
+  export type user_points$point_transactionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the point_transaction
+     */
+    select?: point_transactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the point_transaction
+     */
+    omit?: point_transactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: point_transactionInclude<ExtArgs> | null
+    where?: point_transactionWhereInput
+    orderBy?: point_transactionOrderByWithRelationInput | point_transactionOrderByWithRelationInput[]
+    cursor?: point_transactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Point_transactionScalarFieldEnum | Point_transactionScalarFieldEnum[]
+  }
+
+  /**
+   * user_points without action
+   */
+  export type user_pointsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_points
+     */
+    select?: user_pointsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user_points
+     */
+    omit?: user_pointsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_pointsInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model word_collection
+   */
+
+  export type AggregateWord_collection = {
+    _count: Word_collectionCountAggregateOutputType | null
+    _avg: Word_collectionAvgAggregateOutputType | null
+    _sum: Word_collectionSumAggregateOutputType | null
+    _min: Word_collectionMinAggregateOutputType | null
+    _max: Word_collectionMaxAggregateOutputType | null
+  }
+
+  export type Word_collectionAvgAggregateOutputType = {
+    id: number | null
+    user_id: number | null
+    plan_id: number | null
+    word_count: number | null
+    is_delete: number | null
+  }
+
+  export type Word_collectionSumAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    plan_id: bigint | null
+    word_count: number | null
+    is_delete: number | null
+  }
+
+  export type Word_collectionMinAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    plan_id: bigint | null
+    name: string | null
+    description: string | null
+    is_public: boolean | null
+    word_count: number | null
+    created_at: Date | null
+    update_time: Date | null
+    is_delete: number | null
+  }
+
+  export type Word_collectionMaxAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    plan_id: bigint | null
+    name: string | null
+    description: string | null
+    is_public: boolean | null
+    word_count: number | null
+    created_at: Date | null
+    update_time: Date | null
+    is_delete: number | null
+  }
+
+  export type Word_collectionCountAggregateOutputType = {
+    id: number
+    user_id: number
+    plan_id: number
+    name: number
+    description: number
+    is_public: number
+    word_count: number
+    created_at: number
+    update_time: number
+    is_delete: number
+    _all: number
+  }
+
+
+  export type Word_collectionAvgAggregateInputType = {
+    id?: true
+    user_id?: true
+    plan_id?: true
+    word_count?: true
+    is_delete?: true
+  }
+
+  export type Word_collectionSumAggregateInputType = {
+    id?: true
+    user_id?: true
+    plan_id?: true
+    word_count?: true
+    is_delete?: true
+  }
+
+  export type Word_collectionMinAggregateInputType = {
+    id?: true
+    user_id?: true
+    plan_id?: true
+    name?: true
+    description?: true
+    is_public?: true
+    word_count?: true
+    created_at?: true
+    update_time?: true
+    is_delete?: true
+  }
+
+  export type Word_collectionMaxAggregateInputType = {
+    id?: true
+    user_id?: true
+    plan_id?: true
+    name?: true
+    description?: true
+    is_public?: true
+    word_count?: true
+    created_at?: true
+    update_time?: true
+    is_delete?: true
+  }
+
+  export type Word_collectionCountAggregateInputType = {
+    id?: true
+    user_id?: true
+    plan_id?: true
+    name?: true
+    description?: true
+    is_public?: true
+    word_count?: true
+    created_at?: true
+    update_time?: true
+    is_delete?: true
+    _all?: true
+  }
+
+  export type Word_collectionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which word_collection to aggregate.
+     */
+    where?: word_collectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of word_collections to fetch.
+     */
+    orderBy?: word_collectionOrderByWithRelationInput | word_collectionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: word_collectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` word_collections from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` word_collections.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned word_collections
+    **/
+    _count?: true | Word_collectionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Word_collectionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Word_collectionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Word_collectionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Word_collectionMaxAggregateInputType
+  }
+
+  export type GetWord_collectionAggregateType<T extends Word_collectionAggregateArgs> = {
+        [P in keyof T & keyof AggregateWord_collection]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWord_collection[P]>
+      : GetScalarType<T[P], AggregateWord_collection[P]>
+  }
+
+
+
+
+  export type word_collectionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: word_collectionWhereInput
+    orderBy?: word_collectionOrderByWithAggregationInput | word_collectionOrderByWithAggregationInput[]
+    by: Word_collectionScalarFieldEnum[] | Word_collectionScalarFieldEnum
+    having?: word_collectionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Word_collectionCountAggregateInputType | true
+    _avg?: Word_collectionAvgAggregateInputType
+    _sum?: Word_collectionSumAggregateInputType
+    _min?: Word_collectionMinAggregateInputType
+    _max?: Word_collectionMaxAggregateInputType
+  }
+
+  export type Word_collectionGroupByOutputType = {
+    id: bigint
+    user_id: bigint
+    plan_id: bigint | null
+    name: string
+    description: string | null
+    is_public: boolean
+    word_count: number
+    created_at: Date
+    update_time: Date
+    is_delete: number
+    _count: Word_collectionCountAggregateOutputType | null
+    _avg: Word_collectionAvgAggregateOutputType | null
+    _sum: Word_collectionSumAggregateOutputType | null
+    _min: Word_collectionMinAggregateOutputType | null
+    _max: Word_collectionMaxAggregateOutputType | null
+  }
+
+  type GetWord_collectionGroupByPayload<T extends word_collectionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Word_collectionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Word_collectionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Word_collectionGroupByOutputType[P]>
+            : GetScalarType<T[P], Word_collectionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type word_collectionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    plan_id?: boolean
+    name?: boolean
+    description?: boolean
+    is_public?: boolean
+    word_count?: boolean
+    created_at?: boolean
+    update_time?: boolean
+    is_delete?: boolean
+    collection_word?: boolean | word_collection$collection_wordArgs<ExtArgs>
+    study_plan?: boolean | word_collection$study_planArgs<ExtArgs>
+    user?: boolean | userDefaultArgs<ExtArgs>
+    _count?: boolean | Word_collectionCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["word_collection"]>
+
+
+
+  export type word_collectionSelectScalar = {
+    id?: boolean
+    user_id?: boolean
+    plan_id?: boolean
+    name?: boolean
+    description?: boolean
+    is_public?: boolean
+    word_count?: boolean
+    created_at?: boolean
+    update_time?: boolean
+    is_delete?: boolean
+  }
+
+  export type word_collectionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "plan_id" | "name" | "description" | "is_public" | "word_count" | "created_at" | "update_time" | "is_delete", ExtArgs["result"]["word_collection"]>
+  export type word_collectionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    collection_word?: boolean | word_collection$collection_wordArgs<ExtArgs>
+    study_plan?: boolean | word_collection$study_planArgs<ExtArgs>
+    user?: boolean | userDefaultArgs<ExtArgs>
+    _count?: boolean | Word_collectionCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $word_collectionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "word_collection"
+    objects: {
+      collection_word: Prisma.$collection_wordPayload<ExtArgs>[]
+      study_plan: Prisma.$study_planPayload<ExtArgs> | null
+      user: Prisma.$userPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      user_id: bigint
+      plan_id: bigint | null
+      name: string
+      description: string | null
+      is_public: boolean
+      word_count: number
+      created_at: Date
+      update_time: Date
+      is_delete: number
+    }, ExtArgs["result"]["word_collection"]>
+    composites: {}
+  }
+
+  type word_collectionGetPayload<S extends boolean | null | undefined | word_collectionDefaultArgs> = $Result.GetResult<Prisma.$word_collectionPayload, S>
+
+  type word_collectionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<word_collectionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Word_collectionCountAggregateInputType | true
+    }
+
+  export interface word_collectionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['word_collection'], meta: { name: 'word_collection' } }
+    /**
+     * Find zero or one Word_collection that matches the filter.
+     * @param {word_collectionFindUniqueArgs} args - Arguments to find a Word_collection
+     * @example
+     * // Get one Word_collection
+     * const word_collection = await prisma.word_collection.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends word_collectionFindUniqueArgs>(args: SelectSubset<T, word_collectionFindUniqueArgs<ExtArgs>>): Prisma__word_collectionClient<$Result.GetResult<Prisma.$word_collectionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Word_collection that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {word_collectionFindUniqueOrThrowArgs} args - Arguments to find a Word_collection
+     * @example
+     * // Get one Word_collection
+     * const word_collection = await prisma.word_collection.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends word_collectionFindUniqueOrThrowArgs>(args: SelectSubset<T, word_collectionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__word_collectionClient<$Result.GetResult<Prisma.$word_collectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Word_collection that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {word_collectionFindFirstArgs} args - Arguments to find a Word_collection
+     * @example
+     * // Get one Word_collection
+     * const word_collection = await prisma.word_collection.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends word_collectionFindFirstArgs>(args?: SelectSubset<T, word_collectionFindFirstArgs<ExtArgs>>): Prisma__word_collectionClient<$Result.GetResult<Prisma.$word_collectionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Word_collection that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {word_collectionFindFirstOrThrowArgs} args - Arguments to find a Word_collection
+     * @example
+     * // Get one Word_collection
+     * const word_collection = await prisma.word_collection.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends word_collectionFindFirstOrThrowArgs>(args?: SelectSubset<T, word_collectionFindFirstOrThrowArgs<ExtArgs>>): Prisma__word_collectionClient<$Result.GetResult<Prisma.$word_collectionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Word_collections that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {word_collectionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Word_collections
+     * const word_collections = await prisma.word_collection.findMany()
+     * 
+     * // Get first 10 Word_collections
+     * const word_collections = await prisma.word_collection.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const word_collectionWithIdOnly = await prisma.word_collection.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends word_collectionFindManyArgs>(args?: SelectSubset<T, word_collectionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$word_collectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Word_collection.
+     * @param {word_collectionCreateArgs} args - Arguments to create a Word_collection.
+     * @example
+     * // Create one Word_collection
+     * const Word_collection = await prisma.word_collection.create({
+     *   data: {
+     *     // ... data to create a Word_collection
+     *   }
+     * })
+     * 
+     */
+    create<T extends word_collectionCreateArgs>(args: SelectSubset<T, word_collectionCreateArgs<ExtArgs>>): Prisma__word_collectionClient<$Result.GetResult<Prisma.$word_collectionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Word_collections.
+     * @param {word_collectionCreateManyArgs} args - Arguments to create many Word_collections.
+     * @example
+     * // Create many Word_collections
+     * const word_collection = await prisma.word_collection.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends word_collectionCreateManyArgs>(args?: SelectSubset<T, word_collectionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Word_collection.
+     * @param {word_collectionDeleteArgs} args - Arguments to delete one Word_collection.
+     * @example
+     * // Delete one Word_collection
+     * const Word_collection = await prisma.word_collection.delete({
+     *   where: {
+     *     // ... filter to delete one Word_collection
+     *   }
+     * })
+     * 
+     */
+    delete<T extends word_collectionDeleteArgs>(args: SelectSubset<T, word_collectionDeleteArgs<ExtArgs>>): Prisma__word_collectionClient<$Result.GetResult<Prisma.$word_collectionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Word_collection.
+     * @param {word_collectionUpdateArgs} args - Arguments to update one Word_collection.
+     * @example
+     * // Update one Word_collection
+     * const word_collection = await prisma.word_collection.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends word_collectionUpdateArgs>(args: SelectSubset<T, word_collectionUpdateArgs<ExtArgs>>): Prisma__word_collectionClient<$Result.GetResult<Prisma.$word_collectionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Word_collections.
+     * @param {word_collectionDeleteManyArgs} args - Arguments to filter Word_collections to delete.
+     * @example
+     * // Delete a few Word_collections
+     * const { count } = await prisma.word_collection.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends word_collectionDeleteManyArgs>(args?: SelectSubset<T, word_collectionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Word_collections.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {word_collectionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Word_collections
+     * const word_collection = await prisma.word_collection.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends word_collectionUpdateManyArgs>(args: SelectSubset<T, word_collectionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Word_collection.
+     * @param {word_collectionUpsertArgs} args - Arguments to update or create a Word_collection.
+     * @example
+     * // Update or create a Word_collection
+     * const word_collection = await prisma.word_collection.upsert({
+     *   create: {
+     *     // ... data to create a Word_collection
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Word_collection we want to update
+     *   }
+     * })
+     */
+    upsert<T extends word_collectionUpsertArgs>(args: SelectSubset<T, word_collectionUpsertArgs<ExtArgs>>): Prisma__word_collectionClient<$Result.GetResult<Prisma.$word_collectionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Word_collections.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {word_collectionCountArgs} args - Arguments to filter Word_collections to count.
+     * @example
+     * // Count the number of Word_collections
+     * const count = await prisma.word_collection.count({
+     *   where: {
+     *     // ... the filter for the Word_collections we want to count
+     *   }
+     * })
+    **/
+    count<T extends word_collectionCountArgs>(
+      args?: Subset<T, word_collectionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Word_collectionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Word_collection.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Word_collectionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Word_collectionAggregateArgs>(args: Subset<T, Word_collectionAggregateArgs>): Prisma.PrismaPromise<GetWord_collectionAggregateType<T>>
+
+    /**
+     * Group by Word_collection.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {word_collectionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends word_collectionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: word_collectionGroupByArgs['orderBy'] }
+        : { orderBy?: word_collectionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, word_collectionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWord_collectionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the word_collection model
+   */
+  readonly fields: word_collectionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for word_collection.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__word_collectionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    collection_word<T extends word_collection$collection_wordArgs<ExtArgs> = {}>(args?: Subset<T, word_collection$collection_wordArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$collection_wordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    study_plan<T extends word_collection$study_planArgs<ExtArgs> = {}>(args?: Subset<T, word_collection$study_planArgs<ExtArgs>>): Prisma__study_planClient<$Result.GetResult<Prisma.$study_planPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user<T extends userDefaultArgs<ExtArgs> = {}>(args?: Subset<T, userDefaultArgs<ExtArgs>>): Prisma__userClient<$Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the word_collection model
+   */
+  interface word_collectionFieldRefs {
+    readonly id: FieldRef<"word_collection", 'BigInt'>
+    readonly user_id: FieldRef<"word_collection", 'BigInt'>
+    readonly plan_id: FieldRef<"word_collection", 'BigInt'>
+    readonly name: FieldRef<"word_collection", 'String'>
+    readonly description: FieldRef<"word_collection", 'String'>
+    readonly is_public: FieldRef<"word_collection", 'Boolean'>
+    readonly word_count: FieldRef<"word_collection", 'Int'>
+    readonly created_at: FieldRef<"word_collection", 'DateTime'>
+    readonly update_time: FieldRef<"word_collection", 'DateTime'>
+    readonly is_delete: FieldRef<"word_collection", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * word_collection findUnique
+   */
+  export type word_collectionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the word_collection
+     */
+    select?: word_collectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the word_collection
+     */
+    omit?: word_collectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: word_collectionInclude<ExtArgs> | null
+    /**
+     * Filter, which word_collection to fetch.
+     */
+    where: word_collectionWhereUniqueInput
+  }
+
+  /**
+   * word_collection findUniqueOrThrow
+   */
+  export type word_collectionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the word_collection
+     */
+    select?: word_collectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the word_collection
+     */
+    omit?: word_collectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: word_collectionInclude<ExtArgs> | null
+    /**
+     * Filter, which word_collection to fetch.
+     */
+    where: word_collectionWhereUniqueInput
+  }
+
+  /**
+   * word_collection findFirst
+   */
+  export type word_collectionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the word_collection
+     */
+    select?: word_collectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the word_collection
+     */
+    omit?: word_collectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: word_collectionInclude<ExtArgs> | null
+    /**
+     * Filter, which word_collection to fetch.
+     */
+    where?: word_collectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of word_collections to fetch.
+     */
+    orderBy?: word_collectionOrderByWithRelationInput | word_collectionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for word_collections.
+     */
+    cursor?: word_collectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` word_collections from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` word_collections.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of word_collections.
+     */
+    distinct?: Word_collectionScalarFieldEnum | Word_collectionScalarFieldEnum[]
+  }
+
+  /**
+   * word_collection findFirstOrThrow
+   */
+  export type word_collectionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the word_collection
+     */
+    select?: word_collectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the word_collection
+     */
+    omit?: word_collectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: word_collectionInclude<ExtArgs> | null
+    /**
+     * Filter, which word_collection to fetch.
+     */
+    where?: word_collectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of word_collections to fetch.
+     */
+    orderBy?: word_collectionOrderByWithRelationInput | word_collectionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for word_collections.
+     */
+    cursor?: word_collectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` word_collections from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` word_collections.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of word_collections.
+     */
+    distinct?: Word_collectionScalarFieldEnum | Word_collectionScalarFieldEnum[]
+  }
+
+  /**
+   * word_collection findMany
+   */
+  export type word_collectionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the word_collection
+     */
+    select?: word_collectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the word_collection
+     */
+    omit?: word_collectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: word_collectionInclude<ExtArgs> | null
+    /**
+     * Filter, which word_collections to fetch.
+     */
+    where?: word_collectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of word_collections to fetch.
+     */
+    orderBy?: word_collectionOrderByWithRelationInput | word_collectionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing word_collections.
+     */
+    cursor?: word_collectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` word_collections from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` word_collections.
+     */
+    skip?: number
+    distinct?: Word_collectionScalarFieldEnum | Word_collectionScalarFieldEnum[]
+  }
+
+  /**
+   * word_collection create
+   */
+  export type word_collectionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the word_collection
+     */
+    select?: word_collectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the word_collection
+     */
+    omit?: word_collectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: word_collectionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a word_collection.
+     */
+    data: XOR<word_collectionCreateInput, word_collectionUncheckedCreateInput>
+  }
+
+  /**
+   * word_collection createMany
+   */
+  export type word_collectionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many word_collections.
+     */
+    data: word_collectionCreateManyInput | word_collectionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * word_collection update
+   */
+  export type word_collectionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the word_collection
+     */
+    select?: word_collectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the word_collection
+     */
+    omit?: word_collectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: word_collectionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a word_collection.
+     */
+    data: XOR<word_collectionUpdateInput, word_collectionUncheckedUpdateInput>
+    /**
+     * Choose, which word_collection to update.
+     */
+    where: word_collectionWhereUniqueInput
+  }
+
+  /**
+   * word_collection updateMany
+   */
+  export type word_collectionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update word_collections.
+     */
+    data: XOR<word_collectionUpdateManyMutationInput, word_collectionUncheckedUpdateManyInput>
+    /**
+     * Filter which word_collections to update
+     */
+    where?: word_collectionWhereInput
+    /**
+     * Limit how many word_collections to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * word_collection upsert
+   */
+  export type word_collectionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the word_collection
+     */
+    select?: word_collectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the word_collection
+     */
+    omit?: word_collectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: word_collectionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the word_collection to update in case it exists.
+     */
+    where: word_collectionWhereUniqueInput
+    /**
+     * In case the word_collection found by the `where` argument doesn't exist, create a new word_collection with this data.
+     */
+    create: XOR<word_collectionCreateInput, word_collectionUncheckedCreateInput>
+    /**
+     * In case the word_collection was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<word_collectionUpdateInput, word_collectionUncheckedUpdateInput>
+  }
+
+  /**
+   * word_collection delete
+   */
+  export type word_collectionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the word_collection
+     */
+    select?: word_collectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the word_collection
+     */
+    omit?: word_collectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: word_collectionInclude<ExtArgs> | null
+    /**
+     * Filter which word_collection to delete.
+     */
+    where: word_collectionWhereUniqueInput
+  }
+
+  /**
+   * word_collection deleteMany
+   */
+  export type word_collectionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which word_collections to delete
+     */
+    where?: word_collectionWhereInput
+    /**
+     * Limit how many word_collections to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * word_collection.collection_word
+   */
+  export type word_collection$collection_wordArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the collection_word
+     */
+    select?: collection_wordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the collection_word
+     */
+    omit?: collection_wordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: collection_wordInclude<ExtArgs> | null
+    where?: collection_wordWhereInput
+    orderBy?: collection_wordOrderByWithRelationInput | collection_wordOrderByWithRelationInput[]
+    cursor?: collection_wordWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Collection_wordScalarFieldEnum | Collection_wordScalarFieldEnum[]
+  }
+
+  /**
+   * word_collection.study_plan
+   */
+  export type word_collection$study_planArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the study_plan
+     */
+    select?: study_planSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the study_plan
+     */
+    omit?: study_planOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: study_planInclude<ExtArgs> | null
+    where?: study_planWhereInput
+  }
+
+  /**
+   * word_collection without action
+   */
+  export type word_collectionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the word_collection
+     */
+    select?: word_collectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the word_collection
+     */
+    omit?: word_collectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: word_collectionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -16162,6 +27993,161 @@ export namespace Prisma {
   export type Word_status_changeScalarFieldEnum = (typeof Word_status_changeScalarFieldEnum)[keyof typeof Word_status_changeScalarFieldEnum]
 
 
+  export const AchievementScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    icon_url: 'icon_url',
+    category: 'category',
+    points: 'points',
+    requirements: 'requirements',
+    created_at: 'created_at',
+    update_time: 'update_time',
+    is_delete: 'is_delete'
+  };
+
+  export type AchievementScalarFieldEnum = (typeof AchievementScalarFieldEnum)[keyof typeof AchievementScalarFieldEnum]
+
+
+  export const Collection_wordScalarFieldEnum: {
+    id: 'id',
+    collection_id: 'collection_id',
+    word_id: 'word_id',
+    added_time: 'added_time',
+    sort_order: 'sort_order',
+    note: 'note'
+  };
+
+  export type Collection_wordScalarFieldEnum = (typeof Collection_wordScalarFieldEnum)[keyof typeof Collection_wordScalarFieldEnum]
+
+
+  export const Game_recordScalarFieldEnum: {
+    id: 'id',
+    user_id: 'user_id',
+    game_type: 'game_type',
+    score: 'score',
+    duration: 'duration',
+    words_count: 'words_count',
+    correct_count: 'correct_count',
+    wrong_count: 'wrong_count',
+    level: 'level',
+    game_data: 'game_data',
+    created_at: 'created_at',
+    update_time: 'update_time',
+    is_delete: 'is_delete'
+  };
+
+  export type Game_recordScalarFieldEnum = (typeof Game_recordScalarFieldEnum)[keyof typeof Game_recordScalarFieldEnum]
+
+
+  export const Learning_progressScalarFieldEnum: {
+    id: 'id',
+    user_id: 'user_id',
+    word_id: 'word_id',
+    action_type: 'action_type',
+    learning_details: 'learning_details',
+    created_at: 'created_at',
+    update_time: 'update_time',
+    is_delete: 'is_delete',
+    study_plan_id: 'study_plan_id',
+    source: 'source',
+    device_info: 'device_info',
+    attempt_count: 'attempt_count',
+    start_time: 'start_time',
+    end_time: 'end_time'
+  };
+
+  export type Learning_progressScalarFieldEnum = (typeof Learning_progressScalarFieldEnum)[keyof typeof Learning_progressScalarFieldEnum]
+
+
+  export const Learning_statsScalarFieldEnum: {
+    id: 'id',
+    user_id: 'user_id',
+    total_words_learned: 'total_words_learned',
+    total_review_time: 'total_review_time',
+    daily_streak: 'daily_streak',
+    longest_streak: 'longest_streak',
+    last_study_date: 'last_study_date',
+    total_study_days: 'total_study_days',
+    created_at: 'created_at',
+    update_time: 'update_time'
+  };
+
+  export type Learning_statsScalarFieldEnum = (typeof Learning_statsScalarFieldEnum)[keyof typeof Learning_statsScalarFieldEnum]
+
+
+  export const Point_transactionScalarFieldEnum: {
+    id: 'id',
+    user_points_id: 'user_points_id',
+    amount: 'amount',
+    type: 'type',
+    description: 'description',
+    reference_id: 'reference_id',
+    created_at: 'created_at'
+  };
+
+  export type Point_transactionScalarFieldEnum = (typeof Point_transactionScalarFieldEnum)[keyof typeof Point_transactionScalarFieldEnum]
+
+
+  export const Study_planScalarFieldEnum: {
+    id: 'id',
+    user_id: 'user_id',
+    name: 'name',
+    description: 'description',
+    target_words: 'target_words',
+    daily_words: 'daily_words',
+    start_date: 'start_date',
+    end_date: 'end_date',
+    status: 'status',
+    created_at: 'created_at',
+    update_time: 'update_time',
+    is_delete: 'is_delete'
+  };
+
+  export type Study_planScalarFieldEnum = (typeof Study_planScalarFieldEnum)[keyof typeof Study_planScalarFieldEnum]
+
+
+  export const User_achievementScalarFieldEnum: {
+    id: 'id',
+    user_id: 'user_id',
+    achievement_id: 'achievement_id',
+    achieved_date: 'achieved_date',
+    progress: 'progress',
+    learning_stats_id: 'learning_stats_id'
+  };
+
+  export type User_achievementScalarFieldEnum = (typeof User_achievementScalarFieldEnum)[keyof typeof User_achievementScalarFieldEnum]
+
+
+  export const User_pointsScalarFieldEnum: {
+    id: 'id',
+    user_id: 'user_id',
+    total_points: 'total_points',
+    available_points: 'available_points',
+    level: 'level',
+    created_at: 'created_at',
+    update_time: 'update_time'
+  };
+
+  export type User_pointsScalarFieldEnum = (typeof User_pointsScalarFieldEnum)[keyof typeof User_pointsScalarFieldEnum]
+
+
+  export const Word_collectionScalarFieldEnum: {
+    id: 'id',
+    user_id: 'user_id',
+    plan_id: 'plan_id',
+    name: 'name',
+    description: 'description',
+    is_public: 'is_public',
+    word_count: 'word_count',
+    created_at: 'created_at',
+    update_time: 'update_time',
+    is_delete: 'is_delete'
+  };
+
+  export type Word_collectionScalarFieldEnum = (typeof Word_collectionScalarFieldEnum)[keyof typeof Word_collectionScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -16296,6 +28282,64 @@ export namespace Prisma {
   };
 
   export type word_status_changeOrderByRelevanceFieldEnum = (typeof word_status_changeOrderByRelevanceFieldEnum)[keyof typeof word_status_changeOrderByRelevanceFieldEnum]
+
+
+  export const achievementOrderByRelevanceFieldEnum: {
+    name: 'name',
+    description: 'description',
+    icon_url: 'icon_url',
+    category: 'category'
+  };
+
+  export type achievementOrderByRelevanceFieldEnum = (typeof achievementOrderByRelevanceFieldEnum)[keyof typeof achievementOrderByRelevanceFieldEnum]
+
+
+  export const collection_wordOrderByRelevanceFieldEnum: {
+    note: 'note'
+  };
+
+  export type collection_wordOrderByRelevanceFieldEnum = (typeof collection_wordOrderByRelevanceFieldEnum)[keyof typeof collection_wordOrderByRelevanceFieldEnum]
+
+
+  export const game_recordOrderByRelevanceFieldEnum: {
+    game_type: 'game_type'
+  };
+
+  export type game_recordOrderByRelevanceFieldEnum = (typeof game_recordOrderByRelevanceFieldEnum)[keyof typeof game_recordOrderByRelevanceFieldEnum]
+
+
+  export const learning_progressOrderByRelevanceFieldEnum: {
+    action_type: 'action_type',
+    source: 'source'
+  };
+
+  export type learning_progressOrderByRelevanceFieldEnum = (typeof learning_progressOrderByRelevanceFieldEnum)[keyof typeof learning_progressOrderByRelevanceFieldEnum]
+
+
+  export const point_transactionOrderByRelevanceFieldEnum: {
+    type: 'type',
+    description: 'description',
+    reference_id: 'reference_id'
+  };
+
+  export type point_transactionOrderByRelevanceFieldEnum = (typeof point_transactionOrderByRelevanceFieldEnum)[keyof typeof point_transactionOrderByRelevanceFieldEnum]
+
+
+  export const study_planOrderByRelevanceFieldEnum: {
+    name: 'name',
+    description: 'description',
+    status: 'status'
+  };
+
+  export type study_planOrderByRelevanceFieldEnum = (typeof study_planOrderByRelevanceFieldEnum)[keyof typeof study_planOrderByRelevanceFieldEnum]
+
+
+  export const word_collectionOrderByRelevanceFieldEnum: {
+    name: 'name',
+    description: 'description'
+  };
+
+  export type word_collectionOrderByRelevanceFieldEnum = (typeof word_collectionOrderByRelevanceFieldEnum)[keyof typeof word_collectionOrderByRelevanceFieldEnum]
 
 
   /**
@@ -16738,8 +28782,10 @@ export namespace Prisma {
     manual_score?: IntNullableFilter<"english_word"> | number | null
     ai_score?: IntNullableFilter<"english_word"> | number | null
     reviewer?: BigIntNullableFilter<"english_word"> | bigint | number | null
+    collection_word?: Collection_wordListRelationFilter
     dictionary_word?: Dictionary_wordListRelationFilter
     english_word_change_log?: English_word_change_logListRelationFilter
+    learning_progress?: Learning_progressListRelationFilter
     media_creator?: Media_creatorListRelationFilter
   }
 
@@ -16755,8 +28801,10 @@ export namespace Prisma {
     manual_score?: SortOrderInput | SortOrder
     ai_score?: SortOrderInput | SortOrder
     reviewer?: SortOrderInput | SortOrder
+    collection_word?: collection_wordOrderByRelationAggregateInput
     dictionary_word?: dictionary_wordOrderByRelationAggregateInput
     english_word_change_log?: english_word_change_logOrderByRelationAggregateInput
+    learning_progress?: learning_progressOrderByRelationAggregateInput
     media_creator?: media_creatorOrderByRelationAggregateInput
     _relevance?: english_wordOrderByRelevanceInput
   }
@@ -16776,8 +28824,10 @@ export namespace Prisma {
     manual_score?: IntNullableFilter<"english_word"> | number | null
     ai_score?: IntNullableFilter<"english_word"> | number | null
     reviewer?: BigIntNullableFilter<"english_word"> | bigint | number | null
+    collection_word?: Collection_wordListRelationFilter
     dictionary_word?: Dictionary_wordListRelationFilter
     english_word_change_log?: English_word_change_logListRelationFilter
+    learning_progress?: Learning_progressListRelationFilter
     media_creator?: Media_creatorListRelationFilter
   }, "id">
 
@@ -17158,7 +29208,14 @@ export namespace Prisma {
     updateTime?: DateTimeFilter<"user"> | Date | string
     isDelete?: IntFilter<"user"> | number
     audio_file?: Audio_fileListRelationFilter
+    game_record?: Game_recordListRelationFilter
+    learning_progress?: Learning_progressListRelationFilter
+    learning_stats?: XOR<Learning_statsNullableScalarRelationFilter, learning_statsWhereInput> | null
+    study_plan?: Study_planListRelationFilter
+    user_achievement?: User_achievementListRelationFilter
     user_config?: XOR<User_configNullableScalarRelationFilter, user_configWhereInput> | null
+    user_points?: XOR<User_pointsNullableScalarRelationFilter, user_pointsWhereInput> | null
+    word_collection?: Word_collectionListRelationFilter
   }
 
   export type userOrderByWithRelationInput = {
@@ -17175,7 +29232,14 @@ export namespace Prisma {
     updateTime?: SortOrder
     isDelete?: SortOrder
     audio_file?: audio_fileOrderByRelationAggregateInput
+    game_record?: game_recordOrderByRelationAggregateInput
+    learning_progress?: learning_progressOrderByRelationAggregateInput
+    learning_stats?: learning_statsOrderByWithRelationInput
+    study_plan?: study_planOrderByRelationAggregateInput
+    user_achievement?: user_achievementOrderByRelationAggregateInput
     user_config?: user_configOrderByWithRelationInput
+    user_points?: user_pointsOrderByWithRelationInput
+    word_collection?: word_collectionOrderByRelationAggregateInput
     _relevance?: userOrderByRelevanceInput
   }
 
@@ -17196,7 +29260,14 @@ export namespace Prisma {
     updateTime?: DateTimeFilter<"user"> | Date | string
     isDelete?: IntFilter<"user"> | number
     audio_file?: Audio_fileListRelationFilter
+    game_record?: Game_recordListRelationFilter
+    learning_progress?: Learning_progressListRelationFilter
+    learning_stats?: XOR<Learning_statsNullableScalarRelationFilter, learning_statsWhereInput> | null
+    study_plan?: Study_planListRelationFilter
+    user_achievement?: User_achievementListRelationFilter
     user_config?: XOR<User_configNullableScalarRelationFilter, user_configWhereInput> | null
+    user_points?: XOR<User_pointsNullableScalarRelationFilter, user_pointsWhereInput> | null
+    word_collection?: Word_collectionListRelationFilter
   }, "id">
 
   export type userOrderByWithAggregationInput = {
@@ -17352,6 +29423,843 @@ export namespace Prisma {
     create_time?: DateTimeNullableWithAggregatesFilter<"word_status_change"> | Date | string | null
     update_time?: DateTimeNullableWithAggregatesFilter<"word_status_change"> | Date | string | null
     is_delete?: IntNullableWithAggregatesFilter<"word_status_change"> | number | null
+  }
+
+  export type achievementWhereInput = {
+    AND?: achievementWhereInput | achievementWhereInput[]
+    OR?: achievementWhereInput[]
+    NOT?: achievementWhereInput | achievementWhereInput[]
+    id?: BigIntFilter<"achievement"> | bigint | number
+    name?: StringFilter<"achievement"> | string
+    description?: StringFilter<"achievement"> | string
+    icon_url?: StringNullableFilter<"achievement"> | string | null
+    category?: StringFilter<"achievement"> | string
+    points?: IntFilter<"achievement"> | number
+    requirements?: JsonNullableFilter<"achievement">
+    created_at?: DateTimeFilter<"achievement"> | Date | string
+    update_time?: DateTimeFilter<"achievement"> | Date | string
+    is_delete?: IntFilter<"achievement"> | number
+    user_achievement?: User_achievementListRelationFilter
+  }
+
+  export type achievementOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    icon_url?: SortOrderInput | SortOrder
+    category?: SortOrder
+    points?: SortOrder
+    requirements?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+    user_achievement?: user_achievementOrderByRelationAggregateInput
+    _relevance?: achievementOrderByRelevanceInput
+  }
+
+  export type achievementWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    AND?: achievementWhereInput | achievementWhereInput[]
+    OR?: achievementWhereInput[]
+    NOT?: achievementWhereInput | achievementWhereInput[]
+    name?: StringFilter<"achievement"> | string
+    description?: StringFilter<"achievement"> | string
+    icon_url?: StringNullableFilter<"achievement"> | string | null
+    category?: StringFilter<"achievement"> | string
+    points?: IntFilter<"achievement"> | number
+    requirements?: JsonNullableFilter<"achievement">
+    created_at?: DateTimeFilter<"achievement"> | Date | string
+    update_time?: DateTimeFilter<"achievement"> | Date | string
+    is_delete?: IntFilter<"achievement"> | number
+    user_achievement?: User_achievementListRelationFilter
+  }, "id">
+
+  export type achievementOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    icon_url?: SortOrderInput | SortOrder
+    category?: SortOrder
+    points?: SortOrder
+    requirements?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+    _count?: achievementCountOrderByAggregateInput
+    _avg?: achievementAvgOrderByAggregateInput
+    _max?: achievementMaxOrderByAggregateInput
+    _min?: achievementMinOrderByAggregateInput
+    _sum?: achievementSumOrderByAggregateInput
+  }
+
+  export type achievementScalarWhereWithAggregatesInput = {
+    AND?: achievementScalarWhereWithAggregatesInput | achievementScalarWhereWithAggregatesInput[]
+    OR?: achievementScalarWhereWithAggregatesInput[]
+    NOT?: achievementScalarWhereWithAggregatesInput | achievementScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"achievement"> | bigint | number
+    name?: StringWithAggregatesFilter<"achievement"> | string
+    description?: StringWithAggregatesFilter<"achievement"> | string
+    icon_url?: StringNullableWithAggregatesFilter<"achievement"> | string | null
+    category?: StringWithAggregatesFilter<"achievement"> | string
+    points?: IntWithAggregatesFilter<"achievement"> | number
+    requirements?: JsonNullableWithAggregatesFilter<"achievement">
+    created_at?: DateTimeWithAggregatesFilter<"achievement"> | Date | string
+    update_time?: DateTimeWithAggregatesFilter<"achievement"> | Date | string
+    is_delete?: IntWithAggregatesFilter<"achievement"> | number
+  }
+
+  export type collection_wordWhereInput = {
+    AND?: collection_wordWhereInput | collection_wordWhereInput[]
+    OR?: collection_wordWhereInput[]
+    NOT?: collection_wordWhereInput | collection_wordWhereInput[]
+    id?: BigIntFilter<"collection_word"> | bigint | number
+    collection_id?: BigIntFilter<"collection_word"> | bigint | number
+    word_id?: BigIntFilter<"collection_word"> | bigint | number
+    added_time?: DateTimeFilter<"collection_word"> | Date | string
+    sort_order?: IntFilter<"collection_word"> | number
+    note?: StringNullableFilter<"collection_word"> | string | null
+    word_collection?: XOR<Word_collectionScalarRelationFilter, word_collectionWhereInput>
+    english_word?: XOR<English_wordScalarRelationFilter, english_wordWhereInput>
+  }
+
+  export type collection_wordOrderByWithRelationInput = {
+    id?: SortOrder
+    collection_id?: SortOrder
+    word_id?: SortOrder
+    added_time?: SortOrder
+    sort_order?: SortOrder
+    note?: SortOrderInput | SortOrder
+    word_collection?: word_collectionOrderByWithRelationInput
+    english_word?: english_wordOrderByWithRelationInput
+    _relevance?: collection_wordOrderByRelevanceInput
+  }
+
+  export type collection_wordWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    collection_id_word_id?: collection_wordCollection_idWord_idCompoundUniqueInput
+    AND?: collection_wordWhereInput | collection_wordWhereInput[]
+    OR?: collection_wordWhereInput[]
+    NOT?: collection_wordWhereInput | collection_wordWhereInput[]
+    collection_id?: BigIntFilter<"collection_word"> | bigint | number
+    word_id?: BigIntFilter<"collection_word"> | bigint | number
+    added_time?: DateTimeFilter<"collection_word"> | Date | string
+    sort_order?: IntFilter<"collection_word"> | number
+    note?: StringNullableFilter<"collection_word"> | string | null
+    word_collection?: XOR<Word_collectionScalarRelationFilter, word_collectionWhereInput>
+    english_word?: XOR<English_wordScalarRelationFilter, english_wordWhereInput>
+  }, "id" | "collection_id_word_id">
+
+  export type collection_wordOrderByWithAggregationInput = {
+    id?: SortOrder
+    collection_id?: SortOrder
+    word_id?: SortOrder
+    added_time?: SortOrder
+    sort_order?: SortOrder
+    note?: SortOrderInput | SortOrder
+    _count?: collection_wordCountOrderByAggregateInput
+    _avg?: collection_wordAvgOrderByAggregateInput
+    _max?: collection_wordMaxOrderByAggregateInput
+    _min?: collection_wordMinOrderByAggregateInput
+    _sum?: collection_wordSumOrderByAggregateInput
+  }
+
+  export type collection_wordScalarWhereWithAggregatesInput = {
+    AND?: collection_wordScalarWhereWithAggregatesInput | collection_wordScalarWhereWithAggregatesInput[]
+    OR?: collection_wordScalarWhereWithAggregatesInput[]
+    NOT?: collection_wordScalarWhereWithAggregatesInput | collection_wordScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"collection_word"> | bigint | number
+    collection_id?: BigIntWithAggregatesFilter<"collection_word"> | bigint | number
+    word_id?: BigIntWithAggregatesFilter<"collection_word"> | bigint | number
+    added_time?: DateTimeWithAggregatesFilter<"collection_word"> | Date | string
+    sort_order?: IntWithAggregatesFilter<"collection_word"> | number
+    note?: StringNullableWithAggregatesFilter<"collection_word"> | string | null
+  }
+
+  export type game_recordWhereInput = {
+    AND?: game_recordWhereInput | game_recordWhereInput[]
+    OR?: game_recordWhereInput[]
+    NOT?: game_recordWhereInput | game_recordWhereInput[]
+    id?: BigIntFilter<"game_record"> | bigint | number
+    user_id?: BigIntFilter<"game_record"> | bigint | number
+    game_type?: StringFilter<"game_record"> | string
+    score?: IntFilter<"game_record"> | number
+    duration?: IntFilter<"game_record"> | number
+    words_count?: IntFilter<"game_record"> | number
+    correct_count?: IntFilter<"game_record"> | number
+    wrong_count?: IntFilter<"game_record"> | number
+    level?: IntFilter<"game_record"> | number
+    game_data?: JsonNullableFilter<"game_record">
+    created_at?: DateTimeFilter<"game_record"> | Date | string
+    update_time?: DateTimeFilter<"game_record"> | Date | string
+    is_delete?: IntFilter<"game_record"> | number
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+  }
+
+  export type game_recordOrderByWithRelationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    game_type?: SortOrder
+    score?: SortOrder
+    duration?: SortOrder
+    words_count?: SortOrder
+    correct_count?: SortOrder
+    wrong_count?: SortOrder
+    level?: SortOrder
+    game_data?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+    user?: userOrderByWithRelationInput
+    _relevance?: game_recordOrderByRelevanceInput
+  }
+
+  export type game_recordWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    AND?: game_recordWhereInput | game_recordWhereInput[]
+    OR?: game_recordWhereInput[]
+    NOT?: game_recordWhereInput | game_recordWhereInput[]
+    user_id?: BigIntFilter<"game_record"> | bigint | number
+    game_type?: StringFilter<"game_record"> | string
+    score?: IntFilter<"game_record"> | number
+    duration?: IntFilter<"game_record"> | number
+    words_count?: IntFilter<"game_record"> | number
+    correct_count?: IntFilter<"game_record"> | number
+    wrong_count?: IntFilter<"game_record"> | number
+    level?: IntFilter<"game_record"> | number
+    game_data?: JsonNullableFilter<"game_record">
+    created_at?: DateTimeFilter<"game_record"> | Date | string
+    update_time?: DateTimeFilter<"game_record"> | Date | string
+    is_delete?: IntFilter<"game_record"> | number
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+  }, "id">
+
+  export type game_recordOrderByWithAggregationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    game_type?: SortOrder
+    score?: SortOrder
+    duration?: SortOrder
+    words_count?: SortOrder
+    correct_count?: SortOrder
+    wrong_count?: SortOrder
+    level?: SortOrder
+    game_data?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+    _count?: game_recordCountOrderByAggregateInput
+    _avg?: game_recordAvgOrderByAggregateInput
+    _max?: game_recordMaxOrderByAggregateInput
+    _min?: game_recordMinOrderByAggregateInput
+    _sum?: game_recordSumOrderByAggregateInput
+  }
+
+  export type game_recordScalarWhereWithAggregatesInput = {
+    AND?: game_recordScalarWhereWithAggregatesInput | game_recordScalarWhereWithAggregatesInput[]
+    OR?: game_recordScalarWhereWithAggregatesInput[]
+    NOT?: game_recordScalarWhereWithAggregatesInput | game_recordScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"game_record"> | bigint | number
+    user_id?: BigIntWithAggregatesFilter<"game_record"> | bigint | number
+    game_type?: StringWithAggregatesFilter<"game_record"> | string
+    score?: IntWithAggregatesFilter<"game_record"> | number
+    duration?: IntWithAggregatesFilter<"game_record"> | number
+    words_count?: IntWithAggregatesFilter<"game_record"> | number
+    correct_count?: IntWithAggregatesFilter<"game_record"> | number
+    wrong_count?: IntWithAggregatesFilter<"game_record"> | number
+    level?: IntWithAggregatesFilter<"game_record"> | number
+    game_data?: JsonNullableWithAggregatesFilter<"game_record">
+    created_at?: DateTimeWithAggregatesFilter<"game_record"> | Date | string
+    update_time?: DateTimeWithAggregatesFilter<"game_record"> | Date | string
+    is_delete?: IntWithAggregatesFilter<"game_record"> | number
+  }
+
+  export type learning_progressWhereInput = {
+    AND?: learning_progressWhereInput | learning_progressWhereInput[]
+    OR?: learning_progressWhereInput[]
+    NOT?: learning_progressWhereInput | learning_progressWhereInput[]
+    id?: BigIntFilter<"learning_progress"> | bigint | number
+    user_id?: BigIntFilter<"learning_progress"> | bigint | number
+    word_id?: BigIntFilter<"learning_progress"> | bigint | number
+    action_type?: StringFilter<"learning_progress"> | string
+    learning_details?: JsonNullableFilter<"learning_progress">
+    created_at?: DateTimeFilter<"learning_progress"> | Date | string
+    update_time?: DateTimeFilter<"learning_progress"> | Date | string
+    is_delete?: IntFilter<"learning_progress"> | number
+    study_plan_id?: BigIntNullableFilter<"learning_progress"> | bigint | number | null
+    source?: StringNullableFilter<"learning_progress"> | string | null
+    device_info?: JsonNullableFilter<"learning_progress">
+    attempt_count?: IntFilter<"learning_progress"> | number
+    start_time?: DateTimeNullableFilter<"learning_progress"> | Date | string | null
+    end_time?: DateTimeNullableFilter<"learning_progress"> | Date | string | null
+    study_plan?: XOR<Study_planNullableScalarRelationFilter, study_planWhereInput> | null
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+    english_word?: XOR<English_wordScalarRelationFilter, english_wordWhereInput>
+  }
+
+  export type learning_progressOrderByWithRelationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    word_id?: SortOrder
+    action_type?: SortOrder
+    learning_details?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+    study_plan_id?: SortOrderInput | SortOrder
+    source?: SortOrderInput | SortOrder
+    device_info?: SortOrderInput | SortOrder
+    attempt_count?: SortOrder
+    start_time?: SortOrderInput | SortOrder
+    end_time?: SortOrderInput | SortOrder
+    study_plan?: study_planOrderByWithRelationInput
+    user?: userOrderByWithRelationInput
+    english_word?: english_wordOrderByWithRelationInput
+    _relevance?: learning_progressOrderByRelevanceInput
+  }
+
+  export type learning_progressWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    AND?: learning_progressWhereInput | learning_progressWhereInput[]
+    OR?: learning_progressWhereInput[]
+    NOT?: learning_progressWhereInput | learning_progressWhereInput[]
+    user_id?: BigIntFilter<"learning_progress"> | bigint | number
+    word_id?: BigIntFilter<"learning_progress"> | bigint | number
+    action_type?: StringFilter<"learning_progress"> | string
+    learning_details?: JsonNullableFilter<"learning_progress">
+    created_at?: DateTimeFilter<"learning_progress"> | Date | string
+    update_time?: DateTimeFilter<"learning_progress"> | Date | string
+    is_delete?: IntFilter<"learning_progress"> | number
+    study_plan_id?: BigIntNullableFilter<"learning_progress"> | bigint | number | null
+    source?: StringNullableFilter<"learning_progress"> | string | null
+    device_info?: JsonNullableFilter<"learning_progress">
+    attempt_count?: IntFilter<"learning_progress"> | number
+    start_time?: DateTimeNullableFilter<"learning_progress"> | Date | string | null
+    end_time?: DateTimeNullableFilter<"learning_progress"> | Date | string | null
+    study_plan?: XOR<Study_planNullableScalarRelationFilter, study_planWhereInput> | null
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+    english_word?: XOR<English_wordScalarRelationFilter, english_wordWhereInput>
+  }, "id">
+
+  export type learning_progressOrderByWithAggregationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    word_id?: SortOrder
+    action_type?: SortOrder
+    learning_details?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+    study_plan_id?: SortOrderInput | SortOrder
+    source?: SortOrderInput | SortOrder
+    device_info?: SortOrderInput | SortOrder
+    attempt_count?: SortOrder
+    start_time?: SortOrderInput | SortOrder
+    end_time?: SortOrderInput | SortOrder
+    _count?: learning_progressCountOrderByAggregateInput
+    _avg?: learning_progressAvgOrderByAggregateInput
+    _max?: learning_progressMaxOrderByAggregateInput
+    _min?: learning_progressMinOrderByAggregateInput
+    _sum?: learning_progressSumOrderByAggregateInput
+  }
+
+  export type learning_progressScalarWhereWithAggregatesInput = {
+    AND?: learning_progressScalarWhereWithAggregatesInput | learning_progressScalarWhereWithAggregatesInput[]
+    OR?: learning_progressScalarWhereWithAggregatesInput[]
+    NOT?: learning_progressScalarWhereWithAggregatesInput | learning_progressScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"learning_progress"> | bigint | number
+    user_id?: BigIntWithAggregatesFilter<"learning_progress"> | bigint | number
+    word_id?: BigIntWithAggregatesFilter<"learning_progress"> | bigint | number
+    action_type?: StringWithAggregatesFilter<"learning_progress"> | string
+    learning_details?: JsonNullableWithAggregatesFilter<"learning_progress">
+    created_at?: DateTimeWithAggregatesFilter<"learning_progress"> | Date | string
+    update_time?: DateTimeWithAggregatesFilter<"learning_progress"> | Date | string
+    is_delete?: IntWithAggregatesFilter<"learning_progress"> | number
+    study_plan_id?: BigIntNullableWithAggregatesFilter<"learning_progress"> | bigint | number | null
+    source?: StringNullableWithAggregatesFilter<"learning_progress"> | string | null
+    device_info?: JsonNullableWithAggregatesFilter<"learning_progress">
+    attempt_count?: IntWithAggregatesFilter<"learning_progress"> | number
+    start_time?: DateTimeNullableWithAggregatesFilter<"learning_progress"> | Date | string | null
+    end_time?: DateTimeNullableWithAggregatesFilter<"learning_progress"> | Date | string | null
+  }
+
+  export type learning_statsWhereInput = {
+    AND?: learning_statsWhereInput | learning_statsWhereInput[]
+    OR?: learning_statsWhereInput[]
+    NOT?: learning_statsWhereInput | learning_statsWhereInput[]
+    id?: BigIntFilter<"learning_stats"> | bigint | number
+    user_id?: BigIntFilter<"learning_stats"> | bigint | number
+    total_words_learned?: IntFilter<"learning_stats"> | number
+    total_review_time?: IntFilter<"learning_stats"> | number
+    daily_streak?: IntFilter<"learning_stats"> | number
+    longest_streak?: IntFilter<"learning_stats"> | number
+    last_study_date?: DateTimeNullableFilter<"learning_stats"> | Date | string | null
+    total_study_days?: IntFilter<"learning_stats"> | number
+    created_at?: DateTimeFilter<"learning_stats"> | Date | string
+    update_time?: DateTimeFilter<"learning_stats"> | Date | string
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+    user_achievement?: User_achievementListRelationFilter
+  }
+
+  export type learning_statsOrderByWithRelationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    total_words_learned?: SortOrder
+    total_review_time?: SortOrder
+    daily_streak?: SortOrder
+    longest_streak?: SortOrder
+    last_study_date?: SortOrderInput | SortOrder
+    total_study_days?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    user?: userOrderByWithRelationInput
+    user_achievement?: user_achievementOrderByRelationAggregateInput
+  }
+
+  export type learning_statsWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    user_id?: bigint | number
+    AND?: learning_statsWhereInput | learning_statsWhereInput[]
+    OR?: learning_statsWhereInput[]
+    NOT?: learning_statsWhereInput | learning_statsWhereInput[]
+    total_words_learned?: IntFilter<"learning_stats"> | number
+    total_review_time?: IntFilter<"learning_stats"> | number
+    daily_streak?: IntFilter<"learning_stats"> | number
+    longest_streak?: IntFilter<"learning_stats"> | number
+    last_study_date?: DateTimeNullableFilter<"learning_stats"> | Date | string | null
+    total_study_days?: IntFilter<"learning_stats"> | number
+    created_at?: DateTimeFilter<"learning_stats"> | Date | string
+    update_time?: DateTimeFilter<"learning_stats"> | Date | string
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+    user_achievement?: User_achievementListRelationFilter
+  }, "id" | "user_id">
+
+  export type learning_statsOrderByWithAggregationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    total_words_learned?: SortOrder
+    total_review_time?: SortOrder
+    daily_streak?: SortOrder
+    longest_streak?: SortOrder
+    last_study_date?: SortOrderInput | SortOrder
+    total_study_days?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    _count?: learning_statsCountOrderByAggregateInput
+    _avg?: learning_statsAvgOrderByAggregateInput
+    _max?: learning_statsMaxOrderByAggregateInput
+    _min?: learning_statsMinOrderByAggregateInput
+    _sum?: learning_statsSumOrderByAggregateInput
+  }
+
+  export type learning_statsScalarWhereWithAggregatesInput = {
+    AND?: learning_statsScalarWhereWithAggregatesInput | learning_statsScalarWhereWithAggregatesInput[]
+    OR?: learning_statsScalarWhereWithAggregatesInput[]
+    NOT?: learning_statsScalarWhereWithAggregatesInput | learning_statsScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"learning_stats"> | bigint | number
+    user_id?: BigIntWithAggregatesFilter<"learning_stats"> | bigint | number
+    total_words_learned?: IntWithAggregatesFilter<"learning_stats"> | number
+    total_review_time?: IntWithAggregatesFilter<"learning_stats"> | number
+    daily_streak?: IntWithAggregatesFilter<"learning_stats"> | number
+    longest_streak?: IntWithAggregatesFilter<"learning_stats"> | number
+    last_study_date?: DateTimeNullableWithAggregatesFilter<"learning_stats"> | Date | string | null
+    total_study_days?: IntWithAggregatesFilter<"learning_stats"> | number
+    created_at?: DateTimeWithAggregatesFilter<"learning_stats"> | Date | string
+    update_time?: DateTimeWithAggregatesFilter<"learning_stats"> | Date | string
+  }
+
+  export type point_transactionWhereInput = {
+    AND?: point_transactionWhereInput | point_transactionWhereInput[]
+    OR?: point_transactionWhereInput[]
+    NOT?: point_transactionWhereInput | point_transactionWhereInput[]
+    id?: BigIntFilter<"point_transaction"> | bigint | number
+    user_points_id?: BigIntFilter<"point_transaction"> | bigint | number
+    amount?: IntFilter<"point_transaction"> | number
+    type?: StringFilter<"point_transaction"> | string
+    description?: StringNullableFilter<"point_transaction"> | string | null
+    reference_id?: StringNullableFilter<"point_transaction"> | string | null
+    created_at?: DateTimeFilter<"point_transaction"> | Date | string
+    user_points?: XOR<User_pointsScalarRelationFilter, user_pointsWhereInput>
+  }
+
+  export type point_transactionOrderByWithRelationInput = {
+    id?: SortOrder
+    user_points_id?: SortOrder
+    amount?: SortOrder
+    type?: SortOrder
+    description?: SortOrderInput | SortOrder
+    reference_id?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    user_points?: user_pointsOrderByWithRelationInput
+    _relevance?: point_transactionOrderByRelevanceInput
+  }
+
+  export type point_transactionWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    AND?: point_transactionWhereInput | point_transactionWhereInput[]
+    OR?: point_transactionWhereInput[]
+    NOT?: point_transactionWhereInput | point_transactionWhereInput[]
+    user_points_id?: BigIntFilter<"point_transaction"> | bigint | number
+    amount?: IntFilter<"point_transaction"> | number
+    type?: StringFilter<"point_transaction"> | string
+    description?: StringNullableFilter<"point_transaction"> | string | null
+    reference_id?: StringNullableFilter<"point_transaction"> | string | null
+    created_at?: DateTimeFilter<"point_transaction"> | Date | string
+    user_points?: XOR<User_pointsScalarRelationFilter, user_pointsWhereInput>
+  }, "id">
+
+  export type point_transactionOrderByWithAggregationInput = {
+    id?: SortOrder
+    user_points_id?: SortOrder
+    amount?: SortOrder
+    type?: SortOrder
+    description?: SortOrderInput | SortOrder
+    reference_id?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    _count?: point_transactionCountOrderByAggregateInput
+    _avg?: point_transactionAvgOrderByAggregateInput
+    _max?: point_transactionMaxOrderByAggregateInput
+    _min?: point_transactionMinOrderByAggregateInput
+    _sum?: point_transactionSumOrderByAggregateInput
+  }
+
+  export type point_transactionScalarWhereWithAggregatesInput = {
+    AND?: point_transactionScalarWhereWithAggregatesInput | point_transactionScalarWhereWithAggregatesInput[]
+    OR?: point_transactionScalarWhereWithAggregatesInput[]
+    NOT?: point_transactionScalarWhereWithAggregatesInput | point_transactionScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"point_transaction"> | bigint | number
+    user_points_id?: BigIntWithAggregatesFilter<"point_transaction"> | bigint | number
+    amount?: IntWithAggregatesFilter<"point_transaction"> | number
+    type?: StringWithAggregatesFilter<"point_transaction"> | string
+    description?: StringNullableWithAggregatesFilter<"point_transaction"> | string | null
+    reference_id?: StringNullableWithAggregatesFilter<"point_transaction"> | string | null
+    created_at?: DateTimeWithAggregatesFilter<"point_transaction"> | Date | string
+  }
+
+  export type study_planWhereInput = {
+    AND?: study_planWhereInput | study_planWhereInput[]
+    OR?: study_planWhereInput[]
+    NOT?: study_planWhereInput | study_planWhereInput[]
+    id?: BigIntFilter<"study_plan"> | bigint | number
+    user_id?: BigIntFilter<"study_plan"> | bigint | number
+    name?: StringFilter<"study_plan"> | string
+    description?: StringNullableFilter<"study_plan"> | string | null
+    target_words?: IntFilter<"study_plan"> | number
+    daily_words?: IntFilter<"study_plan"> | number
+    start_date?: DateTimeNullableFilter<"study_plan"> | Date | string | null
+    end_date?: DateTimeNullableFilter<"study_plan"> | Date | string | null
+    status?: StringFilter<"study_plan"> | string
+    created_at?: DateTimeFilter<"study_plan"> | Date | string
+    update_time?: DateTimeFilter<"study_plan"> | Date | string
+    is_delete?: IntFilter<"study_plan"> | number
+    learning_progress?: Learning_progressListRelationFilter
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+    word_collection?: Word_collectionListRelationFilter
+  }
+
+  export type study_planOrderByWithRelationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    target_words?: SortOrder
+    daily_words?: SortOrder
+    start_date?: SortOrderInput | SortOrder
+    end_date?: SortOrderInput | SortOrder
+    status?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+    learning_progress?: learning_progressOrderByRelationAggregateInput
+    user?: userOrderByWithRelationInput
+    word_collection?: word_collectionOrderByRelationAggregateInput
+    _relevance?: study_planOrderByRelevanceInput
+  }
+
+  export type study_planWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    AND?: study_planWhereInput | study_planWhereInput[]
+    OR?: study_planWhereInput[]
+    NOT?: study_planWhereInput | study_planWhereInput[]
+    user_id?: BigIntFilter<"study_plan"> | bigint | number
+    name?: StringFilter<"study_plan"> | string
+    description?: StringNullableFilter<"study_plan"> | string | null
+    target_words?: IntFilter<"study_plan"> | number
+    daily_words?: IntFilter<"study_plan"> | number
+    start_date?: DateTimeNullableFilter<"study_plan"> | Date | string | null
+    end_date?: DateTimeNullableFilter<"study_plan"> | Date | string | null
+    status?: StringFilter<"study_plan"> | string
+    created_at?: DateTimeFilter<"study_plan"> | Date | string
+    update_time?: DateTimeFilter<"study_plan"> | Date | string
+    is_delete?: IntFilter<"study_plan"> | number
+    learning_progress?: Learning_progressListRelationFilter
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+    word_collection?: Word_collectionListRelationFilter
+  }, "id">
+
+  export type study_planOrderByWithAggregationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    target_words?: SortOrder
+    daily_words?: SortOrder
+    start_date?: SortOrderInput | SortOrder
+    end_date?: SortOrderInput | SortOrder
+    status?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+    _count?: study_planCountOrderByAggregateInput
+    _avg?: study_planAvgOrderByAggregateInput
+    _max?: study_planMaxOrderByAggregateInput
+    _min?: study_planMinOrderByAggregateInput
+    _sum?: study_planSumOrderByAggregateInput
+  }
+
+  export type study_planScalarWhereWithAggregatesInput = {
+    AND?: study_planScalarWhereWithAggregatesInput | study_planScalarWhereWithAggregatesInput[]
+    OR?: study_planScalarWhereWithAggregatesInput[]
+    NOT?: study_planScalarWhereWithAggregatesInput | study_planScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"study_plan"> | bigint | number
+    user_id?: BigIntWithAggregatesFilter<"study_plan"> | bigint | number
+    name?: StringWithAggregatesFilter<"study_plan"> | string
+    description?: StringNullableWithAggregatesFilter<"study_plan"> | string | null
+    target_words?: IntWithAggregatesFilter<"study_plan"> | number
+    daily_words?: IntWithAggregatesFilter<"study_plan"> | number
+    start_date?: DateTimeNullableWithAggregatesFilter<"study_plan"> | Date | string | null
+    end_date?: DateTimeNullableWithAggregatesFilter<"study_plan"> | Date | string | null
+    status?: StringWithAggregatesFilter<"study_plan"> | string
+    created_at?: DateTimeWithAggregatesFilter<"study_plan"> | Date | string
+    update_time?: DateTimeWithAggregatesFilter<"study_plan"> | Date | string
+    is_delete?: IntWithAggregatesFilter<"study_plan"> | number
+  }
+
+  export type user_achievementWhereInput = {
+    AND?: user_achievementWhereInput | user_achievementWhereInput[]
+    OR?: user_achievementWhereInput[]
+    NOT?: user_achievementWhereInput | user_achievementWhereInput[]
+    id?: BigIntFilter<"user_achievement"> | bigint | number
+    user_id?: BigIntFilter<"user_achievement"> | bigint | number
+    achievement_id?: BigIntFilter<"user_achievement"> | bigint | number
+    achieved_date?: DateTimeFilter<"user_achievement"> | Date | string
+    progress?: IntNullableFilter<"user_achievement"> | number | null
+    learning_stats_id?: BigIntNullableFilter<"user_achievement"> | bigint | number | null
+    achievement?: XOR<AchievementScalarRelationFilter, achievementWhereInput>
+    learning_stats?: XOR<Learning_statsNullableScalarRelationFilter, learning_statsWhereInput> | null
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+  }
+
+  export type user_achievementOrderByWithRelationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    achievement_id?: SortOrder
+    achieved_date?: SortOrder
+    progress?: SortOrderInput | SortOrder
+    learning_stats_id?: SortOrderInput | SortOrder
+    achievement?: achievementOrderByWithRelationInput
+    learning_stats?: learning_statsOrderByWithRelationInput
+    user?: userOrderByWithRelationInput
+  }
+
+  export type user_achievementWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    user_id_achievement_id?: user_achievementUser_idAchievement_idCompoundUniqueInput
+    AND?: user_achievementWhereInput | user_achievementWhereInput[]
+    OR?: user_achievementWhereInput[]
+    NOT?: user_achievementWhereInput | user_achievementWhereInput[]
+    user_id?: BigIntFilter<"user_achievement"> | bigint | number
+    achievement_id?: BigIntFilter<"user_achievement"> | bigint | number
+    achieved_date?: DateTimeFilter<"user_achievement"> | Date | string
+    progress?: IntNullableFilter<"user_achievement"> | number | null
+    learning_stats_id?: BigIntNullableFilter<"user_achievement"> | bigint | number | null
+    achievement?: XOR<AchievementScalarRelationFilter, achievementWhereInput>
+    learning_stats?: XOR<Learning_statsNullableScalarRelationFilter, learning_statsWhereInput> | null
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+  }, "id" | "user_id_achievement_id">
+
+  export type user_achievementOrderByWithAggregationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    achievement_id?: SortOrder
+    achieved_date?: SortOrder
+    progress?: SortOrderInput | SortOrder
+    learning_stats_id?: SortOrderInput | SortOrder
+    _count?: user_achievementCountOrderByAggregateInput
+    _avg?: user_achievementAvgOrderByAggregateInput
+    _max?: user_achievementMaxOrderByAggregateInput
+    _min?: user_achievementMinOrderByAggregateInput
+    _sum?: user_achievementSumOrderByAggregateInput
+  }
+
+  export type user_achievementScalarWhereWithAggregatesInput = {
+    AND?: user_achievementScalarWhereWithAggregatesInput | user_achievementScalarWhereWithAggregatesInput[]
+    OR?: user_achievementScalarWhereWithAggregatesInput[]
+    NOT?: user_achievementScalarWhereWithAggregatesInput | user_achievementScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"user_achievement"> | bigint | number
+    user_id?: BigIntWithAggregatesFilter<"user_achievement"> | bigint | number
+    achievement_id?: BigIntWithAggregatesFilter<"user_achievement"> | bigint | number
+    achieved_date?: DateTimeWithAggregatesFilter<"user_achievement"> | Date | string
+    progress?: IntNullableWithAggregatesFilter<"user_achievement"> | number | null
+    learning_stats_id?: BigIntNullableWithAggregatesFilter<"user_achievement"> | bigint | number | null
+  }
+
+  export type user_pointsWhereInput = {
+    AND?: user_pointsWhereInput | user_pointsWhereInput[]
+    OR?: user_pointsWhereInput[]
+    NOT?: user_pointsWhereInput | user_pointsWhereInput[]
+    id?: BigIntFilter<"user_points"> | bigint | number
+    user_id?: BigIntFilter<"user_points"> | bigint | number
+    total_points?: IntFilter<"user_points"> | number
+    available_points?: IntFilter<"user_points"> | number
+    level?: IntFilter<"user_points"> | number
+    created_at?: DateTimeFilter<"user_points"> | Date | string
+    update_time?: DateTimeFilter<"user_points"> | Date | string
+    point_transaction?: Point_transactionListRelationFilter
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+  }
+
+  export type user_pointsOrderByWithRelationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    total_points?: SortOrder
+    available_points?: SortOrder
+    level?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    point_transaction?: point_transactionOrderByRelationAggregateInput
+    user?: userOrderByWithRelationInput
+  }
+
+  export type user_pointsWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    user_id?: bigint | number
+    AND?: user_pointsWhereInput | user_pointsWhereInput[]
+    OR?: user_pointsWhereInput[]
+    NOT?: user_pointsWhereInput | user_pointsWhereInput[]
+    total_points?: IntFilter<"user_points"> | number
+    available_points?: IntFilter<"user_points"> | number
+    level?: IntFilter<"user_points"> | number
+    created_at?: DateTimeFilter<"user_points"> | Date | string
+    update_time?: DateTimeFilter<"user_points"> | Date | string
+    point_transaction?: Point_transactionListRelationFilter
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+  }, "id" | "user_id">
+
+  export type user_pointsOrderByWithAggregationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    total_points?: SortOrder
+    available_points?: SortOrder
+    level?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    _count?: user_pointsCountOrderByAggregateInput
+    _avg?: user_pointsAvgOrderByAggregateInput
+    _max?: user_pointsMaxOrderByAggregateInput
+    _min?: user_pointsMinOrderByAggregateInput
+    _sum?: user_pointsSumOrderByAggregateInput
+  }
+
+  export type user_pointsScalarWhereWithAggregatesInput = {
+    AND?: user_pointsScalarWhereWithAggregatesInput | user_pointsScalarWhereWithAggregatesInput[]
+    OR?: user_pointsScalarWhereWithAggregatesInput[]
+    NOT?: user_pointsScalarWhereWithAggregatesInput | user_pointsScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"user_points"> | bigint | number
+    user_id?: BigIntWithAggregatesFilter<"user_points"> | bigint | number
+    total_points?: IntWithAggregatesFilter<"user_points"> | number
+    available_points?: IntWithAggregatesFilter<"user_points"> | number
+    level?: IntWithAggregatesFilter<"user_points"> | number
+    created_at?: DateTimeWithAggregatesFilter<"user_points"> | Date | string
+    update_time?: DateTimeWithAggregatesFilter<"user_points"> | Date | string
+  }
+
+  export type word_collectionWhereInput = {
+    AND?: word_collectionWhereInput | word_collectionWhereInput[]
+    OR?: word_collectionWhereInput[]
+    NOT?: word_collectionWhereInput | word_collectionWhereInput[]
+    id?: BigIntFilter<"word_collection"> | bigint | number
+    user_id?: BigIntFilter<"word_collection"> | bigint | number
+    plan_id?: BigIntNullableFilter<"word_collection"> | bigint | number | null
+    name?: StringFilter<"word_collection"> | string
+    description?: StringNullableFilter<"word_collection"> | string | null
+    is_public?: BoolFilter<"word_collection"> | boolean
+    word_count?: IntFilter<"word_collection"> | number
+    created_at?: DateTimeFilter<"word_collection"> | Date | string
+    update_time?: DateTimeFilter<"word_collection"> | Date | string
+    is_delete?: IntFilter<"word_collection"> | number
+    collection_word?: Collection_wordListRelationFilter
+    study_plan?: XOR<Study_planNullableScalarRelationFilter, study_planWhereInput> | null
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+  }
+
+  export type word_collectionOrderByWithRelationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    plan_id?: SortOrderInput | SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    is_public?: SortOrder
+    word_count?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+    collection_word?: collection_wordOrderByRelationAggregateInput
+    study_plan?: study_planOrderByWithRelationInput
+    user?: userOrderByWithRelationInput
+    _relevance?: word_collectionOrderByRelevanceInput
+  }
+
+  export type word_collectionWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    AND?: word_collectionWhereInput | word_collectionWhereInput[]
+    OR?: word_collectionWhereInput[]
+    NOT?: word_collectionWhereInput | word_collectionWhereInput[]
+    user_id?: BigIntFilter<"word_collection"> | bigint | number
+    plan_id?: BigIntNullableFilter<"word_collection"> | bigint | number | null
+    name?: StringFilter<"word_collection"> | string
+    description?: StringNullableFilter<"word_collection"> | string | null
+    is_public?: BoolFilter<"word_collection"> | boolean
+    word_count?: IntFilter<"word_collection"> | number
+    created_at?: DateTimeFilter<"word_collection"> | Date | string
+    update_time?: DateTimeFilter<"word_collection"> | Date | string
+    is_delete?: IntFilter<"word_collection"> | number
+    collection_word?: Collection_wordListRelationFilter
+    study_plan?: XOR<Study_planNullableScalarRelationFilter, study_planWhereInput> | null
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+  }, "id">
+
+  export type word_collectionOrderByWithAggregationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    plan_id?: SortOrderInput | SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    is_public?: SortOrder
+    word_count?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+    _count?: word_collectionCountOrderByAggregateInput
+    _avg?: word_collectionAvgOrderByAggregateInput
+    _max?: word_collectionMaxOrderByAggregateInput
+    _min?: word_collectionMinOrderByAggregateInput
+    _sum?: word_collectionSumOrderByAggregateInput
+  }
+
+  export type word_collectionScalarWhereWithAggregatesInput = {
+    AND?: word_collectionScalarWhereWithAggregatesInput | word_collectionScalarWhereWithAggregatesInput[]
+    OR?: word_collectionScalarWhereWithAggregatesInput[]
+    NOT?: word_collectionScalarWhereWithAggregatesInput | word_collectionScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"word_collection"> | bigint | number
+    user_id?: BigIntWithAggregatesFilter<"word_collection"> | bigint | number
+    plan_id?: BigIntNullableWithAggregatesFilter<"word_collection"> | bigint | number | null
+    name?: StringWithAggregatesFilter<"word_collection"> | string
+    description?: StringNullableWithAggregatesFilter<"word_collection"> | string | null
+    is_public?: BoolWithAggregatesFilter<"word_collection"> | boolean
+    word_count?: IntWithAggregatesFilter<"word_collection"> | number
+    created_at?: DateTimeWithAggregatesFilter<"word_collection"> | Date | string
+    update_time?: DateTimeWithAggregatesFilter<"word_collection"> | Date | string
+    is_delete?: IntWithAggregatesFilter<"word_collection"> | number
   }
 
   export type audio_fileCreateInput = {
@@ -17746,8 +30654,10 @@ export namespace Prisma {
     manual_score?: number | null
     ai_score?: number | null
     reviewer?: bigint | number | null
+    collection_word?: collection_wordCreateNestedManyWithoutEnglish_wordInput
     dictionary_word?: dictionary_wordCreateNestedManyWithoutEnglish_wordInput
     english_word_change_log?: english_word_change_logCreateNestedManyWithoutEnglish_wordInput
+    learning_progress?: learning_progressCreateNestedManyWithoutEnglish_wordInput
     media_creator?: media_creatorCreateNestedManyWithoutEnglish_wordInput
   }
 
@@ -17763,8 +30673,10 @@ export namespace Prisma {
     manual_score?: number | null
     ai_score?: number | null
     reviewer?: bigint | number | null
+    collection_word?: collection_wordUncheckedCreateNestedManyWithoutEnglish_wordInput
     dictionary_word?: dictionary_wordUncheckedCreateNestedManyWithoutEnglish_wordInput
     english_word_change_log?: english_word_change_logUncheckedCreateNestedManyWithoutEnglish_wordInput
+    learning_progress?: learning_progressUncheckedCreateNestedManyWithoutEnglish_wordInput
     media_creator?: media_creatorUncheckedCreateNestedManyWithoutEnglish_wordInput
   }
 
@@ -17780,8 +30692,10 @@ export namespace Prisma {
     manual_score?: NullableIntFieldUpdateOperationsInput | number | null
     ai_score?: NullableIntFieldUpdateOperationsInput | number | null
     reviewer?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    collection_word?: collection_wordUpdateManyWithoutEnglish_wordNestedInput
     dictionary_word?: dictionary_wordUpdateManyWithoutEnglish_wordNestedInput
     english_word_change_log?: english_word_change_logUpdateManyWithoutEnglish_wordNestedInput
+    learning_progress?: learning_progressUpdateManyWithoutEnglish_wordNestedInput
     media_creator?: media_creatorUpdateManyWithoutEnglish_wordNestedInput
   }
 
@@ -17797,8 +30711,10 @@ export namespace Prisma {
     manual_score?: NullableIntFieldUpdateOperationsInput | number | null
     ai_score?: NullableIntFieldUpdateOperationsInput | number | null
     reviewer?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    collection_word?: collection_wordUncheckedUpdateManyWithoutEnglish_wordNestedInput
     dictionary_word?: dictionary_wordUncheckedUpdateManyWithoutEnglish_wordNestedInput
     english_word_change_log?: english_word_change_logUncheckedUpdateManyWithoutEnglish_wordNestedInput
+    learning_progress?: learning_progressUncheckedUpdateManyWithoutEnglish_wordNestedInput
     media_creator?: media_creatorUncheckedUpdateManyWithoutEnglish_wordNestedInput
   }
 
@@ -18199,7 +31115,14 @@ export namespace Prisma {
     updateTime?: Date | string
     isDelete?: number
     audio_file?: audio_fileCreateNestedManyWithoutUserInput
+    game_record?: game_recordCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsCreateNestedOneWithoutUserInput
+    study_plan?: study_planCreateNestedManyWithoutUserInput
+    user_achievement?: user_achievementCreateNestedManyWithoutUserInput
     user_config?: user_configCreateNestedOneWithoutUserInput
+    user_points?: user_pointsCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionCreateNestedManyWithoutUserInput
   }
 
   export type userUncheckedCreateInput = {
@@ -18216,7 +31139,14 @@ export namespace Prisma {
     updateTime?: Date | string
     isDelete?: number
     audio_file?: audio_fileUncheckedCreateNestedManyWithoutUserInput
+    game_record?: game_recordUncheckedCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressUncheckedCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsUncheckedCreateNestedOneWithoutUserInput
+    study_plan?: study_planUncheckedCreateNestedManyWithoutUserInput
+    user_achievement?: user_achievementUncheckedCreateNestedManyWithoutUserInput
     user_config?: user_configUncheckedCreateNestedOneWithoutUserInput
+    user_points?: user_pointsUncheckedCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type userUpdateInput = {
@@ -18233,7 +31163,14 @@ export namespace Prisma {
     updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
     isDelete?: IntFieldUpdateOperationsInput | number
     audio_file?: audio_fileUpdateManyWithoutUserNestedInput
+    game_record?: game_recordUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUpdateOneWithoutUserNestedInput
+    study_plan?: study_planUpdateManyWithoutUserNestedInput
+    user_achievement?: user_achievementUpdateManyWithoutUserNestedInput
     user_config?: user_configUpdateOneWithoutUserNestedInput
+    user_points?: user_pointsUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUpdateManyWithoutUserNestedInput
   }
 
   export type userUncheckedUpdateInput = {
@@ -18250,7 +31187,14 @@ export namespace Prisma {
     updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
     isDelete?: IntFieldUpdateOperationsInput | number
     audio_file?: audio_fileUncheckedUpdateManyWithoutUserNestedInput
+    game_record?: game_recordUncheckedUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUncheckedUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUncheckedUpdateOneWithoutUserNestedInput
+    study_plan?: study_planUncheckedUpdateManyWithoutUserNestedInput
+    user_achievement?: user_achievementUncheckedUpdateManyWithoutUserNestedInput
     user_config?: user_configUncheckedUpdateOneWithoutUserNestedInput
+    user_points?: user_pointsUncheckedUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type userCreateManyInput = {
@@ -18414,6 +31358,890 @@ export namespace Prisma {
     create_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     update_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     is_delete?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type achievementCreateInput = {
+    id?: bigint | number
+    name: string
+    description: string
+    icon_url?: string | null
+    category: string
+    points?: number
+    requirements?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    user_achievement?: user_achievementCreateNestedManyWithoutAchievementInput
+  }
+
+  export type achievementUncheckedCreateInput = {
+    id?: bigint | number
+    name: string
+    description: string
+    icon_url?: string | null
+    category: string
+    points?: number
+    requirements?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    user_achievement?: user_achievementUncheckedCreateNestedManyWithoutAchievementInput
+  }
+
+  export type achievementUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    icon_url?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    points?: IntFieldUpdateOperationsInput | number
+    requirements?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    user_achievement?: user_achievementUpdateManyWithoutAchievementNestedInput
+  }
+
+  export type achievementUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    icon_url?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    points?: IntFieldUpdateOperationsInput | number
+    requirements?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    user_achievement?: user_achievementUncheckedUpdateManyWithoutAchievementNestedInput
+  }
+
+  export type achievementCreateManyInput = {
+    id?: bigint | number
+    name: string
+    description: string
+    icon_url?: string | null
+    category: string
+    points?: number
+    requirements?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+  }
+
+  export type achievementUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    icon_url?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    points?: IntFieldUpdateOperationsInput | number
+    requirements?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type achievementUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    icon_url?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    points?: IntFieldUpdateOperationsInput | number
+    requirements?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type collection_wordCreateInput = {
+    id?: bigint | number
+    added_time?: Date | string
+    sort_order?: number
+    note?: string | null
+    word_collection: word_collectionCreateNestedOneWithoutCollection_wordInput
+    english_word: english_wordCreateNestedOneWithoutCollection_wordInput
+  }
+
+  export type collection_wordUncheckedCreateInput = {
+    id?: bigint | number
+    collection_id: bigint | number
+    word_id: bigint | number
+    added_time?: Date | string
+    sort_order?: number
+    note?: string | null
+  }
+
+  export type collection_wordUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    added_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    sort_order?: IntFieldUpdateOperationsInput | number
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    word_collection?: word_collectionUpdateOneRequiredWithoutCollection_wordNestedInput
+    english_word?: english_wordUpdateOneRequiredWithoutCollection_wordNestedInput
+  }
+
+  export type collection_wordUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    collection_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    word_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    added_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    sort_order?: IntFieldUpdateOperationsInput | number
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type collection_wordCreateManyInput = {
+    id?: bigint | number
+    collection_id: bigint | number
+    word_id: bigint | number
+    added_time?: Date | string
+    sort_order?: number
+    note?: string | null
+  }
+
+  export type collection_wordUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    added_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    sort_order?: IntFieldUpdateOperationsInput | number
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type collection_wordUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    collection_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    word_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    added_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    sort_order?: IntFieldUpdateOperationsInput | number
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type game_recordCreateInput = {
+    id?: bigint | number
+    game_type: string
+    score?: number
+    duration?: number
+    words_count?: number
+    correct_count?: number
+    wrong_count?: number
+    level?: number
+    game_data?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    user: userCreateNestedOneWithoutGame_recordInput
+  }
+
+  export type game_recordUncheckedCreateInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    game_type: string
+    score?: number
+    duration?: number
+    words_count?: number
+    correct_count?: number
+    wrong_count?: number
+    level?: number
+    game_data?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+  }
+
+  export type game_recordUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    game_type?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    duration?: IntFieldUpdateOperationsInput | number
+    words_count?: IntFieldUpdateOperationsInput | number
+    correct_count?: IntFieldUpdateOperationsInput | number
+    wrong_count?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    game_data?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    user?: userUpdateOneRequiredWithoutGame_recordNestedInput
+  }
+
+  export type game_recordUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    game_type?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    duration?: IntFieldUpdateOperationsInput | number
+    words_count?: IntFieldUpdateOperationsInput | number
+    correct_count?: IntFieldUpdateOperationsInput | number
+    wrong_count?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    game_data?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type game_recordCreateManyInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    game_type: string
+    score?: number
+    duration?: number
+    words_count?: number
+    correct_count?: number
+    wrong_count?: number
+    level?: number
+    game_data?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+  }
+
+  export type game_recordUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    game_type?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    duration?: IntFieldUpdateOperationsInput | number
+    words_count?: IntFieldUpdateOperationsInput | number
+    correct_count?: IntFieldUpdateOperationsInput | number
+    wrong_count?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    game_data?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type game_recordUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    game_type?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    duration?: IntFieldUpdateOperationsInput | number
+    words_count?: IntFieldUpdateOperationsInput | number
+    correct_count?: IntFieldUpdateOperationsInput | number
+    wrong_count?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    game_data?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type learning_progressCreateInput = {
+    id?: bigint | number
+    action_type: string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    source?: string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: number
+    start_time?: Date | string | null
+    end_time?: Date | string | null
+    study_plan?: study_planCreateNestedOneWithoutLearning_progressInput
+    user: userCreateNestedOneWithoutLearning_progressInput
+    english_word: english_wordCreateNestedOneWithoutLearning_progressInput
+  }
+
+  export type learning_progressUncheckedCreateInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    word_id: bigint | number
+    action_type: string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    study_plan_id?: bigint | number | null
+    source?: string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: number
+    start_time?: Date | string | null
+    end_time?: Date | string | null
+  }
+
+  export type learning_progressUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    action_type?: StringFieldUpdateOperationsInput | string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: IntFieldUpdateOperationsInput | number
+    start_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    study_plan?: study_planUpdateOneWithoutLearning_progressNestedInput
+    user?: userUpdateOneRequiredWithoutLearning_progressNestedInput
+    english_word?: english_wordUpdateOneRequiredWithoutLearning_progressNestedInput
+  }
+
+  export type learning_progressUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    word_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    action_type?: StringFieldUpdateOperationsInput | string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    study_plan_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: IntFieldUpdateOperationsInput | number
+    start_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type learning_progressCreateManyInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    word_id: bigint | number
+    action_type: string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    study_plan_id?: bigint | number | null
+    source?: string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: number
+    start_time?: Date | string | null
+    end_time?: Date | string | null
+  }
+
+  export type learning_progressUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    action_type?: StringFieldUpdateOperationsInput | string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: IntFieldUpdateOperationsInput | number
+    start_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type learning_progressUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    word_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    action_type?: StringFieldUpdateOperationsInput | string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    study_plan_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: IntFieldUpdateOperationsInput | number
+    start_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type learning_statsCreateInput = {
+    id?: bigint | number
+    total_words_learned?: number
+    total_review_time?: number
+    daily_streak?: number
+    longest_streak?: number
+    last_study_date?: Date | string | null
+    total_study_days?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    user: userCreateNestedOneWithoutLearning_statsInput
+    user_achievement?: user_achievementCreateNestedManyWithoutLearning_statsInput
+  }
+
+  export type learning_statsUncheckedCreateInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    total_words_learned?: number
+    total_review_time?: number
+    daily_streak?: number
+    longest_streak?: number
+    last_study_date?: Date | string | null
+    total_study_days?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    user_achievement?: user_achievementUncheckedCreateNestedManyWithoutLearning_statsInput
+  }
+
+  export type learning_statsUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    total_words_learned?: IntFieldUpdateOperationsInput | number
+    total_review_time?: IntFieldUpdateOperationsInput | number
+    daily_streak?: IntFieldUpdateOperationsInput | number
+    longest_streak?: IntFieldUpdateOperationsInput | number
+    last_study_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    total_study_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: userUpdateOneRequiredWithoutLearning_statsNestedInput
+    user_achievement?: user_achievementUpdateManyWithoutLearning_statsNestedInput
+  }
+
+  export type learning_statsUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    total_words_learned?: IntFieldUpdateOperationsInput | number
+    total_review_time?: IntFieldUpdateOperationsInput | number
+    daily_streak?: IntFieldUpdateOperationsInput | number
+    longest_streak?: IntFieldUpdateOperationsInput | number
+    last_study_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    total_study_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_achievement?: user_achievementUncheckedUpdateManyWithoutLearning_statsNestedInput
+  }
+
+  export type learning_statsCreateManyInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    total_words_learned?: number
+    total_review_time?: number
+    daily_streak?: number
+    longest_streak?: number
+    last_study_date?: Date | string | null
+    total_study_days?: number
+    created_at?: Date | string
+    update_time?: Date | string
+  }
+
+  export type learning_statsUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    total_words_learned?: IntFieldUpdateOperationsInput | number
+    total_review_time?: IntFieldUpdateOperationsInput | number
+    daily_streak?: IntFieldUpdateOperationsInput | number
+    longest_streak?: IntFieldUpdateOperationsInput | number
+    last_study_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    total_study_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type learning_statsUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    total_words_learned?: IntFieldUpdateOperationsInput | number
+    total_review_time?: IntFieldUpdateOperationsInput | number
+    daily_streak?: IntFieldUpdateOperationsInput | number
+    longest_streak?: IntFieldUpdateOperationsInput | number
+    last_study_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    total_study_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type point_transactionCreateInput = {
+    id?: bigint | number
+    amount: number
+    type: string
+    description?: string | null
+    reference_id?: string | null
+    created_at?: Date | string
+    user_points: user_pointsCreateNestedOneWithoutPoint_transactionInput
+  }
+
+  export type point_transactionUncheckedCreateInput = {
+    id?: bigint | number
+    user_points_id: bigint | number
+    amount: number
+    type: string
+    description?: string | null
+    reference_id?: string | null
+    created_at?: Date | string
+  }
+
+  export type point_transactionUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    amount?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    reference_id?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_points?: user_pointsUpdateOneRequiredWithoutPoint_transactionNestedInput
+  }
+
+  export type point_transactionUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_points_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    amount?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    reference_id?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type point_transactionCreateManyInput = {
+    id?: bigint | number
+    user_points_id: bigint | number
+    amount: number
+    type: string
+    description?: string | null
+    reference_id?: string | null
+    created_at?: Date | string
+  }
+
+  export type point_transactionUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    amount?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    reference_id?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type point_transactionUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_points_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    amount?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    reference_id?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type study_planCreateInput = {
+    id?: bigint | number
+    name: string
+    description?: string | null
+    target_words?: number
+    daily_words?: number
+    start_date?: Date | string | null
+    end_date?: Date | string | null
+    status?: string
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    learning_progress?: learning_progressCreateNestedManyWithoutStudy_planInput
+    user: userCreateNestedOneWithoutStudy_planInput
+    word_collection?: word_collectionCreateNestedManyWithoutStudy_planInput
+  }
+
+  export type study_planUncheckedCreateInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    name: string
+    description?: string | null
+    target_words?: number
+    daily_words?: number
+    start_date?: Date | string | null
+    end_date?: Date | string | null
+    status?: string
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    learning_progress?: learning_progressUncheckedCreateNestedManyWithoutStudy_planInput
+    word_collection?: word_collectionUncheckedCreateNestedManyWithoutStudy_planInput
+  }
+
+  export type study_planUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    target_words?: IntFieldUpdateOperationsInput | number
+    daily_words?: IntFieldUpdateOperationsInput | number
+    start_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    learning_progress?: learning_progressUpdateManyWithoutStudy_planNestedInput
+    user?: userUpdateOneRequiredWithoutStudy_planNestedInput
+    word_collection?: word_collectionUpdateManyWithoutStudy_planNestedInput
+  }
+
+  export type study_planUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    target_words?: IntFieldUpdateOperationsInput | number
+    daily_words?: IntFieldUpdateOperationsInput | number
+    start_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    learning_progress?: learning_progressUncheckedUpdateManyWithoutStudy_planNestedInput
+    word_collection?: word_collectionUncheckedUpdateManyWithoutStudy_planNestedInput
+  }
+
+  export type study_planCreateManyInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    name: string
+    description?: string | null
+    target_words?: number
+    daily_words?: number
+    start_date?: Date | string | null
+    end_date?: Date | string | null
+    status?: string
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+  }
+
+  export type study_planUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    target_words?: IntFieldUpdateOperationsInput | number
+    daily_words?: IntFieldUpdateOperationsInput | number
+    start_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type study_planUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    target_words?: IntFieldUpdateOperationsInput | number
+    daily_words?: IntFieldUpdateOperationsInput | number
+    start_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type user_achievementCreateInput = {
+    id?: bigint | number
+    achieved_date?: Date | string
+    progress?: number | null
+    achievement: achievementCreateNestedOneWithoutUser_achievementInput
+    learning_stats?: learning_statsCreateNestedOneWithoutUser_achievementInput
+    user: userCreateNestedOneWithoutUser_achievementInput
+  }
+
+  export type user_achievementUncheckedCreateInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    achievement_id: bigint | number
+    achieved_date?: Date | string
+    progress?: number | null
+    learning_stats_id?: bigint | number | null
+  }
+
+  export type user_achievementUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achieved_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: NullableIntFieldUpdateOperationsInput | number | null
+    achievement?: achievementUpdateOneRequiredWithoutUser_achievementNestedInput
+    learning_stats?: learning_statsUpdateOneWithoutUser_achievementNestedInput
+    user?: userUpdateOneRequiredWithoutUser_achievementNestedInput
+  }
+
+  export type user_achievementUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achievement_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achieved_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: NullableIntFieldUpdateOperationsInput | number | null
+    learning_stats_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  }
+
+  export type user_achievementCreateManyInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    achievement_id: bigint | number
+    achieved_date?: Date | string
+    progress?: number | null
+    learning_stats_id?: bigint | number | null
+  }
+
+  export type user_achievementUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achieved_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type user_achievementUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achievement_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achieved_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: NullableIntFieldUpdateOperationsInput | number | null
+    learning_stats_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  }
+
+  export type user_pointsCreateInput = {
+    id?: bigint | number
+    total_points?: number
+    available_points?: number
+    level?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    point_transaction?: point_transactionCreateNestedManyWithoutUser_pointsInput
+    user: userCreateNestedOneWithoutUser_pointsInput
+  }
+
+  export type user_pointsUncheckedCreateInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    total_points?: number
+    available_points?: number
+    level?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    point_transaction?: point_transactionUncheckedCreateNestedManyWithoutUser_pointsInput
+  }
+
+  export type user_pointsUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    total_points?: IntFieldUpdateOperationsInput | number
+    available_points?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    point_transaction?: point_transactionUpdateManyWithoutUser_pointsNestedInput
+    user?: userUpdateOneRequiredWithoutUser_pointsNestedInput
+  }
+
+  export type user_pointsUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    total_points?: IntFieldUpdateOperationsInput | number
+    available_points?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    point_transaction?: point_transactionUncheckedUpdateManyWithoutUser_pointsNestedInput
+  }
+
+  export type user_pointsCreateManyInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    total_points?: number
+    available_points?: number
+    level?: number
+    created_at?: Date | string
+    update_time?: Date | string
+  }
+
+  export type user_pointsUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    total_points?: IntFieldUpdateOperationsInput | number
+    available_points?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type user_pointsUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    total_points?: IntFieldUpdateOperationsInput | number
+    available_points?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type word_collectionCreateInput = {
+    id?: bigint | number
+    name: string
+    description?: string | null
+    is_public?: boolean
+    word_count?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    collection_word?: collection_wordCreateNestedManyWithoutWord_collectionInput
+    study_plan?: study_planCreateNestedOneWithoutWord_collectionInput
+    user: userCreateNestedOneWithoutWord_collectionInput
+  }
+
+  export type word_collectionUncheckedCreateInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    plan_id?: bigint | number | null
+    name: string
+    description?: string | null
+    is_public?: boolean
+    word_count?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    collection_word?: collection_wordUncheckedCreateNestedManyWithoutWord_collectionInput
+  }
+
+  export type word_collectionUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    is_public?: BoolFieldUpdateOperationsInput | boolean
+    word_count?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    collection_word?: collection_wordUpdateManyWithoutWord_collectionNestedInput
+    study_plan?: study_planUpdateOneWithoutWord_collectionNestedInput
+    user?: userUpdateOneRequiredWithoutWord_collectionNestedInput
+  }
+
+  export type word_collectionUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    plan_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    is_public?: BoolFieldUpdateOperationsInput | boolean
+    word_count?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    collection_word?: collection_wordUncheckedUpdateManyWithoutWord_collectionNestedInput
+  }
+
+  export type word_collectionCreateManyInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    plan_id?: bigint | number | null
+    name: string
+    description?: string | null
+    is_public?: boolean
+    word_count?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+  }
+
+  export type word_collectionUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    is_public?: BoolFieldUpdateOperationsInput | boolean
+    word_count?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type word_collectionUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    plan_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    is_public?: BoolFieldUpdateOperationsInput | boolean
+    word_count?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
   }
 
   export type BigIntFilter<$PrismaModel = never> = {
@@ -18933,10 +32761,22 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type Collection_wordListRelationFilter = {
+    every?: collection_wordWhereInput
+    some?: collection_wordWhereInput
+    none?: collection_wordWhereInput
+  }
+
   export type English_word_change_logListRelationFilter = {
     every?: english_word_change_logWhereInput
     some?: english_word_change_logWhereInput
     none?: english_word_change_logWhereInput
+  }
+
+  export type Learning_progressListRelationFilter = {
+    every?: learning_progressWhereInput
+    some?: learning_progressWhereInput
+    none?: learning_progressWhereInput
   }
 
   export type Media_creatorListRelationFilter = {
@@ -18945,7 +32785,15 @@ export namespace Prisma {
     none?: media_creatorWhereInput
   }
 
+  export type collection_wordOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type english_word_change_logOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type learning_progressOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -19299,12 +33147,62 @@ export namespace Prisma {
     none?: audio_fileWhereInput
   }
 
+  export type Game_recordListRelationFilter = {
+    every?: game_recordWhereInput
+    some?: game_recordWhereInput
+    none?: game_recordWhereInput
+  }
+
+  export type Learning_statsNullableScalarRelationFilter = {
+    is?: learning_statsWhereInput | null
+    isNot?: learning_statsWhereInput | null
+  }
+
+  export type Study_planListRelationFilter = {
+    every?: study_planWhereInput
+    some?: study_planWhereInput
+    none?: study_planWhereInput
+  }
+
+  export type User_achievementListRelationFilter = {
+    every?: user_achievementWhereInput
+    some?: user_achievementWhereInput
+    none?: user_achievementWhereInput
+  }
+
   export type User_configNullableScalarRelationFilter = {
     is?: user_configWhereInput | null
     isNot?: user_configWhereInput | null
   }
 
+  export type User_pointsNullableScalarRelationFilter = {
+    is?: user_pointsWhereInput | null
+    isNot?: user_pointsWhereInput | null
+  }
+
+  export type Word_collectionListRelationFilter = {
+    every?: word_collectionWhereInput
+    some?: word_collectionWhereInput
+    none?: word_collectionWhereInput
+  }
+
   export type audio_fileOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type game_recordOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type study_planOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type user_achievementOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type word_collectionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -19496,6 +33394,632 @@ export namespace Prisma {
     is_delete?: SortOrder
   }
 
+  export type achievementOrderByRelevanceInput = {
+    fields: achievementOrderByRelevanceFieldEnum | achievementOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type achievementCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    icon_url?: SortOrder
+    category?: SortOrder
+    points?: SortOrder
+    requirements?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type achievementAvgOrderByAggregateInput = {
+    id?: SortOrder
+    points?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type achievementMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    icon_url?: SortOrder
+    category?: SortOrder
+    points?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type achievementMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    icon_url?: SortOrder
+    category?: SortOrder
+    points?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type achievementSumOrderByAggregateInput = {
+    id?: SortOrder
+    points?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type Word_collectionScalarRelationFilter = {
+    is?: word_collectionWhereInput
+    isNot?: word_collectionWhereInput
+  }
+
+  export type collection_wordOrderByRelevanceInput = {
+    fields: collection_wordOrderByRelevanceFieldEnum | collection_wordOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type collection_wordCollection_idWord_idCompoundUniqueInput = {
+    collection_id: bigint | number
+    word_id: bigint | number
+  }
+
+  export type collection_wordCountOrderByAggregateInput = {
+    id?: SortOrder
+    collection_id?: SortOrder
+    word_id?: SortOrder
+    added_time?: SortOrder
+    sort_order?: SortOrder
+    note?: SortOrder
+  }
+
+  export type collection_wordAvgOrderByAggregateInput = {
+    id?: SortOrder
+    collection_id?: SortOrder
+    word_id?: SortOrder
+    sort_order?: SortOrder
+  }
+
+  export type collection_wordMaxOrderByAggregateInput = {
+    id?: SortOrder
+    collection_id?: SortOrder
+    word_id?: SortOrder
+    added_time?: SortOrder
+    sort_order?: SortOrder
+    note?: SortOrder
+  }
+
+  export type collection_wordMinOrderByAggregateInput = {
+    id?: SortOrder
+    collection_id?: SortOrder
+    word_id?: SortOrder
+    added_time?: SortOrder
+    sort_order?: SortOrder
+    note?: SortOrder
+  }
+
+  export type collection_wordSumOrderByAggregateInput = {
+    id?: SortOrder
+    collection_id?: SortOrder
+    word_id?: SortOrder
+    sort_order?: SortOrder
+  }
+
+  export type game_recordOrderByRelevanceInput = {
+    fields: game_recordOrderByRelevanceFieldEnum | game_recordOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type game_recordCountOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    game_type?: SortOrder
+    score?: SortOrder
+    duration?: SortOrder
+    words_count?: SortOrder
+    correct_count?: SortOrder
+    wrong_count?: SortOrder
+    level?: SortOrder
+    game_data?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type game_recordAvgOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    score?: SortOrder
+    duration?: SortOrder
+    words_count?: SortOrder
+    correct_count?: SortOrder
+    wrong_count?: SortOrder
+    level?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type game_recordMaxOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    game_type?: SortOrder
+    score?: SortOrder
+    duration?: SortOrder
+    words_count?: SortOrder
+    correct_count?: SortOrder
+    wrong_count?: SortOrder
+    level?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type game_recordMinOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    game_type?: SortOrder
+    score?: SortOrder
+    duration?: SortOrder
+    words_count?: SortOrder
+    correct_count?: SortOrder
+    wrong_count?: SortOrder
+    level?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type game_recordSumOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    score?: SortOrder
+    duration?: SortOrder
+    words_count?: SortOrder
+    correct_count?: SortOrder
+    wrong_count?: SortOrder
+    level?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type Study_planNullableScalarRelationFilter = {
+    is?: study_planWhereInput | null
+    isNot?: study_planWhereInput | null
+  }
+
+  export type learning_progressOrderByRelevanceInput = {
+    fields: learning_progressOrderByRelevanceFieldEnum | learning_progressOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type learning_progressCountOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    word_id?: SortOrder
+    action_type?: SortOrder
+    learning_details?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+    study_plan_id?: SortOrder
+    source?: SortOrder
+    device_info?: SortOrder
+    attempt_count?: SortOrder
+    start_time?: SortOrder
+    end_time?: SortOrder
+  }
+
+  export type learning_progressAvgOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    word_id?: SortOrder
+    is_delete?: SortOrder
+    study_plan_id?: SortOrder
+    attempt_count?: SortOrder
+  }
+
+  export type learning_progressMaxOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    word_id?: SortOrder
+    action_type?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+    study_plan_id?: SortOrder
+    source?: SortOrder
+    attempt_count?: SortOrder
+    start_time?: SortOrder
+    end_time?: SortOrder
+  }
+
+  export type learning_progressMinOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    word_id?: SortOrder
+    action_type?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+    study_plan_id?: SortOrder
+    source?: SortOrder
+    attempt_count?: SortOrder
+    start_time?: SortOrder
+    end_time?: SortOrder
+  }
+
+  export type learning_progressSumOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    word_id?: SortOrder
+    is_delete?: SortOrder
+    study_plan_id?: SortOrder
+    attempt_count?: SortOrder
+  }
+
+  export type learning_statsCountOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    total_words_learned?: SortOrder
+    total_review_time?: SortOrder
+    daily_streak?: SortOrder
+    longest_streak?: SortOrder
+    last_study_date?: SortOrder
+    total_study_days?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+  }
+
+  export type learning_statsAvgOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    total_words_learned?: SortOrder
+    total_review_time?: SortOrder
+    daily_streak?: SortOrder
+    longest_streak?: SortOrder
+    total_study_days?: SortOrder
+  }
+
+  export type learning_statsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    total_words_learned?: SortOrder
+    total_review_time?: SortOrder
+    daily_streak?: SortOrder
+    longest_streak?: SortOrder
+    last_study_date?: SortOrder
+    total_study_days?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+  }
+
+  export type learning_statsMinOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    total_words_learned?: SortOrder
+    total_review_time?: SortOrder
+    daily_streak?: SortOrder
+    longest_streak?: SortOrder
+    last_study_date?: SortOrder
+    total_study_days?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+  }
+
+  export type learning_statsSumOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    total_words_learned?: SortOrder
+    total_review_time?: SortOrder
+    daily_streak?: SortOrder
+    longest_streak?: SortOrder
+    total_study_days?: SortOrder
+  }
+
+  export type User_pointsScalarRelationFilter = {
+    is?: user_pointsWhereInput
+    isNot?: user_pointsWhereInput
+  }
+
+  export type point_transactionOrderByRelevanceInput = {
+    fields: point_transactionOrderByRelevanceFieldEnum | point_transactionOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type point_transactionCountOrderByAggregateInput = {
+    id?: SortOrder
+    user_points_id?: SortOrder
+    amount?: SortOrder
+    type?: SortOrder
+    description?: SortOrder
+    reference_id?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type point_transactionAvgOrderByAggregateInput = {
+    id?: SortOrder
+    user_points_id?: SortOrder
+    amount?: SortOrder
+  }
+
+  export type point_transactionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    user_points_id?: SortOrder
+    amount?: SortOrder
+    type?: SortOrder
+    description?: SortOrder
+    reference_id?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type point_transactionMinOrderByAggregateInput = {
+    id?: SortOrder
+    user_points_id?: SortOrder
+    amount?: SortOrder
+    type?: SortOrder
+    description?: SortOrder
+    reference_id?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type point_transactionSumOrderByAggregateInput = {
+    id?: SortOrder
+    user_points_id?: SortOrder
+    amount?: SortOrder
+  }
+
+  export type study_planOrderByRelevanceInput = {
+    fields: study_planOrderByRelevanceFieldEnum | study_planOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type study_planCountOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    target_words?: SortOrder
+    daily_words?: SortOrder
+    start_date?: SortOrder
+    end_date?: SortOrder
+    status?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type study_planAvgOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    target_words?: SortOrder
+    daily_words?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type study_planMaxOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    target_words?: SortOrder
+    daily_words?: SortOrder
+    start_date?: SortOrder
+    end_date?: SortOrder
+    status?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type study_planMinOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    target_words?: SortOrder
+    daily_words?: SortOrder
+    start_date?: SortOrder
+    end_date?: SortOrder
+    status?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type study_planSumOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    target_words?: SortOrder
+    daily_words?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type AchievementScalarRelationFilter = {
+    is?: achievementWhereInput
+    isNot?: achievementWhereInput
+  }
+
+  export type user_achievementUser_idAchievement_idCompoundUniqueInput = {
+    user_id: bigint | number
+    achievement_id: bigint | number
+  }
+
+  export type user_achievementCountOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    achievement_id?: SortOrder
+    achieved_date?: SortOrder
+    progress?: SortOrder
+    learning_stats_id?: SortOrder
+  }
+
+  export type user_achievementAvgOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    achievement_id?: SortOrder
+    progress?: SortOrder
+    learning_stats_id?: SortOrder
+  }
+
+  export type user_achievementMaxOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    achievement_id?: SortOrder
+    achieved_date?: SortOrder
+    progress?: SortOrder
+    learning_stats_id?: SortOrder
+  }
+
+  export type user_achievementMinOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    achievement_id?: SortOrder
+    achieved_date?: SortOrder
+    progress?: SortOrder
+    learning_stats_id?: SortOrder
+  }
+
+  export type user_achievementSumOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    achievement_id?: SortOrder
+    progress?: SortOrder
+    learning_stats_id?: SortOrder
+  }
+
+  export type Point_transactionListRelationFilter = {
+    every?: point_transactionWhereInput
+    some?: point_transactionWhereInput
+    none?: point_transactionWhereInput
+  }
+
+  export type point_transactionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type user_pointsCountOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    total_points?: SortOrder
+    available_points?: SortOrder
+    level?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+  }
+
+  export type user_pointsAvgOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    total_points?: SortOrder
+    available_points?: SortOrder
+    level?: SortOrder
+  }
+
+  export type user_pointsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    total_points?: SortOrder
+    available_points?: SortOrder
+    level?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+  }
+
+  export type user_pointsMinOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    total_points?: SortOrder
+    available_points?: SortOrder
+    level?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+  }
+
+  export type user_pointsSumOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    total_points?: SortOrder
+    available_points?: SortOrder
+    level?: SortOrder
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type word_collectionOrderByRelevanceInput = {
+    fields: word_collectionOrderByRelevanceFieldEnum | word_collectionOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type word_collectionCountOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    plan_id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    is_public?: SortOrder
+    word_count?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type word_collectionAvgOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    plan_id?: SortOrder
+    word_count?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type word_collectionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    plan_id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    is_public?: SortOrder
+    word_count?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type word_collectionMinOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    plan_id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    is_public?: SortOrder
+    word_count?: SortOrder
+    created_at?: SortOrder
+    update_time?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type word_collectionSumOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    plan_id?: SortOrder
+    word_count?: SortOrder
+    is_delete?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type userCreateNestedOneWithoutAudio_fileInput = {
     create?: XOR<userCreateWithoutAudio_fileInput, userUncheckedCreateWithoutAudio_fileInput>
     connectOrCreate?: userCreateOrConnectWithoutAudio_fileInput
@@ -19630,6 +34154,13 @@ export namespace Prisma {
     deleteMany?: dictionary_wordScalarWhereInput | dictionary_wordScalarWhereInput[]
   }
 
+  export type collection_wordCreateNestedManyWithoutEnglish_wordInput = {
+    create?: XOR<collection_wordCreateWithoutEnglish_wordInput, collection_wordUncheckedCreateWithoutEnglish_wordInput> | collection_wordCreateWithoutEnglish_wordInput[] | collection_wordUncheckedCreateWithoutEnglish_wordInput[]
+    connectOrCreate?: collection_wordCreateOrConnectWithoutEnglish_wordInput | collection_wordCreateOrConnectWithoutEnglish_wordInput[]
+    createMany?: collection_wordCreateManyEnglish_wordInputEnvelope
+    connect?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+  }
+
   export type dictionary_wordCreateNestedManyWithoutEnglish_wordInput = {
     create?: XOR<dictionary_wordCreateWithoutEnglish_wordInput, dictionary_wordUncheckedCreateWithoutEnglish_wordInput> | dictionary_wordCreateWithoutEnglish_wordInput[] | dictionary_wordUncheckedCreateWithoutEnglish_wordInput[]
     connectOrCreate?: dictionary_wordCreateOrConnectWithoutEnglish_wordInput | dictionary_wordCreateOrConnectWithoutEnglish_wordInput[]
@@ -19644,11 +34175,25 @@ export namespace Prisma {
     connect?: english_word_change_logWhereUniqueInput | english_word_change_logWhereUniqueInput[]
   }
 
+  export type learning_progressCreateNestedManyWithoutEnglish_wordInput = {
+    create?: XOR<learning_progressCreateWithoutEnglish_wordInput, learning_progressUncheckedCreateWithoutEnglish_wordInput> | learning_progressCreateWithoutEnglish_wordInput[] | learning_progressUncheckedCreateWithoutEnglish_wordInput[]
+    connectOrCreate?: learning_progressCreateOrConnectWithoutEnglish_wordInput | learning_progressCreateOrConnectWithoutEnglish_wordInput[]
+    createMany?: learning_progressCreateManyEnglish_wordInputEnvelope
+    connect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+  }
+
   export type media_creatorCreateNestedManyWithoutEnglish_wordInput = {
     create?: XOR<media_creatorCreateWithoutEnglish_wordInput, media_creatorUncheckedCreateWithoutEnglish_wordInput> | media_creatorCreateWithoutEnglish_wordInput[] | media_creatorUncheckedCreateWithoutEnglish_wordInput[]
     connectOrCreate?: media_creatorCreateOrConnectWithoutEnglish_wordInput | media_creatorCreateOrConnectWithoutEnglish_wordInput[]
     createMany?: media_creatorCreateManyEnglish_wordInputEnvelope
     connect?: media_creatorWhereUniqueInput | media_creatorWhereUniqueInput[]
+  }
+
+  export type collection_wordUncheckedCreateNestedManyWithoutEnglish_wordInput = {
+    create?: XOR<collection_wordCreateWithoutEnglish_wordInput, collection_wordUncheckedCreateWithoutEnglish_wordInput> | collection_wordCreateWithoutEnglish_wordInput[] | collection_wordUncheckedCreateWithoutEnglish_wordInput[]
+    connectOrCreate?: collection_wordCreateOrConnectWithoutEnglish_wordInput | collection_wordCreateOrConnectWithoutEnglish_wordInput[]
+    createMany?: collection_wordCreateManyEnglish_wordInputEnvelope
+    connect?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
   }
 
   export type dictionary_wordUncheckedCreateNestedManyWithoutEnglish_wordInput = {
@@ -19665,11 +34210,32 @@ export namespace Prisma {
     connect?: english_word_change_logWhereUniqueInput | english_word_change_logWhereUniqueInput[]
   }
 
+  export type learning_progressUncheckedCreateNestedManyWithoutEnglish_wordInput = {
+    create?: XOR<learning_progressCreateWithoutEnglish_wordInput, learning_progressUncheckedCreateWithoutEnglish_wordInput> | learning_progressCreateWithoutEnglish_wordInput[] | learning_progressUncheckedCreateWithoutEnglish_wordInput[]
+    connectOrCreate?: learning_progressCreateOrConnectWithoutEnglish_wordInput | learning_progressCreateOrConnectWithoutEnglish_wordInput[]
+    createMany?: learning_progressCreateManyEnglish_wordInputEnvelope
+    connect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+  }
+
   export type media_creatorUncheckedCreateNestedManyWithoutEnglish_wordInput = {
     create?: XOR<media_creatorCreateWithoutEnglish_wordInput, media_creatorUncheckedCreateWithoutEnglish_wordInput> | media_creatorCreateWithoutEnglish_wordInput[] | media_creatorUncheckedCreateWithoutEnglish_wordInput[]
     connectOrCreate?: media_creatorCreateOrConnectWithoutEnglish_wordInput | media_creatorCreateOrConnectWithoutEnglish_wordInput[]
     createMany?: media_creatorCreateManyEnglish_wordInputEnvelope
     connect?: media_creatorWhereUniqueInput | media_creatorWhereUniqueInput[]
+  }
+
+  export type collection_wordUpdateManyWithoutEnglish_wordNestedInput = {
+    create?: XOR<collection_wordCreateWithoutEnglish_wordInput, collection_wordUncheckedCreateWithoutEnglish_wordInput> | collection_wordCreateWithoutEnglish_wordInput[] | collection_wordUncheckedCreateWithoutEnglish_wordInput[]
+    connectOrCreate?: collection_wordCreateOrConnectWithoutEnglish_wordInput | collection_wordCreateOrConnectWithoutEnglish_wordInput[]
+    upsert?: collection_wordUpsertWithWhereUniqueWithoutEnglish_wordInput | collection_wordUpsertWithWhereUniqueWithoutEnglish_wordInput[]
+    createMany?: collection_wordCreateManyEnglish_wordInputEnvelope
+    set?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+    disconnect?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+    delete?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+    connect?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+    update?: collection_wordUpdateWithWhereUniqueWithoutEnglish_wordInput | collection_wordUpdateWithWhereUniqueWithoutEnglish_wordInput[]
+    updateMany?: collection_wordUpdateManyWithWhereWithoutEnglish_wordInput | collection_wordUpdateManyWithWhereWithoutEnglish_wordInput[]
+    deleteMany?: collection_wordScalarWhereInput | collection_wordScalarWhereInput[]
   }
 
   export type dictionary_wordUpdateManyWithoutEnglish_wordNestedInput = {
@@ -19700,6 +34266,20 @@ export namespace Prisma {
     deleteMany?: english_word_change_logScalarWhereInput | english_word_change_logScalarWhereInput[]
   }
 
+  export type learning_progressUpdateManyWithoutEnglish_wordNestedInput = {
+    create?: XOR<learning_progressCreateWithoutEnglish_wordInput, learning_progressUncheckedCreateWithoutEnglish_wordInput> | learning_progressCreateWithoutEnglish_wordInput[] | learning_progressUncheckedCreateWithoutEnglish_wordInput[]
+    connectOrCreate?: learning_progressCreateOrConnectWithoutEnglish_wordInput | learning_progressCreateOrConnectWithoutEnglish_wordInput[]
+    upsert?: learning_progressUpsertWithWhereUniqueWithoutEnglish_wordInput | learning_progressUpsertWithWhereUniqueWithoutEnglish_wordInput[]
+    createMany?: learning_progressCreateManyEnglish_wordInputEnvelope
+    set?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    disconnect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    delete?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    connect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    update?: learning_progressUpdateWithWhereUniqueWithoutEnglish_wordInput | learning_progressUpdateWithWhereUniqueWithoutEnglish_wordInput[]
+    updateMany?: learning_progressUpdateManyWithWhereWithoutEnglish_wordInput | learning_progressUpdateManyWithWhereWithoutEnglish_wordInput[]
+    deleteMany?: learning_progressScalarWhereInput | learning_progressScalarWhereInput[]
+  }
+
   export type media_creatorUpdateManyWithoutEnglish_wordNestedInput = {
     create?: XOR<media_creatorCreateWithoutEnglish_wordInput, media_creatorUncheckedCreateWithoutEnglish_wordInput> | media_creatorCreateWithoutEnglish_wordInput[] | media_creatorUncheckedCreateWithoutEnglish_wordInput[]
     connectOrCreate?: media_creatorCreateOrConnectWithoutEnglish_wordInput | media_creatorCreateOrConnectWithoutEnglish_wordInput[]
@@ -19712,6 +34292,20 @@ export namespace Prisma {
     update?: media_creatorUpdateWithWhereUniqueWithoutEnglish_wordInput | media_creatorUpdateWithWhereUniqueWithoutEnglish_wordInput[]
     updateMany?: media_creatorUpdateManyWithWhereWithoutEnglish_wordInput | media_creatorUpdateManyWithWhereWithoutEnglish_wordInput[]
     deleteMany?: media_creatorScalarWhereInput | media_creatorScalarWhereInput[]
+  }
+
+  export type collection_wordUncheckedUpdateManyWithoutEnglish_wordNestedInput = {
+    create?: XOR<collection_wordCreateWithoutEnglish_wordInput, collection_wordUncheckedCreateWithoutEnglish_wordInput> | collection_wordCreateWithoutEnglish_wordInput[] | collection_wordUncheckedCreateWithoutEnglish_wordInput[]
+    connectOrCreate?: collection_wordCreateOrConnectWithoutEnglish_wordInput | collection_wordCreateOrConnectWithoutEnglish_wordInput[]
+    upsert?: collection_wordUpsertWithWhereUniqueWithoutEnglish_wordInput | collection_wordUpsertWithWhereUniqueWithoutEnglish_wordInput[]
+    createMany?: collection_wordCreateManyEnglish_wordInputEnvelope
+    set?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+    disconnect?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+    delete?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+    connect?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+    update?: collection_wordUpdateWithWhereUniqueWithoutEnglish_wordInput | collection_wordUpdateWithWhereUniqueWithoutEnglish_wordInput[]
+    updateMany?: collection_wordUpdateManyWithWhereWithoutEnglish_wordInput | collection_wordUpdateManyWithWhereWithoutEnglish_wordInput[]
+    deleteMany?: collection_wordScalarWhereInput | collection_wordScalarWhereInput[]
   }
 
   export type dictionary_wordUncheckedUpdateManyWithoutEnglish_wordNestedInput = {
@@ -19740,6 +34334,20 @@ export namespace Prisma {
     update?: english_word_change_logUpdateWithWhereUniqueWithoutEnglish_wordInput | english_word_change_logUpdateWithWhereUniqueWithoutEnglish_wordInput[]
     updateMany?: english_word_change_logUpdateManyWithWhereWithoutEnglish_wordInput | english_word_change_logUpdateManyWithWhereWithoutEnglish_wordInput[]
     deleteMany?: english_word_change_logScalarWhereInput | english_word_change_logScalarWhereInput[]
+  }
+
+  export type learning_progressUncheckedUpdateManyWithoutEnglish_wordNestedInput = {
+    create?: XOR<learning_progressCreateWithoutEnglish_wordInput, learning_progressUncheckedCreateWithoutEnglish_wordInput> | learning_progressCreateWithoutEnglish_wordInput[] | learning_progressUncheckedCreateWithoutEnglish_wordInput[]
+    connectOrCreate?: learning_progressCreateOrConnectWithoutEnglish_wordInput | learning_progressCreateOrConnectWithoutEnglish_wordInput[]
+    upsert?: learning_progressUpsertWithWhereUniqueWithoutEnglish_wordInput | learning_progressUpsertWithWhereUniqueWithoutEnglish_wordInput[]
+    createMany?: learning_progressCreateManyEnglish_wordInputEnvelope
+    set?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    disconnect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    delete?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    connect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    update?: learning_progressUpdateWithWhereUniqueWithoutEnglish_wordInput | learning_progressUpdateWithWhereUniqueWithoutEnglish_wordInput[]
+    updateMany?: learning_progressUpdateManyWithWhereWithoutEnglish_wordInput | learning_progressUpdateManyWithWhereWithoutEnglish_wordInput[]
+    deleteMany?: learning_progressScalarWhereInput | learning_progressScalarWhereInput[]
   }
 
   export type media_creatorUncheckedUpdateManyWithoutEnglish_wordNestedInput = {
@@ -19795,10 +34403,57 @@ export namespace Prisma {
     connect?: audio_fileWhereUniqueInput | audio_fileWhereUniqueInput[]
   }
 
+  export type game_recordCreateNestedManyWithoutUserInput = {
+    create?: XOR<game_recordCreateWithoutUserInput, game_recordUncheckedCreateWithoutUserInput> | game_recordCreateWithoutUserInput[] | game_recordUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: game_recordCreateOrConnectWithoutUserInput | game_recordCreateOrConnectWithoutUserInput[]
+    createMany?: game_recordCreateManyUserInputEnvelope
+    connect?: game_recordWhereUniqueInput | game_recordWhereUniqueInput[]
+  }
+
+  export type learning_progressCreateNestedManyWithoutUserInput = {
+    create?: XOR<learning_progressCreateWithoutUserInput, learning_progressUncheckedCreateWithoutUserInput> | learning_progressCreateWithoutUserInput[] | learning_progressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: learning_progressCreateOrConnectWithoutUserInput | learning_progressCreateOrConnectWithoutUserInput[]
+    createMany?: learning_progressCreateManyUserInputEnvelope
+    connect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+  }
+
+  export type learning_statsCreateNestedOneWithoutUserInput = {
+    create?: XOR<learning_statsCreateWithoutUserInput, learning_statsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: learning_statsCreateOrConnectWithoutUserInput
+    connect?: learning_statsWhereUniqueInput
+  }
+
+  export type study_planCreateNestedManyWithoutUserInput = {
+    create?: XOR<study_planCreateWithoutUserInput, study_planUncheckedCreateWithoutUserInput> | study_planCreateWithoutUserInput[] | study_planUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: study_planCreateOrConnectWithoutUserInput | study_planCreateOrConnectWithoutUserInput[]
+    createMany?: study_planCreateManyUserInputEnvelope
+    connect?: study_planWhereUniqueInput | study_planWhereUniqueInput[]
+  }
+
+  export type user_achievementCreateNestedManyWithoutUserInput = {
+    create?: XOR<user_achievementCreateWithoutUserInput, user_achievementUncheckedCreateWithoutUserInput> | user_achievementCreateWithoutUserInput[] | user_achievementUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: user_achievementCreateOrConnectWithoutUserInput | user_achievementCreateOrConnectWithoutUserInput[]
+    createMany?: user_achievementCreateManyUserInputEnvelope
+    connect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+  }
+
   export type user_configCreateNestedOneWithoutUserInput = {
     create?: XOR<user_configCreateWithoutUserInput, user_configUncheckedCreateWithoutUserInput>
     connectOrCreate?: user_configCreateOrConnectWithoutUserInput
     connect?: user_configWhereUniqueInput
+  }
+
+  export type user_pointsCreateNestedOneWithoutUserInput = {
+    create?: XOR<user_pointsCreateWithoutUserInput, user_pointsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: user_pointsCreateOrConnectWithoutUserInput
+    connect?: user_pointsWhereUniqueInput
+  }
+
+  export type word_collectionCreateNestedManyWithoutUserInput = {
+    create?: XOR<word_collectionCreateWithoutUserInput, word_collectionUncheckedCreateWithoutUserInput> | word_collectionCreateWithoutUserInput[] | word_collectionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: word_collectionCreateOrConnectWithoutUserInput | word_collectionCreateOrConnectWithoutUserInput[]
+    createMany?: word_collectionCreateManyUserInputEnvelope
+    connect?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
   }
 
   export type audio_fileUncheckedCreateNestedManyWithoutUserInput = {
@@ -19808,10 +34463,57 @@ export namespace Prisma {
     connect?: audio_fileWhereUniqueInput | audio_fileWhereUniqueInput[]
   }
 
+  export type game_recordUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<game_recordCreateWithoutUserInput, game_recordUncheckedCreateWithoutUserInput> | game_recordCreateWithoutUserInput[] | game_recordUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: game_recordCreateOrConnectWithoutUserInput | game_recordCreateOrConnectWithoutUserInput[]
+    createMany?: game_recordCreateManyUserInputEnvelope
+    connect?: game_recordWhereUniqueInput | game_recordWhereUniqueInput[]
+  }
+
+  export type learning_progressUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<learning_progressCreateWithoutUserInput, learning_progressUncheckedCreateWithoutUserInput> | learning_progressCreateWithoutUserInput[] | learning_progressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: learning_progressCreateOrConnectWithoutUserInput | learning_progressCreateOrConnectWithoutUserInput[]
+    createMany?: learning_progressCreateManyUserInputEnvelope
+    connect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+  }
+
+  export type learning_statsUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<learning_statsCreateWithoutUserInput, learning_statsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: learning_statsCreateOrConnectWithoutUserInput
+    connect?: learning_statsWhereUniqueInput
+  }
+
+  export type study_planUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<study_planCreateWithoutUserInput, study_planUncheckedCreateWithoutUserInput> | study_planCreateWithoutUserInput[] | study_planUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: study_planCreateOrConnectWithoutUserInput | study_planCreateOrConnectWithoutUserInput[]
+    createMany?: study_planCreateManyUserInputEnvelope
+    connect?: study_planWhereUniqueInput | study_planWhereUniqueInput[]
+  }
+
+  export type user_achievementUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<user_achievementCreateWithoutUserInput, user_achievementUncheckedCreateWithoutUserInput> | user_achievementCreateWithoutUserInput[] | user_achievementUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: user_achievementCreateOrConnectWithoutUserInput | user_achievementCreateOrConnectWithoutUserInput[]
+    createMany?: user_achievementCreateManyUserInputEnvelope
+    connect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+  }
+
   export type user_configUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<user_configCreateWithoutUserInput, user_configUncheckedCreateWithoutUserInput>
     connectOrCreate?: user_configCreateOrConnectWithoutUserInput
     connect?: user_configWhereUniqueInput
+  }
+
+  export type user_pointsUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<user_pointsCreateWithoutUserInput, user_pointsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: user_pointsCreateOrConnectWithoutUserInput
+    connect?: user_pointsWhereUniqueInput
+  }
+
+  export type word_collectionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<word_collectionCreateWithoutUserInput, word_collectionUncheckedCreateWithoutUserInput> | word_collectionCreateWithoutUserInput[] | word_collectionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: word_collectionCreateOrConnectWithoutUserInput | word_collectionCreateOrConnectWithoutUserInput[]
+    createMany?: word_collectionCreateManyUserInputEnvelope
+    connect?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
   }
 
   export type audio_fileUpdateManyWithoutUserNestedInput = {
@@ -19828,6 +34530,72 @@ export namespace Prisma {
     deleteMany?: audio_fileScalarWhereInput | audio_fileScalarWhereInput[]
   }
 
+  export type game_recordUpdateManyWithoutUserNestedInput = {
+    create?: XOR<game_recordCreateWithoutUserInput, game_recordUncheckedCreateWithoutUserInput> | game_recordCreateWithoutUserInput[] | game_recordUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: game_recordCreateOrConnectWithoutUserInput | game_recordCreateOrConnectWithoutUserInput[]
+    upsert?: game_recordUpsertWithWhereUniqueWithoutUserInput | game_recordUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: game_recordCreateManyUserInputEnvelope
+    set?: game_recordWhereUniqueInput | game_recordWhereUniqueInput[]
+    disconnect?: game_recordWhereUniqueInput | game_recordWhereUniqueInput[]
+    delete?: game_recordWhereUniqueInput | game_recordWhereUniqueInput[]
+    connect?: game_recordWhereUniqueInput | game_recordWhereUniqueInput[]
+    update?: game_recordUpdateWithWhereUniqueWithoutUserInput | game_recordUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: game_recordUpdateManyWithWhereWithoutUserInput | game_recordUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: game_recordScalarWhereInput | game_recordScalarWhereInput[]
+  }
+
+  export type learning_progressUpdateManyWithoutUserNestedInput = {
+    create?: XOR<learning_progressCreateWithoutUserInput, learning_progressUncheckedCreateWithoutUserInput> | learning_progressCreateWithoutUserInput[] | learning_progressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: learning_progressCreateOrConnectWithoutUserInput | learning_progressCreateOrConnectWithoutUserInput[]
+    upsert?: learning_progressUpsertWithWhereUniqueWithoutUserInput | learning_progressUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: learning_progressCreateManyUserInputEnvelope
+    set?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    disconnect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    delete?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    connect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    update?: learning_progressUpdateWithWhereUniqueWithoutUserInput | learning_progressUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: learning_progressUpdateManyWithWhereWithoutUserInput | learning_progressUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: learning_progressScalarWhereInput | learning_progressScalarWhereInput[]
+  }
+
+  export type learning_statsUpdateOneWithoutUserNestedInput = {
+    create?: XOR<learning_statsCreateWithoutUserInput, learning_statsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: learning_statsCreateOrConnectWithoutUserInput
+    upsert?: learning_statsUpsertWithoutUserInput
+    disconnect?: learning_statsWhereInput | boolean
+    delete?: learning_statsWhereInput | boolean
+    connect?: learning_statsWhereUniqueInput
+    update?: XOR<XOR<learning_statsUpdateToOneWithWhereWithoutUserInput, learning_statsUpdateWithoutUserInput>, learning_statsUncheckedUpdateWithoutUserInput>
+  }
+
+  export type study_planUpdateManyWithoutUserNestedInput = {
+    create?: XOR<study_planCreateWithoutUserInput, study_planUncheckedCreateWithoutUserInput> | study_planCreateWithoutUserInput[] | study_planUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: study_planCreateOrConnectWithoutUserInput | study_planCreateOrConnectWithoutUserInput[]
+    upsert?: study_planUpsertWithWhereUniqueWithoutUserInput | study_planUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: study_planCreateManyUserInputEnvelope
+    set?: study_planWhereUniqueInput | study_planWhereUniqueInput[]
+    disconnect?: study_planWhereUniqueInput | study_planWhereUniqueInput[]
+    delete?: study_planWhereUniqueInput | study_planWhereUniqueInput[]
+    connect?: study_planWhereUniqueInput | study_planWhereUniqueInput[]
+    update?: study_planUpdateWithWhereUniqueWithoutUserInput | study_planUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: study_planUpdateManyWithWhereWithoutUserInput | study_planUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: study_planScalarWhereInput | study_planScalarWhereInput[]
+  }
+
+  export type user_achievementUpdateManyWithoutUserNestedInput = {
+    create?: XOR<user_achievementCreateWithoutUserInput, user_achievementUncheckedCreateWithoutUserInput> | user_achievementCreateWithoutUserInput[] | user_achievementUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: user_achievementCreateOrConnectWithoutUserInput | user_achievementCreateOrConnectWithoutUserInput[]
+    upsert?: user_achievementUpsertWithWhereUniqueWithoutUserInput | user_achievementUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: user_achievementCreateManyUserInputEnvelope
+    set?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    disconnect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    delete?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    connect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    update?: user_achievementUpdateWithWhereUniqueWithoutUserInput | user_achievementUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: user_achievementUpdateManyWithWhereWithoutUserInput | user_achievementUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: user_achievementScalarWhereInput | user_achievementScalarWhereInput[]
+  }
+
   export type user_configUpdateOneWithoutUserNestedInput = {
     create?: XOR<user_configCreateWithoutUserInput, user_configUncheckedCreateWithoutUserInput>
     connectOrCreate?: user_configCreateOrConnectWithoutUserInput
@@ -19836,6 +34604,30 @@ export namespace Prisma {
     delete?: user_configWhereInput | boolean
     connect?: user_configWhereUniqueInput
     update?: XOR<XOR<user_configUpdateToOneWithWhereWithoutUserInput, user_configUpdateWithoutUserInput>, user_configUncheckedUpdateWithoutUserInput>
+  }
+
+  export type user_pointsUpdateOneWithoutUserNestedInput = {
+    create?: XOR<user_pointsCreateWithoutUserInput, user_pointsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: user_pointsCreateOrConnectWithoutUserInput
+    upsert?: user_pointsUpsertWithoutUserInput
+    disconnect?: user_pointsWhereInput | boolean
+    delete?: user_pointsWhereInput | boolean
+    connect?: user_pointsWhereUniqueInput
+    update?: XOR<XOR<user_pointsUpdateToOneWithWhereWithoutUserInput, user_pointsUpdateWithoutUserInput>, user_pointsUncheckedUpdateWithoutUserInput>
+  }
+
+  export type word_collectionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<word_collectionCreateWithoutUserInput, word_collectionUncheckedCreateWithoutUserInput> | word_collectionCreateWithoutUserInput[] | word_collectionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: word_collectionCreateOrConnectWithoutUserInput | word_collectionCreateOrConnectWithoutUserInput[]
+    upsert?: word_collectionUpsertWithWhereUniqueWithoutUserInput | word_collectionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: word_collectionCreateManyUserInputEnvelope
+    set?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+    disconnect?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+    delete?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+    connect?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+    update?: word_collectionUpdateWithWhereUniqueWithoutUserInput | word_collectionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: word_collectionUpdateManyWithWhereWithoutUserInput | word_collectionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: word_collectionScalarWhereInput | word_collectionScalarWhereInput[]
   }
 
   export type audio_fileUncheckedUpdateManyWithoutUserNestedInput = {
@@ -19852,6 +34644,72 @@ export namespace Prisma {
     deleteMany?: audio_fileScalarWhereInput | audio_fileScalarWhereInput[]
   }
 
+  export type game_recordUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<game_recordCreateWithoutUserInput, game_recordUncheckedCreateWithoutUserInput> | game_recordCreateWithoutUserInput[] | game_recordUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: game_recordCreateOrConnectWithoutUserInput | game_recordCreateOrConnectWithoutUserInput[]
+    upsert?: game_recordUpsertWithWhereUniqueWithoutUserInput | game_recordUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: game_recordCreateManyUserInputEnvelope
+    set?: game_recordWhereUniqueInput | game_recordWhereUniqueInput[]
+    disconnect?: game_recordWhereUniqueInput | game_recordWhereUniqueInput[]
+    delete?: game_recordWhereUniqueInput | game_recordWhereUniqueInput[]
+    connect?: game_recordWhereUniqueInput | game_recordWhereUniqueInput[]
+    update?: game_recordUpdateWithWhereUniqueWithoutUserInput | game_recordUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: game_recordUpdateManyWithWhereWithoutUserInput | game_recordUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: game_recordScalarWhereInput | game_recordScalarWhereInput[]
+  }
+
+  export type learning_progressUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<learning_progressCreateWithoutUserInput, learning_progressUncheckedCreateWithoutUserInput> | learning_progressCreateWithoutUserInput[] | learning_progressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: learning_progressCreateOrConnectWithoutUserInput | learning_progressCreateOrConnectWithoutUserInput[]
+    upsert?: learning_progressUpsertWithWhereUniqueWithoutUserInput | learning_progressUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: learning_progressCreateManyUserInputEnvelope
+    set?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    disconnect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    delete?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    connect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    update?: learning_progressUpdateWithWhereUniqueWithoutUserInput | learning_progressUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: learning_progressUpdateManyWithWhereWithoutUserInput | learning_progressUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: learning_progressScalarWhereInput | learning_progressScalarWhereInput[]
+  }
+
+  export type learning_statsUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<learning_statsCreateWithoutUserInput, learning_statsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: learning_statsCreateOrConnectWithoutUserInput
+    upsert?: learning_statsUpsertWithoutUserInput
+    disconnect?: learning_statsWhereInput | boolean
+    delete?: learning_statsWhereInput | boolean
+    connect?: learning_statsWhereUniqueInput
+    update?: XOR<XOR<learning_statsUpdateToOneWithWhereWithoutUserInput, learning_statsUpdateWithoutUserInput>, learning_statsUncheckedUpdateWithoutUserInput>
+  }
+
+  export type study_planUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<study_planCreateWithoutUserInput, study_planUncheckedCreateWithoutUserInput> | study_planCreateWithoutUserInput[] | study_planUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: study_planCreateOrConnectWithoutUserInput | study_planCreateOrConnectWithoutUserInput[]
+    upsert?: study_planUpsertWithWhereUniqueWithoutUserInput | study_planUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: study_planCreateManyUserInputEnvelope
+    set?: study_planWhereUniqueInput | study_planWhereUniqueInput[]
+    disconnect?: study_planWhereUniqueInput | study_planWhereUniqueInput[]
+    delete?: study_planWhereUniqueInput | study_planWhereUniqueInput[]
+    connect?: study_planWhereUniqueInput | study_planWhereUniqueInput[]
+    update?: study_planUpdateWithWhereUniqueWithoutUserInput | study_planUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: study_planUpdateManyWithWhereWithoutUserInput | study_planUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: study_planScalarWhereInput | study_planScalarWhereInput[]
+  }
+
+  export type user_achievementUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<user_achievementCreateWithoutUserInput, user_achievementUncheckedCreateWithoutUserInput> | user_achievementCreateWithoutUserInput[] | user_achievementUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: user_achievementCreateOrConnectWithoutUserInput | user_achievementCreateOrConnectWithoutUserInput[]
+    upsert?: user_achievementUpsertWithWhereUniqueWithoutUserInput | user_achievementUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: user_achievementCreateManyUserInputEnvelope
+    set?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    disconnect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    delete?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    connect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    update?: user_achievementUpdateWithWhereUniqueWithoutUserInput | user_achievementUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: user_achievementUpdateManyWithWhereWithoutUserInput | user_achievementUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: user_achievementScalarWhereInput | user_achievementScalarWhereInput[]
+  }
+
   export type user_configUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<user_configCreateWithoutUserInput, user_configUncheckedCreateWithoutUserInput>
     connectOrCreate?: user_configCreateOrConnectWithoutUserInput
@@ -19860,6 +34718,30 @@ export namespace Prisma {
     delete?: user_configWhereInput | boolean
     connect?: user_configWhereUniqueInput
     update?: XOR<XOR<user_configUpdateToOneWithWhereWithoutUserInput, user_configUpdateWithoutUserInput>, user_configUncheckedUpdateWithoutUserInput>
+  }
+
+  export type user_pointsUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<user_pointsCreateWithoutUserInput, user_pointsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: user_pointsCreateOrConnectWithoutUserInput
+    upsert?: user_pointsUpsertWithoutUserInput
+    disconnect?: user_pointsWhereInput | boolean
+    delete?: user_pointsWhereInput | boolean
+    connect?: user_pointsWhereUniqueInput
+    update?: XOR<XOR<user_pointsUpdateToOneWithWhereWithoutUserInput, user_pointsUpdateWithoutUserInput>, user_pointsUncheckedUpdateWithoutUserInput>
+  }
+
+  export type word_collectionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<word_collectionCreateWithoutUserInput, word_collectionUncheckedCreateWithoutUserInput> | word_collectionCreateWithoutUserInput[] | word_collectionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: word_collectionCreateOrConnectWithoutUserInput | word_collectionCreateOrConnectWithoutUserInput[]
+    upsert?: word_collectionUpsertWithWhereUniqueWithoutUserInput | word_collectionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: word_collectionCreateManyUserInputEnvelope
+    set?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+    disconnect?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+    delete?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+    connect?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+    update?: word_collectionUpdateWithWhereUniqueWithoutUserInput | word_collectionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: word_collectionUpdateManyWithWhereWithoutUserInput | word_collectionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: word_collectionScalarWhereInput | word_collectionScalarWhereInput[]
   }
 
   export type userCreateNestedOneWithoutUser_configInput = {
@@ -19874,6 +34756,478 @@ export namespace Prisma {
     upsert?: userUpsertWithoutUser_configInput
     connect?: userWhereUniqueInput
     update?: XOR<XOR<userUpdateToOneWithWhereWithoutUser_configInput, userUpdateWithoutUser_configInput>, userUncheckedUpdateWithoutUser_configInput>
+  }
+
+  export type user_achievementCreateNestedManyWithoutAchievementInput = {
+    create?: XOR<user_achievementCreateWithoutAchievementInput, user_achievementUncheckedCreateWithoutAchievementInput> | user_achievementCreateWithoutAchievementInput[] | user_achievementUncheckedCreateWithoutAchievementInput[]
+    connectOrCreate?: user_achievementCreateOrConnectWithoutAchievementInput | user_achievementCreateOrConnectWithoutAchievementInput[]
+    createMany?: user_achievementCreateManyAchievementInputEnvelope
+    connect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+  }
+
+  export type user_achievementUncheckedCreateNestedManyWithoutAchievementInput = {
+    create?: XOR<user_achievementCreateWithoutAchievementInput, user_achievementUncheckedCreateWithoutAchievementInput> | user_achievementCreateWithoutAchievementInput[] | user_achievementUncheckedCreateWithoutAchievementInput[]
+    connectOrCreate?: user_achievementCreateOrConnectWithoutAchievementInput | user_achievementCreateOrConnectWithoutAchievementInput[]
+    createMany?: user_achievementCreateManyAchievementInputEnvelope
+    connect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+  }
+
+  export type user_achievementUpdateManyWithoutAchievementNestedInput = {
+    create?: XOR<user_achievementCreateWithoutAchievementInput, user_achievementUncheckedCreateWithoutAchievementInput> | user_achievementCreateWithoutAchievementInput[] | user_achievementUncheckedCreateWithoutAchievementInput[]
+    connectOrCreate?: user_achievementCreateOrConnectWithoutAchievementInput | user_achievementCreateOrConnectWithoutAchievementInput[]
+    upsert?: user_achievementUpsertWithWhereUniqueWithoutAchievementInput | user_achievementUpsertWithWhereUniqueWithoutAchievementInput[]
+    createMany?: user_achievementCreateManyAchievementInputEnvelope
+    set?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    disconnect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    delete?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    connect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    update?: user_achievementUpdateWithWhereUniqueWithoutAchievementInput | user_achievementUpdateWithWhereUniqueWithoutAchievementInput[]
+    updateMany?: user_achievementUpdateManyWithWhereWithoutAchievementInput | user_achievementUpdateManyWithWhereWithoutAchievementInput[]
+    deleteMany?: user_achievementScalarWhereInput | user_achievementScalarWhereInput[]
+  }
+
+  export type user_achievementUncheckedUpdateManyWithoutAchievementNestedInput = {
+    create?: XOR<user_achievementCreateWithoutAchievementInput, user_achievementUncheckedCreateWithoutAchievementInput> | user_achievementCreateWithoutAchievementInput[] | user_achievementUncheckedCreateWithoutAchievementInput[]
+    connectOrCreate?: user_achievementCreateOrConnectWithoutAchievementInput | user_achievementCreateOrConnectWithoutAchievementInput[]
+    upsert?: user_achievementUpsertWithWhereUniqueWithoutAchievementInput | user_achievementUpsertWithWhereUniqueWithoutAchievementInput[]
+    createMany?: user_achievementCreateManyAchievementInputEnvelope
+    set?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    disconnect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    delete?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    connect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    update?: user_achievementUpdateWithWhereUniqueWithoutAchievementInput | user_achievementUpdateWithWhereUniqueWithoutAchievementInput[]
+    updateMany?: user_achievementUpdateManyWithWhereWithoutAchievementInput | user_achievementUpdateManyWithWhereWithoutAchievementInput[]
+    deleteMany?: user_achievementScalarWhereInput | user_achievementScalarWhereInput[]
+  }
+
+  export type word_collectionCreateNestedOneWithoutCollection_wordInput = {
+    create?: XOR<word_collectionCreateWithoutCollection_wordInput, word_collectionUncheckedCreateWithoutCollection_wordInput>
+    connectOrCreate?: word_collectionCreateOrConnectWithoutCollection_wordInput
+    connect?: word_collectionWhereUniqueInput
+  }
+
+  export type english_wordCreateNestedOneWithoutCollection_wordInput = {
+    create?: XOR<english_wordCreateWithoutCollection_wordInput, english_wordUncheckedCreateWithoutCollection_wordInput>
+    connectOrCreate?: english_wordCreateOrConnectWithoutCollection_wordInput
+    connect?: english_wordWhereUniqueInput
+  }
+
+  export type word_collectionUpdateOneRequiredWithoutCollection_wordNestedInput = {
+    create?: XOR<word_collectionCreateWithoutCollection_wordInput, word_collectionUncheckedCreateWithoutCollection_wordInput>
+    connectOrCreate?: word_collectionCreateOrConnectWithoutCollection_wordInput
+    upsert?: word_collectionUpsertWithoutCollection_wordInput
+    connect?: word_collectionWhereUniqueInput
+    update?: XOR<XOR<word_collectionUpdateToOneWithWhereWithoutCollection_wordInput, word_collectionUpdateWithoutCollection_wordInput>, word_collectionUncheckedUpdateWithoutCollection_wordInput>
+  }
+
+  export type english_wordUpdateOneRequiredWithoutCollection_wordNestedInput = {
+    create?: XOR<english_wordCreateWithoutCollection_wordInput, english_wordUncheckedCreateWithoutCollection_wordInput>
+    connectOrCreate?: english_wordCreateOrConnectWithoutCollection_wordInput
+    upsert?: english_wordUpsertWithoutCollection_wordInput
+    connect?: english_wordWhereUniqueInput
+    update?: XOR<XOR<english_wordUpdateToOneWithWhereWithoutCollection_wordInput, english_wordUpdateWithoutCollection_wordInput>, english_wordUncheckedUpdateWithoutCollection_wordInput>
+  }
+
+  export type userCreateNestedOneWithoutGame_recordInput = {
+    create?: XOR<userCreateWithoutGame_recordInput, userUncheckedCreateWithoutGame_recordInput>
+    connectOrCreate?: userCreateOrConnectWithoutGame_recordInput
+    connect?: userWhereUniqueInput
+  }
+
+  export type userUpdateOneRequiredWithoutGame_recordNestedInput = {
+    create?: XOR<userCreateWithoutGame_recordInput, userUncheckedCreateWithoutGame_recordInput>
+    connectOrCreate?: userCreateOrConnectWithoutGame_recordInput
+    upsert?: userUpsertWithoutGame_recordInput
+    connect?: userWhereUniqueInput
+    update?: XOR<XOR<userUpdateToOneWithWhereWithoutGame_recordInput, userUpdateWithoutGame_recordInput>, userUncheckedUpdateWithoutGame_recordInput>
+  }
+
+  export type study_planCreateNestedOneWithoutLearning_progressInput = {
+    create?: XOR<study_planCreateWithoutLearning_progressInput, study_planUncheckedCreateWithoutLearning_progressInput>
+    connectOrCreate?: study_planCreateOrConnectWithoutLearning_progressInput
+    connect?: study_planWhereUniqueInput
+  }
+
+  export type userCreateNestedOneWithoutLearning_progressInput = {
+    create?: XOR<userCreateWithoutLearning_progressInput, userUncheckedCreateWithoutLearning_progressInput>
+    connectOrCreate?: userCreateOrConnectWithoutLearning_progressInput
+    connect?: userWhereUniqueInput
+  }
+
+  export type english_wordCreateNestedOneWithoutLearning_progressInput = {
+    create?: XOR<english_wordCreateWithoutLearning_progressInput, english_wordUncheckedCreateWithoutLearning_progressInput>
+    connectOrCreate?: english_wordCreateOrConnectWithoutLearning_progressInput
+    connect?: english_wordWhereUniqueInput
+  }
+
+  export type study_planUpdateOneWithoutLearning_progressNestedInput = {
+    create?: XOR<study_planCreateWithoutLearning_progressInput, study_planUncheckedCreateWithoutLearning_progressInput>
+    connectOrCreate?: study_planCreateOrConnectWithoutLearning_progressInput
+    upsert?: study_planUpsertWithoutLearning_progressInput
+    disconnect?: study_planWhereInput | boolean
+    delete?: study_planWhereInput | boolean
+    connect?: study_planWhereUniqueInput
+    update?: XOR<XOR<study_planUpdateToOneWithWhereWithoutLearning_progressInput, study_planUpdateWithoutLearning_progressInput>, study_planUncheckedUpdateWithoutLearning_progressInput>
+  }
+
+  export type userUpdateOneRequiredWithoutLearning_progressNestedInput = {
+    create?: XOR<userCreateWithoutLearning_progressInput, userUncheckedCreateWithoutLearning_progressInput>
+    connectOrCreate?: userCreateOrConnectWithoutLearning_progressInput
+    upsert?: userUpsertWithoutLearning_progressInput
+    connect?: userWhereUniqueInput
+    update?: XOR<XOR<userUpdateToOneWithWhereWithoutLearning_progressInput, userUpdateWithoutLearning_progressInput>, userUncheckedUpdateWithoutLearning_progressInput>
+  }
+
+  export type english_wordUpdateOneRequiredWithoutLearning_progressNestedInput = {
+    create?: XOR<english_wordCreateWithoutLearning_progressInput, english_wordUncheckedCreateWithoutLearning_progressInput>
+    connectOrCreate?: english_wordCreateOrConnectWithoutLearning_progressInput
+    upsert?: english_wordUpsertWithoutLearning_progressInput
+    connect?: english_wordWhereUniqueInput
+    update?: XOR<XOR<english_wordUpdateToOneWithWhereWithoutLearning_progressInput, english_wordUpdateWithoutLearning_progressInput>, english_wordUncheckedUpdateWithoutLearning_progressInput>
+  }
+
+  export type userCreateNestedOneWithoutLearning_statsInput = {
+    create?: XOR<userCreateWithoutLearning_statsInput, userUncheckedCreateWithoutLearning_statsInput>
+    connectOrCreate?: userCreateOrConnectWithoutLearning_statsInput
+    connect?: userWhereUniqueInput
+  }
+
+  export type user_achievementCreateNestedManyWithoutLearning_statsInput = {
+    create?: XOR<user_achievementCreateWithoutLearning_statsInput, user_achievementUncheckedCreateWithoutLearning_statsInput> | user_achievementCreateWithoutLearning_statsInput[] | user_achievementUncheckedCreateWithoutLearning_statsInput[]
+    connectOrCreate?: user_achievementCreateOrConnectWithoutLearning_statsInput | user_achievementCreateOrConnectWithoutLearning_statsInput[]
+    createMany?: user_achievementCreateManyLearning_statsInputEnvelope
+    connect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+  }
+
+  export type user_achievementUncheckedCreateNestedManyWithoutLearning_statsInput = {
+    create?: XOR<user_achievementCreateWithoutLearning_statsInput, user_achievementUncheckedCreateWithoutLearning_statsInput> | user_achievementCreateWithoutLearning_statsInput[] | user_achievementUncheckedCreateWithoutLearning_statsInput[]
+    connectOrCreate?: user_achievementCreateOrConnectWithoutLearning_statsInput | user_achievementCreateOrConnectWithoutLearning_statsInput[]
+    createMany?: user_achievementCreateManyLearning_statsInputEnvelope
+    connect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+  }
+
+  export type userUpdateOneRequiredWithoutLearning_statsNestedInput = {
+    create?: XOR<userCreateWithoutLearning_statsInput, userUncheckedCreateWithoutLearning_statsInput>
+    connectOrCreate?: userCreateOrConnectWithoutLearning_statsInput
+    upsert?: userUpsertWithoutLearning_statsInput
+    connect?: userWhereUniqueInput
+    update?: XOR<XOR<userUpdateToOneWithWhereWithoutLearning_statsInput, userUpdateWithoutLearning_statsInput>, userUncheckedUpdateWithoutLearning_statsInput>
+  }
+
+  export type user_achievementUpdateManyWithoutLearning_statsNestedInput = {
+    create?: XOR<user_achievementCreateWithoutLearning_statsInput, user_achievementUncheckedCreateWithoutLearning_statsInput> | user_achievementCreateWithoutLearning_statsInput[] | user_achievementUncheckedCreateWithoutLearning_statsInput[]
+    connectOrCreate?: user_achievementCreateOrConnectWithoutLearning_statsInput | user_achievementCreateOrConnectWithoutLearning_statsInput[]
+    upsert?: user_achievementUpsertWithWhereUniqueWithoutLearning_statsInput | user_achievementUpsertWithWhereUniqueWithoutLearning_statsInput[]
+    createMany?: user_achievementCreateManyLearning_statsInputEnvelope
+    set?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    disconnect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    delete?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    connect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    update?: user_achievementUpdateWithWhereUniqueWithoutLearning_statsInput | user_achievementUpdateWithWhereUniqueWithoutLearning_statsInput[]
+    updateMany?: user_achievementUpdateManyWithWhereWithoutLearning_statsInput | user_achievementUpdateManyWithWhereWithoutLearning_statsInput[]
+    deleteMany?: user_achievementScalarWhereInput | user_achievementScalarWhereInput[]
+  }
+
+  export type user_achievementUncheckedUpdateManyWithoutLearning_statsNestedInput = {
+    create?: XOR<user_achievementCreateWithoutLearning_statsInput, user_achievementUncheckedCreateWithoutLearning_statsInput> | user_achievementCreateWithoutLearning_statsInput[] | user_achievementUncheckedCreateWithoutLearning_statsInput[]
+    connectOrCreate?: user_achievementCreateOrConnectWithoutLearning_statsInput | user_achievementCreateOrConnectWithoutLearning_statsInput[]
+    upsert?: user_achievementUpsertWithWhereUniqueWithoutLearning_statsInput | user_achievementUpsertWithWhereUniqueWithoutLearning_statsInput[]
+    createMany?: user_achievementCreateManyLearning_statsInputEnvelope
+    set?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    disconnect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    delete?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    connect?: user_achievementWhereUniqueInput | user_achievementWhereUniqueInput[]
+    update?: user_achievementUpdateWithWhereUniqueWithoutLearning_statsInput | user_achievementUpdateWithWhereUniqueWithoutLearning_statsInput[]
+    updateMany?: user_achievementUpdateManyWithWhereWithoutLearning_statsInput | user_achievementUpdateManyWithWhereWithoutLearning_statsInput[]
+    deleteMany?: user_achievementScalarWhereInput | user_achievementScalarWhereInput[]
+  }
+
+  export type user_pointsCreateNestedOneWithoutPoint_transactionInput = {
+    create?: XOR<user_pointsCreateWithoutPoint_transactionInput, user_pointsUncheckedCreateWithoutPoint_transactionInput>
+    connectOrCreate?: user_pointsCreateOrConnectWithoutPoint_transactionInput
+    connect?: user_pointsWhereUniqueInput
+  }
+
+  export type user_pointsUpdateOneRequiredWithoutPoint_transactionNestedInput = {
+    create?: XOR<user_pointsCreateWithoutPoint_transactionInput, user_pointsUncheckedCreateWithoutPoint_transactionInput>
+    connectOrCreate?: user_pointsCreateOrConnectWithoutPoint_transactionInput
+    upsert?: user_pointsUpsertWithoutPoint_transactionInput
+    connect?: user_pointsWhereUniqueInput
+    update?: XOR<XOR<user_pointsUpdateToOneWithWhereWithoutPoint_transactionInput, user_pointsUpdateWithoutPoint_transactionInput>, user_pointsUncheckedUpdateWithoutPoint_transactionInput>
+  }
+
+  export type learning_progressCreateNestedManyWithoutStudy_planInput = {
+    create?: XOR<learning_progressCreateWithoutStudy_planInput, learning_progressUncheckedCreateWithoutStudy_planInput> | learning_progressCreateWithoutStudy_planInput[] | learning_progressUncheckedCreateWithoutStudy_planInput[]
+    connectOrCreate?: learning_progressCreateOrConnectWithoutStudy_planInput | learning_progressCreateOrConnectWithoutStudy_planInput[]
+    createMany?: learning_progressCreateManyStudy_planInputEnvelope
+    connect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+  }
+
+  export type userCreateNestedOneWithoutStudy_planInput = {
+    create?: XOR<userCreateWithoutStudy_planInput, userUncheckedCreateWithoutStudy_planInput>
+    connectOrCreate?: userCreateOrConnectWithoutStudy_planInput
+    connect?: userWhereUniqueInput
+  }
+
+  export type word_collectionCreateNestedManyWithoutStudy_planInput = {
+    create?: XOR<word_collectionCreateWithoutStudy_planInput, word_collectionUncheckedCreateWithoutStudy_planInput> | word_collectionCreateWithoutStudy_planInput[] | word_collectionUncheckedCreateWithoutStudy_planInput[]
+    connectOrCreate?: word_collectionCreateOrConnectWithoutStudy_planInput | word_collectionCreateOrConnectWithoutStudy_planInput[]
+    createMany?: word_collectionCreateManyStudy_planInputEnvelope
+    connect?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+  }
+
+  export type learning_progressUncheckedCreateNestedManyWithoutStudy_planInput = {
+    create?: XOR<learning_progressCreateWithoutStudy_planInput, learning_progressUncheckedCreateWithoutStudy_planInput> | learning_progressCreateWithoutStudy_planInput[] | learning_progressUncheckedCreateWithoutStudy_planInput[]
+    connectOrCreate?: learning_progressCreateOrConnectWithoutStudy_planInput | learning_progressCreateOrConnectWithoutStudy_planInput[]
+    createMany?: learning_progressCreateManyStudy_planInputEnvelope
+    connect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+  }
+
+  export type word_collectionUncheckedCreateNestedManyWithoutStudy_planInput = {
+    create?: XOR<word_collectionCreateWithoutStudy_planInput, word_collectionUncheckedCreateWithoutStudy_planInput> | word_collectionCreateWithoutStudy_planInput[] | word_collectionUncheckedCreateWithoutStudy_planInput[]
+    connectOrCreate?: word_collectionCreateOrConnectWithoutStudy_planInput | word_collectionCreateOrConnectWithoutStudy_planInput[]
+    createMany?: word_collectionCreateManyStudy_planInputEnvelope
+    connect?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+  }
+
+  export type learning_progressUpdateManyWithoutStudy_planNestedInput = {
+    create?: XOR<learning_progressCreateWithoutStudy_planInput, learning_progressUncheckedCreateWithoutStudy_planInput> | learning_progressCreateWithoutStudy_planInput[] | learning_progressUncheckedCreateWithoutStudy_planInput[]
+    connectOrCreate?: learning_progressCreateOrConnectWithoutStudy_planInput | learning_progressCreateOrConnectWithoutStudy_planInput[]
+    upsert?: learning_progressUpsertWithWhereUniqueWithoutStudy_planInput | learning_progressUpsertWithWhereUniqueWithoutStudy_planInput[]
+    createMany?: learning_progressCreateManyStudy_planInputEnvelope
+    set?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    disconnect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    delete?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    connect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    update?: learning_progressUpdateWithWhereUniqueWithoutStudy_planInput | learning_progressUpdateWithWhereUniqueWithoutStudy_planInput[]
+    updateMany?: learning_progressUpdateManyWithWhereWithoutStudy_planInput | learning_progressUpdateManyWithWhereWithoutStudy_planInput[]
+    deleteMany?: learning_progressScalarWhereInput | learning_progressScalarWhereInput[]
+  }
+
+  export type userUpdateOneRequiredWithoutStudy_planNestedInput = {
+    create?: XOR<userCreateWithoutStudy_planInput, userUncheckedCreateWithoutStudy_planInput>
+    connectOrCreate?: userCreateOrConnectWithoutStudy_planInput
+    upsert?: userUpsertWithoutStudy_planInput
+    connect?: userWhereUniqueInput
+    update?: XOR<XOR<userUpdateToOneWithWhereWithoutStudy_planInput, userUpdateWithoutStudy_planInput>, userUncheckedUpdateWithoutStudy_planInput>
+  }
+
+  export type word_collectionUpdateManyWithoutStudy_planNestedInput = {
+    create?: XOR<word_collectionCreateWithoutStudy_planInput, word_collectionUncheckedCreateWithoutStudy_planInput> | word_collectionCreateWithoutStudy_planInput[] | word_collectionUncheckedCreateWithoutStudy_planInput[]
+    connectOrCreate?: word_collectionCreateOrConnectWithoutStudy_planInput | word_collectionCreateOrConnectWithoutStudy_planInput[]
+    upsert?: word_collectionUpsertWithWhereUniqueWithoutStudy_planInput | word_collectionUpsertWithWhereUniqueWithoutStudy_planInput[]
+    createMany?: word_collectionCreateManyStudy_planInputEnvelope
+    set?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+    disconnect?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+    delete?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+    connect?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+    update?: word_collectionUpdateWithWhereUniqueWithoutStudy_planInput | word_collectionUpdateWithWhereUniqueWithoutStudy_planInput[]
+    updateMany?: word_collectionUpdateManyWithWhereWithoutStudy_planInput | word_collectionUpdateManyWithWhereWithoutStudy_planInput[]
+    deleteMany?: word_collectionScalarWhereInput | word_collectionScalarWhereInput[]
+  }
+
+  export type learning_progressUncheckedUpdateManyWithoutStudy_planNestedInput = {
+    create?: XOR<learning_progressCreateWithoutStudy_planInput, learning_progressUncheckedCreateWithoutStudy_planInput> | learning_progressCreateWithoutStudy_planInput[] | learning_progressUncheckedCreateWithoutStudy_planInput[]
+    connectOrCreate?: learning_progressCreateOrConnectWithoutStudy_planInput | learning_progressCreateOrConnectWithoutStudy_planInput[]
+    upsert?: learning_progressUpsertWithWhereUniqueWithoutStudy_planInput | learning_progressUpsertWithWhereUniqueWithoutStudy_planInput[]
+    createMany?: learning_progressCreateManyStudy_planInputEnvelope
+    set?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    disconnect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    delete?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    connect?: learning_progressWhereUniqueInput | learning_progressWhereUniqueInput[]
+    update?: learning_progressUpdateWithWhereUniqueWithoutStudy_planInput | learning_progressUpdateWithWhereUniqueWithoutStudy_planInput[]
+    updateMany?: learning_progressUpdateManyWithWhereWithoutStudy_planInput | learning_progressUpdateManyWithWhereWithoutStudy_planInput[]
+    deleteMany?: learning_progressScalarWhereInput | learning_progressScalarWhereInput[]
+  }
+
+  export type word_collectionUncheckedUpdateManyWithoutStudy_planNestedInput = {
+    create?: XOR<word_collectionCreateWithoutStudy_planInput, word_collectionUncheckedCreateWithoutStudy_planInput> | word_collectionCreateWithoutStudy_planInput[] | word_collectionUncheckedCreateWithoutStudy_planInput[]
+    connectOrCreate?: word_collectionCreateOrConnectWithoutStudy_planInput | word_collectionCreateOrConnectWithoutStudy_planInput[]
+    upsert?: word_collectionUpsertWithWhereUniqueWithoutStudy_planInput | word_collectionUpsertWithWhereUniqueWithoutStudy_planInput[]
+    createMany?: word_collectionCreateManyStudy_planInputEnvelope
+    set?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+    disconnect?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+    delete?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+    connect?: word_collectionWhereUniqueInput | word_collectionWhereUniqueInput[]
+    update?: word_collectionUpdateWithWhereUniqueWithoutStudy_planInput | word_collectionUpdateWithWhereUniqueWithoutStudy_planInput[]
+    updateMany?: word_collectionUpdateManyWithWhereWithoutStudy_planInput | word_collectionUpdateManyWithWhereWithoutStudy_planInput[]
+    deleteMany?: word_collectionScalarWhereInput | word_collectionScalarWhereInput[]
+  }
+
+  export type achievementCreateNestedOneWithoutUser_achievementInput = {
+    create?: XOR<achievementCreateWithoutUser_achievementInput, achievementUncheckedCreateWithoutUser_achievementInput>
+    connectOrCreate?: achievementCreateOrConnectWithoutUser_achievementInput
+    connect?: achievementWhereUniqueInput
+  }
+
+  export type learning_statsCreateNestedOneWithoutUser_achievementInput = {
+    create?: XOR<learning_statsCreateWithoutUser_achievementInput, learning_statsUncheckedCreateWithoutUser_achievementInput>
+    connectOrCreate?: learning_statsCreateOrConnectWithoutUser_achievementInput
+    connect?: learning_statsWhereUniqueInput
+  }
+
+  export type userCreateNestedOneWithoutUser_achievementInput = {
+    create?: XOR<userCreateWithoutUser_achievementInput, userUncheckedCreateWithoutUser_achievementInput>
+    connectOrCreate?: userCreateOrConnectWithoutUser_achievementInput
+    connect?: userWhereUniqueInput
+  }
+
+  export type achievementUpdateOneRequiredWithoutUser_achievementNestedInput = {
+    create?: XOR<achievementCreateWithoutUser_achievementInput, achievementUncheckedCreateWithoutUser_achievementInput>
+    connectOrCreate?: achievementCreateOrConnectWithoutUser_achievementInput
+    upsert?: achievementUpsertWithoutUser_achievementInput
+    connect?: achievementWhereUniqueInput
+    update?: XOR<XOR<achievementUpdateToOneWithWhereWithoutUser_achievementInput, achievementUpdateWithoutUser_achievementInput>, achievementUncheckedUpdateWithoutUser_achievementInput>
+  }
+
+  export type learning_statsUpdateOneWithoutUser_achievementNestedInput = {
+    create?: XOR<learning_statsCreateWithoutUser_achievementInput, learning_statsUncheckedCreateWithoutUser_achievementInput>
+    connectOrCreate?: learning_statsCreateOrConnectWithoutUser_achievementInput
+    upsert?: learning_statsUpsertWithoutUser_achievementInput
+    disconnect?: learning_statsWhereInput | boolean
+    delete?: learning_statsWhereInput | boolean
+    connect?: learning_statsWhereUniqueInput
+    update?: XOR<XOR<learning_statsUpdateToOneWithWhereWithoutUser_achievementInput, learning_statsUpdateWithoutUser_achievementInput>, learning_statsUncheckedUpdateWithoutUser_achievementInput>
+  }
+
+  export type userUpdateOneRequiredWithoutUser_achievementNestedInput = {
+    create?: XOR<userCreateWithoutUser_achievementInput, userUncheckedCreateWithoutUser_achievementInput>
+    connectOrCreate?: userCreateOrConnectWithoutUser_achievementInput
+    upsert?: userUpsertWithoutUser_achievementInput
+    connect?: userWhereUniqueInput
+    update?: XOR<XOR<userUpdateToOneWithWhereWithoutUser_achievementInput, userUpdateWithoutUser_achievementInput>, userUncheckedUpdateWithoutUser_achievementInput>
+  }
+
+  export type point_transactionCreateNestedManyWithoutUser_pointsInput = {
+    create?: XOR<point_transactionCreateWithoutUser_pointsInput, point_transactionUncheckedCreateWithoutUser_pointsInput> | point_transactionCreateWithoutUser_pointsInput[] | point_transactionUncheckedCreateWithoutUser_pointsInput[]
+    connectOrCreate?: point_transactionCreateOrConnectWithoutUser_pointsInput | point_transactionCreateOrConnectWithoutUser_pointsInput[]
+    createMany?: point_transactionCreateManyUser_pointsInputEnvelope
+    connect?: point_transactionWhereUniqueInput | point_transactionWhereUniqueInput[]
+  }
+
+  export type userCreateNestedOneWithoutUser_pointsInput = {
+    create?: XOR<userCreateWithoutUser_pointsInput, userUncheckedCreateWithoutUser_pointsInput>
+    connectOrCreate?: userCreateOrConnectWithoutUser_pointsInput
+    connect?: userWhereUniqueInput
+  }
+
+  export type point_transactionUncheckedCreateNestedManyWithoutUser_pointsInput = {
+    create?: XOR<point_transactionCreateWithoutUser_pointsInput, point_transactionUncheckedCreateWithoutUser_pointsInput> | point_transactionCreateWithoutUser_pointsInput[] | point_transactionUncheckedCreateWithoutUser_pointsInput[]
+    connectOrCreate?: point_transactionCreateOrConnectWithoutUser_pointsInput | point_transactionCreateOrConnectWithoutUser_pointsInput[]
+    createMany?: point_transactionCreateManyUser_pointsInputEnvelope
+    connect?: point_transactionWhereUniqueInput | point_transactionWhereUniqueInput[]
+  }
+
+  export type point_transactionUpdateManyWithoutUser_pointsNestedInput = {
+    create?: XOR<point_transactionCreateWithoutUser_pointsInput, point_transactionUncheckedCreateWithoutUser_pointsInput> | point_transactionCreateWithoutUser_pointsInput[] | point_transactionUncheckedCreateWithoutUser_pointsInput[]
+    connectOrCreate?: point_transactionCreateOrConnectWithoutUser_pointsInput | point_transactionCreateOrConnectWithoutUser_pointsInput[]
+    upsert?: point_transactionUpsertWithWhereUniqueWithoutUser_pointsInput | point_transactionUpsertWithWhereUniqueWithoutUser_pointsInput[]
+    createMany?: point_transactionCreateManyUser_pointsInputEnvelope
+    set?: point_transactionWhereUniqueInput | point_transactionWhereUniqueInput[]
+    disconnect?: point_transactionWhereUniqueInput | point_transactionWhereUniqueInput[]
+    delete?: point_transactionWhereUniqueInput | point_transactionWhereUniqueInput[]
+    connect?: point_transactionWhereUniqueInput | point_transactionWhereUniqueInput[]
+    update?: point_transactionUpdateWithWhereUniqueWithoutUser_pointsInput | point_transactionUpdateWithWhereUniqueWithoutUser_pointsInput[]
+    updateMany?: point_transactionUpdateManyWithWhereWithoutUser_pointsInput | point_transactionUpdateManyWithWhereWithoutUser_pointsInput[]
+    deleteMany?: point_transactionScalarWhereInput | point_transactionScalarWhereInput[]
+  }
+
+  export type userUpdateOneRequiredWithoutUser_pointsNestedInput = {
+    create?: XOR<userCreateWithoutUser_pointsInput, userUncheckedCreateWithoutUser_pointsInput>
+    connectOrCreate?: userCreateOrConnectWithoutUser_pointsInput
+    upsert?: userUpsertWithoutUser_pointsInput
+    connect?: userWhereUniqueInput
+    update?: XOR<XOR<userUpdateToOneWithWhereWithoutUser_pointsInput, userUpdateWithoutUser_pointsInput>, userUncheckedUpdateWithoutUser_pointsInput>
+  }
+
+  export type point_transactionUncheckedUpdateManyWithoutUser_pointsNestedInput = {
+    create?: XOR<point_transactionCreateWithoutUser_pointsInput, point_transactionUncheckedCreateWithoutUser_pointsInput> | point_transactionCreateWithoutUser_pointsInput[] | point_transactionUncheckedCreateWithoutUser_pointsInput[]
+    connectOrCreate?: point_transactionCreateOrConnectWithoutUser_pointsInput | point_transactionCreateOrConnectWithoutUser_pointsInput[]
+    upsert?: point_transactionUpsertWithWhereUniqueWithoutUser_pointsInput | point_transactionUpsertWithWhereUniqueWithoutUser_pointsInput[]
+    createMany?: point_transactionCreateManyUser_pointsInputEnvelope
+    set?: point_transactionWhereUniqueInput | point_transactionWhereUniqueInput[]
+    disconnect?: point_transactionWhereUniqueInput | point_transactionWhereUniqueInput[]
+    delete?: point_transactionWhereUniqueInput | point_transactionWhereUniqueInput[]
+    connect?: point_transactionWhereUniqueInput | point_transactionWhereUniqueInput[]
+    update?: point_transactionUpdateWithWhereUniqueWithoutUser_pointsInput | point_transactionUpdateWithWhereUniqueWithoutUser_pointsInput[]
+    updateMany?: point_transactionUpdateManyWithWhereWithoutUser_pointsInput | point_transactionUpdateManyWithWhereWithoutUser_pointsInput[]
+    deleteMany?: point_transactionScalarWhereInput | point_transactionScalarWhereInput[]
+  }
+
+  export type collection_wordCreateNestedManyWithoutWord_collectionInput = {
+    create?: XOR<collection_wordCreateWithoutWord_collectionInput, collection_wordUncheckedCreateWithoutWord_collectionInput> | collection_wordCreateWithoutWord_collectionInput[] | collection_wordUncheckedCreateWithoutWord_collectionInput[]
+    connectOrCreate?: collection_wordCreateOrConnectWithoutWord_collectionInput | collection_wordCreateOrConnectWithoutWord_collectionInput[]
+    createMany?: collection_wordCreateManyWord_collectionInputEnvelope
+    connect?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+  }
+
+  export type study_planCreateNestedOneWithoutWord_collectionInput = {
+    create?: XOR<study_planCreateWithoutWord_collectionInput, study_planUncheckedCreateWithoutWord_collectionInput>
+    connectOrCreate?: study_planCreateOrConnectWithoutWord_collectionInput
+    connect?: study_planWhereUniqueInput
+  }
+
+  export type userCreateNestedOneWithoutWord_collectionInput = {
+    create?: XOR<userCreateWithoutWord_collectionInput, userUncheckedCreateWithoutWord_collectionInput>
+    connectOrCreate?: userCreateOrConnectWithoutWord_collectionInput
+    connect?: userWhereUniqueInput
+  }
+
+  export type collection_wordUncheckedCreateNestedManyWithoutWord_collectionInput = {
+    create?: XOR<collection_wordCreateWithoutWord_collectionInput, collection_wordUncheckedCreateWithoutWord_collectionInput> | collection_wordCreateWithoutWord_collectionInput[] | collection_wordUncheckedCreateWithoutWord_collectionInput[]
+    connectOrCreate?: collection_wordCreateOrConnectWithoutWord_collectionInput | collection_wordCreateOrConnectWithoutWord_collectionInput[]
+    createMany?: collection_wordCreateManyWord_collectionInputEnvelope
+    connect?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type collection_wordUpdateManyWithoutWord_collectionNestedInput = {
+    create?: XOR<collection_wordCreateWithoutWord_collectionInput, collection_wordUncheckedCreateWithoutWord_collectionInput> | collection_wordCreateWithoutWord_collectionInput[] | collection_wordUncheckedCreateWithoutWord_collectionInput[]
+    connectOrCreate?: collection_wordCreateOrConnectWithoutWord_collectionInput | collection_wordCreateOrConnectWithoutWord_collectionInput[]
+    upsert?: collection_wordUpsertWithWhereUniqueWithoutWord_collectionInput | collection_wordUpsertWithWhereUniqueWithoutWord_collectionInput[]
+    createMany?: collection_wordCreateManyWord_collectionInputEnvelope
+    set?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+    disconnect?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+    delete?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+    connect?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+    update?: collection_wordUpdateWithWhereUniqueWithoutWord_collectionInput | collection_wordUpdateWithWhereUniqueWithoutWord_collectionInput[]
+    updateMany?: collection_wordUpdateManyWithWhereWithoutWord_collectionInput | collection_wordUpdateManyWithWhereWithoutWord_collectionInput[]
+    deleteMany?: collection_wordScalarWhereInput | collection_wordScalarWhereInput[]
+  }
+
+  export type study_planUpdateOneWithoutWord_collectionNestedInput = {
+    create?: XOR<study_planCreateWithoutWord_collectionInput, study_planUncheckedCreateWithoutWord_collectionInput>
+    connectOrCreate?: study_planCreateOrConnectWithoutWord_collectionInput
+    upsert?: study_planUpsertWithoutWord_collectionInput
+    disconnect?: study_planWhereInput | boolean
+    delete?: study_planWhereInput | boolean
+    connect?: study_planWhereUniqueInput
+    update?: XOR<XOR<study_planUpdateToOneWithWhereWithoutWord_collectionInput, study_planUpdateWithoutWord_collectionInput>, study_planUncheckedUpdateWithoutWord_collectionInput>
+  }
+
+  export type userUpdateOneRequiredWithoutWord_collectionNestedInput = {
+    create?: XOR<userCreateWithoutWord_collectionInput, userUncheckedCreateWithoutWord_collectionInput>
+    connectOrCreate?: userCreateOrConnectWithoutWord_collectionInput
+    upsert?: userUpsertWithoutWord_collectionInput
+    connect?: userWhereUniqueInput
+    update?: XOR<XOR<userUpdateToOneWithWhereWithoutWord_collectionInput, userUpdateWithoutWord_collectionInput>, userUncheckedUpdateWithoutWord_collectionInput>
+  }
+
+  export type collection_wordUncheckedUpdateManyWithoutWord_collectionNestedInput = {
+    create?: XOR<collection_wordCreateWithoutWord_collectionInput, collection_wordUncheckedCreateWithoutWord_collectionInput> | collection_wordCreateWithoutWord_collectionInput[] | collection_wordUncheckedCreateWithoutWord_collectionInput[]
+    connectOrCreate?: collection_wordCreateOrConnectWithoutWord_collectionInput | collection_wordCreateOrConnectWithoutWord_collectionInput[]
+    upsert?: collection_wordUpsertWithWhereUniqueWithoutWord_collectionInput | collection_wordUpsertWithWhereUniqueWithoutWord_collectionInput[]
+    createMany?: collection_wordCreateManyWord_collectionInputEnvelope
+    set?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+    disconnect?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+    delete?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+    connect?: collection_wordWhereUniqueInput | collection_wordWhereUniqueInput[]
+    update?: collection_wordUpdateWithWhereUniqueWithoutWord_collectionInput | collection_wordUpdateWithWhereUniqueWithoutWord_collectionInput[]
+    updateMany?: collection_wordUpdateManyWithWhereWithoutWord_collectionInput | collection_wordUpdateManyWithWhereWithoutWord_collectionInput[]
+    deleteMany?: collection_wordScalarWhereInput | collection_wordScalarWhereInput[]
   }
 
   export type NestedBigIntFilter<$PrismaModel = never> = {
@@ -20181,6 +35535,19 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type userCreateWithoutAudio_fileInput = {
     id?: bigint | number
     userAccount: string
@@ -20194,7 +35561,14 @@ export namespace Prisma {
     createTime?: Date | string
     updateTime?: Date | string
     isDelete?: number
+    game_record?: game_recordCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsCreateNestedOneWithoutUserInput
+    study_plan?: study_planCreateNestedManyWithoutUserInput
+    user_achievement?: user_achievementCreateNestedManyWithoutUserInput
     user_config?: user_configCreateNestedOneWithoutUserInput
+    user_points?: user_pointsCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionCreateNestedManyWithoutUserInput
   }
 
   export type userUncheckedCreateWithoutAudio_fileInput = {
@@ -20210,7 +35584,14 @@ export namespace Prisma {
     createTime?: Date | string
     updateTime?: Date | string
     isDelete?: number
+    game_record?: game_recordUncheckedCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressUncheckedCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsUncheckedCreateNestedOneWithoutUserInput
+    study_plan?: study_planUncheckedCreateNestedManyWithoutUserInput
+    user_achievement?: user_achievementUncheckedCreateNestedManyWithoutUserInput
     user_config?: user_configUncheckedCreateNestedOneWithoutUserInput
+    user_points?: user_pointsUncheckedCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type userCreateOrConnectWithoutAudio_fileInput = {
@@ -20242,7 +35623,14 @@ export namespace Prisma {
     createTime?: DateTimeFieldUpdateOperationsInput | Date | string
     updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
     isDelete?: IntFieldUpdateOperationsInput | number
+    game_record?: game_recordUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUpdateOneWithoutUserNestedInput
+    study_plan?: study_planUpdateManyWithoutUserNestedInput
+    user_achievement?: user_achievementUpdateManyWithoutUserNestedInput
     user_config?: user_configUpdateOneWithoutUserNestedInput
+    user_points?: user_pointsUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUpdateManyWithoutUserNestedInput
   }
 
   export type userUncheckedUpdateWithoutAudio_fileInput = {
@@ -20258,7 +35646,14 @@ export namespace Prisma {
     createTime?: DateTimeFieldUpdateOperationsInput | Date | string
     updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
     isDelete?: IntFieldUpdateOperationsInput | number
+    game_record?: game_recordUncheckedUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUncheckedUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUncheckedUpdateOneWithoutUserNestedInput
+    study_plan?: study_planUncheckedUpdateManyWithoutUserNestedInput
+    user_achievement?: user_achievementUncheckedUpdateManyWithoutUserNestedInput
     user_config?: user_configUncheckedUpdateOneWithoutUserNestedInput
+    user_points?: user_pointsUncheckedUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type english_dictionaryCreateWithoutDictionary_wordInput = {
@@ -20312,7 +35707,9 @@ export namespace Prisma {
     manual_score?: number | null
     ai_score?: number | null
     reviewer?: bigint | number | null
+    collection_word?: collection_wordCreateNestedManyWithoutEnglish_wordInput
     english_word_change_log?: english_word_change_logCreateNestedManyWithoutEnglish_wordInput
+    learning_progress?: learning_progressCreateNestedManyWithoutEnglish_wordInput
     media_creator?: media_creatorCreateNestedManyWithoutEnglish_wordInput
   }
 
@@ -20328,7 +35725,9 @@ export namespace Prisma {
     manual_score?: number | null
     ai_score?: number | null
     reviewer?: bigint | number | null
+    collection_word?: collection_wordUncheckedCreateNestedManyWithoutEnglish_wordInput
     english_word_change_log?: english_word_change_logUncheckedCreateNestedManyWithoutEnglish_wordInput
+    learning_progress?: learning_progressUncheckedCreateNestedManyWithoutEnglish_wordInput
     media_creator?: media_creatorUncheckedCreateNestedManyWithoutEnglish_wordInput
   }
 
@@ -20405,7 +35804,9 @@ export namespace Prisma {
     manual_score?: NullableIntFieldUpdateOperationsInput | number | null
     ai_score?: NullableIntFieldUpdateOperationsInput | number | null
     reviewer?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    collection_word?: collection_wordUpdateManyWithoutEnglish_wordNestedInput
     english_word_change_log?: english_word_change_logUpdateManyWithoutEnglish_wordNestedInput
+    learning_progress?: learning_progressUpdateManyWithoutEnglish_wordNestedInput
     media_creator?: media_creatorUpdateManyWithoutEnglish_wordNestedInput
   }
 
@@ -20421,7 +35822,9 @@ export namespace Prisma {
     manual_score?: NullableIntFieldUpdateOperationsInput | number | null
     ai_score?: NullableIntFieldUpdateOperationsInput | number | null
     reviewer?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    collection_word?: collection_wordUncheckedUpdateManyWithoutEnglish_wordNestedInput
     english_word_change_log?: english_word_change_logUncheckedUpdateManyWithoutEnglish_wordNestedInput
+    learning_progress?: learning_progressUncheckedUpdateManyWithoutEnglish_wordNestedInput
     media_creator?: media_creatorUncheckedUpdateManyWithoutEnglish_wordNestedInput
   }
 
@@ -20471,6 +35874,32 @@ export namespace Prisma {
     word_id?: BigIntFilter<"dictionary_word"> | bigint | number
     created_at?: DateTimeNullableFilter<"dictionary_word"> | Date | string | null
     id?: BigIntNullableFilter<"dictionary_word"> | bigint | number | null
+  }
+
+  export type collection_wordCreateWithoutEnglish_wordInput = {
+    id?: bigint | number
+    added_time?: Date | string
+    sort_order?: number
+    note?: string | null
+    word_collection: word_collectionCreateNestedOneWithoutCollection_wordInput
+  }
+
+  export type collection_wordUncheckedCreateWithoutEnglish_wordInput = {
+    id?: bigint | number
+    collection_id: bigint | number
+    added_time?: Date | string
+    sort_order?: number
+    note?: string | null
+  }
+
+  export type collection_wordCreateOrConnectWithoutEnglish_wordInput = {
+    where: collection_wordWhereUniqueInput
+    create: XOR<collection_wordCreateWithoutEnglish_wordInput, collection_wordUncheckedCreateWithoutEnglish_wordInput>
+  }
+
+  export type collection_wordCreateManyEnglish_wordInputEnvelope = {
+    data: collection_wordCreateManyEnglish_wordInput | collection_wordCreateManyEnglish_wordInput[]
+    skipDuplicates?: boolean
   }
 
   export type dictionary_wordCreateWithoutEnglish_wordInput = {
@@ -20523,6 +35952,48 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type learning_progressCreateWithoutEnglish_wordInput = {
+    id?: bigint | number
+    action_type: string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    source?: string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: number
+    start_time?: Date | string | null
+    end_time?: Date | string | null
+    study_plan?: study_planCreateNestedOneWithoutLearning_progressInput
+    user: userCreateNestedOneWithoutLearning_progressInput
+  }
+
+  export type learning_progressUncheckedCreateWithoutEnglish_wordInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    action_type: string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    study_plan_id?: bigint | number | null
+    source?: string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: number
+    start_time?: Date | string | null
+    end_time?: Date | string | null
+  }
+
+  export type learning_progressCreateOrConnectWithoutEnglish_wordInput = {
+    where: learning_progressWhereUniqueInput
+    create: XOR<learning_progressCreateWithoutEnglish_wordInput, learning_progressUncheckedCreateWithoutEnglish_wordInput>
+  }
+
+  export type learning_progressCreateManyEnglish_wordInputEnvelope = {
+    data: learning_progressCreateManyEnglish_wordInput | learning_progressCreateManyEnglish_wordInput[]
+    skipDuplicates?: boolean
+  }
+
   export type media_creatorCreateWithoutEnglish_wordInput = {
     id?: bigint | number
     media_type: string
@@ -20549,6 +36020,34 @@ export namespace Prisma {
   export type media_creatorCreateManyEnglish_wordInputEnvelope = {
     data: media_creatorCreateManyEnglish_wordInput | media_creatorCreateManyEnglish_wordInput[]
     skipDuplicates?: boolean
+  }
+
+  export type collection_wordUpsertWithWhereUniqueWithoutEnglish_wordInput = {
+    where: collection_wordWhereUniqueInput
+    update: XOR<collection_wordUpdateWithoutEnglish_wordInput, collection_wordUncheckedUpdateWithoutEnglish_wordInput>
+    create: XOR<collection_wordCreateWithoutEnglish_wordInput, collection_wordUncheckedCreateWithoutEnglish_wordInput>
+  }
+
+  export type collection_wordUpdateWithWhereUniqueWithoutEnglish_wordInput = {
+    where: collection_wordWhereUniqueInput
+    data: XOR<collection_wordUpdateWithoutEnglish_wordInput, collection_wordUncheckedUpdateWithoutEnglish_wordInput>
+  }
+
+  export type collection_wordUpdateManyWithWhereWithoutEnglish_wordInput = {
+    where: collection_wordScalarWhereInput
+    data: XOR<collection_wordUpdateManyMutationInput, collection_wordUncheckedUpdateManyWithoutEnglish_wordInput>
+  }
+
+  export type collection_wordScalarWhereInput = {
+    AND?: collection_wordScalarWhereInput | collection_wordScalarWhereInput[]
+    OR?: collection_wordScalarWhereInput[]
+    NOT?: collection_wordScalarWhereInput | collection_wordScalarWhereInput[]
+    id?: BigIntFilter<"collection_word"> | bigint | number
+    collection_id?: BigIntFilter<"collection_word"> | bigint | number
+    word_id?: BigIntFilter<"collection_word"> | bigint | number
+    added_time?: DateTimeFilter<"collection_word"> | Date | string
+    sort_order?: IntFilter<"collection_word"> | number
+    note?: StringNullableFilter<"collection_word"> | string | null
   }
 
   export type dictionary_wordUpsertWithWhereUniqueWithoutEnglish_wordInput = {
@@ -20596,6 +36095,42 @@ export namespace Prisma {
     changed_by?: BigIntNullableFilter<"english_word_change_log"> | bigint | number | null
   }
 
+  export type learning_progressUpsertWithWhereUniqueWithoutEnglish_wordInput = {
+    where: learning_progressWhereUniqueInput
+    update: XOR<learning_progressUpdateWithoutEnglish_wordInput, learning_progressUncheckedUpdateWithoutEnglish_wordInput>
+    create: XOR<learning_progressCreateWithoutEnglish_wordInput, learning_progressUncheckedCreateWithoutEnglish_wordInput>
+  }
+
+  export type learning_progressUpdateWithWhereUniqueWithoutEnglish_wordInput = {
+    where: learning_progressWhereUniqueInput
+    data: XOR<learning_progressUpdateWithoutEnglish_wordInput, learning_progressUncheckedUpdateWithoutEnglish_wordInput>
+  }
+
+  export type learning_progressUpdateManyWithWhereWithoutEnglish_wordInput = {
+    where: learning_progressScalarWhereInput
+    data: XOR<learning_progressUpdateManyMutationInput, learning_progressUncheckedUpdateManyWithoutEnglish_wordInput>
+  }
+
+  export type learning_progressScalarWhereInput = {
+    AND?: learning_progressScalarWhereInput | learning_progressScalarWhereInput[]
+    OR?: learning_progressScalarWhereInput[]
+    NOT?: learning_progressScalarWhereInput | learning_progressScalarWhereInput[]
+    id?: BigIntFilter<"learning_progress"> | bigint | number
+    user_id?: BigIntFilter<"learning_progress"> | bigint | number
+    word_id?: BigIntFilter<"learning_progress"> | bigint | number
+    action_type?: StringFilter<"learning_progress"> | string
+    learning_details?: JsonNullableFilter<"learning_progress">
+    created_at?: DateTimeFilter<"learning_progress"> | Date | string
+    update_time?: DateTimeFilter<"learning_progress"> | Date | string
+    is_delete?: IntFilter<"learning_progress"> | number
+    study_plan_id?: BigIntNullableFilter<"learning_progress"> | bigint | number | null
+    source?: StringNullableFilter<"learning_progress"> | string | null
+    device_info?: JsonNullableFilter<"learning_progress">
+    attempt_count?: IntFilter<"learning_progress"> | number
+    start_time?: DateTimeNullableFilter<"learning_progress"> | Date | string | null
+    end_time?: DateTimeNullableFilter<"learning_progress"> | Date | string | null
+  }
+
   export type media_creatorUpsertWithWhereUniqueWithoutEnglish_wordInput = {
     where: media_creatorWhereUniqueInput
     update: XOR<media_creatorUpdateWithoutEnglish_wordInput, media_creatorUncheckedUpdateWithoutEnglish_wordInput>
@@ -20637,7 +36172,9 @@ export namespace Prisma {
     manual_score?: number | null
     ai_score?: number | null
     reviewer?: bigint | number | null
+    collection_word?: collection_wordCreateNestedManyWithoutEnglish_wordInput
     dictionary_word?: dictionary_wordCreateNestedManyWithoutEnglish_wordInput
+    learning_progress?: learning_progressCreateNestedManyWithoutEnglish_wordInput
     media_creator?: media_creatorCreateNestedManyWithoutEnglish_wordInput
   }
 
@@ -20653,7 +36190,9 @@ export namespace Prisma {
     manual_score?: number | null
     ai_score?: number | null
     reviewer?: bigint | number | null
+    collection_word?: collection_wordUncheckedCreateNestedManyWithoutEnglish_wordInput
     dictionary_word?: dictionary_wordUncheckedCreateNestedManyWithoutEnglish_wordInput
+    learning_progress?: learning_progressUncheckedCreateNestedManyWithoutEnglish_wordInput
     media_creator?: media_creatorUncheckedCreateNestedManyWithoutEnglish_wordInput
   }
 
@@ -20685,7 +36224,9 @@ export namespace Prisma {
     manual_score?: NullableIntFieldUpdateOperationsInput | number | null
     ai_score?: NullableIntFieldUpdateOperationsInput | number | null
     reviewer?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    collection_word?: collection_wordUpdateManyWithoutEnglish_wordNestedInput
     dictionary_word?: dictionary_wordUpdateManyWithoutEnglish_wordNestedInput
+    learning_progress?: learning_progressUpdateManyWithoutEnglish_wordNestedInput
     media_creator?: media_creatorUpdateManyWithoutEnglish_wordNestedInput
   }
 
@@ -20701,7 +36242,9 @@ export namespace Prisma {
     manual_score?: NullableIntFieldUpdateOperationsInput | number | null
     ai_score?: NullableIntFieldUpdateOperationsInput | number | null
     reviewer?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    collection_word?: collection_wordUncheckedUpdateManyWithoutEnglish_wordNestedInput
     dictionary_word?: dictionary_wordUncheckedUpdateManyWithoutEnglish_wordNestedInput
+    learning_progress?: learning_progressUncheckedUpdateManyWithoutEnglish_wordNestedInput
     media_creator?: media_creatorUncheckedUpdateManyWithoutEnglish_wordNestedInput
   }
 
@@ -20717,8 +36260,10 @@ export namespace Prisma {
     manual_score?: number | null
     ai_score?: number | null
     reviewer?: bigint | number | null
+    collection_word?: collection_wordCreateNestedManyWithoutEnglish_wordInput
     dictionary_word?: dictionary_wordCreateNestedManyWithoutEnglish_wordInput
     english_word_change_log?: english_word_change_logCreateNestedManyWithoutEnglish_wordInput
+    learning_progress?: learning_progressCreateNestedManyWithoutEnglish_wordInput
   }
 
   export type english_wordUncheckedCreateWithoutMedia_creatorInput = {
@@ -20733,8 +36278,10 @@ export namespace Prisma {
     manual_score?: number | null
     ai_score?: number | null
     reviewer?: bigint | number | null
+    collection_word?: collection_wordUncheckedCreateNestedManyWithoutEnglish_wordInput
     dictionary_word?: dictionary_wordUncheckedCreateNestedManyWithoutEnglish_wordInput
     english_word_change_log?: english_word_change_logUncheckedCreateNestedManyWithoutEnglish_wordInput
+    learning_progress?: learning_progressUncheckedCreateNestedManyWithoutEnglish_wordInput
   }
 
   export type english_wordCreateOrConnectWithoutMedia_creatorInput = {
@@ -20765,8 +36312,10 @@ export namespace Prisma {
     manual_score?: NullableIntFieldUpdateOperationsInput | number | null
     ai_score?: NullableIntFieldUpdateOperationsInput | number | null
     reviewer?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    collection_word?: collection_wordUpdateManyWithoutEnglish_wordNestedInput
     dictionary_word?: dictionary_wordUpdateManyWithoutEnglish_wordNestedInput
     english_word_change_log?: english_word_change_logUpdateManyWithoutEnglish_wordNestedInput
+    learning_progress?: learning_progressUpdateManyWithoutEnglish_wordNestedInput
   }
 
   export type english_wordUncheckedUpdateWithoutMedia_creatorInput = {
@@ -20781,8 +36330,10 @@ export namespace Prisma {
     manual_score?: NullableIntFieldUpdateOperationsInput | number | null
     ai_score?: NullableIntFieldUpdateOperationsInput | number | null
     reviewer?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    collection_word?: collection_wordUncheckedUpdateManyWithoutEnglish_wordNestedInput
     dictionary_word?: dictionary_wordUncheckedUpdateManyWithoutEnglish_wordNestedInput
     english_word_change_log?: english_word_change_logUncheckedUpdateManyWithoutEnglish_wordNestedInput
+    learning_progress?: learning_progressUncheckedUpdateManyWithoutEnglish_wordNestedInput
   }
 
   export type audio_fileCreateWithoutUserInput = {
@@ -20817,6 +36368,187 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type game_recordCreateWithoutUserInput = {
+    id?: bigint | number
+    game_type: string
+    score?: number
+    duration?: number
+    words_count?: number
+    correct_count?: number
+    wrong_count?: number
+    level?: number
+    game_data?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+  }
+
+  export type game_recordUncheckedCreateWithoutUserInput = {
+    id?: bigint | number
+    game_type: string
+    score?: number
+    duration?: number
+    words_count?: number
+    correct_count?: number
+    wrong_count?: number
+    level?: number
+    game_data?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+  }
+
+  export type game_recordCreateOrConnectWithoutUserInput = {
+    where: game_recordWhereUniqueInput
+    create: XOR<game_recordCreateWithoutUserInput, game_recordUncheckedCreateWithoutUserInput>
+  }
+
+  export type game_recordCreateManyUserInputEnvelope = {
+    data: game_recordCreateManyUserInput | game_recordCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type learning_progressCreateWithoutUserInput = {
+    id?: bigint | number
+    action_type: string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    source?: string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: number
+    start_time?: Date | string | null
+    end_time?: Date | string | null
+    study_plan?: study_planCreateNestedOneWithoutLearning_progressInput
+    english_word: english_wordCreateNestedOneWithoutLearning_progressInput
+  }
+
+  export type learning_progressUncheckedCreateWithoutUserInput = {
+    id?: bigint | number
+    word_id: bigint | number
+    action_type: string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    study_plan_id?: bigint | number | null
+    source?: string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: number
+    start_time?: Date | string | null
+    end_time?: Date | string | null
+  }
+
+  export type learning_progressCreateOrConnectWithoutUserInput = {
+    where: learning_progressWhereUniqueInput
+    create: XOR<learning_progressCreateWithoutUserInput, learning_progressUncheckedCreateWithoutUserInput>
+  }
+
+  export type learning_progressCreateManyUserInputEnvelope = {
+    data: learning_progressCreateManyUserInput | learning_progressCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type learning_statsCreateWithoutUserInput = {
+    id?: bigint | number
+    total_words_learned?: number
+    total_review_time?: number
+    daily_streak?: number
+    longest_streak?: number
+    last_study_date?: Date | string | null
+    total_study_days?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    user_achievement?: user_achievementCreateNestedManyWithoutLearning_statsInput
+  }
+
+  export type learning_statsUncheckedCreateWithoutUserInput = {
+    id?: bigint | number
+    total_words_learned?: number
+    total_review_time?: number
+    daily_streak?: number
+    longest_streak?: number
+    last_study_date?: Date | string | null
+    total_study_days?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    user_achievement?: user_achievementUncheckedCreateNestedManyWithoutLearning_statsInput
+  }
+
+  export type learning_statsCreateOrConnectWithoutUserInput = {
+    where: learning_statsWhereUniqueInput
+    create: XOR<learning_statsCreateWithoutUserInput, learning_statsUncheckedCreateWithoutUserInput>
+  }
+
+  export type study_planCreateWithoutUserInput = {
+    id?: bigint | number
+    name: string
+    description?: string | null
+    target_words?: number
+    daily_words?: number
+    start_date?: Date | string | null
+    end_date?: Date | string | null
+    status?: string
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    learning_progress?: learning_progressCreateNestedManyWithoutStudy_planInput
+    word_collection?: word_collectionCreateNestedManyWithoutStudy_planInput
+  }
+
+  export type study_planUncheckedCreateWithoutUserInput = {
+    id?: bigint | number
+    name: string
+    description?: string | null
+    target_words?: number
+    daily_words?: number
+    start_date?: Date | string | null
+    end_date?: Date | string | null
+    status?: string
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    learning_progress?: learning_progressUncheckedCreateNestedManyWithoutStudy_planInput
+    word_collection?: word_collectionUncheckedCreateNestedManyWithoutStudy_planInput
+  }
+
+  export type study_planCreateOrConnectWithoutUserInput = {
+    where: study_planWhereUniqueInput
+    create: XOR<study_planCreateWithoutUserInput, study_planUncheckedCreateWithoutUserInput>
+  }
+
+  export type study_planCreateManyUserInputEnvelope = {
+    data: study_planCreateManyUserInput | study_planCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type user_achievementCreateWithoutUserInput = {
+    id?: bigint | number
+    achieved_date?: Date | string
+    progress?: number | null
+    achievement: achievementCreateNestedOneWithoutUser_achievementInput
+    learning_stats?: learning_statsCreateNestedOneWithoutUser_achievementInput
+  }
+
+  export type user_achievementUncheckedCreateWithoutUserInput = {
+    id?: bigint | number
+    achievement_id: bigint | number
+    achieved_date?: Date | string
+    progress?: number | null
+    learning_stats_id?: bigint | number | null
+  }
+
+  export type user_achievementCreateOrConnectWithoutUserInput = {
+    where: user_achievementWhereUniqueInput
+    create: XOR<user_achievementCreateWithoutUserInput, user_achievementUncheckedCreateWithoutUserInput>
+  }
+
+  export type user_achievementCreateManyUserInputEnvelope = {
+    data: user_achievementCreateManyUserInput | user_achievementCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type user_configCreateWithoutUserInput = {
     config_json: JsonNullValueInput | InputJsonValue
     update_time?: Date | string | null
@@ -20830,6 +36562,67 @@ export namespace Prisma {
   export type user_configCreateOrConnectWithoutUserInput = {
     where: user_configWhereUniqueInput
     create: XOR<user_configCreateWithoutUserInput, user_configUncheckedCreateWithoutUserInput>
+  }
+
+  export type user_pointsCreateWithoutUserInput = {
+    id?: bigint | number
+    total_points?: number
+    available_points?: number
+    level?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    point_transaction?: point_transactionCreateNestedManyWithoutUser_pointsInput
+  }
+
+  export type user_pointsUncheckedCreateWithoutUserInput = {
+    id?: bigint | number
+    total_points?: number
+    available_points?: number
+    level?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    point_transaction?: point_transactionUncheckedCreateNestedManyWithoutUser_pointsInput
+  }
+
+  export type user_pointsCreateOrConnectWithoutUserInput = {
+    where: user_pointsWhereUniqueInput
+    create: XOR<user_pointsCreateWithoutUserInput, user_pointsUncheckedCreateWithoutUserInput>
+  }
+
+  export type word_collectionCreateWithoutUserInput = {
+    id?: bigint | number
+    name: string
+    description?: string | null
+    is_public?: boolean
+    word_count?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    collection_word?: collection_wordCreateNestedManyWithoutWord_collectionInput
+    study_plan?: study_planCreateNestedOneWithoutWord_collectionInput
+  }
+
+  export type word_collectionUncheckedCreateWithoutUserInput = {
+    id?: bigint | number
+    plan_id?: bigint | number | null
+    name: string
+    description?: string | null
+    is_public?: boolean
+    word_count?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    collection_word?: collection_wordUncheckedCreateNestedManyWithoutWord_collectionInput
+  }
+
+  export type word_collectionCreateOrConnectWithoutUserInput = {
+    where: word_collectionWhereUniqueInput
+    create: XOR<word_collectionCreateWithoutUserInput, word_collectionUncheckedCreateWithoutUserInput>
+  }
+
+  export type word_collectionCreateManyUserInputEnvelope = {
+    data: word_collectionCreateManyUserInput | word_collectionCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
   export type audio_fileUpsertWithWhereUniqueWithoutUserInput = {
@@ -20863,6 +36656,156 @@ export namespace Prisma {
     name?: StringFilter<"audio_file"> | string
   }
 
+  export type game_recordUpsertWithWhereUniqueWithoutUserInput = {
+    where: game_recordWhereUniqueInput
+    update: XOR<game_recordUpdateWithoutUserInput, game_recordUncheckedUpdateWithoutUserInput>
+    create: XOR<game_recordCreateWithoutUserInput, game_recordUncheckedCreateWithoutUserInput>
+  }
+
+  export type game_recordUpdateWithWhereUniqueWithoutUserInput = {
+    where: game_recordWhereUniqueInput
+    data: XOR<game_recordUpdateWithoutUserInput, game_recordUncheckedUpdateWithoutUserInput>
+  }
+
+  export type game_recordUpdateManyWithWhereWithoutUserInput = {
+    where: game_recordScalarWhereInput
+    data: XOR<game_recordUpdateManyMutationInput, game_recordUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type game_recordScalarWhereInput = {
+    AND?: game_recordScalarWhereInput | game_recordScalarWhereInput[]
+    OR?: game_recordScalarWhereInput[]
+    NOT?: game_recordScalarWhereInput | game_recordScalarWhereInput[]
+    id?: BigIntFilter<"game_record"> | bigint | number
+    user_id?: BigIntFilter<"game_record"> | bigint | number
+    game_type?: StringFilter<"game_record"> | string
+    score?: IntFilter<"game_record"> | number
+    duration?: IntFilter<"game_record"> | number
+    words_count?: IntFilter<"game_record"> | number
+    correct_count?: IntFilter<"game_record"> | number
+    wrong_count?: IntFilter<"game_record"> | number
+    level?: IntFilter<"game_record"> | number
+    game_data?: JsonNullableFilter<"game_record">
+    created_at?: DateTimeFilter<"game_record"> | Date | string
+    update_time?: DateTimeFilter<"game_record"> | Date | string
+    is_delete?: IntFilter<"game_record"> | number
+  }
+
+  export type learning_progressUpsertWithWhereUniqueWithoutUserInput = {
+    where: learning_progressWhereUniqueInput
+    update: XOR<learning_progressUpdateWithoutUserInput, learning_progressUncheckedUpdateWithoutUserInput>
+    create: XOR<learning_progressCreateWithoutUserInput, learning_progressUncheckedCreateWithoutUserInput>
+  }
+
+  export type learning_progressUpdateWithWhereUniqueWithoutUserInput = {
+    where: learning_progressWhereUniqueInput
+    data: XOR<learning_progressUpdateWithoutUserInput, learning_progressUncheckedUpdateWithoutUserInput>
+  }
+
+  export type learning_progressUpdateManyWithWhereWithoutUserInput = {
+    where: learning_progressScalarWhereInput
+    data: XOR<learning_progressUpdateManyMutationInput, learning_progressUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type learning_statsUpsertWithoutUserInput = {
+    update: XOR<learning_statsUpdateWithoutUserInput, learning_statsUncheckedUpdateWithoutUserInput>
+    create: XOR<learning_statsCreateWithoutUserInput, learning_statsUncheckedCreateWithoutUserInput>
+    where?: learning_statsWhereInput
+  }
+
+  export type learning_statsUpdateToOneWithWhereWithoutUserInput = {
+    where?: learning_statsWhereInput
+    data: XOR<learning_statsUpdateWithoutUserInput, learning_statsUncheckedUpdateWithoutUserInput>
+  }
+
+  export type learning_statsUpdateWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    total_words_learned?: IntFieldUpdateOperationsInput | number
+    total_review_time?: IntFieldUpdateOperationsInput | number
+    daily_streak?: IntFieldUpdateOperationsInput | number
+    longest_streak?: IntFieldUpdateOperationsInput | number
+    last_study_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    total_study_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_achievement?: user_achievementUpdateManyWithoutLearning_statsNestedInput
+  }
+
+  export type learning_statsUncheckedUpdateWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    total_words_learned?: IntFieldUpdateOperationsInput | number
+    total_review_time?: IntFieldUpdateOperationsInput | number
+    daily_streak?: IntFieldUpdateOperationsInput | number
+    longest_streak?: IntFieldUpdateOperationsInput | number
+    last_study_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    total_study_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_achievement?: user_achievementUncheckedUpdateManyWithoutLearning_statsNestedInput
+  }
+
+  export type study_planUpsertWithWhereUniqueWithoutUserInput = {
+    where: study_planWhereUniqueInput
+    update: XOR<study_planUpdateWithoutUserInput, study_planUncheckedUpdateWithoutUserInput>
+    create: XOR<study_planCreateWithoutUserInput, study_planUncheckedCreateWithoutUserInput>
+  }
+
+  export type study_planUpdateWithWhereUniqueWithoutUserInput = {
+    where: study_planWhereUniqueInput
+    data: XOR<study_planUpdateWithoutUserInput, study_planUncheckedUpdateWithoutUserInput>
+  }
+
+  export type study_planUpdateManyWithWhereWithoutUserInput = {
+    where: study_planScalarWhereInput
+    data: XOR<study_planUpdateManyMutationInput, study_planUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type study_planScalarWhereInput = {
+    AND?: study_planScalarWhereInput | study_planScalarWhereInput[]
+    OR?: study_planScalarWhereInput[]
+    NOT?: study_planScalarWhereInput | study_planScalarWhereInput[]
+    id?: BigIntFilter<"study_plan"> | bigint | number
+    user_id?: BigIntFilter<"study_plan"> | bigint | number
+    name?: StringFilter<"study_plan"> | string
+    description?: StringNullableFilter<"study_plan"> | string | null
+    target_words?: IntFilter<"study_plan"> | number
+    daily_words?: IntFilter<"study_plan"> | number
+    start_date?: DateTimeNullableFilter<"study_plan"> | Date | string | null
+    end_date?: DateTimeNullableFilter<"study_plan"> | Date | string | null
+    status?: StringFilter<"study_plan"> | string
+    created_at?: DateTimeFilter<"study_plan"> | Date | string
+    update_time?: DateTimeFilter<"study_plan"> | Date | string
+    is_delete?: IntFilter<"study_plan"> | number
+  }
+
+  export type user_achievementUpsertWithWhereUniqueWithoutUserInput = {
+    where: user_achievementWhereUniqueInput
+    update: XOR<user_achievementUpdateWithoutUserInput, user_achievementUncheckedUpdateWithoutUserInput>
+    create: XOR<user_achievementCreateWithoutUserInput, user_achievementUncheckedCreateWithoutUserInput>
+  }
+
+  export type user_achievementUpdateWithWhereUniqueWithoutUserInput = {
+    where: user_achievementWhereUniqueInput
+    data: XOR<user_achievementUpdateWithoutUserInput, user_achievementUncheckedUpdateWithoutUserInput>
+  }
+
+  export type user_achievementUpdateManyWithWhereWithoutUserInput = {
+    where: user_achievementScalarWhereInput
+    data: XOR<user_achievementUpdateManyMutationInput, user_achievementUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type user_achievementScalarWhereInput = {
+    AND?: user_achievementScalarWhereInput | user_achievementScalarWhereInput[]
+    OR?: user_achievementScalarWhereInput[]
+    NOT?: user_achievementScalarWhereInput | user_achievementScalarWhereInput[]
+    id?: BigIntFilter<"user_achievement"> | bigint | number
+    user_id?: BigIntFilter<"user_achievement"> | bigint | number
+    achievement_id?: BigIntFilter<"user_achievement"> | bigint | number
+    achieved_date?: DateTimeFilter<"user_achievement"> | Date | string
+    progress?: IntNullableFilter<"user_achievement"> | number | null
+    learning_stats_id?: BigIntNullableFilter<"user_achievement"> | bigint | number | null
+  }
+
   export type user_configUpsertWithoutUserInput = {
     update: XOR<user_configUpdateWithoutUserInput, user_configUncheckedUpdateWithoutUserInput>
     create: XOR<user_configCreateWithoutUserInput, user_configUncheckedCreateWithoutUserInput>
@@ -20884,6 +36827,69 @@ export namespace Prisma {
     update_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type user_pointsUpsertWithoutUserInput = {
+    update: XOR<user_pointsUpdateWithoutUserInput, user_pointsUncheckedUpdateWithoutUserInput>
+    create: XOR<user_pointsCreateWithoutUserInput, user_pointsUncheckedCreateWithoutUserInput>
+    where?: user_pointsWhereInput
+  }
+
+  export type user_pointsUpdateToOneWithWhereWithoutUserInput = {
+    where?: user_pointsWhereInput
+    data: XOR<user_pointsUpdateWithoutUserInput, user_pointsUncheckedUpdateWithoutUserInput>
+  }
+
+  export type user_pointsUpdateWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    total_points?: IntFieldUpdateOperationsInput | number
+    available_points?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    point_transaction?: point_transactionUpdateManyWithoutUser_pointsNestedInput
+  }
+
+  export type user_pointsUncheckedUpdateWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    total_points?: IntFieldUpdateOperationsInput | number
+    available_points?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    point_transaction?: point_transactionUncheckedUpdateManyWithoutUser_pointsNestedInput
+  }
+
+  export type word_collectionUpsertWithWhereUniqueWithoutUserInput = {
+    where: word_collectionWhereUniqueInput
+    update: XOR<word_collectionUpdateWithoutUserInput, word_collectionUncheckedUpdateWithoutUserInput>
+    create: XOR<word_collectionCreateWithoutUserInput, word_collectionUncheckedCreateWithoutUserInput>
+  }
+
+  export type word_collectionUpdateWithWhereUniqueWithoutUserInput = {
+    where: word_collectionWhereUniqueInput
+    data: XOR<word_collectionUpdateWithoutUserInput, word_collectionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type word_collectionUpdateManyWithWhereWithoutUserInput = {
+    where: word_collectionScalarWhereInput
+    data: XOR<word_collectionUpdateManyMutationInput, word_collectionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type word_collectionScalarWhereInput = {
+    AND?: word_collectionScalarWhereInput | word_collectionScalarWhereInput[]
+    OR?: word_collectionScalarWhereInput[]
+    NOT?: word_collectionScalarWhereInput | word_collectionScalarWhereInput[]
+    id?: BigIntFilter<"word_collection"> | bigint | number
+    user_id?: BigIntFilter<"word_collection"> | bigint | number
+    plan_id?: BigIntNullableFilter<"word_collection"> | bigint | number | null
+    name?: StringFilter<"word_collection"> | string
+    description?: StringNullableFilter<"word_collection"> | string | null
+    is_public?: BoolFilter<"word_collection"> | boolean
+    word_count?: IntFilter<"word_collection"> | number
+    created_at?: DateTimeFilter<"word_collection"> | Date | string
+    update_time?: DateTimeFilter<"word_collection"> | Date | string
+    is_delete?: IntFilter<"word_collection"> | number
+  }
+
   export type userCreateWithoutUser_configInput = {
     id?: bigint | number
     userAccount: string
@@ -20898,6 +36904,13 @@ export namespace Prisma {
     updateTime?: Date | string
     isDelete?: number
     audio_file?: audio_fileCreateNestedManyWithoutUserInput
+    game_record?: game_recordCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsCreateNestedOneWithoutUserInput
+    study_plan?: study_planCreateNestedManyWithoutUserInput
+    user_achievement?: user_achievementCreateNestedManyWithoutUserInput
+    user_points?: user_pointsCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionCreateNestedManyWithoutUserInput
   }
 
   export type userUncheckedCreateWithoutUser_configInput = {
@@ -20914,6 +36927,13 @@ export namespace Prisma {
     updateTime?: Date | string
     isDelete?: number
     audio_file?: audio_fileUncheckedCreateNestedManyWithoutUserInput
+    game_record?: game_recordUncheckedCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressUncheckedCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsUncheckedCreateNestedOneWithoutUserInput
+    study_plan?: study_planUncheckedCreateNestedManyWithoutUserInput
+    user_achievement?: user_achievementUncheckedCreateNestedManyWithoutUserInput
+    user_points?: user_pointsUncheckedCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type userCreateOrConnectWithoutUser_configInput = {
@@ -20946,6 +36966,13 @@ export namespace Prisma {
     updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
     isDelete?: IntFieldUpdateOperationsInput | number
     audio_file?: audio_fileUpdateManyWithoutUserNestedInput
+    game_record?: game_recordUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUpdateOneWithoutUserNestedInput
+    study_plan?: study_planUpdateManyWithoutUserNestedInput
+    user_achievement?: user_achievementUpdateManyWithoutUserNestedInput
+    user_points?: user_pointsUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUpdateManyWithoutUserNestedInput
   }
 
   export type userUncheckedUpdateWithoutUser_configInput = {
@@ -20962,6 +36989,1658 @@ export namespace Prisma {
     updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
     isDelete?: IntFieldUpdateOperationsInput | number
     audio_file?: audio_fileUncheckedUpdateManyWithoutUserNestedInput
+    game_record?: game_recordUncheckedUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUncheckedUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUncheckedUpdateOneWithoutUserNestedInput
+    study_plan?: study_planUncheckedUpdateManyWithoutUserNestedInput
+    user_achievement?: user_achievementUncheckedUpdateManyWithoutUserNestedInput
+    user_points?: user_pointsUncheckedUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type user_achievementCreateWithoutAchievementInput = {
+    id?: bigint | number
+    achieved_date?: Date | string
+    progress?: number | null
+    learning_stats?: learning_statsCreateNestedOneWithoutUser_achievementInput
+    user: userCreateNestedOneWithoutUser_achievementInput
+  }
+
+  export type user_achievementUncheckedCreateWithoutAchievementInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    achieved_date?: Date | string
+    progress?: number | null
+    learning_stats_id?: bigint | number | null
+  }
+
+  export type user_achievementCreateOrConnectWithoutAchievementInput = {
+    where: user_achievementWhereUniqueInput
+    create: XOR<user_achievementCreateWithoutAchievementInput, user_achievementUncheckedCreateWithoutAchievementInput>
+  }
+
+  export type user_achievementCreateManyAchievementInputEnvelope = {
+    data: user_achievementCreateManyAchievementInput | user_achievementCreateManyAchievementInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type user_achievementUpsertWithWhereUniqueWithoutAchievementInput = {
+    where: user_achievementWhereUniqueInput
+    update: XOR<user_achievementUpdateWithoutAchievementInput, user_achievementUncheckedUpdateWithoutAchievementInput>
+    create: XOR<user_achievementCreateWithoutAchievementInput, user_achievementUncheckedCreateWithoutAchievementInput>
+  }
+
+  export type user_achievementUpdateWithWhereUniqueWithoutAchievementInput = {
+    where: user_achievementWhereUniqueInput
+    data: XOR<user_achievementUpdateWithoutAchievementInput, user_achievementUncheckedUpdateWithoutAchievementInput>
+  }
+
+  export type user_achievementUpdateManyWithWhereWithoutAchievementInput = {
+    where: user_achievementScalarWhereInput
+    data: XOR<user_achievementUpdateManyMutationInput, user_achievementUncheckedUpdateManyWithoutAchievementInput>
+  }
+
+  export type word_collectionCreateWithoutCollection_wordInput = {
+    id?: bigint | number
+    name: string
+    description?: string | null
+    is_public?: boolean
+    word_count?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    study_plan?: study_planCreateNestedOneWithoutWord_collectionInput
+    user: userCreateNestedOneWithoutWord_collectionInput
+  }
+
+  export type word_collectionUncheckedCreateWithoutCollection_wordInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    plan_id?: bigint | number | null
+    name: string
+    description?: string | null
+    is_public?: boolean
+    word_count?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+  }
+
+  export type word_collectionCreateOrConnectWithoutCollection_wordInput = {
+    where: word_collectionWhereUniqueInput
+    create: XOR<word_collectionCreateWithoutCollection_wordInput, word_collectionUncheckedCreateWithoutCollection_wordInput>
+  }
+
+  export type english_wordCreateWithoutCollection_wordInput = {
+    id: bigint | number
+    word_head?: string | null
+    thumbnail?: string | null
+    info?: NullableJsonNullValueInput | InputJsonValue
+    create_time?: Date | string | null
+    update_time?: Date | string | null
+    is_delete?: boolean | null
+    status?: string | null
+    manual_score?: number | null
+    ai_score?: number | null
+    reviewer?: bigint | number | null
+    dictionary_word?: dictionary_wordCreateNestedManyWithoutEnglish_wordInput
+    english_word_change_log?: english_word_change_logCreateNestedManyWithoutEnglish_wordInput
+    learning_progress?: learning_progressCreateNestedManyWithoutEnglish_wordInput
+    media_creator?: media_creatorCreateNestedManyWithoutEnglish_wordInput
+  }
+
+  export type english_wordUncheckedCreateWithoutCollection_wordInput = {
+    id: bigint | number
+    word_head?: string | null
+    thumbnail?: string | null
+    info?: NullableJsonNullValueInput | InputJsonValue
+    create_time?: Date | string | null
+    update_time?: Date | string | null
+    is_delete?: boolean | null
+    status?: string | null
+    manual_score?: number | null
+    ai_score?: number | null
+    reviewer?: bigint | number | null
+    dictionary_word?: dictionary_wordUncheckedCreateNestedManyWithoutEnglish_wordInput
+    english_word_change_log?: english_word_change_logUncheckedCreateNestedManyWithoutEnglish_wordInput
+    learning_progress?: learning_progressUncheckedCreateNestedManyWithoutEnglish_wordInput
+    media_creator?: media_creatorUncheckedCreateNestedManyWithoutEnglish_wordInput
+  }
+
+  export type english_wordCreateOrConnectWithoutCollection_wordInput = {
+    where: english_wordWhereUniqueInput
+    create: XOR<english_wordCreateWithoutCollection_wordInput, english_wordUncheckedCreateWithoutCollection_wordInput>
+  }
+
+  export type word_collectionUpsertWithoutCollection_wordInput = {
+    update: XOR<word_collectionUpdateWithoutCollection_wordInput, word_collectionUncheckedUpdateWithoutCollection_wordInput>
+    create: XOR<word_collectionCreateWithoutCollection_wordInput, word_collectionUncheckedCreateWithoutCollection_wordInput>
+    where?: word_collectionWhereInput
+  }
+
+  export type word_collectionUpdateToOneWithWhereWithoutCollection_wordInput = {
+    where?: word_collectionWhereInput
+    data: XOR<word_collectionUpdateWithoutCollection_wordInput, word_collectionUncheckedUpdateWithoutCollection_wordInput>
+  }
+
+  export type word_collectionUpdateWithoutCollection_wordInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    is_public?: BoolFieldUpdateOperationsInput | boolean
+    word_count?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    study_plan?: study_planUpdateOneWithoutWord_collectionNestedInput
+    user?: userUpdateOneRequiredWithoutWord_collectionNestedInput
+  }
+
+  export type word_collectionUncheckedUpdateWithoutCollection_wordInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    plan_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    is_public?: BoolFieldUpdateOperationsInput | boolean
+    word_count?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type english_wordUpsertWithoutCollection_wordInput = {
+    update: XOR<english_wordUpdateWithoutCollection_wordInput, english_wordUncheckedUpdateWithoutCollection_wordInput>
+    create: XOR<english_wordCreateWithoutCollection_wordInput, english_wordUncheckedCreateWithoutCollection_wordInput>
+    where?: english_wordWhereInput
+  }
+
+  export type english_wordUpdateToOneWithWhereWithoutCollection_wordInput = {
+    where?: english_wordWhereInput
+    data: XOR<english_wordUpdateWithoutCollection_wordInput, english_wordUncheckedUpdateWithoutCollection_wordInput>
+  }
+
+  export type english_wordUpdateWithoutCollection_wordInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    word_head?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    info?: NullableJsonNullValueInput | InputJsonValue
+    create_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    update_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    is_delete?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_score?: NullableIntFieldUpdateOperationsInput | number | null
+    ai_score?: NullableIntFieldUpdateOperationsInput | number | null
+    reviewer?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    dictionary_word?: dictionary_wordUpdateManyWithoutEnglish_wordNestedInput
+    english_word_change_log?: english_word_change_logUpdateManyWithoutEnglish_wordNestedInput
+    learning_progress?: learning_progressUpdateManyWithoutEnglish_wordNestedInput
+    media_creator?: media_creatorUpdateManyWithoutEnglish_wordNestedInput
+  }
+
+  export type english_wordUncheckedUpdateWithoutCollection_wordInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    word_head?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    info?: NullableJsonNullValueInput | InputJsonValue
+    create_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    update_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    is_delete?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_score?: NullableIntFieldUpdateOperationsInput | number | null
+    ai_score?: NullableIntFieldUpdateOperationsInput | number | null
+    reviewer?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    dictionary_word?: dictionary_wordUncheckedUpdateManyWithoutEnglish_wordNestedInput
+    english_word_change_log?: english_word_change_logUncheckedUpdateManyWithoutEnglish_wordNestedInput
+    learning_progress?: learning_progressUncheckedUpdateManyWithoutEnglish_wordNestedInput
+    media_creator?: media_creatorUncheckedUpdateManyWithoutEnglish_wordNestedInput
+  }
+
+  export type userCreateWithoutGame_recordInput = {
+    id?: bigint | number
+    userAccount: string
+    userPassword: string
+    unionId?: string | null
+    mpOpenId?: string | null
+    userName?: string | null
+    userAvatar?: string | null
+    userProfile?: string | null
+    userRole?: string
+    createTime?: Date | string
+    updateTime?: Date | string
+    isDelete?: number
+    audio_file?: audio_fileCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsCreateNestedOneWithoutUserInput
+    study_plan?: study_planCreateNestedManyWithoutUserInput
+    user_achievement?: user_achievementCreateNestedManyWithoutUserInput
+    user_config?: user_configCreateNestedOneWithoutUserInput
+    user_points?: user_pointsCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionCreateNestedManyWithoutUserInput
+  }
+
+  export type userUncheckedCreateWithoutGame_recordInput = {
+    id?: bigint | number
+    userAccount: string
+    userPassword: string
+    unionId?: string | null
+    mpOpenId?: string | null
+    userName?: string | null
+    userAvatar?: string | null
+    userProfile?: string | null
+    userRole?: string
+    createTime?: Date | string
+    updateTime?: Date | string
+    isDelete?: number
+    audio_file?: audio_fileUncheckedCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressUncheckedCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsUncheckedCreateNestedOneWithoutUserInput
+    study_plan?: study_planUncheckedCreateNestedManyWithoutUserInput
+    user_achievement?: user_achievementUncheckedCreateNestedManyWithoutUserInput
+    user_config?: user_configUncheckedCreateNestedOneWithoutUserInput
+    user_points?: user_pointsUncheckedCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type userCreateOrConnectWithoutGame_recordInput = {
+    where: userWhereUniqueInput
+    create: XOR<userCreateWithoutGame_recordInput, userUncheckedCreateWithoutGame_recordInput>
+  }
+
+  export type userUpsertWithoutGame_recordInput = {
+    update: XOR<userUpdateWithoutGame_recordInput, userUncheckedUpdateWithoutGame_recordInput>
+    create: XOR<userCreateWithoutGame_recordInput, userUncheckedCreateWithoutGame_recordInput>
+    where?: userWhereInput
+  }
+
+  export type userUpdateToOneWithWhereWithoutGame_recordInput = {
+    where?: userWhereInput
+    data: XOR<userUpdateWithoutGame_recordInput, userUncheckedUpdateWithoutGame_recordInput>
+  }
+
+  export type userUpdateWithoutGame_recordInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    userAccount?: StringFieldUpdateOperationsInput | string
+    userPassword?: StringFieldUpdateOperationsInput | string
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpOpenId?: NullableStringFieldUpdateOperationsInput | string | null
+    userName?: NullableStringFieldUpdateOperationsInput | string | null
+    userAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    userProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: StringFieldUpdateOperationsInput | string
+    createTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDelete?: IntFieldUpdateOperationsInput | number
+    audio_file?: audio_fileUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUpdateOneWithoutUserNestedInput
+    study_plan?: study_planUpdateManyWithoutUserNestedInput
+    user_achievement?: user_achievementUpdateManyWithoutUserNestedInput
+    user_config?: user_configUpdateOneWithoutUserNestedInput
+    user_points?: user_pointsUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUpdateManyWithoutUserNestedInput
+  }
+
+  export type userUncheckedUpdateWithoutGame_recordInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    userAccount?: StringFieldUpdateOperationsInput | string
+    userPassword?: StringFieldUpdateOperationsInput | string
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpOpenId?: NullableStringFieldUpdateOperationsInput | string | null
+    userName?: NullableStringFieldUpdateOperationsInput | string | null
+    userAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    userProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: StringFieldUpdateOperationsInput | string
+    createTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDelete?: IntFieldUpdateOperationsInput | number
+    audio_file?: audio_fileUncheckedUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUncheckedUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUncheckedUpdateOneWithoutUserNestedInput
+    study_plan?: study_planUncheckedUpdateManyWithoutUserNestedInput
+    user_achievement?: user_achievementUncheckedUpdateManyWithoutUserNestedInput
+    user_config?: user_configUncheckedUpdateOneWithoutUserNestedInput
+    user_points?: user_pointsUncheckedUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type study_planCreateWithoutLearning_progressInput = {
+    id?: bigint | number
+    name: string
+    description?: string | null
+    target_words?: number
+    daily_words?: number
+    start_date?: Date | string | null
+    end_date?: Date | string | null
+    status?: string
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    user: userCreateNestedOneWithoutStudy_planInput
+    word_collection?: word_collectionCreateNestedManyWithoutStudy_planInput
+  }
+
+  export type study_planUncheckedCreateWithoutLearning_progressInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    name: string
+    description?: string | null
+    target_words?: number
+    daily_words?: number
+    start_date?: Date | string | null
+    end_date?: Date | string | null
+    status?: string
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    word_collection?: word_collectionUncheckedCreateNestedManyWithoutStudy_planInput
+  }
+
+  export type study_planCreateOrConnectWithoutLearning_progressInput = {
+    where: study_planWhereUniqueInput
+    create: XOR<study_planCreateWithoutLearning_progressInput, study_planUncheckedCreateWithoutLearning_progressInput>
+  }
+
+  export type userCreateWithoutLearning_progressInput = {
+    id?: bigint | number
+    userAccount: string
+    userPassword: string
+    unionId?: string | null
+    mpOpenId?: string | null
+    userName?: string | null
+    userAvatar?: string | null
+    userProfile?: string | null
+    userRole?: string
+    createTime?: Date | string
+    updateTime?: Date | string
+    isDelete?: number
+    audio_file?: audio_fileCreateNestedManyWithoutUserInput
+    game_record?: game_recordCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsCreateNestedOneWithoutUserInput
+    study_plan?: study_planCreateNestedManyWithoutUserInput
+    user_achievement?: user_achievementCreateNestedManyWithoutUserInput
+    user_config?: user_configCreateNestedOneWithoutUserInput
+    user_points?: user_pointsCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionCreateNestedManyWithoutUserInput
+  }
+
+  export type userUncheckedCreateWithoutLearning_progressInput = {
+    id?: bigint | number
+    userAccount: string
+    userPassword: string
+    unionId?: string | null
+    mpOpenId?: string | null
+    userName?: string | null
+    userAvatar?: string | null
+    userProfile?: string | null
+    userRole?: string
+    createTime?: Date | string
+    updateTime?: Date | string
+    isDelete?: number
+    audio_file?: audio_fileUncheckedCreateNestedManyWithoutUserInput
+    game_record?: game_recordUncheckedCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsUncheckedCreateNestedOneWithoutUserInput
+    study_plan?: study_planUncheckedCreateNestedManyWithoutUserInput
+    user_achievement?: user_achievementUncheckedCreateNestedManyWithoutUserInput
+    user_config?: user_configUncheckedCreateNestedOneWithoutUserInput
+    user_points?: user_pointsUncheckedCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type userCreateOrConnectWithoutLearning_progressInput = {
+    where: userWhereUniqueInput
+    create: XOR<userCreateWithoutLearning_progressInput, userUncheckedCreateWithoutLearning_progressInput>
+  }
+
+  export type english_wordCreateWithoutLearning_progressInput = {
+    id: bigint | number
+    word_head?: string | null
+    thumbnail?: string | null
+    info?: NullableJsonNullValueInput | InputJsonValue
+    create_time?: Date | string | null
+    update_time?: Date | string | null
+    is_delete?: boolean | null
+    status?: string | null
+    manual_score?: number | null
+    ai_score?: number | null
+    reviewer?: bigint | number | null
+    collection_word?: collection_wordCreateNestedManyWithoutEnglish_wordInput
+    dictionary_word?: dictionary_wordCreateNestedManyWithoutEnglish_wordInput
+    english_word_change_log?: english_word_change_logCreateNestedManyWithoutEnglish_wordInput
+    media_creator?: media_creatorCreateNestedManyWithoutEnglish_wordInput
+  }
+
+  export type english_wordUncheckedCreateWithoutLearning_progressInput = {
+    id: bigint | number
+    word_head?: string | null
+    thumbnail?: string | null
+    info?: NullableJsonNullValueInput | InputJsonValue
+    create_time?: Date | string | null
+    update_time?: Date | string | null
+    is_delete?: boolean | null
+    status?: string | null
+    manual_score?: number | null
+    ai_score?: number | null
+    reviewer?: bigint | number | null
+    collection_word?: collection_wordUncheckedCreateNestedManyWithoutEnglish_wordInput
+    dictionary_word?: dictionary_wordUncheckedCreateNestedManyWithoutEnglish_wordInput
+    english_word_change_log?: english_word_change_logUncheckedCreateNestedManyWithoutEnglish_wordInput
+    media_creator?: media_creatorUncheckedCreateNestedManyWithoutEnglish_wordInput
+  }
+
+  export type english_wordCreateOrConnectWithoutLearning_progressInput = {
+    where: english_wordWhereUniqueInput
+    create: XOR<english_wordCreateWithoutLearning_progressInput, english_wordUncheckedCreateWithoutLearning_progressInput>
+  }
+
+  export type study_planUpsertWithoutLearning_progressInput = {
+    update: XOR<study_planUpdateWithoutLearning_progressInput, study_planUncheckedUpdateWithoutLearning_progressInput>
+    create: XOR<study_planCreateWithoutLearning_progressInput, study_planUncheckedCreateWithoutLearning_progressInput>
+    where?: study_planWhereInput
+  }
+
+  export type study_planUpdateToOneWithWhereWithoutLearning_progressInput = {
+    where?: study_planWhereInput
+    data: XOR<study_planUpdateWithoutLearning_progressInput, study_planUncheckedUpdateWithoutLearning_progressInput>
+  }
+
+  export type study_planUpdateWithoutLearning_progressInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    target_words?: IntFieldUpdateOperationsInput | number
+    daily_words?: IntFieldUpdateOperationsInput | number
+    start_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    user?: userUpdateOneRequiredWithoutStudy_planNestedInput
+    word_collection?: word_collectionUpdateManyWithoutStudy_planNestedInput
+  }
+
+  export type study_planUncheckedUpdateWithoutLearning_progressInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    target_words?: IntFieldUpdateOperationsInput | number
+    daily_words?: IntFieldUpdateOperationsInput | number
+    start_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    word_collection?: word_collectionUncheckedUpdateManyWithoutStudy_planNestedInput
+  }
+
+  export type userUpsertWithoutLearning_progressInput = {
+    update: XOR<userUpdateWithoutLearning_progressInput, userUncheckedUpdateWithoutLearning_progressInput>
+    create: XOR<userCreateWithoutLearning_progressInput, userUncheckedCreateWithoutLearning_progressInput>
+    where?: userWhereInput
+  }
+
+  export type userUpdateToOneWithWhereWithoutLearning_progressInput = {
+    where?: userWhereInput
+    data: XOR<userUpdateWithoutLearning_progressInput, userUncheckedUpdateWithoutLearning_progressInput>
+  }
+
+  export type userUpdateWithoutLearning_progressInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    userAccount?: StringFieldUpdateOperationsInput | string
+    userPassword?: StringFieldUpdateOperationsInput | string
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpOpenId?: NullableStringFieldUpdateOperationsInput | string | null
+    userName?: NullableStringFieldUpdateOperationsInput | string | null
+    userAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    userProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: StringFieldUpdateOperationsInput | string
+    createTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDelete?: IntFieldUpdateOperationsInput | number
+    audio_file?: audio_fileUpdateManyWithoutUserNestedInput
+    game_record?: game_recordUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUpdateOneWithoutUserNestedInput
+    study_plan?: study_planUpdateManyWithoutUserNestedInput
+    user_achievement?: user_achievementUpdateManyWithoutUserNestedInput
+    user_config?: user_configUpdateOneWithoutUserNestedInput
+    user_points?: user_pointsUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUpdateManyWithoutUserNestedInput
+  }
+
+  export type userUncheckedUpdateWithoutLearning_progressInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    userAccount?: StringFieldUpdateOperationsInput | string
+    userPassword?: StringFieldUpdateOperationsInput | string
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpOpenId?: NullableStringFieldUpdateOperationsInput | string | null
+    userName?: NullableStringFieldUpdateOperationsInput | string | null
+    userAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    userProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: StringFieldUpdateOperationsInput | string
+    createTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDelete?: IntFieldUpdateOperationsInput | number
+    audio_file?: audio_fileUncheckedUpdateManyWithoutUserNestedInput
+    game_record?: game_recordUncheckedUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUncheckedUpdateOneWithoutUserNestedInput
+    study_plan?: study_planUncheckedUpdateManyWithoutUserNestedInput
+    user_achievement?: user_achievementUncheckedUpdateManyWithoutUserNestedInput
+    user_config?: user_configUncheckedUpdateOneWithoutUserNestedInput
+    user_points?: user_pointsUncheckedUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type english_wordUpsertWithoutLearning_progressInput = {
+    update: XOR<english_wordUpdateWithoutLearning_progressInput, english_wordUncheckedUpdateWithoutLearning_progressInput>
+    create: XOR<english_wordCreateWithoutLearning_progressInput, english_wordUncheckedCreateWithoutLearning_progressInput>
+    where?: english_wordWhereInput
+  }
+
+  export type english_wordUpdateToOneWithWhereWithoutLearning_progressInput = {
+    where?: english_wordWhereInput
+    data: XOR<english_wordUpdateWithoutLearning_progressInput, english_wordUncheckedUpdateWithoutLearning_progressInput>
+  }
+
+  export type english_wordUpdateWithoutLearning_progressInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    word_head?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    info?: NullableJsonNullValueInput | InputJsonValue
+    create_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    update_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    is_delete?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_score?: NullableIntFieldUpdateOperationsInput | number | null
+    ai_score?: NullableIntFieldUpdateOperationsInput | number | null
+    reviewer?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    collection_word?: collection_wordUpdateManyWithoutEnglish_wordNestedInput
+    dictionary_word?: dictionary_wordUpdateManyWithoutEnglish_wordNestedInput
+    english_word_change_log?: english_word_change_logUpdateManyWithoutEnglish_wordNestedInput
+    media_creator?: media_creatorUpdateManyWithoutEnglish_wordNestedInput
+  }
+
+  export type english_wordUncheckedUpdateWithoutLearning_progressInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    word_head?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    info?: NullableJsonNullValueInput | InputJsonValue
+    create_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    update_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    is_delete?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_score?: NullableIntFieldUpdateOperationsInput | number | null
+    ai_score?: NullableIntFieldUpdateOperationsInput | number | null
+    reviewer?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    collection_word?: collection_wordUncheckedUpdateManyWithoutEnglish_wordNestedInput
+    dictionary_word?: dictionary_wordUncheckedUpdateManyWithoutEnglish_wordNestedInput
+    english_word_change_log?: english_word_change_logUncheckedUpdateManyWithoutEnglish_wordNestedInput
+    media_creator?: media_creatorUncheckedUpdateManyWithoutEnglish_wordNestedInput
+  }
+
+  export type userCreateWithoutLearning_statsInput = {
+    id?: bigint | number
+    userAccount: string
+    userPassword: string
+    unionId?: string | null
+    mpOpenId?: string | null
+    userName?: string | null
+    userAvatar?: string | null
+    userProfile?: string | null
+    userRole?: string
+    createTime?: Date | string
+    updateTime?: Date | string
+    isDelete?: number
+    audio_file?: audio_fileCreateNestedManyWithoutUserInput
+    game_record?: game_recordCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressCreateNestedManyWithoutUserInput
+    study_plan?: study_planCreateNestedManyWithoutUserInput
+    user_achievement?: user_achievementCreateNestedManyWithoutUserInput
+    user_config?: user_configCreateNestedOneWithoutUserInput
+    user_points?: user_pointsCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionCreateNestedManyWithoutUserInput
+  }
+
+  export type userUncheckedCreateWithoutLearning_statsInput = {
+    id?: bigint | number
+    userAccount: string
+    userPassword: string
+    unionId?: string | null
+    mpOpenId?: string | null
+    userName?: string | null
+    userAvatar?: string | null
+    userProfile?: string | null
+    userRole?: string
+    createTime?: Date | string
+    updateTime?: Date | string
+    isDelete?: number
+    audio_file?: audio_fileUncheckedCreateNestedManyWithoutUserInput
+    game_record?: game_recordUncheckedCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressUncheckedCreateNestedManyWithoutUserInput
+    study_plan?: study_planUncheckedCreateNestedManyWithoutUserInput
+    user_achievement?: user_achievementUncheckedCreateNestedManyWithoutUserInput
+    user_config?: user_configUncheckedCreateNestedOneWithoutUserInput
+    user_points?: user_pointsUncheckedCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type userCreateOrConnectWithoutLearning_statsInput = {
+    where: userWhereUniqueInput
+    create: XOR<userCreateWithoutLearning_statsInput, userUncheckedCreateWithoutLearning_statsInput>
+  }
+
+  export type user_achievementCreateWithoutLearning_statsInput = {
+    id?: bigint | number
+    achieved_date?: Date | string
+    progress?: number | null
+    achievement: achievementCreateNestedOneWithoutUser_achievementInput
+    user: userCreateNestedOneWithoutUser_achievementInput
+  }
+
+  export type user_achievementUncheckedCreateWithoutLearning_statsInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    achievement_id: bigint | number
+    achieved_date?: Date | string
+    progress?: number | null
+  }
+
+  export type user_achievementCreateOrConnectWithoutLearning_statsInput = {
+    where: user_achievementWhereUniqueInput
+    create: XOR<user_achievementCreateWithoutLearning_statsInput, user_achievementUncheckedCreateWithoutLearning_statsInput>
+  }
+
+  export type user_achievementCreateManyLearning_statsInputEnvelope = {
+    data: user_achievementCreateManyLearning_statsInput | user_achievementCreateManyLearning_statsInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type userUpsertWithoutLearning_statsInput = {
+    update: XOR<userUpdateWithoutLearning_statsInput, userUncheckedUpdateWithoutLearning_statsInput>
+    create: XOR<userCreateWithoutLearning_statsInput, userUncheckedCreateWithoutLearning_statsInput>
+    where?: userWhereInput
+  }
+
+  export type userUpdateToOneWithWhereWithoutLearning_statsInput = {
+    where?: userWhereInput
+    data: XOR<userUpdateWithoutLearning_statsInput, userUncheckedUpdateWithoutLearning_statsInput>
+  }
+
+  export type userUpdateWithoutLearning_statsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    userAccount?: StringFieldUpdateOperationsInput | string
+    userPassword?: StringFieldUpdateOperationsInput | string
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpOpenId?: NullableStringFieldUpdateOperationsInput | string | null
+    userName?: NullableStringFieldUpdateOperationsInput | string | null
+    userAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    userProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: StringFieldUpdateOperationsInput | string
+    createTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDelete?: IntFieldUpdateOperationsInput | number
+    audio_file?: audio_fileUpdateManyWithoutUserNestedInput
+    game_record?: game_recordUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUpdateManyWithoutUserNestedInput
+    study_plan?: study_planUpdateManyWithoutUserNestedInput
+    user_achievement?: user_achievementUpdateManyWithoutUserNestedInput
+    user_config?: user_configUpdateOneWithoutUserNestedInput
+    user_points?: user_pointsUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUpdateManyWithoutUserNestedInput
+  }
+
+  export type userUncheckedUpdateWithoutLearning_statsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    userAccount?: StringFieldUpdateOperationsInput | string
+    userPassword?: StringFieldUpdateOperationsInput | string
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpOpenId?: NullableStringFieldUpdateOperationsInput | string | null
+    userName?: NullableStringFieldUpdateOperationsInput | string | null
+    userAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    userProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: StringFieldUpdateOperationsInput | string
+    createTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDelete?: IntFieldUpdateOperationsInput | number
+    audio_file?: audio_fileUncheckedUpdateManyWithoutUserNestedInput
+    game_record?: game_recordUncheckedUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUncheckedUpdateManyWithoutUserNestedInput
+    study_plan?: study_planUncheckedUpdateManyWithoutUserNestedInput
+    user_achievement?: user_achievementUncheckedUpdateManyWithoutUserNestedInput
+    user_config?: user_configUncheckedUpdateOneWithoutUserNestedInput
+    user_points?: user_pointsUncheckedUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type user_achievementUpsertWithWhereUniqueWithoutLearning_statsInput = {
+    where: user_achievementWhereUniqueInput
+    update: XOR<user_achievementUpdateWithoutLearning_statsInput, user_achievementUncheckedUpdateWithoutLearning_statsInput>
+    create: XOR<user_achievementCreateWithoutLearning_statsInput, user_achievementUncheckedCreateWithoutLearning_statsInput>
+  }
+
+  export type user_achievementUpdateWithWhereUniqueWithoutLearning_statsInput = {
+    where: user_achievementWhereUniqueInput
+    data: XOR<user_achievementUpdateWithoutLearning_statsInput, user_achievementUncheckedUpdateWithoutLearning_statsInput>
+  }
+
+  export type user_achievementUpdateManyWithWhereWithoutLearning_statsInput = {
+    where: user_achievementScalarWhereInput
+    data: XOR<user_achievementUpdateManyMutationInput, user_achievementUncheckedUpdateManyWithoutLearning_statsInput>
+  }
+
+  export type user_pointsCreateWithoutPoint_transactionInput = {
+    id?: bigint | number
+    total_points?: number
+    available_points?: number
+    level?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    user: userCreateNestedOneWithoutUser_pointsInput
+  }
+
+  export type user_pointsUncheckedCreateWithoutPoint_transactionInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    total_points?: number
+    available_points?: number
+    level?: number
+    created_at?: Date | string
+    update_time?: Date | string
+  }
+
+  export type user_pointsCreateOrConnectWithoutPoint_transactionInput = {
+    where: user_pointsWhereUniqueInput
+    create: XOR<user_pointsCreateWithoutPoint_transactionInput, user_pointsUncheckedCreateWithoutPoint_transactionInput>
+  }
+
+  export type user_pointsUpsertWithoutPoint_transactionInput = {
+    update: XOR<user_pointsUpdateWithoutPoint_transactionInput, user_pointsUncheckedUpdateWithoutPoint_transactionInput>
+    create: XOR<user_pointsCreateWithoutPoint_transactionInput, user_pointsUncheckedCreateWithoutPoint_transactionInput>
+    where?: user_pointsWhereInput
+  }
+
+  export type user_pointsUpdateToOneWithWhereWithoutPoint_transactionInput = {
+    where?: user_pointsWhereInput
+    data: XOR<user_pointsUpdateWithoutPoint_transactionInput, user_pointsUncheckedUpdateWithoutPoint_transactionInput>
+  }
+
+  export type user_pointsUpdateWithoutPoint_transactionInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    total_points?: IntFieldUpdateOperationsInput | number
+    available_points?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: userUpdateOneRequiredWithoutUser_pointsNestedInput
+  }
+
+  export type user_pointsUncheckedUpdateWithoutPoint_transactionInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    total_points?: IntFieldUpdateOperationsInput | number
+    available_points?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type learning_progressCreateWithoutStudy_planInput = {
+    id?: bigint | number
+    action_type: string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    source?: string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: number
+    start_time?: Date | string | null
+    end_time?: Date | string | null
+    user: userCreateNestedOneWithoutLearning_progressInput
+    english_word: english_wordCreateNestedOneWithoutLearning_progressInput
+  }
+
+  export type learning_progressUncheckedCreateWithoutStudy_planInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    word_id: bigint | number
+    action_type: string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    source?: string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: number
+    start_time?: Date | string | null
+    end_time?: Date | string | null
+  }
+
+  export type learning_progressCreateOrConnectWithoutStudy_planInput = {
+    where: learning_progressWhereUniqueInput
+    create: XOR<learning_progressCreateWithoutStudy_planInput, learning_progressUncheckedCreateWithoutStudy_planInput>
+  }
+
+  export type learning_progressCreateManyStudy_planInputEnvelope = {
+    data: learning_progressCreateManyStudy_planInput | learning_progressCreateManyStudy_planInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type userCreateWithoutStudy_planInput = {
+    id?: bigint | number
+    userAccount: string
+    userPassword: string
+    unionId?: string | null
+    mpOpenId?: string | null
+    userName?: string | null
+    userAvatar?: string | null
+    userProfile?: string | null
+    userRole?: string
+    createTime?: Date | string
+    updateTime?: Date | string
+    isDelete?: number
+    audio_file?: audio_fileCreateNestedManyWithoutUserInput
+    game_record?: game_recordCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsCreateNestedOneWithoutUserInput
+    user_achievement?: user_achievementCreateNestedManyWithoutUserInput
+    user_config?: user_configCreateNestedOneWithoutUserInput
+    user_points?: user_pointsCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionCreateNestedManyWithoutUserInput
+  }
+
+  export type userUncheckedCreateWithoutStudy_planInput = {
+    id?: bigint | number
+    userAccount: string
+    userPassword: string
+    unionId?: string | null
+    mpOpenId?: string | null
+    userName?: string | null
+    userAvatar?: string | null
+    userProfile?: string | null
+    userRole?: string
+    createTime?: Date | string
+    updateTime?: Date | string
+    isDelete?: number
+    audio_file?: audio_fileUncheckedCreateNestedManyWithoutUserInput
+    game_record?: game_recordUncheckedCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressUncheckedCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsUncheckedCreateNestedOneWithoutUserInput
+    user_achievement?: user_achievementUncheckedCreateNestedManyWithoutUserInput
+    user_config?: user_configUncheckedCreateNestedOneWithoutUserInput
+    user_points?: user_pointsUncheckedCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type userCreateOrConnectWithoutStudy_planInput = {
+    where: userWhereUniqueInput
+    create: XOR<userCreateWithoutStudy_planInput, userUncheckedCreateWithoutStudy_planInput>
+  }
+
+  export type word_collectionCreateWithoutStudy_planInput = {
+    id?: bigint | number
+    name: string
+    description?: string | null
+    is_public?: boolean
+    word_count?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    collection_word?: collection_wordCreateNestedManyWithoutWord_collectionInput
+    user: userCreateNestedOneWithoutWord_collectionInput
+  }
+
+  export type word_collectionUncheckedCreateWithoutStudy_planInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    name: string
+    description?: string | null
+    is_public?: boolean
+    word_count?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    collection_word?: collection_wordUncheckedCreateNestedManyWithoutWord_collectionInput
+  }
+
+  export type word_collectionCreateOrConnectWithoutStudy_planInput = {
+    where: word_collectionWhereUniqueInput
+    create: XOR<word_collectionCreateWithoutStudy_planInput, word_collectionUncheckedCreateWithoutStudy_planInput>
+  }
+
+  export type word_collectionCreateManyStudy_planInputEnvelope = {
+    data: word_collectionCreateManyStudy_planInput | word_collectionCreateManyStudy_planInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type learning_progressUpsertWithWhereUniqueWithoutStudy_planInput = {
+    where: learning_progressWhereUniqueInput
+    update: XOR<learning_progressUpdateWithoutStudy_planInput, learning_progressUncheckedUpdateWithoutStudy_planInput>
+    create: XOR<learning_progressCreateWithoutStudy_planInput, learning_progressUncheckedCreateWithoutStudy_planInput>
+  }
+
+  export type learning_progressUpdateWithWhereUniqueWithoutStudy_planInput = {
+    where: learning_progressWhereUniqueInput
+    data: XOR<learning_progressUpdateWithoutStudy_planInput, learning_progressUncheckedUpdateWithoutStudy_planInput>
+  }
+
+  export type learning_progressUpdateManyWithWhereWithoutStudy_planInput = {
+    where: learning_progressScalarWhereInput
+    data: XOR<learning_progressUpdateManyMutationInput, learning_progressUncheckedUpdateManyWithoutStudy_planInput>
+  }
+
+  export type userUpsertWithoutStudy_planInput = {
+    update: XOR<userUpdateWithoutStudy_planInput, userUncheckedUpdateWithoutStudy_planInput>
+    create: XOR<userCreateWithoutStudy_planInput, userUncheckedCreateWithoutStudy_planInput>
+    where?: userWhereInput
+  }
+
+  export type userUpdateToOneWithWhereWithoutStudy_planInput = {
+    where?: userWhereInput
+    data: XOR<userUpdateWithoutStudy_planInput, userUncheckedUpdateWithoutStudy_planInput>
+  }
+
+  export type userUpdateWithoutStudy_planInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    userAccount?: StringFieldUpdateOperationsInput | string
+    userPassword?: StringFieldUpdateOperationsInput | string
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpOpenId?: NullableStringFieldUpdateOperationsInput | string | null
+    userName?: NullableStringFieldUpdateOperationsInput | string | null
+    userAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    userProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: StringFieldUpdateOperationsInput | string
+    createTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDelete?: IntFieldUpdateOperationsInput | number
+    audio_file?: audio_fileUpdateManyWithoutUserNestedInput
+    game_record?: game_recordUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUpdateOneWithoutUserNestedInput
+    user_achievement?: user_achievementUpdateManyWithoutUserNestedInput
+    user_config?: user_configUpdateOneWithoutUserNestedInput
+    user_points?: user_pointsUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUpdateManyWithoutUserNestedInput
+  }
+
+  export type userUncheckedUpdateWithoutStudy_planInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    userAccount?: StringFieldUpdateOperationsInput | string
+    userPassword?: StringFieldUpdateOperationsInput | string
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpOpenId?: NullableStringFieldUpdateOperationsInput | string | null
+    userName?: NullableStringFieldUpdateOperationsInput | string | null
+    userAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    userProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: StringFieldUpdateOperationsInput | string
+    createTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDelete?: IntFieldUpdateOperationsInput | number
+    audio_file?: audio_fileUncheckedUpdateManyWithoutUserNestedInput
+    game_record?: game_recordUncheckedUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUncheckedUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUncheckedUpdateOneWithoutUserNestedInput
+    user_achievement?: user_achievementUncheckedUpdateManyWithoutUserNestedInput
+    user_config?: user_configUncheckedUpdateOneWithoutUserNestedInput
+    user_points?: user_pointsUncheckedUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type word_collectionUpsertWithWhereUniqueWithoutStudy_planInput = {
+    where: word_collectionWhereUniqueInput
+    update: XOR<word_collectionUpdateWithoutStudy_planInput, word_collectionUncheckedUpdateWithoutStudy_planInput>
+    create: XOR<word_collectionCreateWithoutStudy_planInput, word_collectionUncheckedCreateWithoutStudy_planInput>
+  }
+
+  export type word_collectionUpdateWithWhereUniqueWithoutStudy_planInput = {
+    where: word_collectionWhereUniqueInput
+    data: XOR<word_collectionUpdateWithoutStudy_planInput, word_collectionUncheckedUpdateWithoutStudy_planInput>
+  }
+
+  export type word_collectionUpdateManyWithWhereWithoutStudy_planInput = {
+    where: word_collectionScalarWhereInput
+    data: XOR<word_collectionUpdateManyMutationInput, word_collectionUncheckedUpdateManyWithoutStudy_planInput>
+  }
+
+  export type achievementCreateWithoutUser_achievementInput = {
+    id?: bigint | number
+    name: string
+    description: string
+    icon_url?: string | null
+    category: string
+    points?: number
+    requirements?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+  }
+
+  export type achievementUncheckedCreateWithoutUser_achievementInput = {
+    id?: bigint | number
+    name: string
+    description: string
+    icon_url?: string | null
+    category: string
+    points?: number
+    requirements?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+  }
+
+  export type achievementCreateOrConnectWithoutUser_achievementInput = {
+    where: achievementWhereUniqueInput
+    create: XOR<achievementCreateWithoutUser_achievementInput, achievementUncheckedCreateWithoutUser_achievementInput>
+  }
+
+  export type learning_statsCreateWithoutUser_achievementInput = {
+    id?: bigint | number
+    total_words_learned?: number
+    total_review_time?: number
+    daily_streak?: number
+    longest_streak?: number
+    last_study_date?: Date | string | null
+    total_study_days?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    user: userCreateNestedOneWithoutLearning_statsInput
+  }
+
+  export type learning_statsUncheckedCreateWithoutUser_achievementInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    total_words_learned?: number
+    total_review_time?: number
+    daily_streak?: number
+    longest_streak?: number
+    last_study_date?: Date | string | null
+    total_study_days?: number
+    created_at?: Date | string
+    update_time?: Date | string
+  }
+
+  export type learning_statsCreateOrConnectWithoutUser_achievementInput = {
+    where: learning_statsWhereUniqueInput
+    create: XOR<learning_statsCreateWithoutUser_achievementInput, learning_statsUncheckedCreateWithoutUser_achievementInput>
+  }
+
+  export type userCreateWithoutUser_achievementInput = {
+    id?: bigint | number
+    userAccount: string
+    userPassword: string
+    unionId?: string | null
+    mpOpenId?: string | null
+    userName?: string | null
+    userAvatar?: string | null
+    userProfile?: string | null
+    userRole?: string
+    createTime?: Date | string
+    updateTime?: Date | string
+    isDelete?: number
+    audio_file?: audio_fileCreateNestedManyWithoutUserInput
+    game_record?: game_recordCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsCreateNestedOneWithoutUserInput
+    study_plan?: study_planCreateNestedManyWithoutUserInput
+    user_config?: user_configCreateNestedOneWithoutUserInput
+    user_points?: user_pointsCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionCreateNestedManyWithoutUserInput
+  }
+
+  export type userUncheckedCreateWithoutUser_achievementInput = {
+    id?: bigint | number
+    userAccount: string
+    userPassword: string
+    unionId?: string | null
+    mpOpenId?: string | null
+    userName?: string | null
+    userAvatar?: string | null
+    userProfile?: string | null
+    userRole?: string
+    createTime?: Date | string
+    updateTime?: Date | string
+    isDelete?: number
+    audio_file?: audio_fileUncheckedCreateNestedManyWithoutUserInput
+    game_record?: game_recordUncheckedCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressUncheckedCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsUncheckedCreateNestedOneWithoutUserInput
+    study_plan?: study_planUncheckedCreateNestedManyWithoutUserInput
+    user_config?: user_configUncheckedCreateNestedOneWithoutUserInput
+    user_points?: user_pointsUncheckedCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type userCreateOrConnectWithoutUser_achievementInput = {
+    where: userWhereUniqueInput
+    create: XOR<userCreateWithoutUser_achievementInput, userUncheckedCreateWithoutUser_achievementInput>
+  }
+
+  export type achievementUpsertWithoutUser_achievementInput = {
+    update: XOR<achievementUpdateWithoutUser_achievementInput, achievementUncheckedUpdateWithoutUser_achievementInput>
+    create: XOR<achievementCreateWithoutUser_achievementInput, achievementUncheckedCreateWithoutUser_achievementInput>
+    where?: achievementWhereInput
+  }
+
+  export type achievementUpdateToOneWithWhereWithoutUser_achievementInput = {
+    where?: achievementWhereInput
+    data: XOR<achievementUpdateWithoutUser_achievementInput, achievementUncheckedUpdateWithoutUser_achievementInput>
+  }
+
+  export type achievementUpdateWithoutUser_achievementInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    icon_url?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    points?: IntFieldUpdateOperationsInput | number
+    requirements?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type achievementUncheckedUpdateWithoutUser_achievementInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    icon_url?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    points?: IntFieldUpdateOperationsInput | number
+    requirements?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type learning_statsUpsertWithoutUser_achievementInput = {
+    update: XOR<learning_statsUpdateWithoutUser_achievementInput, learning_statsUncheckedUpdateWithoutUser_achievementInput>
+    create: XOR<learning_statsCreateWithoutUser_achievementInput, learning_statsUncheckedCreateWithoutUser_achievementInput>
+    where?: learning_statsWhereInput
+  }
+
+  export type learning_statsUpdateToOneWithWhereWithoutUser_achievementInput = {
+    where?: learning_statsWhereInput
+    data: XOR<learning_statsUpdateWithoutUser_achievementInput, learning_statsUncheckedUpdateWithoutUser_achievementInput>
+  }
+
+  export type learning_statsUpdateWithoutUser_achievementInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    total_words_learned?: IntFieldUpdateOperationsInput | number
+    total_review_time?: IntFieldUpdateOperationsInput | number
+    daily_streak?: IntFieldUpdateOperationsInput | number
+    longest_streak?: IntFieldUpdateOperationsInput | number
+    last_study_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    total_study_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: userUpdateOneRequiredWithoutLearning_statsNestedInput
+  }
+
+  export type learning_statsUncheckedUpdateWithoutUser_achievementInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    total_words_learned?: IntFieldUpdateOperationsInput | number
+    total_review_time?: IntFieldUpdateOperationsInput | number
+    daily_streak?: IntFieldUpdateOperationsInput | number
+    longest_streak?: IntFieldUpdateOperationsInput | number
+    last_study_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    total_study_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type userUpsertWithoutUser_achievementInput = {
+    update: XOR<userUpdateWithoutUser_achievementInput, userUncheckedUpdateWithoutUser_achievementInput>
+    create: XOR<userCreateWithoutUser_achievementInput, userUncheckedCreateWithoutUser_achievementInput>
+    where?: userWhereInput
+  }
+
+  export type userUpdateToOneWithWhereWithoutUser_achievementInput = {
+    where?: userWhereInput
+    data: XOR<userUpdateWithoutUser_achievementInput, userUncheckedUpdateWithoutUser_achievementInput>
+  }
+
+  export type userUpdateWithoutUser_achievementInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    userAccount?: StringFieldUpdateOperationsInput | string
+    userPassword?: StringFieldUpdateOperationsInput | string
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpOpenId?: NullableStringFieldUpdateOperationsInput | string | null
+    userName?: NullableStringFieldUpdateOperationsInput | string | null
+    userAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    userProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: StringFieldUpdateOperationsInput | string
+    createTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDelete?: IntFieldUpdateOperationsInput | number
+    audio_file?: audio_fileUpdateManyWithoutUserNestedInput
+    game_record?: game_recordUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUpdateOneWithoutUserNestedInput
+    study_plan?: study_planUpdateManyWithoutUserNestedInput
+    user_config?: user_configUpdateOneWithoutUserNestedInput
+    user_points?: user_pointsUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUpdateManyWithoutUserNestedInput
+  }
+
+  export type userUncheckedUpdateWithoutUser_achievementInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    userAccount?: StringFieldUpdateOperationsInput | string
+    userPassword?: StringFieldUpdateOperationsInput | string
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpOpenId?: NullableStringFieldUpdateOperationsInput | string | null
+    userName?: NullableStringFieldUpdateOperationsInput | string | null
+    userAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    userProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: StringFieldUpdateOperationsInput | string
+    createTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDelete?: IntFieldUpdateOperationsInput | number
+    audio_file?: audio_fileUncheckedUpdateManyWithoutUserNestedInput
+    game_record?: game_recordUncheckedUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUncheckedUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUncheckedUpdateOneWithoutUserNestedInput
+    study_plan?: study_planUncheckedUpdateManyWithoutUserNestedInput
+    user_config?: user_configUncheckedUpdateOneWithoutUserNestedInput
+    user_points?: user_pointsUncheckedUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type point_transactionCreateWithoutUser_pointsInput = {
+    id?: bigint | number
+    amount: number
+    type: string
+    description?: string | null
+    reference_id?: string | null
+    created_at?: Date | string
+  }
+
+  export type point_transactionUncheckedCreateWithoutUser_pointsInput = {
+    id?: bigint | number
+    amount: number
+    type: string
+    description?: string | null
+    reference_id?: string | null
+    created_at?: Date | string
+  }
+
+  export type point_transactionCreateOrConnectWithoutUser_pointsInput = {
+    where: point_transactionWhereUniqueInput
+    create: XOR<point_transactionCreateWithoutUser_pointsInput, point_transactionUncheckedCreateWithoutUser_pointsInput>
+  }
+
+  export type point_transactionCreateManyUser_pointsInputEnvelope = {
+    data: point_transactionCreateManyUser_pointsInput | point_transactionCreateManyUser_pointsInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type userCreateWithoutUser_pointsInput = {
+    id?: bigint | number
+    userAccount: string
+    userPassword: string
+    unionId?: string | null
+    mpOpenId?: string | null
+    userName?: string | null
+    userAvatar?: string | null
+    userProfile?: string | null
+    userRole?: string
+    createTime?: Date | string
+    updateTime?: Date | string
+    isDelete?: number
+    audio_file?: audio_fileCreateNestedManyWithoutUserInput
+    game_record?: game_recordCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsCreateNestedOneWithoutUserInput
+    study_plan?: study_planCreateNestedManyWithoutUserInput
+    user_achievement?: user_achievementCreateNestedManyWithoutUserInput
+    user_config?: user_configCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionCreateNestedManyWithoutUserInput
+  }
+
+  export type userUncheckedCreateWithoutUser_pointsInput = {
+    id?: bigint | number
+    userAccount: string
+    userPassword: string
+    unionId?: string | null
+    mpOpenId?: string | null
+    userName?: string | null
+    userAvatar?: string | null
+    userProfile?: string | null
+    userRole?: string
+    createTime?: Date | string
+    updateTime?: Date | string
+    isDelete?: number
+    audio_file?: audio_fileUncheckedCreateNestedManyWithoutUserInput
+    game_record?: game_recordUncheckedCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressUncheckedCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsUncheckedCreateNestedOneWithoutUserInput
+    study_plan?: study_planUncheckedCreateNestedManyWithoutUserInput
+    user_achievement?: user_achievementUncheckedCreateNestedManyWithoutUserInput
+    user_config?: user_configUncheckedCreateNestedOneWithoutUserInput
+    word_collection?: word_collectionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type userCreateOrConnectWithoutUser_pointsInput = {
+    where: userWhereUniqueInput
+    create: XOR<userCreateWithoutUser_pointsInput, userUncheckedCreateWithoutUser_pointsInput>
+  }
+
+  export type point_transactionUpsertWithWhereUniqueWithoutUser_pointsInput = {
+    where: point_transactionWhereUniqueInput
+    update: XOR<point_transactionUpdateWithoutUser_pointsInput, point_transactionUncheckedUpdateWithoutUser_pointsInput>
+    create: XOR<point_transactionCreateWithoutUser_pointsInput, point_transactionUncheckedCreateWithoutUser_pointsInput>
+  }
+
+  export type point_transactionUpdateWithWhereUniqueWithoutUser_pointsInput = {
+    where: point_transactionWhereUniqueInput
+    data: XOR<point_transactionUpdateWithoutUser_pointsInput, point_transactionUncheckedUpdateWithoutUser_pointsInput>
+  }
+
+  export type point_transactionUpdateManyWithWhereWithoutUser_pointsInput = {
+    where: point_transactionScalarWhereInput
+    data: XOR<point_transactionUpdateManyMutationInput, point_transactionUncheckedUpdateManyWithoutUser_pointsInput>
+  }
+
+  export type point_transactionScalarWhereInput = {
+    AND?: point_transactionScalarWhereInput | point_transactionScalarWhereInput[]
+    OR?: point_transactionScalarWhereInput[]
+    NOT?: point_transactionScalarWhereInput | point_transactionScalarWhereInput[]
+    id?: BigIntFilter<"point_transaction"> | bigint | number
+    user_points_id?: BigIntFilter<"point_transaction"> | bigint | number
+    amount?: IntFilter<"point_transaction"> | number
+    type?: StringFilter<"point_transaction"> | string
+    description?: StringNullableFilter<"point_transaction"> | string | null
+    reference_id?: StringNullableFilter<"point_transaction"> | string | null
+    created_at?: DateTimeFilter<"point_transaction"> | Date | string
+  }
+
+  export type userUpsertWithoutUser_pointsInput = {
+    update: XOR<userUpdateWithoutUser_pointsInput, userUncheckedUpdateWithoutUser_pointsInput>
+    create: XOR<userCreateWithoutUser_pointsInput, userUncheckedCreateWithoutUser_pointsInput>
+    where?: userWhereInput
+  }
+
+  export type userUpdateToOneWithWhereWithoutUser_pointsInput = {
+    where?: userWhereInput
+    data: XOR<userUpdateWithoutUser_pointsInput, userUncheckedUpdateWithoutUser_pointsInput>
+  }
+
+  export type userUpdateWithoutUser_pointsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    userAccount?: StringFieldUpdateOperationsInput | string
+    userPassword?: StringFieldUpdateOperationsInput | string
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpOpenId?: NullableStringFieldUpdateOperationsInput | string | null
+    userName?: NullableStringFieldUpdateOperationsInput | string | null
+    userAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    userProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: StringFieldUpdateOperationsInput | string
+    createTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDelete?: IntFieldUpdateOperationsInput | number
+    audio_file?: audio_fileUpdateManyWithoutUserNestedInput
+    game_record?: game_recordUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUpdateOneWithoutUserNestedInput
+    study_plan?: study_planUpdateManyWithoutUserNestedInput
+    user_achievement?: user_achievementUpdateManyWithoutUserNestedInput
+    user_config?: user_configUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUpdateManyWithoutUserNestedInput
+  }
+
+  export type userUncheckedUpdateWithoutUser_pointsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    userAccount?: StringFieldUpdateOperationsInput | string
+    userPassword?: StringFieldUpdateOperationsInput | string
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpOpenId?: NullableStringFieldUpdateOperationsInput | string | null
+    userName?: NullableStringFieldUpdateOperationsInput | string | null
+    userAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    userProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: StringFieldUpdateOperationsInput | string
+    createTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDelete?: IntFieldUpdateOperationsInput | number
+    audio_file?: audio_fileUncheckedUpdateManyWithoutUserNestedInput
+    game_record?: game_recordUncheckedUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUncheckedUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUncheckedUpdateOneWithoutUserNestedInput
+    study_plan?: study_planUncheckedUpdateManyWithoutUserNestedInput
+    user_achievement?: user_achievementUncheckedUpdateManyWithoutUserNestedInput
+    user_config?: user_configUncheckedUpdateOneWithoutUserNestedInput
+    word_collection?: word_collectionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type collection_wordCreateWithoutWord_collectionInput = {
+    id?: bigint | number
+    added_time?: Date | string
+    sort_order?: number
+    note?: string | null
+    english_word: english_wordCreateNestedOneWithoutCollection_wordInput
+  }
+
+  export type collection_wordUncheckedCreateWithoutWord_collectionInput = {
+    id?: bigint | number
+    word_id: bigint | number
+    added_time?: Date | string
+    sort_order?: number
+    note?: string | null
+  }
+
+  export type collection_wordCreateOrConnectWithoutWord_collectionInput = {
+    where: collection_wordWhereUniqueInput
+    create: XOR<collection_wordCreateWithoutWord_collectionInput, collection_wordUncheckedCreateWithoutWord_collectionInput>
+  }
+
+  export type collection_wordCreateManyWord_collectionInputEnvelope = {
+    data: collection_wordCreateManyWord_collectionInput | collection_wordCreateManyWord_collectionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type study_planCreateWithoutWord_collectionInput = {
+    id?: bigint | number
+    name: string
+    description?: string | null
+    target_words?: number
+    daily_words?: number
+    start_date?: Date | string | null
+    end_date?: Date | string | null
+    status?: string
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    learning_progress?: learning_progressCreateNestedManyWithoutStudy_planInput
+    user: userCreateNestedOneWithoutStudy_planInput
+  }
+
+  export type study_planUncheckedCreateWithoutWord_collectionInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    name: string
+    description?: string | null
+    target_words?: number
+    daily_words?: number
+    start_date?: Date | string | null
+    end_date?: Date | string | null
+    status?: string
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    learning_progress?: learning_progressUncheckedCreateNestedManyWithoutStudy_planInput
+  }
+
+  export type study_planCreateOrConnectWithoutWord_collectionInput = {
+    where: study_planWhereUniqueInput
+    create: XOR<study_planCreateWithoutWord_collectionInput, study_planUncheckedCreateWithoutWord_collectionInput>
+  }
+
+  export type userCreateWithoutWord_collectionInput = {
+    id?: bigint | number
+    userAccount: string
+    userPassword: string
+    unionId?: string | null
+    mpOpenId?: string | null
+    userName?: string | null
+    userAvatar?: string | null
+    userProfile?: string | null
+    userRole?: string
+    createTime?: Date | string
+    updateTime?: Date | string
+    isDelete?: number
+    audio_file?: audio_fileCreateNestedManyWithoutUserInput
+    game_record?: game_recordCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsCreateNestedOneWithoutUserInput
+    study_plan?: study_planCreateNestedManyWithoutUserInput
+    user_achievement?: user_achievementCreateNestedManyWithoutUserInput
+    user_config?: user_configCreateNestedOneWithoutUserInput
+    user_points?: user_pointsCreateNestedOneWithoutUserInput
+  }
+
+  export type userUncheckedCreateWithoutWord_collectionInput = {
+    id?: bigint | number
+    userAccount: string
+    userPassword: string
+    unionId?: string | null
+    mpOpenId?: string | null
+    userName?: string | null
+    userAvatar?: string | null
+    userProfile?: string | null
+    userRole?: string
+    createTime?: Date | string
+    updateTime?: Date | string
+    isDelete?: number
+    audio_file?: audio_fileUncheckedCreateNestedManyWithoutUserInput
+    game_record?: game_recordUncheckedCreateNestedManyWithoutUserInput
+    learning_progress?: learning_progressUncheckedCreateNestedManyWithoutUserInput
+    learning_stats?: learning_statsUncheckedCreateNestedOneWithoutUserInput
+    study_plan?: study_planUncheckedCreateNestedManyWithoutUserInput
+    user_achievement?: user_achievementUncheckedCreateNestedManyWithoutUserInput
+    user_config?: user_configUncheckedCreateNestedOneWithoutUserInput
+    user_points?: user_pointsUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type userCreateOrConnectWithoutWord_collectionInput = {
+    where: userWhereUniqueInput
+    create: XOR<userCreateWithoutWord_collectionInput, userUncheckedCreateWithoutWord_collectionInput>
+  }
+
+  export type collection_wordUpsertWithWhereUniqueWithoutWord_collectionInput = {
+    where: collection_wordWhereUniqueInput
+    update: XOR<collection_wordUpdateWithoutWord_collectionInput, collection_wordUncheckedUpdateWithoutWord_collectionInput>
+    create: XOR<collection_wordCreateWithoutWord_collectionInput, collection_wordUncheckedCreateWithoutWord_collectionInput>
+  }
+
+  export type collection_wordUpdateWithWhereUniqueWithoutWord_collectionInput = {
+    where: collection_wordWhereUniqueInput
+    data: XOR<collection_wordUpdateWithoutWord_collectionInput, collection_wordUncheckedUpdateWithoutWord_collectionInput>
+  }
+
+  export type collection_wordUpdateManyWithWhereWithoutWord_collectionInput = {
+    where: collection_wordScalarWhereInput
+    data: XOR<collection_wordUpdateManyMutationInput, collection_wordUncheckedUpdateManyWithoutWord_collectionInput>
+  }
+
+  export type study_planUpsertWithoutWord_collectionInput = {
+    update: XOR<study_planUpdateWithoutWord_collectionInput, study_planUncheckedUpdateWithoutWord_collectionInput>
+    create: XOR<study_planCreateWithoutWord_collectionInput, study_planUncheckedCreateWithoutWord_collectionInput>
+    where?: study_planWhereInput
+  }
+
+  export type study_planUpdateToOneWithWhereWithoutWord_collectionInput = {
+    where?: study_planWhereInput
+    data: XOR<study_planUpdateWithoutWord_collectionInput, study_planUncheckedUpdateWithoutWord_collectionInput>
+  }
+
+  export type study_planUpdateWithoutWord_collectionInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    target_words?: IntFieldUpdateOperationsInput | number
+    daily_words?: IntFieldUpdateOperationsInput | number
+    start_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    learning_progress?: learning_progressUpdateManyWithoutStudy_planNestedInput
+    user?: userUpdateOneRequiredWithoutStudy_planNestedInput
+  }
+
+  export type study_planUncheckedUpdateWithoutWord_collectionInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    target_words?: IntFieldUpdateOperationsInput | number
+    daily_words?: IntFieldUpdateOperationsInput | number
+    start_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    learning_progress?: learning_progressUncheckedUpdateManyWithoutStudy_planNestedInput
+  }
+
+  export type userUpsertWithoutWord_collectionInput = {
+    update: XOR<userUpdateWithoutWord_collectionInput, userUncheckedUpdateWithoutWord_collectionInput>
+    create: XOR<userCreateWithoutWord_collectionInput, userUncheckedCreateWithoutWord_collectionInput>
+    where?: userWhereInput
+  }
+
+  export type userUpdateToOneWithWhereWithoutWord_collectionInput = {
+    where?: userWhereInput
+    data: XOR<userUpdateWithoutWord_collectionInput, userUncheckedUpdateWithoutWord_collectionInput>
+  }
+
+  export type userUpdateWithoutWord_collectionInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    userAccount?: StringFieldUpdateOperationsInput | string
+    userPassword?: StringFieldUpdateOperationsInput | string
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpOpenId?: NullableStringFieldUpdateOperationsInput | string | null
+    userName?: NullableStringFieldUpdateOperationsInput | string | null
+    userAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    userProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: StringFieldUpdateOperationsInput | string
+    createTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDelete?: IntFieldUpdateOperationsInput | number
+    audio_file?: audio_fileUpdateManyWithoutUserNestedInput
+    game_record?: game_recordUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUpdateOneWithoutUserNestedInput
+    study_plan?: study_planUpdateManyWithoutUserNestedInput
+    user_achievement?: user_achievementUpdateManyWithoutUserNestedInput
+    user_config?: user_configUpdateOneWithoutUserNestedInput
+    user_points?: user_pointsUpdateOneWithoutUserNestedInput
+  }
+
+  export type userUncheckedUpdateWithoutWord_collectionInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    userAccount?: StringFieldUpdateOperationsInput | string
+    userPassword?: StringFieldUpdateOperationsInput | string
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpOpenId?: NullableStringFieldUpdateOperationsInput | string | null
+    userName?: NullableStringFieldUpdateOperationsInput | string | null
+    userAvatar?: NullableStringFieldUpdateOperationsInput | string | null
+    userProfile?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: StringFieldUpdateOperationsInput | string
+    createTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDelete?: IntFieldUpdateOperationsInput | number
+    audio_file?: audio_fileUncheckedUpdateManyWithoutUserNestedInput
+    game_record?: game_recordUncheckedUpdateManyWithoutUserNestedInput
+    learning_progress?: learning_progressUncheckedUpdateManyWithoutUserNestedInput
+    learning_stats?: learning_statsUncheckedUpdateOneWithoutUserNestedInput
+    study_plan?: study_planUncheckedUpdateManyWithoutUserNestedInput
+    user_achievement?: user_achievementUncheckedUpdateManyWithoutUserNestedInput
+    user_config?: user_configUncheckedUpdateOneWithoutUserNestedInput
+    user_points?: user_pointsUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type dictionary_wordCreateManyEnglish_dictionaryInput = {
@@ -20988,6 +38667,14 @@ export namespace Prisma {
     id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   }
 
+  export type collection_wordCreateManyEnglish_wordInput = {
+    id?: bigint | number
+    collection_id: bigint | number
+    added_time?: Date | string
+    sort_order?: number
+    note?: string | null
+  }
+
   export type dictionary_wordCreateManyEnglish_wordInput = {
     dictionary_id: bigint | number
     created_at?: Date | string | null
@@ -21003,6 +38690,22 @@ export namespace Prisma {
     changed_by?: bigint | number | null
   }
 
+  export type learning_progressCreateManyEnglish_wordInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    action_type: string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    study_plan_id?: bigint | number | null
+    source?: string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: number
+    start_time?: Date | string | null
+    end_time?: Date | string | null
+  }
+
   export type media_creatorCreateManyEnglish_wordInput = {
     id?: bigint | number
     media_type: string
@@ -21010,6 +38713,30 @@ export namespace Prisma {
     creator_id?: bigint | number | null
     info?: string | null
     created_at?: Date | string | null
+  }
+
+  export type collection_wordUpdateWithoutEnglish_wordInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    added_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    sort_order?: IntFieldUpdateOperationsInput | number
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    word_collection?: word_collectionUpdateOneRequiredWithoutCollection_wordNestedInput
+  }
+
+  export type collection_wordUncheckedUpdateWithoutEnglish_wordInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    collection_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    added_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    sort_order?: IntFieldUpdateOperationsInput | number
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type collection_wordUncheckedUpdateManyWithoutEnglish_wordInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    collection_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    added_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    sort_order?: IntFieldUpdateOperationsInput | number
+    note?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type dictionary_wordUpdateWithoutEnglish_wordInput = {
@@ -21057,6 +38784,54 @@ export namespace Prisma {
     changed_by?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   }
 
+  export type learning_progressUpdateWithoutEnglish_wordInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    action_type?: StringFieldUpdateOperationsInput | string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: IntFieldUpdateOperationsInput | number
+    start_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    study_plan?: study_planUpdateOneWithoutLearning_progressNestedInput
+    user?: userUpdateOneRequiredWithoutLearning_progressNestedInput
+  }
+
+  export type learning_progressUncheckedUpdateWithoutEnglish_wordInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    action_type?: StringFieldUpdateOperationsInput | string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    study_plan_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: IntFieldUpdateOperationsInput | number
+    start_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type learning_progressUncheckedUpdateManyWithoutEnglish_wordInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    action_type?: StringFieldUpdateOperationsInput | string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    study_plan_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: IntFieldUpdateOperationsInput | number
+    start_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type media_creatorUpdateWithoutEnglish_wordInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     media_type?: StringFieldUpdateOperationsInput | string
@@ -21095,6 +38870,71 @@ export namespace Prisma {
     name?: string
   }
 
+  export type game_recordCreateManyUserInput = {
+    id?: bigint | number
+    game_type: string
+    score?: number
+    duration?: number
+    words_count?: number
+    correct_count?: number
+    wrong_count?: number
+    level?: number
+    game_data?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+  }
+
+  export type learning_progressCreateManyUserInput = {
+    id?: bigint | number
+    word_id: bigint | number
+    action_type: string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    study_plan_id?: bigint | number | null
+    source?: string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: number
+    start_time?: Date | string | null
+    end_time?: Date | string | null
+  }
+
+  export type study_planCreateManyUserInput = {
+    id?: bigint | number
+    name: string
+    description?: string | null
+    target_words?: number
+    daily_words?: number
+    start_date?: Date | string | null
+    end_date?: Date | string | null
+    status?: string
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+  }
+
+  export type user_achievementCreateManyUserInput = {
+    id?: bigint | number
+    achievement_id: bigint | number
+    achieved_date?: Date | string
+    progress?: number | null
+    learning_stats_id?: bigint | number | null
+  }
+
+  export type word_collectionCreateManyUserInput = {
+    id?: bigint | number
+    plan_id?: bigint | number | null
+    name: string
+    description?: string | null
+    is_public?: boolean
+    word_count?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+  }
+
   export type audio_fileUpdateWithoutUserInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     path?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21126,6 +38966,453 @@ export namespace Prisma {
     is_delete?: NullableIntFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type game_recordUpdateWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    game_type?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    duration?: IntFieldUpdateOperationsInput | number
+    words_count?: IntFieldUpdateOperationsInput | number
+    correct_count?: IntFieldUpdateOperationsInput | number
+    wrong_count?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    game_data?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type game_recordUncheckedUpdateWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    game_type?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    duration?: IntFieldUpdateOperationsInput | number
+    words_count?: IntFieldUpdateOperationsInput | number
+    correct_count?: IntFieldUpdateOperationsInput | number
+    wrong_count?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    game_data?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type game_recordUncheckedUpdateManyWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    game_type?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    duration?: IntFieldUpdateOperationsInput | number
+    words_count?: IntFieldUpdateOperationsInput | number
+    correct_count?: IntFieldUpdateOperationsInput | number
+    wrong_count?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    game_data?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type learning_progressUpdateWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    action_type?: StringFieldUpdateOperationsInput | string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: IntFieldUpdateOperationsInput | number
+    start_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    study_plan?: study_planUpdateOneWithoutLearning_progressNestedInput
+    english_word?: english_wordUpdateOneRequiredWithoutLearning_progressNestedInput
+  }
+
+  export type learning_progressUncheckedUpdateWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    word_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    action_type?: StringFieldUpdateOperationsInput | string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    study_plan_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: IntFieldUpdateOperationsInput | number
+    start_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type learning_progressUncheckedUpdateManyWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    word_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    action_type?: StringFieldUpdateOperationsInput | string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    study_plan_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: IntFieldUpdateOperationsInput | number
+    start_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type study_planUpdateWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    target_words?: IntFieldUpdateOperationsInput | number
+    daily_words?: IntFieldUpdateOperationsInput | number
+    start_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    learning_progress?: learning_progressUpdateManyWithoutStudy_planNestedInput
+    word_collection?: word_collectionUpdateManyWithoutStudy_planNestedInput
+  }
+
+  export type study_planUncheckedUpdateWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    target_words?: IntFieldUpdateOperationsInput | number
+    daily_words?: IntFieldUpdateOperationsInput | number
+    start_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    learning_progress?: learning_progressUncheckedUpdateManyWithoutStudy_planNestedInput
+    word_collection?: word_collectionUncheckedUpdateManyWithoutStudy_planNestedInput
+  }
+
+  export type study_planUncheckedUpdateManyWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    target_words?: IntFieldUpdateOperationsInput | number
+    daily_words?: IntFieldUpdateOperationsInput | number
+    start_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type user_achievementUpdateWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achieved_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: NullableIntFieldUpdateOperationsInput | number | null
+    achievement?: achievementUpdateOneRequiredWithoutUser_achievementNestedInput
+    learning_stats?: learning_statsUpdateOneWithoutUser_achievementNestedInput
+  }
+
+  export type user_achievementUncheckedUpdateWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achievement_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achieved_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: NullableIntFieldUpdateOperationsInput | number | null
+    learning_stats_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  }
+
+  export type user_achievementUncheckedUpdateManyWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achievement_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achieved_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: NullableIntFieldUpdateOperationsInput | number | null
+    learning_stats_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  }
+
+  export type word_collectionUpdateWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    is_public?: BoolFieldUpdateOperationsInput | boolean
+    word_count?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    collection_word?: collection_wordUpdateManyWithoutWord_collectionNestedInput
+    study_plan?: study_planUpdateOneWithoutWord_collectionNestedInput
+  }
+
+  export type word_collectionUncheckedUpdateWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    plan_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    is_public?: BoolFieldUpdateOperationsInput | boolean
+    word_count?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    collection_word?: collection_wordUncheckedUpdateManyWithoutWord_collectionNestedInput
+  }
+
+  export type word_collectionUncheckedUpdateManyWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    plan_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    is_public?: BoolFieldUpdateOperationsInput | boolean
+    word_count?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type user_achievementCreateManyAchievementInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    achieved_date?: Date | string
+    progress?: number | null
+    learning_stats_id?: bigint | number | null
+  }
+
+  export type user_achievementUpdateWithoutAchievementInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achieved_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: NullableIntFieldUpdateOperationsInput | number | null
+    learning_stats?: learning_statsUpdateOneWithoutUser_achievementNestedInput
+    user?: userUpdateOneRequiredWithoutUser_achievementNestedInput
+  }
+
+  export type user_achievementUncheckedUpdateWithoutAchievementInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achieved_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: NullableIntFieldUpdateOperationsInput | number | null
+    learning_stats_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  }
+
+  export type user_achievementUncheckedUpdateManyWithoutAchievementInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achieved_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: NullableIntFieldUpdateOperationsInput | number | null
+    learning_stats_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  }
+
+  export type user_achievementCreateManyLearning_statsInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    achievement_id: bigint | number
+    achieved_date?: Date | string
+    progress?: number | null
+  }
+
+  export type user_achievementUpdateWithoutLearning_statsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achieved_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: NullableIntFieldUpdateOperationsInput | number | null
+    achievement?: achievementUpdateOneRequiredWithoutUser_achievementNestedInput
+    user?: userUpdateOneRequiredWithoutUser_achievementNestedInput
+  }
+
+  export type user_achievementUncheckedUpdateWithoutLearning_statsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achievement_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achieved_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type user_achievementUncheckedUpdateManyWithoutLearning_statsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achievement_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    achieved_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type learning_progressCreateManyStudy_planInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    word_id: bigint | number
+    action_type: string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+    source?: string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: number
+    start_time?: Date | string | null
+    end_time?: Date | string | null
+  }
+
+  export type word_collectionCreateManyStudy_planInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    name: string
+    description?: string | null
+    is_public?: boolean
+    word_count?: number
+    created_at?: Date | string
+    update_time?: Date | string
+    is_delete?: number
+  }
+
+  export type learning_progressUpdateWithoutStudy_planInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    action_type?: StringFieldUpdateOperationsInput | string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: IntFieldUpdateOperationsInput | number
+    start_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: userUpdateOneRequiredWithoutLearning_progressNestedInput
+    english_word?: english_wordUpdateOneRequiredWithoutLearning_progressNestedInput
+  }
+
+  export type learning_progressUncheckedUpdateWithoutStudy_planInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    word_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    action_type?: StringFieldUpdateOperationsInput | string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: IntFieldUpdateOperationsInput | number
+    start_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type learning_progressUncheckedUpdateManyWithoutStudy_planInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    word_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    action_type?: StringFieldUpdateOperationsInput | string
+    learning_details?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    device_info?: NullableJsonNullValueInput | InputJsonValue
+    attempt_count?: IntFieldUpdateOperationsInput | number
+    start_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    end_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type word_collectionUpdateWithoutStudy_planInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    is_public?: BoolFieldUpdateOperationsInput | boolean
+    word_count?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    collection_word?: collection_wordUpdateManyWithoutWord_collectionNestedInput
+    user?: userUpdateOneRequiredWithoutWord_collectionNestedInput
+  }
+
+  export type word_collectionUncheckedUpdateWithoutStudy_planInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    is_public?: BoolFieldUpdateOperationsInput | boolean
+    word_count?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+    collection_word?: collection_wordUncheckedUpdateManyWithoutWord_collectionNestedInput
+  }
+
+  export type word_collectionUncheckedUpdateManyWithoutStudy_planInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    is_public?: BoolFieldUpdateOperationsInput | boolean
+    word_count?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    update_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_delete?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type point_transactionCreateManyUser_pointsInput = {
+    id?: bigint | number
+    amount: number
+    type: string
+    description?: string | null
+    reference_id?: string | null
+    created_at?: Date | string
+  }
+
+  export type point_transactionUpdateWithoutUser_pointsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    amount?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    reference_id?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type point_transactionUncheckedUpdateWithoutUser_pointsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    amount?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    reference_id?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type point_transactionUncheckedUpdateManyWithoutUser_pointsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    amount?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    reference_id?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type collection_wordCreateManyWord_collectionInput = {
+    id?: bigint | number
+    word_id: bigint | number
+    added_time?: Date | string
+    sort_order?: number
+    note?: string | null
+  }
+
+  export type collection_wordUpdateWithoutWord_collectionInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    added_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    sort_order?: IntFieldUpdateOperationsInput | number
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    english_word?: english_wordUpdateOneRequiredWithoutCollection_wordNestedInput
+  }
+
+  export type collection_wordUncheckedUpdateWithoutWord_collectionInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    word_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    added_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    sort_order?: IntFieldUpdateOperationsInput | number
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type collection_wordUncheckedUpdateManyWithoutWord_collectionInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    word_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    added_time?: DateTimeFieldUpdateOperationsInput | Date | string
+    sort_order?: IntFieldUpdateOperationsInput | number
+    note?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

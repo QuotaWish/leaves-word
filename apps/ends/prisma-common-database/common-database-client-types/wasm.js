@@ -270,6 +270,131 @@ exports.Prisma.Word_status_changeScalarFieldEnum = {
   is_delete: 'is_delete'
 };
 
+exports.Prisma.AchievementScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  icon_url: 'icon_url',
+  category: 'category',
+  points: 'points',
+  requirements: 'requirements',
+  created_at: 'created_at',
+  update_time: 'update_time',
+  is_delete: 'is_delete'
+};
+
+exports.Prisma.Collection_wordScalarFieldEnum = {
+  id: 'id',
+  collection_id: 'collection_id',
+  word_id: 'word_id',
+  added_time: 'added_time',
+  sort_order: 'sort_order',
+  note: 'note'
+};
+
+exports.Prisma.Game_recordScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  game_type: 'game_type',
+  score: 'score',
+  duration: 'duration',
+  words_count: 'words_count',
+  correct_count: 'correct_count',
+  wrong_count: 'wrong_count',
+  level: 'level',
+  game_data: 'game_data',
+  created_at: 'created_at',
+  update_time: 'update_time',
+  is_delete: 'is_delete'
+};
+
+exports.Prisma.Learning_progressScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  word_id: 'word_id',
+  action_type: 'action_type',
+  learning_details: 'learning_details',
+  created_at: 'created_at',
+  update_time: 'update_time',
+  is_delete: 'is_delete',
+  study_plan_id: 'study_plan_id',
+  source: 'source',
+  device_info: 'device_info',
+  attempt_count: 'attempt_count',
+  start_time: 'start_time',
+  end_time: 'end_time'
+};
+
+exports.Prisma.Learning_statsScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  total_words_learned: 'total_words_learned',
+  total_review_time: 'total_review_time',
+  daily_streak: 'daily_streak',
+  longest_streak: 'longest_streak',
+  last_study_date: 'last_study_date',
+  total_study_days: 'total_study_days',
+  created_at: 'created_at',
+  update_time: 'update_time'
+};
+
+exports.Prisma.Point_transactionScalarFieldEnum = {
+  id: 'id',
+  user_points_id: 'user_points_id',
+  amount: 'amount',
+  type: 'type',
+  description: 'description',
+  reference_id: 'reference_id',
+  created_at: 'created_at'
+};
+
+exports.Prisma.Study_planScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  name: 'name',
+  description: 'description',
+  target_words: 'target_words',
+  daily_words: 'daily_words',
+  start_date: 'start_date',
+  end_date: 'end_date',
+  status: 'status',
+  created_at: 'created_at',
+  update_time: 'update_time',
+  is_delete: 'is_delete'
+};
+
+exports.Prisma.User_achievementScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  achievement_id: 'achievement_id',
+  achieved_date: 'achieved_date',
+  progress: 'progress',
+  learning_stats_id: 'learning_stats_id'
+};
+
+exports.Prisma.User_pointsScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  total_points: 'total_points',
+  available_points: 'available_points',
+  level: 'level',
+  created_at: 'created_at',
+  update_time: 'update_time'
+};
+
+exports.Prisma.Word_collectionScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  plan_id: 'plan_id',
+  name: 'name',
+  description: 'description',
+  is_public: 'is_public',
+  word_count: 'word_count',
+  created_at: 'created_at',
+  update_time: 'update_time',
+  is_delete: 'is_delete'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -361,6 +486,43 @@ exports.Prisma.word_status_changeOrderByRelevanceFieldEnum = {
   comment: 'comment'
 };
 
+exports.Prisma.achievementOrderByRelevanceFieldEnum = {
+  name: 'name',
+  description: 'description',
+  icon_url: 'icon_url',
+  category: 'category'
+};
+
+exports.Prisma.collection_wordOrderByRelevanceFieldEnum = {
+  note: 'note'
+};
+
+exports.Prisma.game_recordOrderByRelevanceFieldEnum = {
+  game_type: 'game_type'
+};
+
+exports.Prisma.learning_progressOrderByRelevanceFieldEnum = {
+  action_type: 'action_type',
+  source: 'source'
+};
+
+exports.Prisma.point_transactionOrderByRelevanceFieldEnum = {
+  type: 'type',
+  description: 'description',
+  reference_id: 'reference_id'
+};
+
+exports.Prisma.study_planOrderByRelevanceFieldEnum = {
+  name: 'name',
+  description: 'description',
+  status: 'status'
+};
+
+exports.Prisma.word_collectionOrderByRelevanceFieldEnum = {
+  name: 'name',
+  description: 'description'
+};
+
 
 exports.Prisma.ModelName = {
   audio_file: 'audio_file',
@@ -376,7 +538,17 @@ exports.Prisma.ModelName = {
   post_thumb: 'post_thumb',
   user: 'user',
   user_config: 'user_config',
-  word_status_change: 'word_status_change'
+  word_status_change: 'word_status_change',
+  achievement: 'achievement',
+  collection_word: 'collection_word',
+  game_record: 'game_record',
+  learning_progress: 'learning_progress',
+  learning_stats: 'learning_stats',
+  point_transaction: 'point_transaction',
+  study_plan: 'study_plan',
+  user_achievement: 'user_achievement',
+  user_points: 'user_points',
+  word_collection: 'word_collection'
 };
 
 /**
