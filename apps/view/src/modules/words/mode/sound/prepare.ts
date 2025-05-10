@@ -113,8 +113,6 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     this.taskAmount = amo
     this.startTime = Date.now()
     this.wordStartTime = Date.now()
-
-    console.log(this)
   }
 
   async preloadWordData(word: ISoundWordItem) {
@@ -129,7 +127,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       example: {
         stage: SoundExampleStage.NONE,
         parts: [],
-        origin: '',
+        origin: word.word.data?.content.examplePhrases?.[0],
       },
     }
 

@@ -10,6 +10,7 @@ const props = defineProps<{
   max: number
   left: number
   input: string
+  hint: string
 }>()
 
 const emits = defineEmits<{
@@ -63,7 +64,7 @@ function handleKeydown(event: any) {
 <template>
   <RoutePage :class="[state]" :loading="loading" class="SoundWordModePage h-full">
     <template #header>
-      <SoundHeader :max="max" :left="left" @quit="emits('quit')">
+      <SoundHeader :hint="hint" :max="max" :left="left" @quit="emits('quit')">
         <template #badge>
           <slot name="badge" />
         </template>

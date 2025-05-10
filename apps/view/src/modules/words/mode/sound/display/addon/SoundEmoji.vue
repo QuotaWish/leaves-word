@@ -4,31 +4,6 @@ import { WordState } from "~/modules/words/mode/sound";
 defineProps<{
   wordState: WordState;
 }>();
-
-// 用于动态触发按键反馈
-const keyPressCount = ref(0);
-// 按键反馈函数
-function triggerKeyPress() {
-  keyPressCount.value++;
-}
-
-// 监听键盘事件
-onMounted(() => {
-  const handleKeyPress = (e: KeyboardEvent) => {
-    // 只响应正常的按键，不包括功能键和修饰键
-    if (!e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey &&
-      e.key.length === 1) {
-      triggerKeyPress();
-    }
-  };
-
-  window.addEventListener('keydown', handleKeyPress);
-
-  // 在组件销毁时解除监听
-  onUnmounted(() => {
-    window.removeEventListener('keydown', handleKeyPress);
-  });
-});
 </script>
 
 <template>

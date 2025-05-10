@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { SoundPrepareWord } from "..";
 import { type HTMLAudioSoundElement, useErrorAudio, useSuccessAudio, useWordSound } from "~/modules/words";
-import { SoundWordType, WordState } from "..";
+import { SoundExampleStage, SoundWordType, WordState } from "..";
 import { useLogger } from '../../../util';
 import SoundInput from './addon/SoundInput.vue';
 import SoundDisplayLayout from "./SoundDisplayLayout.vue";
@@ -76,6 +76,25 @@ const wordTypeLabel = computed(() => {
   return "";
 });
 
+const hint = computed(() => {
+  const word = currentWordItem.value
+  if (word.type === SoundWordType.DICTATION) {
+    return '听写模式 - 请输入您听到的单词';
+  }
+
+  if (word.type === SoundWordType.EXAMPLE) {
+    if (props.exampleStage === SoundExampleStage.PLUS_ONE) {
+      return '例句模式 - 第1阶段 (单词前置+目标单词)';
+    } else if (props.exampleStage === SoundExampleStage.PERCENT_WORD) {
+      return '例句模式 - 第2阶段 (部分例句+目标单词)';
+    } else if (props.exampleStage === SoundExampleStage.FULL_SENTENCE) {
+      return '例句模式 - 第3阶段 (完整例句)';
+    }
+  }
+
+  return ""
+})
+
 const correctAnswer = computed(() => {
   if (!prepareData.currentWord) {
     return "";
@@ -89,7 +108,7 @@ const correctAnswer = computed(() => {
   return prepareData.currentWord.word.word;
 });
 
-async function playAudio() {
+async function playAudio(content?: string) {
   if (!prepareData.currentWord || wordState.value === WordState.PLAYING) {
     return;
   }
@@ -100,7 +119,7 @@ async function playAudio() {
     lastAudio?.pause();
   }
 
-  lastAudio = await useWordSound(prepareData.currentWord.word.data!.word_head!);
+  lastAudio = await useWordSound(content ?? prepareData.currentWord.word.data!.word_head!);
 
   await lastAudio.waitForPlay();
 
@@ -198,10 +217,42 @@ async function checkAnswer() {
 
     (await useSuccessAudio()).play();
 
-    // 延迟进入下一个
+    // 成功之后 如果是 dictation 就启动例句模式
+    if (currentWord?.type === SoundWordType.EXAMPLE) {
+      if (currentWord.example.stage === SoundExampleStage.FULL_SENTENCE) {
+        setTimeout(() => {
+          nextData(true);
+        }, 800);
+        return
+      }
+
+      setTimeout(() => {
+        currentWord.example.stage = (currentWordItem.example.parts?.length <= 1 ? SoundExampleStage.FULL_SENTENCE : currentWord.example.stage + 1)
+
+        userInput.value = '';
+        wordState.value = WordState.WAITING;
+
+        playAudio(currentWord.example.parts[currentWord.example.stage]);
+      }, 1000);
+      return
+    }
+
+    if (!currentWord?.example?.origin) {
+      setTimeout(() => {
+        nextData(true);
+      }, 800);
+      return
+    }
+
     setTimeout(() => {
-      nextData(true);
-    }, 800);
+      currentWord.type = SoundWordType.EXAMPLE;
+      currentWord.example.stage = SoundExampleStage.PLUS_ONE
+
+      userInput.value = '';
+      wordState.value = WordState.WAITING;
+
+      playAudio(currentWord.example.parts[currentWord.example.stage]);
+    }, 1000);
   } else {
     // 错误
     wordState.value = WordState.ERROR;
@@ -217,15 +268,12 @@ async function checkAnswer() {
       userInput.value = '';
       wordState.value = WordState.WAITING;
 
-      if (currentWord?.type === SoundWordType.DICTATION) {
-        playAudio();
-      }
+      playAudio(currentWord?.type === SoundWordType.EXAMPLE ? currentWord.example.parts[currentWord.example.stage] : undefined);
     }, 1000);
   }
 }
 
 async function nextData(success: boolean) {
-  // 获取下一个单词数据
   const result = await prepareData.next(success);
 
   if (!result) {
@@ -238,7 +286,6 @@ async function nextData(success: boolean) {
 }
 
 function refreshData() {
-  // 更新当前单词数据
   Object.assign(prepareData, props.prepare);
   userInput.value = "";
   wordState.value = WordState.INIT;
@@ -261,12 +308,9 @@ function focusInput() {
   }, 100);
 }
 
-// 生命周期钩子
 onMounted(() => {
-  console.log("Word component mounted, currentWord:", prepareData.currentWord);
   if (prepareData.currentWord) {
     wordState.value = WordState.INIT;
-    console.log("Initial state set to INIT");
     setTimeout(() => {
       playAudio();
     }, 300);
@@ -275,8 +319,7 @@ onMounted(() => {
 
 watch(
   () => prepareData.currentWord,
-  (newWord, oldWord) => {
-    console.log("Watch triggered - New word:", newWord, "Old word:", oldWord);
+  (newWord) => {
     if (newWord) {
       userInput.value = "";
       wordState.value = WordState.INIT;
@@ -294,8 +337,9 @@ function handleQuit() {
 </script>
 
 <template>
-  <SoundDisplayLayout v-model:input="userInput" :max="prepare.taskAmount" :left="prepare.getLeftWords()"
-    :state="wordState" :loading="currentWordItem === null" @quit="handleQuit" @replay="playAudio">
+  <SoundDisplayLayout :hint="hint" v-model:input="userInput" :max="prepare.taskAmount" :left="prepare.getLeftWords()"
+    :state="wordState" :loading="currentWordItem === null" @quit="handleQuit"
+    @replay="playAudio(currentWordItem?.type === SoundWordType.EXAMPLE ? currentWordItem.example.parts[currentWordItem.example.stage] : undefined);">
     <template #badge>
       {{ wordTypeLabel }}
     </template>

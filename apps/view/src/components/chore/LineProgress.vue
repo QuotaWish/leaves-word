@@ -1,14 +1,17 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   plain?: boolean;
   progress: number;
+  min?: number;
 }>();
+
+const thisProgress = computed(() => Math.max(props.progress, props.min || 0))
 </script>
 
 <template>
-  <div :class="{ plain }" :style="`--p: ${progress * 100}%`" class="LineProgress">
+  <div :class="{ plain }" :style="`--p: ${thisProgress * 100}%`" class="LineProgress">
     <div class="LineProgress-Bg" />
-    <div v-if="progress" class="transition-cubic LineProgress-Inner" />
+    <div v-if="thisProgress" class="transition-cubic LineProgress-Inner" />
   </div>
 </template>
 

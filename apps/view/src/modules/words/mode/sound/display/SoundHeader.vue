@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import LineProgress from '~/components/chore/LineProgress.vue'
-import { globalPreference, useTargetData } from '~/modules/words'
+import { globalPreference } from '~/modules/words/core';
 import { SoundExampleStage, SoundWordType } from '~/modules/words/mode/sound'
 
 const props = defineProps<{
@@ -14,9 +14,7 @@ const props = defineProps<{
   // 模式相关
   wordType?: SoundWordType;
   exampleStage?: SoundExampleStage;
-
-  // 控制显示
-  showModeHint?: boolean;
+  hint: string;
 }>()
 
 const emits = defineEmits<{
@@ -24,40 +22,10 @@ const emits = defineEmits<{
 }>()
 
 const router = useRouter()
-const { targetDict } = useTargetData()
 
 function goDictionary() {
-  // 优先使用targetDict，如果不存在则使用globalPreference
-  const dictId = (targetDict.value as any)?.id || globalPreference.value.dict.data?.id
-  router.push(`/dictionary/${dictId}`)
+  router.push(`/dictionary/${globalPreference.value.dict.data?.id}`)
 }
-
-const dictName = computed(() => {
-  // 优先使用targetDict，如果不存在则使用globalPreference
-  return (targetDict.value as any)?.name || globalPreference.value.dict.data?.name
-})
-
-const modeHintText = computed(() => {
-  if (!props.showModeHint || !props.wordType) {
-    return '';
-  }
-
-  if (props.wordType === SoundWordType.DICTATION) {
-    return '听写模式 - 请输入您听到的单词';
-  }
-
-  if (props.wordType === SoundWordType.EXAMPLE) {
-    if (props.exampleStage === SoundExampleStage.PLUS_ONE) {
-      return '例句模式 - 第1阶段 (单词前置+目标单词)';
-    } else if (props.exampleStage === SoundExampleStage.PERCENT_WORD) {
-      return '例句模式 - 第2阶段 (部分例句+目标单词)';
-    } else if (props.exampleStage === SoundExampleStage.FULL_SENTENCE) {
-      return '例句模式 - 第3阶段 (完整例句)';
-    }
-  }
-
-  return '';
-});
 
 // 计算进度
 const progressValue = computed(() => {
@@ -80,28 +48,22 @@ const progressValue = computed(() => {
       <div flex items-center gap-2 class="SoundHeader-Left">
         <div cursor-pointer i-carbon:chevron-left class="back-btn" @click="emits('quit')" />
         <p class="SoundHeader-Title">
-          <span v-if="newlyWords !== undefined">需学习 {{ newlyWords }}</span>
-          <span v-else>需新学 {{ reviewWords !== undefined ? reviewWords : 0 }}</span>
+          <span v-if="max !== undefined">总量 {{ max }}</span>
           <span v-if="left !== undefined">剩余 {{ left }}</span>
-          <span v-else>需复习 {{ reviewWords !== undefined ? reviewWords : 0 }}</span>
         </p>
       </div>
 
-      <div class="SoundHeader-Info">
-        <slot name="badge" />
-      </div>
-
       <h1 flex items-center gap-2 text-sm op-75 @click="goDictionary">
-        <el-link class="dictionary-link">{{ dictName }}</el-link>
+        <el-link>{{ globalPreference.dict.data?.name }}</el-link>
       </h1>
     </div>
 
-    <div v-if="showModeHint && modeHintText" class="mode-hint-bar">
-      {{ modeHintText }}
+    <div class="SoundHeader-Progress">
+      <LineProgress :min="0.035" plain :progress="progressValue" />
     </div>
 
-    <div class="SoundHeader-Progress">
-      <LineProgress plain :progress="progressValue" />
+    <div v-if="hint" class="mode-hint-bar">
+      {{ hint }}
     </div>
   </div>
 </template>
@@ -128,18 +90,6 @@ const progressValue = computed(() => {
       }
     }
   }
-
-  &-Info {
-    // 徽章区域样式
-  }
-}
-
-.dictionary-link {
-  font-weight: 500;
-
-  &:hover {
-    text-decoration: underline;
-  }
 }
 
 .mode-hint-bar {
@@ -148,16 +98,10 @@ const progressValue = computed(() => {
   font-size: 14px;
   font-weight: 500;
   text-align: center;
-  border-radius: 0 0 12px 12px;
-  margin: 0 0 10px 0;
   position: relative;
   z-index: 5;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   animation: fadeIn 0.3s ease;
-}
-
-.dark .mode-hint-bar {
-  color: #121212;
 }
 
 @keyframes fadeIn {
