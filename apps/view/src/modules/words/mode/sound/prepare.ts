@@ -54,7 +54,7 @@ function splitExample(example: string, word: string): string[] {
   const index = words.indexOf(word)
 
   if (index === -1) {
-    return [example];
+    return [example, example, example];
   }
 
   const before = words.slice(Math.max(0, index - 1), index)
@@ -75,7 +75,7 @@ function splitExample(example: string, word: string): string[] {
   }
 
   if (beforeCount === 0 || afterCount === 0) {
-    return [splitOne(), example];
+    return [splitOne(), splitOne(), example];
   }
 
   function splitTwo() {

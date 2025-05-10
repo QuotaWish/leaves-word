@@ -19,7 +19,10 @@ const wordState = ref<WordState>(WordState.INIT);
 const userInput = ref("");
 const inputRef = ref<HTMLInputElement | null>(null);
 const prepareData = reactive(props.prepare);
-const showResult = ref(false); // 控制结果显示的动画
+const errorObj = reactive({
+  count: 0,
+  visible: false,
+})
 
 let lastAudio: HTMLAudioSoundElement | null = null;
 
@@ -77,17 +80,23 @@ const wordTypeLabel = computed(() => {
 });
 
 const hint = computed(() => {
+  if (wordState.value === WordState.CORRECT) {
+    return "success:回答正确"
+  } else if (wordState.value === WordState.ERROR) {
+    return "error:回答错误"
+  }
+
   const word = currentWordItem.value
-  if (word.type === SoundWordType.DICTATION) {
+  if (word?.type === SoundWordType.DICTATION) {
     return '听写模式 - 请输入您听到的单词';
   }
 
-  if (word.type === SoundWordType.EXAMPLE) {
-    if (props.exampleStage === SoundExampleStage.PLUS_ONE) {
+  if (word?.type === SoundWordType.EXAMPLE) {
+    if (word.example.stage === SoundExampleStage.PLUS_ONE) {
       return '例句模式 - 第1阶段 (单词前置+目标单词)';
-    } else if (props.exampleStage === SoundExampleStage.PERCENT_WORD) {
+    } else if (word.example.stage === SoundExampleStage.PERCENT_WORD) {
       return '例句模式 - 第2阶段 (部分例句+目标单词)';
-    } else if (props.exampleStage === SoundExampleStage.FULL_SENTENCE) {
+    } else if (word.example.stage === SoundExampleStage.FULL_SENTENCE) {
       return '例句模式 - 第3阶段 (完整例句)';
     }
   }
@@ -104,8 +113,7 @@ const correctAnswer = computed(() => {
     return prepareData.currentWord.word.word;
   }
 
-  // 简化的例句答案显示逻辑
-  return prepareData.currentWord.word.word;
+  return currentWordItem.value?.example.parts[currentWordItem.value.example.stage];
 });
 
 async function playAudio(content?: string) {
@@ -119,7 +127,12 @@ async function playAudio(content?: string) {
     lastAudio?.pause();
   }
 
-  lastAudio = await useWordSound(content ?? prepareData.currentWord.word.data!.word_head!);
+  try {
+    lastAudio = await useWordSound(content ?? prepareData.currentWord.word.data!.word_head!);
+  } catch () {
+    setTimeout(() => playAudio(content), 1200)
+    return
+  }
 
   await lastAudio.waitForPlay();
 
@@ -206,7 +219,7 @@ async function checkAnswer() {
     // 例句模式
     isCorrect = inputChecker.checkExampleInput(
       userInput.value,
-      "", // TODO
+      currentWord.example.parts[currentWord.example.stage],
     );
   } else {
     isCorrect = inputChecker.checkDictationInput(userInput.value);
@@ -214,6 +227,9 @@ async function checkAnswer() {
 
   if (isCorrect) {
     wordState.value = WordState.CORRECT;
+
+    errorObj.count = 0;
+    errorObj.visible = false;
 
     (await useSuccessAudio()).play();
 
@@ -227,7 +243,7 @@ async function checkAnswer() {
       }
 
       setTimeout(() => {
-        currentWord.example.stage = (currentWordItem.example.parts?.length <= 1 ? SoundExampleStage.FULL_SENTENCE : currentWord.example.stage + 1)
+        currentWord.example.stage = (currentWord.example.stage + 1)
 
         userInput.value = '';
         wordState.value = WordState.WAITING;
@@ -256,15 +272,16 @@ async function checkAnswer() {
   } else {
     // 错误
     wordState.value = WordState.ERROR;
-    // errorCount.value++;
+    errorObj.count++;
 
     (await useErrorAudio()).play();
 
-    // if (errorCount.value >= 2) {
-    //   showHint.value = true;
-    // }
+    if (errorObj.count >= 2) {
+      errorObj.visible = true;
+    }
 
     setTimeout(() => {
+      errorObj.visible = false;
       userInput.value = '';
       wordState.value = WordState.WAITING;
 
@@ -293,13 +310,6 @@ function refreshData() {
   setTimeout(() => {
     playAudio();
   }, 300);
-}
-
-function handleNext() {
-  showResult.value = false;
-  userInput.value = "";
-  wordState.value = WordState.INIT;
-  refreshData();
 }
 
 function focusInput() {
@@ -348,33 +358,23 @@ function handleQuit() {
       <SoundInput v-model:input="userInput" :origin="inputOrigin" :state="wordState" :type="currentWordItem?.type"
         :example-stage="currentWordItem?.example.stage" @check-input="checkAnswer" />
 
-      <!-- 结果显示区域 -->
-      <transition name="fade">
-        <div v-if="(wordState === 'correct' || wordState === 'error') && showResult" class="result-display" :class="{
-          'correct-display': wordState === 'correct',
-          'error-display': wordState === 'error',
-        }">
-          <div v-if="wordState === 'correct'" class="correct-result">
-            <span class="result-icon">✓</span>
-            <span class="result-text">正确!</span>
-          </div>
-          <div v-if="wordState === 'error'" class="error-result">
-            <span class="result-icon">✗</span>
-            <span class="result-text">正确答案: {{ correctAnswer }}</span>
-          </div>
-
-          <button class="next-btn" @click="handleNext">
-            <span class="next-icon">→</span>
-            <span>下一个</span>
-          </button>
+      <div :class="{ visible: errorObj.visible }" class="result-display transition-cubic">
+        <div class="flex flex-col w-full gap-1">
+          <p font-bold>正确答案</p>
+          <p>{{ correctAnswer }}</p>
         </div>
-      </transition>
+      </div>
     </div>
   </SoundDisplayLayout>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .result-display {
+  &.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
   margin-top: 20px;
   display: flex;
   flex-direction: column;
@@ -383,83 +383,12 @@ function handleQuit() {
   padding: 16px;
   border-radius: 12px;
   transition: all 0.3s;
-}
 
-.correct-display {
-  background-color: rgba(46, 204, 113, 0.1);
-  border: 1px solid rgba(46, 204, 113, 0.3);
-}
-
-.error-display {
+  color: #e74c3c;
   background-color: rgba(231, 76, 60, 0.1);
   border: 1px solid rgba(231, 76, 60, 0.3);
-}
 
-.correct-result,
-.error-result {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 18px;
-  font-weight: 500;
-}
-
-.correct-result {
-  color: #2ecc71;
-}
-
-.error-result {
-  color: #e74c3c;
-}
-
-.result-icon {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.next-btn {
-  background-color: #2ecc71;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 8px rgba(46, 204, 113, 0.2);
-}
-
-.next-btn:hover {
-  background-color: #27ae60;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(46, 204, 113, 0.3);
-}
-
-.next-icon {
-  font-size: 18px;
-}
-
-/* 过渡动画 */
-.fade-enter-active,
-.fade-leave-active {
-  transition:
-    opacity 0.3s,
-    transform 0.3s;
-}
-
-.fade-enter-from,
-.fade-leave-to {
   opacity: 0;
-  transform: translateY(10px);
-}
-
-.fade-enter-to,
-.fade-leave-from {
-  opacity: 1;
-  transform: translateY(0);
+  transform: scale(1.05);
 }
 </style>

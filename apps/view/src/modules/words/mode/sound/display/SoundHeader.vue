@@ -40,6 +40,26 @@ const progressValue = computed(() => {
 
   return 0;
 })
+
+const hintObj = computed(() => {
+  const hint = props.hint
+  if (hint.startsWith("success:")) {
+    return {
+      class: 'success',
+      content: hint.substring(8)
+    }
+  } else if (hint.startsWith("error:")) {
+    return {
+      class: 'error',
+      content: hint.substring(6)
+    }
+  }
+
+  return {
+    class: '',
+    content: hint
+  }
+})
 </script>
 
 <template>
@@ -62,8 +82,8 @@ const progressValue = computed(() => {
       <LineProgress :min="0.035" plain :progress="progressValue" />
     </div>
 
-    <div v-if="hint" class="mode-hint-bar">
-      {{ hint }}
+    <div :class="[hintObj.class]" v-if="hint" class="mode-hint-bar">
+      {{ hintObj.content }}
     </div>
   </div>
 </template>
@@ -93,7 +113,15 @@ const progressValue = computed(() => {
 }
 
 .mode-hint-bar {
-  background-color: var(--theme-primary, #4a6fa5);
+  &.success {
+    background-color: var(--el-color-success);
+  }
+
+  &.error {
+    background-color: var(--el-color-danger);
+  }
+
+  background-color: var(--theme-color-primary, #4a6fa5);
   padding: 8px 15px;
   font-size: 14px;
   font-weight: 500;

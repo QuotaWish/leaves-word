@@ -77,7 +77,7 @@ function handleKeydown(event: any) {
         <SoundEmoji :word-state="state" />
       </div>
 
-      <div class="SoundWordModePage-Content transition-cubic">
+      <div class="SoundWordModePage-Content w-full transition-cubic">
         <slot />
       </div>
 
@@ -135,6 +135,11 @@ function handleKeydown(event: any) {
     top: 50%;
 
     transform: translate(-50%, -50%) scale(2);
+    box-shadow: 0 0 32px 2px var(--theme-color-primary);
+  }
+
+  .SoundWordModePage.error & {
+    background-color: var(--el-color-danger);
   }
 
   z-index: 1000;
