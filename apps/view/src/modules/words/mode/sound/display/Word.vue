@@ -129,7 +129,7 @@ async function playAudio(content?: string) {
 
   try {
     lastAudio = await useWordSound(content ?? prepareData.currentWord.word.data!.word_head!);
-  } catch () {
+  } catch (_e) {
     setTimeout(() => playAudio(content), 1200)
     return
   }
