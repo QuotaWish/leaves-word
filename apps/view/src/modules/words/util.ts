@@ -1,14 +1,33 @@
+import type { WordContent } from '~/composables/api/types'
 import { $api } from '~/composables/api'
 import { WORDS_AUDIO } from './constants'
-import type { WordContent } from '~/composables/api/types'
+
+export interface HTMLAudioSoundElement extends HTMLAudioElement {
+  getTimer: () => number
+  waitForPlay: () => Promise<void>
+}
 
 export function useSound(url: string) {
-  const audio = new Audio()
+  const audio = new Audio() as HTMLAudioSoundElement
 
   audio.preload = 'auto'
   // audio.crossOrigin = 'anonymous'
 
-  return new Promise<HTMLAudioElement>((resolve, reject) => {
+  audio.getTimer = () => {
+    return audio.duration
+  }
+
+  audio.waitForPlay = () => {
+    return new Promise<void>((resolve) => {
+      audio.play()
+
+      audio.onended = () => {
+        resolve()
+      }
+    })
+  }
+
+  return new Promise<HTMLAudioSoundElement>((resolve, reject) => {
     const timeoutId = setTimeout(() => {
       console.warn(`Audio load timeout: ${url}`)
       reject(new Error(`Audio load timeout: ${url}`))
@@ -32,25 +51,25 @@ export function useSound(url: string) {
   })
 }
 
-export function useWordSound(word: string): Promise<HTMLAudioElement> {
+export function useWordSound(word: string): Promise<HTMLAudioSoundElement> {
   const url = $api.utils.getWordPronounce(word)
 
   return useSound(url)
 }
 
-export function useErrorAudio(): Promise<HTMLAudioElement> {
+export function useErrorAudio(): Promise<HTMLAudioSoundElement> {
   return useSound(WORDS_AUDIO.error)
 }
 
-export function useSuccessAudio(): Promise<HTMLAudioElement> {
+export function useSuccessAudio(): Promise<HTMLAudioSoundElement> {
   return useSound(WORDS_AUDIO.success)
 }
 
-export function useCherryTapAudio(): Promise<HTMLAudioElement> {
+export function useCherryTapAudio(): Promise<HTMLAudioSoundElement> {
   return useSound(WORDS_AUDIO.cherryTap)
 }
 
-export function useVictoryAudio(): Promise<HTMLAudioElement> {
+export function useVictoryAudio(): Promise<HTMLAudioSoundElement> {
   return useSound(WORDS_AUDIO.victory)
 }
 
@@ -211,4 +230,24 @@ export function transformDerivedType(type: string) {
     name: type,
     description: 'Unknown',
   }
+}
+
+export function useLogger(module: string) {
+  return {
+    log: (message: string, data?: any) => {
+      console.log(`%c[${module}] ${message}`, 'color: #2196F3; font-size: 12px;', data || '');
+    },
+    error: (message: string, data?: any) => {
+      console.log(`%c[${module}] ${message}`, 'color: #F44336; font-size: 12px;', data || '');
+    },
+    success: (message: string, data?: any) => {
+      console.log(`%c[${module}] ${message}`, 'color: #4CAF50; font-size: 12px;', data || '');
+    },
+    info: (message: string, data?: any) => {
+      console.log(`%c[${module}] ${message}`, 'color: #9C27B0; font-size: 12px;', data || '');
+    },
+    warn: (message: string, data?: any) => {
+      console.log(`%c[${module}] ${message}`, 'color: #FF9800; font-size: 12px;', data || '');
+    }
+  };
 }

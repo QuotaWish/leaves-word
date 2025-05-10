@@ -45,57 +45,6 @@ export enum WordState {
   FADE_IN = "fade-in", // 淡入状态
 }
 
-export interface IDisplayChar {
-  /**
-   * 字符
-   */
-  char: string;
-  /**
-   * 是否输入
-   */
-  isInput: boolean;
-  /**
-   * 是否光标
-   */
-  isCursor: boolean;
-  /**
-   * 是否正确
-   */
-  isCorrect: boolean;
-  /**
-   * 是否错误
-   */
-  isError: boolean;
-  /**
-   * 是否空
-   */
-  isEmpty: boolean;
-  /**
-   * 是否标点
-   */
-  isPunctuation: boolean;
-  /**
-   * 是否空格
-   */
-  isSpace: boolean;
-  /**
-   * 原始字符（用于显示在下划线上方）
-   */
-  originalChar?: string;
-  /**
-   * 是否显示原始字符
-   */
-  showOriginal?: boolean;
-  /**
-   * 是否显示下划线
-   */
-  showUnderline?: boolean;
-}
-
-export interface IDisplayText {
-  displayChars: IDisplayChar[];
-}
-
 /**
  * 例句分词功能
  *
@@ -434,7 +383,7 @@ export class SoundPrepareWord {
       detail.audioPlays = (detail.audioPlays || 0) + this.audioPlayCount;
 
       if (this.currentWord.type === SoundWordType.EXAMPLE &&
-          this.currentWord.exampleStage !== undefined) {
+        this.currentWord.exampleStage !== undefined) {
         detail.exampleStage = this.currentWord.exampleStage;
 
         if (!detail.exampleAttempts) {

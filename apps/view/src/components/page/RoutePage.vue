@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// import { UniEventAtBackButton, uniEventBus } from '~/composables/adapter/uniapp';
+import { UniEventAtBackButton, uniEventBus } from '~/composables/adapter/uniapp';
 
 withDefaults(defineProps<{
   adapt?: boolean
@@ -20,27 +20,29 @@ withDefaults(defineProps<{
 // onDeactivated(() => {
 //   visible.value = false
 // })
-// const router = useRouter()
-// const handleBackButton = (event: any) => {
-//   if (event !== UniEventAtBackButton) return
+const router = useRouter()
+function handleBackButton(event: any) {
+  if (event !== UniEventAtBackButton)
+    return
 
-//   console.log('handleBackButton')
+  console.log('handleBackButton')
 
-//   router.back()
-// }
+  router.back()
+}
 
-// onMounted(() => {
-//   uniEventBus.on(handleBackButton)
-// })
+onMounted(() => {
+  uniEventBus.on(handleBackButton)
+})
 
-// onBeforeUnmount(() => {
-//   uniEventBus.off(handleBackButton)
-// })
+onBeforeUnmount(() => {
+  uniEventBus.off(handleBackButton)
+})
 </script>
 
 <template>
   <!-- :class="{ visible }" -->
-  <WithPage :adapt="adapt" :class="{ pageLoading: loading }" class="RoutePage transition-cubic absolute-layout flex flex-col">
+  <WithPage :adapt="adapt" :class="{ pageLoading: loading }"
+    class="RoutePage transition-cubic absolute-layout flex flex-col">
     <div class="RoutePage-Header">
       <slot name="header" />
     </div>

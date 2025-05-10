@@ -23,13 +23,20 @@ defineProps<{
 .SplashSafeArea-Mock {
   .mock & {
     opacity: 1;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) translateY(1px);
   }
 
   .dark & {
     background-color: var(--el-fill-color-darker);
   }
 
+  &:active {
+    background-color: var(--el-fill-color);
+
+    transform: translate(-50%, -50%) translateY(1px) scaleX(0.75);
+  }
+
+  z-index: 1;
   position: absolute;
 
   top: 50%;
@@ -39,6 +46,7 @@ defineProps<{
   height: 5px;
 
   opacity: 0;
+  cursor: pointer;
   border-radius: 18px;
   // mix-blend-mode: difference;
   background-color: var(--el-text-color-primary);
@@ -47,11 +55,25 @@ defineProps<{
 
 /* 基本样式 */
 .SplashSafeArea {
+  &::after {
+    content: '';
+    position: absolute;
+
+    width: 100%;
+    height: calc(var(--safe-area-inset-bottom) + 2px);
+
+    left: 0;
+    bottom: -4px;
+
+    background-color: var(--el-bg-color);
+  }
+
   z-index: 100000;
   position: relative;
 
   /* padding-top: var(--safe-area-inset-top); */
   /* padding-bottom: var(--safe-area-inset-bottom); */
+  bottom: 0;
   height: var(--safe-area-inset-bottom);
 
   background-color: var(--el-bg-color);

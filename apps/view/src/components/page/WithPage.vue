@@ -1,13 +1,16 @@
 <script setup lang="ts">
-withDefaults(defineProps<{
-  adapt?: boolean
-}>(), {
-  adapt: true
-})
+withDefaults(
+  defineProps<{
+    adapt?: boolean;
+  }>(),
+  {
+    adapt: true,
+  }
+);
 </script>
 
 <template>
-  <div :class="{ 'adapt': adapt }" class="WithPage">
+  <div :class="{ adapt }" class="WithPage">
     <div class="WithPage-Background absolute-layout -z-1">
       <slot name="bg" />
     </div>

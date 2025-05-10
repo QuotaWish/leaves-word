@@ -79,8 +79,7 @@ const loading = computed(() => globalPreference.value.dict.loading)
     opacity: 0.05;
     --color: var(--theme-color);
     // background-color: #191a1a;
-    background-image: linear-gradient(
-        0deg,
+    background-image: linear-gradient(0deg,
         transparent 24%,
         var(--theme-color) 25%,
         var(--theme-color-dark) 26%,
@@ -89,10 +88,8 @@ const loading = computed(() => globalPreference.value.dict.loading)
         var(--theme-color) 75%,
         var(--theme-color-dark) 76%,
         transparent 77%,
-        transparent
-      ),
-      linear-gradient(
-        90deg,
+        transparent),
+      linear-gradient(90deg,
         transparent 24%,
         var(--color) 25%,
         var(--color) 26%,
@@ -101,8 +98,7 @@ const loading = computed(() => globalPreference.value.dict.loading)
         var(--color) 75%,
         var(--color) 76%,
         transparent 77%,
-        transparent
-      );
+        transparent);
     pointer-events: none;
     background-size: 55px 55px;
   }
@@ -142,7 +138,7 @@ const loading = computed(() => globalPreference.value.dict.loading)
   display: flex;
   left: 5%;
   width: 90%;
-  height: 410px;
+  height: 420px;
   flex-direction: column;
   justify-content: center;
   border-radius: 24px;
@@ -157,6 +153,7 @@ const loading = computed(() => globalPreference.value.dict.loading)
     border-radius: inherit;
     overflow: hidden;
   }
+
   user-select: none;
   border-radius: 25px;
 
@@ -176,6 +173,7 @@ const loading = computed(() => globalPreference.value.dict.loading)
   0% {
     background-position: 0 0;
   }
+
   100% {
     background-position: 100% 100%;
   }
@@ -202,8 +200,7 @@ const loading = computed(() => globalPreference.value.dict.loading)
       opacity: 0.25;
       --color: var(--theme-color);
       // background-color: #191a1a;
-      background-image: linear-gradient(
-          0deg,
+      background-image: linear-gradient(0deg,
           transparent 24%,
           var(--theme-color) 25%,
           var(--theme-color-dark) 26%,
@@ -212,10 +209,8 @@ const loading = computed(() => globalPreference.value.dict.loading)
           var(--theme-color) 75%,
           var(--theme-color-dark) 76%,
           transparent 77%,
-          transparent
-        ),
-        linear-gradient(
-          90deg,
+          transparent),
+        linear-gradient(90deg,
           transparent 24%,
           var(--color) 25%,
           var(--color) 26%,
@@ -224,8 +219,7 @@ const loading = computed(() => globalPreference.value.dict.loading)
           var(--color) 75%,
           var(--color) 76%,
           transparent 77%,
-          transparent
-        );
+          transparent);
       background-size: 55px 55px;
     }
   }
@@ -235,6 +229,6 @@ const loading = computed(() => globalPreference.value.dict.loading)
   position: relative;
   display: flex;
   width: 100%;
-  height: 130px;
+  height: 145px;
 }
 </style>

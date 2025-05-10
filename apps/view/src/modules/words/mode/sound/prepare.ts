@@ -1,11 +1,11 @@
 import type { Component } from 'vue'
-import type { ISoundWordItem, SoundMode } from '.'
-import { ExampleStage, SoundWordType } from '.'
-import { LeafPrepareSign } from '..'
-import { EnglishWordData, LeafWordData, calendarManager, globalPreference, useWordSound } from '../..'
 import type { DictionaryWordWithWordVO } from '~/composables/api/clients/globals'
-import Apis from '~/composables/api/clients'
 import { useRequest } from 'alova/client'
+import Apis from '~/composables/api/clients'
+import { type ISoundWordItem, SoundExampleStage, type SoundMode } from '.'
+import { SoundWordType } from '.'
+import { LeafPrepareSign } from '..'
+import { calendarManager, EnglishWordData, globalPreference, LeafWordData, useWordSound } from '../..'
 import SoundWord from './display/Word.vue'
 import { SoundStatistics } from './stat'
 
@@ -16,50 +16,84 @@ function logDebug(...args: any[]) {
 }
 
 export interface SoundWordDetail {
-  word: string // 单词
-  type: SoundWordType // 听写模式或例句模式
-  attempts: number // 尝试次数
-  isCorrect: boolean // 是否回答正确
-  timeSpent: number // 花费时间（毫秒）
+  word: string // 当前单词
+  type: SoundWordType // 听写类型（单词/例句）
+
+  // 尝试与表现
+  attempts: number // 总尝试次数
+  timeSpent: number // 总作答时间（毫秒）
+  isCorrect: boolean // 最终是否答对
   audioPlays: number // 音频播放次数
+  wrongHistory?: number[] // 错误时间戳（ms）
 
-  // 例句相关
-  exampleStage?: ExampleStage // 例句学习阶段
-  exampleAttempts?: number[] // 各阶段尝试次数
+  // 用户输入分析
+  userInputs?: string[] // 用户输入记录
+  editDistance?: number // 最后一次输入的编辑距离
 
-  // 错误分析
-  userInputs?: string[] // 用户输入历史
-  editDistance?: number // 与正确答案的编辑距离
+  // 例句学习记录（新结构）
+  exampleAttempts?: ExampleAttemptRecord[] // 每阶段的例句学习记录
 }
 
-export interface ISoundStatData {
-  // 基础统计
-  dictationWords: number // 听写的单词数量
-  exampleWords: number // 学习例句的单词数量
+export interface ExampleAttemptRecord {
+  stage: SoundExampleStage // 所处阶段（如：听音、填空、回忆）
+  attempts: number // 当前阶段的尝试次数
+  timeSpent?: number // 当前阶段的时间（可选）
+  isCorrect?: boolean // 当前阶段是否通过（可选）
+}
 
-  // 阶段统计
-  exampleStageStats: {
-    [key in ExampleStage]?: {
-      completed: number,
-      attempts: number,
+/**
+ * 例句学习拆分，自动将一段例句拆分
+ */
+function splitExample(example: string, word: string): string[] {
+  // 比如 "The cat sat on the mat" 其中单词是 cat
+  // 拆分为 主要单词 + 前/后 一个单词 即 对比单词前后哪个少就是哪个
+  // 比如 "The cat sat on the mat" 其中单词是 cat -> The cat sat on the mat
+  // 对比 "The cat sat on the mat" 和 "cat sat on the mat" 的编辑距离
+  // 然后将编辑距离最小的作为对比单词
+  const words = example.split(' ')
+  const index = words.indexOf(word)
+
+  if (index === -1) {
+    return [example];
+  }
+
+  const before = words.slice(Math.max(0, index - 1), index)
+  const after = words.slice(index + 1, Math.min(words.length, index + 2))
+
+  const beforeCount = before.length
+  const afterCount = after.length
+
+  function splitOne() {
+    // 拆分第一句话
+    // 对比 cat 前后的单词数量
+
+    if (beforeCount > afterCount) {
+      return `${before.join(' ')} ${word}`
+    } else {
+      return `${after.join(' ')} ${word}`
     }
   }
 
-  // 单词学习详情
-  wordsDetails: Array<SoundWordDetail>
+  if (beforeCount === 0 || afterCount === 0) {
+    return [splitOne(), example];
+  }
 
-  // 会话统计
-  sessionDuration: number // 整个学习会话持续时间
-  dictationDuration: number // 听写模式花费时间
-  exampleDuration: number // 例句模式花费时间
+  function splitTwo() {
+    // 拆分第二句话
 
-  audioPlayCount: number // 音频播放总次数
-  dictationCorrectRate: number // 听写正确率
-  exampleCorrectRate: number // 例句正确率
+    if (beforeCount <= afterCount) {
+      return [...before, word, ...words.slice(index + 1, afterCount * 0.7)].join(' ')
+    } else {
+      return [...words.slice(Math.max(0, index - 1), beforeCount * 0.7), word, ...after].join(' ')
+    }
+  }
 
-  // 错误分析
-  averageEditDistance: number // 平均编辑距离
+  return [splitOne(), splitTwo(), example]
 }
+
+// logDebug(splitExample('The cat sat on the mat', 'cat'))
+// logDebug(splitExample('The cat sat on the mat', 'mat'))
+// logDebug(splitExample('The cat sat on the mat', 'sat'))
 
 export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem, SoundStatistics> {
   wordsQueue: ISoundWordItem[] = []
@@ -80,14 +114,29 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     this.startTime = Date.now()
     this.wordStartTime = Date.now()
 
-    logDebug('Created with task amount:', this.taskAmount);
+    console.log(this)
   }
 
   async preloadWordData(word: ISoundWordItem) {
     const { word: mainWord } = word
     logDebug('Preloading word data for:', mainWord.word);
-    const res = await useWordSound(mainWord.word)
-    return res
+
+    const audioSound = await useWordSound(mainWord.word)
+
+    const obj: ISoundWordItem = {
+      word: mainWord,
+      type: SoundWordType.DICTATION,
+      example: {
+        stage: SoundExampleStage.NONE,
+        parts: [],
+        origin: '',
+      },
+    }
+
+    return {
+      obj,
+      audioSound,
+    }
   }
 
   async preload(callback: (progress: number) => void): Promise<boolean> {
@@ -98,7 +147,6 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
 
     logDebug('Starting preload, dictionary storage:', this.mode.dictionaryStorage);
 
-    logDebug('Fetching words from API with dict_id:', globalPreference.value.dict.id);
     try {
       const { send } = useRequest(() => Apis.EnglishWords.listEnglishWordByPageUsingPOST({
         data: {
@@ -108,7 +156,6 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       }));
 
       const { data } = await send();
-      logDebug('API response:', data);
 
       if (!data || !data.records || !data.records.length) {
         logDebug('No records found in API response');
@@ -144,9 +191,16 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
             break;
           }
 
+          const example = word.data?.content.examplePhrases?.[0]
+
           words.push({
             word,
             type: SoundWordType.DICTATION,
+            example: {
+              stage: SoundExampleStage.NONE,
+              parts: example?.sentence ? splitExample(example?.sentence, word.word) : [],
+              origin: example,
+            },
           });
 
           progress += 1;
@@ -214,7 +268,8 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       return false;
     }
 
-    if (!this.currentWord) {
+    const currentWord = this.currentWord
+    if (!currentWord) {
       throw new Error('当前单词不存在，无法获取下一个单词');
     }
 
@@ -222,51 +277,56 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     this.recordWordLearningData(success);
 
     // 添加到已显示单词
-    this.wordsDisplayed = [...new Set([...this.wordsDisplayed, this.currentWord.word.word])];
+    this.wordsDisplayed = [...new Set([...this.wordsDisplayed, currentWord.word.word])];
 
     // 如果当前是听写模式且回答正确，添加例句任务
-    if (success && this.currentWord.type === SoundWordType.DICTATION) {
+    if (success && currentWord.type === SoundWordType.DICTATION) {
       // 将单词添加到例句任务
       this.wordsQueue.push({
-        word: this.currentWord.word,
+        ...currentWord,
+        word: currentWord.word,
         type: SoundWordType.EXAMPLE,
-        exampleStage: ExampleStage.PLUS_ONE,
       });
-      logDebug('Added example task for word:', this.currentWord.word.word);
-    } else if (success && this.currentWord.type === SoundWordType.EXAMPLE) {
+      logDebug('Added example task for word:', currentWord.word.word);
+    } else if (success && currentWord.type === SoundWordType.EXAMPLE) {
       // 如果是例句模式并回答正确
-      const currentStage = this.currentWord.exampleStage || 0;
+      const currentStage = currentWord.example.stage || 0;
 
-      if (currentStage < ExampleStage.FULL_SENTENCE) {
+      if (currentStage < SoundExampleStage.FULL_SENTENCE) {
         // 如果还没完成所有阶段，添加下一阶段
         this.wordsQueue.push({
-          word: this.currentWord.word,
+          word: currentWord.word,
           type: SoundWordType.EXAMPLE,
-          exampleStage: currentStage + 1,
+          example: {
+            stage: currentStage + 1,
+            parts: currentWord.example.parts,
+            origin: currentWord.example.origin,
+          },
         });
-        logDebug('Added next example stage for word:', this.currentWord.word.word, 'new stage:', currentStage + 1);
+        logDebug('Added next example stage for word:', currentWord.word.word, 'new stage:', currentStage + 1);
       } else {
         // 所有阶段完成，记录为已学习
-        this.wordsFinished.push(this.currentWord.word);
-        this.mode.dictionaryStorage.setLearned(this.currentWord.word.word);
-        logDebug('Word completed all stages:', this.currentWord.word.word);
+        this.wordsFinished.push(currentWord.word);
+        this.mode.dictionaryStorage.setLearned(currentWord.word.word);
+        logDebug('Word completed all stages:', currentWord.word.word);
       }
     } else {
       // 回答错误，重新添加到队列
-      if (this.currentWord.type === SoundWordType.DICTATION) {
+      if (currentWord.type === SoundWordType.DICTATION) {
         this.wordsQueue.push({
-          word: this.currentWord.word,
+          ...currentWord,
+          word: currentWord.word,
           type: SoundWordType.DICTATION,
         });
-        logDebug('Word answered incorrectly, re-added for dictation:', this.currentWord.word.word);
+        logDebug('Word answered incorrectly, re-added for dictation:', currentWord.word.word);
       } else {
         // 例句错误，重新添加相同阶段
         this.wordsQueue.push({
-          word: this.currentWord.word,
+          ...currentWord,
+          word: currentWord.word,
           type: SoundWordType.EXAMPLE,
-          exampleStage: this.currentWord.exampleStage,
         });
-        logDebug('Example answered incorrectly, re-added for stage:', this.currentWord.exampleStage);
+        logDebug('Example answered incorrectly, re-added for stage:', currentWord.example);
       }
     }
 
@@ -363,10 +423,16 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
         userInputs: [],
       };
 
-      if (this.currentWord.type === SoundWordType.EXAMPLE && this.currentWord.exampleStage !== undefined) {
-        newDetail.exampleStage = this.currentWord.exampleStage;
+      if (this.currentWord.type === SoundWordType.EXAMPLE && this.currentWord.example?.stage !== undefined) {
+        // 初始化每个阶段的尝试记录
         newDetail.exampleAttempts = [];
-        newDetail.exampleAttempts[this.currentWord.exampleStage] = 1;
+        const stage = this.currentWord.example.stage;
+        newDetail.exampleAttempts[stage] = {
+          stage,
+          attempts: 1,
+          timeSpent,
+          isCorrect: success,
+        };
       }
 
       wordDetails.push(newDetail);
@@ -377,19 +443,22 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       detail.timeSpent += timeSpent;
       detail.audioPlays = (detail.audioPlays || 0) + this.audioPlayCount;
 
-      if (this.currentWord.type === SoundWordType.EXAMPLE &&
-        this.currentWord.exampleStage !== undefined) {
-        detail.exampleStage = this.currentWord.exampleStage;
-
+      if (this.currentWord.type === SoundWordType.EXAMPLE && this.currentWord.example?.stage !== undefined) {
+        const stage = this.currentWord.example.stage;
         if (!detail.exampleAttempts) {
           detail.exampleAttempts = [];
         }
-
-        const stageIndex = this.currentWord.exampleStage;
-        if (!detail.exampleAttempts[stageIndex]) {
-          detail.exampleAttempts[stageIndex] = 1;
+        if (!detail.exampleAttempts[stage]) {
+          detail.exampleAttempts[stage] = {
+            stage,
+            attempts: 1,
+            timeSpent,
+            isCorrect: success,
+          };
         } else {
-          detail.exampleAttempts[stageIndex]++;
+          detail.exampleAttempts[stage].attempts++;
+          detail.exampleAttempts[stage].timeSpent = (detail.exampleAttempts[stage].timeSpent || 0) + timeSpent;
+          detail.exampleAttempts[stage].isCorrect = success;
         }
       }
     }
@@ -407,16 +476,16 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     if (this.currentWord.type === SoundWordType.DICTATION) {
       stat.data.dictationWords = (stat.data.dictationWords || 0) + 1
     } else if (this.currentWord.type === SoundWordType.EXAMPLE) {
-      if (this.currentWord.exampleStage === ExampleStage.FULL_SENTENCE) {
+      if (this.currentWord.example.stage === SoundExampleStage.FULL_SENTENCE) {
         stat.data.exampleWords = (stat.data.exampleWords || 0) + 1
       }
 
-      if (this.currentWord.exampleStage !== undefined) {
+      if (this.currentWord.example.stage !== undefined) {
         if (!stat.data.exampleStageStats) {
           stat.data.exampleStageStats = {}
         }
 
-        const stage = this.currentWord.exampleStage
+        const stage = this.currentWord.example.stage
         const stats = stat.data.exampleStageStats
 
         if (!stats[stage]) {
@@ -435,7 +504,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
   }
 
   updateSessionStatistics(): void {
-    const details = this.statistics.data.wordsDetails || [];
+    const details = this.statistics?.data.wordsDetails || [];
     if (details.length === 0) {
       return;
     }
@@ -466,7 +535,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       }
     }
 
-    const stat = this.statistics;
+    const stat = this.statistics!;
     stat.data.sessionDuration = Date.now() - this.startTime;
     stat.data.dictationDuration = dictationDuration;
     stat.data.exampleDuration = exampleDuration;
@@ -474,5 +543,19 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
 
     stat.data.dictationCorrectRate = dictationTotal > 0 ? dictationCorrect / dictationTotal : 0;
     stat.data.exampleCorrectRate = exampleTotal > 0 ? exampleCorrect / exampleTotal : 0;
+  }
+
+  checkUserInput(input: string): boolean {
+    if (!this.currentWord)
+      return false;
+
+    if (this.currentWord.type === SoundWordType.DICTATION) {
+      const expected = this.currentWord.word.word.trim().toLowerCase();
+      const userInput = input.trim().toLowerCase();
+      return userInput === expected;
+    } else {
+      // TODO 例句匹配逻辑
+      return true;
+    }
   }
 }

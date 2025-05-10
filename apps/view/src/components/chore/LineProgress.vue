@@ -1,11 +1,12 @@
 <script setup lang="ts">
 defineProps<{
+  plain?: boolean;
   progress: number;
 }>();
 </script>
 
 <template>
-  <div :style="`--p: ${progress * 100}%`" class="LineProgress">
+  <div :class="{ plain }" :style="`--p: ${progress * 100}%`" class="LineProgress">
     <div class="LineProgress-Bg" />
     <div v-if="progress" class="transition-cubic LineProgress-Inner" />
   </div>
@@ -13,8 +14,12 @@ defineProps<{
 
 <style lang="scss">
 .LineProgress {
+  &.plain {
+    height: 4px;
+  }
+
   position: relative;
-  width: 90%;
+  width: 100%;
   height: 8px;
   // margin: 8px 0;
 
@@ -33,15 +38,13 @@ defineProps<{
     overflow: hidden;
 
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.05),
-        rgba(255, 255, 255, 0.2),
-        rgba(255, 255, 255, 0.05)
-      );
+      background: linear-gradient(90deg,
+          rgba(255, 255, 255, 0.05),
+          rgba(255, 255, 255, 0.2),
+          rgba(255, 255, 255, 0.05));
     }
   }
 
@@ -56,20 +59,15 @@ defineProps<{
     overflow: hidden;
 
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.3),
-        transparent
-      );
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
       animation: shimmer 2s linear infinite;
     }
 
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       top: 0;
       right: 0;
@@ -80,5 +78,9 @@ defineProps<{
       filter: blur(1px);
     }
   }
+}
+
+.LineProgress.plain .LineProgress-Inner {
+  border-radius: 2px;
 }
 </style>
