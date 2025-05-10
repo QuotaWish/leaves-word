@@ -1,11 +1,11 @@
 <script setup lang="ts">
 defineProps<{
-  gradient?: boolean
-}>()
+  gradient?: boolean;
+}>();
 </script>
 
 <template>
-  <section :class="{ 'with-gradient': gradient }">
+  <section class="LineArrow" :class="{ 'with-gradient': gradient }">
     <div class="leaf-decoration" />
     <div flex items-center gap-2 class="head">
       <div class="head-icon">
@@ -22,22 +22,40 @@ defineProps<{
 </template>
 
 <style lang="scss" scoped>
-section {
+section.LineArrow {
   position: relative;
+  display: flex;
+  padding: 0.25rem 1rem;
+
   width: 100%;
+  height: 52px;
   overflow: hidden;
   user-select: none;
 
+  justify-content: space-between;
+
+  border-radius: 16px;
+  background: var(--theme-color-light);
+  transition: all 0.3s ease;
+
   &:active {
-    background-color: var(--theme-color-dark);
+    transform: scale(0.95);
   }
 
   &.with-gradient {
-    background: linear-gradient(135deg, var(--theme-color-light), var(--theme-color-dark));
+    background: linear-gradient(
+      135deg,
+      var(--theme-color-light),
+      var(--theme-color-dark)
+    );
     color: white;
 
     .head-icon {
-      background: linear-gradient(135deg, var(--theme-color-primary), var(--theme-color-light));
+      background: linear-gradient(
+        135deg,
+        var(--theme-color-primary),
+        var(--theme-color-light)
+      );
       color: white;
     }
 
@@ -82,14 +100,6 @@ section {
     font-size: 14px;
     // color: #66bb6a;
     color: var(--theme-color-primary);
-
-    .arrow-icon {
-      transition: transform 0.3s ease;
-    }
-
-    &:hover .arrow-icon {
-      transform: translateX(4px);
-    }
   }
 
   .dark & {
