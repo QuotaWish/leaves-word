@@ -113,6 +113,8 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     this.taskAmount = amo
     this.startTime = Date.now()
     this.wordStartTime = Date.now()
+
+    console.log(this)
   }
 
   async preloadWordData(word: ISoundWordItem) {
@@ -277,36 +279,18 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     // 添加到已显示单词
     this.wordsDisplayed = [...new Set([...this.wordsDisplayed, currentWord.word.word])];
 
-    // 如果当前是听写模式且回答正确，添加例句任务
-    if (success && currentWord.type === SoundWordType.DICTATION) {
-      // 将单词添加到例句任务
-      this.wordsQueue.push({
-        ...currentWord,
-        word: currentWord.word,
-        type: SoundWordType.EXAMPLE,
-      });
-      logDebug('Added example task for word:', currentWord.word.word);
-    } else if (success && currentWord.type === SoundWordType.EXAMPLE) {
-      // 如果是例句模式并回答正确
-      const currentStage = currentWord.example.stage || 0;
+    if (success && currentWord.type === SoundWordType.EXAMPLE) {
+      // 所有阶段完成，记录为已学习
+      this.wordsFinished.push(currentWord.word);
 
-      if (currentStage < SoundExampleStage.FULL_SENTENCE) {
-        // 如果还没完成所有阶段，添加下一阶段
-        this.wordsQueue.push({
-          word: currentWord.word,
-          type: SoundWordType.EXAMPLE,
-          example: {
-            stage: currentStage + 1,
-            parts: currentWord.example.parts,
-            origin: currentWord.example.origin,
-          },
-        });
-        logDebug('Added next example stage for word:', currentWord.word.word, 'new stage:', currentStage + 1);
-      } else {
-        // 所有阶段完成，记录为已学习
-        this.wordsFinished.push(currentWord.word);
-        this.mode.dictionaryStorage.setLearned(currentWord.word.word);
-        logDebug('Word completed all stages:', currentWord.word.word);
+      this.mode.dictionaryStorage.setLearned(currentWord.word.word);
+      logDebug('Word completed all stages:', currentWord.word.word);
+
+      // 检查是否所有单词都已学习
+      if (this.wordsFinished.length === this.taskAmount) {
+        this.wordsQueue.length = 0
+        logDebug('All words completed, finishing...');
+        return false;
       }
     } else {
       // 回答错误，重新添加到队列
@@ -360,8 +344,8 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     }
 
     this.endTime = Date.now()
-    const duration = this.endTime - this.startTime
 
+    const duration = this.endTime - this.startTime
     const words = this.wordsFinished.map(i => i.word)
 
     if (!this.calendarData) {
@@ -376,6 +360,8 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     if (lastData) {
       lastData.statistics = this.statistics
     }
+
+    console.log(this.statistics, this.calendarData, this.calendarData.data)
 
     return true
   }

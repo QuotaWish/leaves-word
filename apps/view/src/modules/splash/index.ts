@@ -39,11 +39,10 @@ export const useGlobalSplashState = createGlobalState(
   },
 )
 
-
 /**
  * 如果是 Builder 需要发送加载事件
  */
-export const useBuilder = () => {
+export function useBuilder() {
   const isBuilder = ref(false)
 
   /**
@@ -78,6 +77,6 @@ export const useBuilder = () => {
   return {
     check,
     isBuilder,
-    sendLoadEvent
+    sendLoadEvent,
   }
 }
