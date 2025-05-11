@@ -149,7 +149,7 @@ function handleDirectPoster(banner: any) {
   .poster-image {
     width: 420px;
     height: 900px;
-    position: absolute; 
+    position: absolute;
     top: 50%;
     left: 18%;
     transform: translate(-52%, -54%);

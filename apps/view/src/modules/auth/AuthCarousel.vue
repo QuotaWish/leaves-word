@@ -127,7 +127,7 @@ onBeforeUnmount(() => {
         :class="{ active: index === currentSlide }" @click="goToSlide(index)"></button>
     </div>
 
-    <div class="carousel-controls">
+    <div v-if="false" class="carousel-controls">
       <button class="carousel-control prev" @click="prevSlide">&#10094;</button>
       <button class="carousel-control next" @click="nextSlide">&#10095;</button>
     </div>

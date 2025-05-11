@@ -21,13 +21,13 @@ async function handleEditNickname() {
         return true;
       }
     });
-    
+
     if (value && value !== globalAuthStorage.user?.userName) {
       // 创建一个新的用户对象来触发响应式更新
       const updatedUser = JSON.parse(JSON.stringify(globalAuthStorage.value.user || {}));
       updatedUser.userName = value;
       globalAuthStorage.value.user = updatedUser;
-      
+
       // 强制更新视图
       await nextTick();
       ElMessage.success('昵称修改成功');
@@ -55,9 +55,9 @@ function handleLogout() {
         <UserAvatar border-rounded size="64px" />
       </PageSettingsItem>
 
-      <PageSettingsItem 
-        title="昵称" 
-        desc="自定义昵称" 
+      <PageSettingsItem
+        title="昵称"
+        desc="自定义昵称"
         :show-arrow="true"
         @click="handleEditNickname"
       >
