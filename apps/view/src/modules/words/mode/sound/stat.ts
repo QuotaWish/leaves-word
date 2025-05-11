@@ -45,12 +45,27 @@ export class SoundStatistics extends Statistics<Partial<ISoundStatData>> {
       )
       Object.assign(this.data, statistics.data)
     } else if (mode) {
+      // 初始化默认统计数据
+      const defaultData: Partial<ISoundStatData> = {
+        dictationWords: 0,           // 听写的单词数量
+        exampleWords: 0,             // 学习例句的单词数量
+        exampleStageStats: {},       // 阶段统计
+        wordsDetails: [],            // 单词学习详情
+        sessionDuration: 0,          // 整个学习会话持续时间
+        dictationDuration: 0,        // 听写模式花费时间
+        exampleDuration: 0,          // 例句模式花费时间
+        audioPlayCount: 0,           // 音频播放总次数
+        dictationCorrectRate: 0,     // 听写正确率
+        exampleCorrectRate: 0,       // 例句正确率
+        averageEditDistance: 0       // 平均编辑距离
+      }
+
       super(
         mode.startTime,
         mode.endTime,
         mode.endTime - mode.startTime,
         ModeType.SOUND,
-        {},
+        defaultData,
       )
     } else {
       throw new Error('SoundStatistics constructor must be provided with either a mode or a statistics')

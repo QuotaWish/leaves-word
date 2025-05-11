@@ -142,6 +142,10 @@ function handleKeydown(event: any) {
     background-color: var(--el-color-danger);
   }
 
+  .SoundWordModePage.correct & {
+    background-color: var(--el-color-success);
+  }
+
   z-index: 1000;
   position: absolute;
   display: flex;

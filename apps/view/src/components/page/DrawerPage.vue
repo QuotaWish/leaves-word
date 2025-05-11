@@ -827,6 +827,7 @@ function handleMainAreaClick(e: MouseEvent) {
       }
 
       &::before {
+        z-index: -1;
         content: "";
         position: absolute;
         top: 0;
@@ -834,6 +835,7 @@ function handleMainAreaClick(e: MouseEvent) {
         width: 100%;
         height: 100%;
         opacity: 0.75;
+        pointer-events: none;
         background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
       }
 

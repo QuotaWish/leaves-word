@@ -207,6 +207,55 @@ function useInputChecker(prepareData: SoundPrepareWord) {
 
 const inputChecker = useInputChecker(props.prepare)
 
+// 创建一个函数记录当前学习详情
+function recordLearningDetails(isCorrect: boolean) {
+  const currentWord = currentWordItem.value;
+  if (!currentWord) return;
+
+  console.log('[Word.vue] 记录学习详情开始', {
+    word: currentWord.word.word,
+    type: currentWord.type,
+    isCorrect
+  });
+
+  // 记录音频播放次数
+  if (lastAudio) {
+    prepareData.recordAudioPlay();  // 记录音频播放
+  }
+
+  // 计算此次尝试的编辑距离（如果不正确）
+  let editDistance = 0;
+  if (!isCorrect && userInput.value) {
+    if (currentWord.type === SoundWordType.DICTATION) {
+      const target = currentWord.word.word.toLowerCase();
+      const input = userInput.value.toLowerCase();
+      // 简单计算编辑距离（可以进一步优化）
+      const maxLen = Math.max(target.length, input.length);
+      const minLen = Math.min(target.length, input.length);
+      let sameChars = 0;
+      for (let i = 0; i < minLen; i++) {
+        if (target[i] === input[i]) sameChars++;
+      }
+      editDistance = maxLen - sameChars;
+    }
+  }
+
+  // 记录用户输入
+  const userInputRecord = userInput.value;
+
+  const details = {
+    userInput: userInputRecord,
+    isCorrect,
+    errorCount: errorObj.count,
+    editDistance,
+  };
+
+  console.log('[Word.vue] 发送学习详情到 SoundPrepareWord', details);
+
+  // 在下一步前设置详细数据
+  prepareData.recordLearningDetails(details);
+}
+
 async function checkAnswer() {
   if (wordState.value !== WordState.WAITING || !prepareData.currentWord) {
     return;
@@ -232,6 +281,9 @@ async function checkAnswer() {
     errorObj.visible = false;
 
     (await useSuccessAudio()).play();
+
+    // 记录学习详情
+    recordLearningDetails(true);
 
     // 成功之后 如果是 dictation 就启动例句模式
     if (currentWord?.type === SoundWordType.EXAMPLE) {
@@ -274,6 +326,9 @@ async function checkAnswer() {
     wordState.value = WordState.ERROR;
     errorObj.count++;
 
+    // 记录学习详情（错误）
+    recordLearningDetails(false);
+
     (await useErrorAudio()).play();
 
     if (errorObj.count >= 2) {
@@ -291,6 +346,9 @@ async function checkAnswer() {
 }
 
 async function nextData(success: boolean) {
+  // 确保在调用next之前记录所有学习详情
+  recordLearningDetails(success);
+
   const result = await prepareData.next(success);
 
   if (!result) {

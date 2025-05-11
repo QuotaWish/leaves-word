@@ -1,4 +1,5 @@
 import type { Component } from 'vue'
+import { toRaw } from 'vue'
 import type { DictionaryWordWithWordVO } from '~/composables/api/clients/globals'
 import { useRequest } from 'alova/client'
 import Apis from '~/composables/api/clients'
@@ -104,7 +105,18 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
   wordStartTime = 0
 
   getStatistics() {
-    return new SoundStatistics(this)
+    // 如果已经存在统计对象，则返回它，否则创建新对象
+    if (!this.statistics) {
+      console.warn('[SoundPrepare] 创建新的统计对象');
+      this.statistics = new SoundStatistics(this);
+    } else {
+      console.warn('[SoundPrepare] 返回现有统计对象:', {
+        wordsDetailsLength: this.statistics.data.wordsDetails?.length || 0,
+        dictationWords: this.statistics.data.dictationWords || 0,
+        exampleWords: this.statistics.data.exampleWords || 0
+      });
+    }
+    return this.statistics;
   }
 
   onCreated(): void {
@@ -339,29 +351,93 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
   }
 
   async finish(): Promise<boolean> {
+    console.warn('[SoundPrepare] finish 开始:', {
+      wordsQueueLength: this.wordsQueue.length,
+      wordsFinishedLength: this.wordsFinished.length,
+      startTime: this.startTime,
+      currentEndTime: this.endTime,
+      currentStatistics: this.statistics
+    });
+
     if (this.wordsQueue.length) {
+      console.warn('[SoundPrepare] 单词队列非空，无法完成');
       return false
     }
 
+    // 设置结束时间
     this.endTime = Date.now()
+    console.warn('[SoundPrepare] 设置结束时间:', this.endTime);
+
+    // 重要：更新统计对象的结束时间和花费时间
+    if (this.statistics) {
+      this.statistics.endTime = this.endTime
+      this.statistics.cost = this.endTime - this.startTime
+      console.warn('[SoundPrepare] 更新统计对象时间:', {
+        endTime: this.statistics.endTime,
+        cost: this.statistics.cost
+      });
+
+      // 强制更新一次会话统计数据
+      this.updateSessionStatistics()
+    }
 
     const duration = this.endTime - this.startTime
     const words = this.wordsFinished.map(i => i.word)
+    console.warn('[SoundPrepare] 准备创建日历数据:', {
+      duration,
+      wordsCount: words.length
+    });
 
     if (!this.calendarData) {
       this.calendarData = calendarManager.createTodayData(words, duration, true)
+      console.warn('[SoundPrepare] 创建新的日历数据');
     } else {
       const [, , day] = calendarManager.getToday()
       this.calendarData.addDayData(day, this.calendarData.createSignData(words, duration, true))
       this.calendarData.signToday()
+      console.warn('[SoundPrepare] 更新现有日历数据');
+    }
+
+    // 创建统计数据的纯JavaScript对象副本，避免响应式引用问题
+    let statisticsData = null;
+    if (this.statistics) {
+      try {
+        // 首先尝试解除响应式转换，再进行深拷贝
+        const plainData = toRaw(this.statistics.data);
+        const plainStatistics = {
+          startTime: this.statistics.startTime,
+          endTime: this.statistics.endTime,
+          cost: this.statistics.cost,
+          type: this.statistics.type,
+          data: JSON.parse(JSON.stringify(plainData)) // 确保深拷贝
+        };
+
+        // 用纯JavaScript对象创建新的统计对象
+        statisticsData = new SoundStatistics(undefined, plainStatistics as any);
+        console.warn('[SoundPrepare] 创建纯JavaScript统计数据对象:', statisticsData);
+      } catch (e) {
+        console.error('[SoundPrepare] 创建统计数据副本出错:', e);
+        // 备选方案：使用原始构造函数
+        statisticsData = new SoundStatistics(undefined, this.statistics);
+      }
     }
 
     const lastData = this.calendarData.data.at(-1)
-    if (lastData) {
-      lastData.statistics = this.statistics
+    if (lastData && statisticsData) {
+      // 确保直接使用统计对象，而不是响应式引用
+      lastData.statistics = statisticsData
+      console.warn('[SoundPrepare] 将统计数据保存到日历中:', {
+        statisticsData,
+        dataDetails: statisticsData.data.wordsDetails?.length || 0,
+        dictationWords: statisticsData.data.dictationWords || 0
+      });
     }
 
-    console.log(this.statistics, this.calendarData, this.calendarData.data)
+    console.warn('[SoundPrepare] 完成，最终统计数据:', {
+      statistics: this.statistics,
+      calendarData: this.calendarData,
+      dataEntries: this.calendarData?.data.length
+    });
 
     return true
   }
@@ -378,15 +454,67 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     this.audioPlayCount++
   }
 
+  // 记录学习过程中的详细信息
+  recordLearningDetails(details: {
+    userInput: string,
+    isCorrect: boolean,
+    errorCount: number,
+    editDistance: number,
+  }): void {
+    if (!this.currentWord) {
+      console.warn('[SoundPrepare] recordLearningDetails: 当前单词为空');
+      return;
+    }
+
+    console.warn('[SoundPrepare] recordLearningDetails 接收数据:', {
+      word: this.currentWord.word.word,
+      details,
+      statistics: this.statistics
+    });
+
+    // 保存用户输入和错误数据，供 recordWordLearningData 使用
+    this._lastUserInput = details.userInput;
+    this._lastErrorCount = details.errorCount;
+    this._lastEditDistance = details.editDistance;
+
+    // 直接更新统计数据，不等待next方法调用
+    this.recordWordLearningData(details.isCorrect);
+
+    // 输出更新后的统计数据
+    console.warn('[SoundPrepare] 更新后的统计数据:', {
+      wordDetails: this.statistics?.data.wordsDetails,
+      dictationWords: this.statistics?.data.dictationWords,
+      exampleWords: this.statistics?.data.exampleWords
+    });
+  }
+
+  // 临时保存最后一次用户输入数据的属性
+  private _lastUserInput: string = '';
+  private _lastErrorCount: number = 0;
+  private _lastEditDistance: number = 0;
+
   recordWordLearningData(success: boolean): void {
     if (!this.currentWord) {
+      console.warn('[SoundPrepare] recordWordLearningData: 当前单词为空');
       return;
     }
 
     const timeSpent = Date.now() - this.wordStartTime;
     const stat = this.getStatistics();
 
+    console.warn('[SoundPrepare] recordWordLearningData 开始:', {
+      word: this.currentWord.word.word,
+      type: this.currentWord.type,
+      success,
+      timeSpent,
+      audioPlayCount: this.audioPlayCount,
+      userInput: this._lastUserInput,
+      editDistance: this._lastEditDistance,
+      existingStatistics: stat.data
+    });
+
     if (!stat.data.wordsDetails) {
+      console.warn('[SoundPrepare] 初始化 wordsDetails 数组');
       stat.data.wordsDetails = [];
     }
 
@@ -396,6 +524,12 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       d.word === wordText && d.type === this.currentWord?.type,
     );
 
+    console.warn('[SoundPrepare] 查找单词详情:', {
+      wordText,
+      detailIndex,
+      existingDetailsCount: wordDetails.length
+    });
+
     if (detailIndex === -1) {
       const newDetail: SoundWordDetail = {
         word: wordText,
@@ -404,7 +538,9 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
         isCorrect: success,
         timeSpent,
         audioPlays: this.audioPlayCount,
-        userInputs: [],
+        userInputs: this._lastUserInput ? [this._lastUserInput] : [],
+        wrongHistory: !success ? [Date.now()] : undefined,
+        editDistance: this._lastEditDistance || undefined,
       };
 
       if (this.currentWord.type === SoundWordType.EXAMPLE && this.currentWord.example?.stage !== undefined) {
@@ -427,6 +563,27 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       detail.timeSpent += timeSpent;
       detail.audioPlays = (detail.audioPlays || 0) + this.audioPlayCount;
 
+      // 记录用户输入历史
+      if (this._lastUserInput) {
+        if (!detail.userInputs) {
+          detail.userInputs = [];
+        }
+        detail.userInputs.push(this._lastUserInput);
+      }
+
+      // 记录错误历史
+      if (!success) {
+        if (!detail.wrongHistory) {
+          detail.wrongHistory = [];
+        }
+        detail.wrongHistory.push(Date.now());
+      }
+
+      // 更新编辑距离（如果有新值）
+      if (this._lastEditDistance > 0) {
+        detail.editDistance = this._lastEditDistance;
+      }
+
       if (this.currentWord.type === SoundWordType.EXAMPLE && this.currentWord.example?.stage !== undefined) {
         const stage = this.currentWord.example.stage;
         if (!detail.exampleAttempts) {
@@ -447,26 +604,79 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       }
     }
 
+    // 清除临时数据，防止混淆
+    this._lastUserInput = '';
+    this._lastErrorCount = 0;
+    this._lastEditDistance = 0;
+
     stat.data.wordsDetails = wordDetails;
+
+    console.warn('[SoundPrepare] 更新 wordsDetails 后:', {
+      updatedDetailsCount: wordDetails.length,
+      wordsDetails: wordDetails
+    });
+
     this.updateBasicStats(success);
     this.updateSessionStatistics();
+
+    console.warn('[SoundPrepare] recordWordLearningData 完成, 最终统计数据:', {
+      dictationWords: stat.data.dictationWords,
+      exampleWords: stat.data.exampleWords,
+      sessionDuration: stat.data.sessionDuration,
+      dictationCorrectRate: stat.data.dictationCorrectRate,
+      exampleCorrectRate: stat.data.exampleCorrectRate,
+      averageEditDistance: stat.data.averageEditDistance
+    });
   }
 
   updateBasicStats(success: boolean): void {
-    if (!this.currentWord) { return; }
+    if (!this.currentWord) {
+      console.warn('[SoundPrepare] updateBasicStats: 当前单词为空');
+      return;
+    }
 
     const stat = this.getStatistics();
 
-    if (this.currentWord.type === SoundWordType.DICTATION) {
-      stat.data.dictationWords = (stat.data.dictationWords || 0) + 1
+    console.warn('[SoundPrepare] updateBasicStats 开始:', {
+      word: this.currentWord.word.word,
+      type: this.currentWord.type,
+      exampleStage: this.currentWord.type === SoundWordType.EXAMPLE ? this.currentWord.example.stage : 'N/A',
+      success,
+      currentStats: {
+        dictationWords: stat.data.dictationWords,
+        exampleWords: stat.data.exampleWords
+      }
+    });
+
+    // 获取单词的详细数据，检查是否是首次答对
+    const wordDetails = stat.data.wordsDetails || [];
+    const wordText = this.currentWord.word.word;
+    const existingDetail = wordDetails.find(d =>
+      d.word === wordText && d.type === this.currentWord?.type
+    );
+
+    // 单词已存在于详情中，且之前就已经答对了，则不增加计数
+    const isFirstCorrect = success && (!existingDetail || !existingDetail.isCorrect);
+    console.warn('[SoundPrepare] 单词状态检查:', {
+      existing: !!existingDetail,
+      previouslyCorrect: existingDetail?.isCorrect,
+      isFirstCorrect
+    });
+
+    if (this.currentWord.type === SoundWordType.DICTATION && isFirstCorrect) {
+      stat.data.dictationWords = (stat.data.dictationWords || 0) + 1;
+      console.warn('[SoundPrepare] 增加听写单词计数:', stat.data.dictationWords);
     } else if (this.currentWord.type === SoundWordType.EXAMPLE) {
-      if (this.currentWord.example.stage === SoundExampleStage.FULL_SENTENCE) {
-        stat.data.exampleWords = (stat.data.exampleWords || 0) + 1
+      // 只有在全句阶段且首次答对时才增加例句单词计数
+      if (this.currentWord.example.stage === SoundExampleStage.FULL_SENTENCE && isFirstCorrect) {
+        stat.data.exampleWords = (stat.data.exampleWords || 0) + 1;
+        console.warn('[SoundPrepare] 增加例句单词计数:', stat.data.exampleWords);
       }
 
       if (this.currentWord.example.stage !== undefined) {
         if (!stat.data.exampleStageStats) {
-          stat.data.exampleStageStats = {}
+          stat.data.exampleStageStats = {};
+          console.warn('[SoundPrepare] 初始化 exampleStageStats 对象');
         }
 
         const stage = this.currentWord.example.stage
@@ -489,7 +699,15 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
 
   updateSessionStatistics(): void {
     const details = this.statistics?.data.wordsDetails || [];
+
+    console.warn('[SoundPrepare] updateSessionStatistics 开始:', {
+      wordsDetailsLength: details.length,
+      startTime: this.startTime,
+      currentTime: Date.now()
+    });
+
     if (details.length === 0) {
+      console.warn('[SoundPrepare] wordsDetails 为空，无法计算会话统计');
       return;
     }
 
@@ -501,8 +719,18 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     let dictationDuration = 0;
     let exampleDuration = 0;
 
+    // 计算平均编辑距离的变量
+    let totalEditDistance = 0;
+    let editDistanceCount = 0;
+
     for (const detail of details) {
       totalAudioPlays += detail.audioPlays || 0;
+
+      // 累计编辑距离
+      if (detail.editDistance !== undefined && detail.editDistance > 0) {
+        totalEditDistance += detail.editDistance;
+        editDistanceCount++;
+      }
 
       if (detail.type === SoundWordType.DICTATION) {
         dictationTotal++;
@@ -519,6 +747,18 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       }
     }
 
+    console.warn('[SoundPrepare] 统计计算中间结果:', {
+      dictationTotal,
+      dictationCorrect,
+      exampleTotal,
+      exampleCorrect,
+      totalAudioPlays,
+      dictationDuration,
+      exampleDuration,
+      totalEditDistance,
+      editDistanceCount
+    });
+
     const stat = this.statistics!;
     stat.data.sessionDuration = Date.now() - this.startTime;
     stat.data.dictationDuration = dictationDuration;
@@ -527,6 +767,19 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
 
     stat.data.dictationCorrectRate = dictationTotal > 0 ? dictationCorrect / dictationTotal : 0;
     stat.data.exampleCorrectRate = exampleTotal > 0 ? exampleCorrect / exampleTotal : 0;
+
+    // 更新平均编辑距离
+    stat.data.averageEditDistance = editDistanceCount > 0 ? totalEditDistance / editDistanceCount : 0;
+
+    console.warn('[SoundPrepare] updateSessionStatistics 完成:', {
+      sessionDuration: stat.data.sessionDuration,
+      dictationDuration: stat.data.dictationDuration,
+      exampleDuration: stat.data.exampleDuration,
+      audioPlayCount: stat.data.audioPlayCount,
+      dictationCorrectRate: stat.data.dictationCorrectRate,
+      exampleCorrectRate: stat.data.exampleCorrectRate,
+      averageEditDistance: stat.data.averageEditDistance
+    });
   }
 
   checkUserInput(input: string): boolean {

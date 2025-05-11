@@ -5,6 +5,7 @@ import CoffettiParticle from '~/components/chore/CoffettiParticle.vue'
 import DrawerPage from '~/components/page/DrawerPage.vue'
 import { calendarManager, type Statistics, useVictoryAudio } from '~/modules/words'
 import ComprehensiveStat from '~/modules/words/mode/comprehensive/display/stats/index.vue'
+import SoundStat from '~/modules/words/mode/sound/display/stats/index.vue'
 import Astronaut from '/svg/astronaut.svg'
 import Mello from '/svg/mello.svg'
 
@@ -27,6 +28,7 @@ const victoryAudio = useVictoryAudio()
 
 const statCompMapper = {
   COMPREHENSIVE: ComprehensiveStat,
+  SOUND: SoundStat,
 }
 
 setTimeout(() => {
@@ -50,7 +52,7 @@ onMounted(async () => {
     }
 
     // process todayData
-    const originDataList = todayData.origin.data
+    const originDataList = todayData.origin.data.filter(item => item.done)
     const todaySubData = originDataList.at(-1)
 
     if (!todaySubData) {
@@ -102,7 +104,8 @@ onMounted(async () => {
 
         <h1>
           <div class="number-flow-container">
-            <NumberFlow :prefix="days < 10 ? '0' : ''" :continuous="true" :will-change="true" :animated="true" :value="days" />
+            <NumberFlow :prefix="days < 10 ? '0' : ''" :continuous="true" :will-change="true" :animated="true"
+              :value="days" />
           </div>
           <span>天</span>
         </h1>
