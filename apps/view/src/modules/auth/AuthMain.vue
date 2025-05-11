@@ -1,15 +1,41 @@
 <script setup lang="ts">
 import { useRequest } from 'alova/client'
+import Fingerprint2 from 'fingerprintjs2'
 import Apis from '~/composables/api/clients'
-import { globalAuthStorage } from '.'
 
 const options = reactive({
+  platform: '',
+  fingerprint: '',
   identifier: '',
   certificate: '',
 })
 
+Fingerprint2.get((components: any) => {
+  const values = components.map((component: any, index: any) => {
+    if (component.key === 'platform') {
+      options.platform = component.value
+      }
+
+    if (index === 0) {
+      // 把微信浏览器里UA的wifi或4G等网络替换成空,不然切换网络会ID不一样
+      return {
+        key: component.key,
+        value: component.value.replace(/\bNetType\/\w+\b/, ''),
+      };
+    }
+
+    return component
+  });
+  const murmur = Fingerprint2.x64hash128(values.join(''), 31);
+
+  options.fingerprint = murmur;
+});
+
 const { send, loading } = useRequest(() => Apis.userController.userLoginTokenUsingPOST({
   data: {
+    platform: "VIEW",
+    deviceId: options.fingerprint,
+    deviceType: options.platform,
     userAccount: options.identifier,
     userPassword: options.certificate,
   },
