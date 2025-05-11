@@ -14,7 +14,7 @@ Fingerprint2.get((components: any) => {
   const values = components.map((component: any, index: any) => {
     if (component.key === 'platform') {
       options.platform = component.value
-      }
+    }
 
     if (index === 0) {
       // 把微信浏览器里UA的wifi或4G等网络替换成空,不然切换网络会ID不一样
@@ -92,19 +92,27 @@ async function handleAuth(event: Event) {
 
 <style lang="scss" scoped>
 .AuthMain {
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  // background: rgba(255, 255, 255, 0.05);
+
+  width: 100%;
+  height: 70%;
+
+  left: 0;
+  bottom: 0;
+
+  overflow: hidden;
+  border-radius: 38px;
 
   &-Inner {
     padding: 2rem 2.5rem;
     width: 100%;
-    max-width: 400px;
+    height: 100%;
     --fake-opacity: 0.85;
     --fake-color: var(--el-bg-color);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(18px) saturate(180%);
   }
 }
@@ -135,13 +143,13 @@ async function handleAuth(event: Event) {
     outline: none;
     color: var(--theme-color-primary);
 
-    &:focus + label,
-    &:not(:placeholder-shown) + label {
+    &:focus+label,
+    &:not(:placeholder-shown)+label {
       transform: translateY(-1.5rem) scale(0.85);
       color: var(--theme-color-primary);
     }
 
-    &:focus ~ .input-line::after {
+    &:focus~.input-line::after {
       transform: scaleX(1);
     }
   }

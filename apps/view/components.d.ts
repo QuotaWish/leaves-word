@@ -27,6 +27,7 @@ declare module 'vue' {
     ExitButton: typeof import('./src/components/ExitButton.vue')['default']
     FlexLayout: typeof import('./src/components/display/FlexLayout.vue')['default']
     GameAward: typeof import('./src/components/award/GameAward.vue')['default']
+    GlassShineButton: typeof import('./src/components/button/GlassShineButton.vue')['default']
     GlobalInputMethod: typeof import('./src/components/input/GlobalInputMethod.vue')['default']
     IconButton: typeof import('./src/components/button/IconButton.vue')['default']
     IndexCourse: typeof import('./src/components/display/IndexCourse.vue')['default']
