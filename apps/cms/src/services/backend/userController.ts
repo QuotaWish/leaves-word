@@ -14,6 +14,14 @@ export async function addUserUsingPost(body: API.UserAddRequest, options?: { [ke
   });
 }
 
+/** getDailyQuote GET /api/user/dailyquote */
+export async function getDailyQuoteUsingGet(options?: { [key: string]: any }) {
+  return request<string>('/api/user/dailyquote', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
 /** deleteUser POST /api/user/delete */
 export async function deleteUserUsingPost(
   body: API.DeleteRequest,
@@ -88,21 +96,6 @@ export async function listUserVoByPageUsingPost(
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponsePageUserVO_>('/api/user/list/page/vo', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
-  });
-}
-
-/** userLogin POST /api/user/login */
-export async function userLoginUsingPost(
-  body: API.UserLoginRequest,
-  options?: { [key: string]: any },
-) {
-  return request<API.BaseResponseLoginUserVO_>('/api/user/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

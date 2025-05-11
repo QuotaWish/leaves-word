@@ -311,6 +311,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseUserConfigVO_ = {
+    code?: number;
+    data?: UserConfigVO;
+    message?: string;
+  };
+
   type BaseResponseUserVO_ = {
     code?: number;
     data?: UserVO;
@@ -474,6 +480,7 @@ declare namespace API {
   };
 
   type EnglishDictionaryVO = {
+    approved_words?: number;
     author?: string;
     create_time?: string;
     description?: string;
@@ -482,11 +489,14 @@ declare namespace API {
     isbn?: string;
     name?: string;
     publication_date?: string;
+    published_words?: number;
     publisher?: string;
+    total_words?: number;
     update_time?: string;
   };
 
   type EnglishDictionaryWithCategoryVO = {
+    approved_words?: number;
     author?: string;
     categoryList?: Category[];
     create_time?: string;
@@ -496,7 +506,9 @@ declare namespace API {
     isbn?: string;
     name?: string;
     publication_date?: string;
+    published_words?: number;
     publisher?: string;
+    total_words?: number;
     update_time?: string;
   };
 
@@ -563,7 +575,7 @@ declare namespace API {
 
   type EnglishWordQueryDictRequest = {
     current?: number;
-    dict_id?: number;
+    dict_id?: string;
     id?: number;
     notId?: number;
     pageSize?: number;
@@ -766,6 +778,11 @@ declare namespace API {
   type getPostVOByIdUsingGETParams = {
     /** id */
     id?: number;
+  };
+
+  type getPublicUserConfigUsingGETParams = {
+    /** id */
+    id: number;
   };
 
   type getScoreEnglishWordUsingGETParams = {
@@ -1174,7 +1191,7 @@ declare namespace API {
 
   type SaTokenInfo = {
     isLogin?: boolean;
-    loginDevice?: string;
+    loginDeviceType?: string;
     loginId?: Record<string, any>;
     loginType?: string;
     sessionTimeout?: number;
@@ -1192,6 +1209,11 @@ declare namespace API {
   };
 
   type selectOneUsingGET11Params = {
+    /** id */
+    id: number;
+  };
+
+  type selectOneUsingGET12Params = {
     /** id */
     id?: number;
   };
@@ -1276,12 +1298,20 @@ declare namespace API {
     userRole?: string;
   };
 
+  type UserConfigVO = {
+    privateConfig?: Record<string, any>;
+    publicConfig?: Record<string, any>;
+  };
+
   type userLoginByWxOpenUsingGETParams = {
     /** code */
     code: string;
   };
 
   type UserLoginRequest = {
+    deviceId?: string;
+    deviceType?: string;
+    platform?: string;
     userAccount?: string;
     userPassword?: string;
   };

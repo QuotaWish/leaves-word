@@ -1228,10 +1228,6 @@ export type BaseResponse_Page_UserVO_ = {
   data?: Page_UserVO_;
   message?: string;
 };
-export type UserLoginRequest = {
-  userAccount?: string;
-  userPassword?: string;
-};
 export type SaTokenInfo = {
   isLogin?: boolean;
   loginDeviceType?: string;
@@ -1265,6 +1261,13 @@ export type BaseResponse_AuthUserVO_ = {
    */
   data?: AuthUserVO;
   message?: string;
+};
+export type UserLoginRequest = {
+  deviceId?: string;
+  deviceType?: string;
+  platform?: string;
+  userAccount?: string;
+  userPassword?: string;
 };
 export type UserRegisterRequest = {
   checkPassword?: string;
@@ -6072,50 +6075,6 @@ declare global {
       /**
        * ---
        *
-       * [POST] userLogin
-       *
-       * **path:** /api/user/login
-       *
-       * ---
-       *
-       * **RequestBody**
-       * ```ts
-       * type RequestBody = {
-       *   userAccount?: string
-       *   userPassword?: string
-       * }
-       * ```
-       *
-       * ---
-       *
-       * **Response**
-       * ```ts
-       * type Response = {
-       *   code?: number
-       *   // [title] LoginUserVO
-       *   data?: {
-       *     createTime?: string
-       *     id?: number
-       *     updateTime?: string
-       *     userAvatar?: string
-       *     userName?: string
-       *     userProfile?: string
-       *     userRole?: string
-       *   }
-       *   message?: string
-       * }
-       * ```
-       */
-      userLoginUsingPOST<
-        Config extends Alova2MethodConfig<BaseResponse_LoginUserVO_> & {
-          data: UserLoginRequest;
-        }
-      >(
-        config: Config
-      ): Alova2Method<BaseResponse_LoginUserVO_, 'userController.userLoginUsingPOST', Config>;
-      /**
-       * ---
-       *
        * [POST] userLoginToken
        *
        * **path:** /api/user/login/token
@@ -6125,6 +6084,9 @@ declare global {
        * **RequestBody**
        * ```ts
        * type RequestBody = {
+       *   deviceId?: string
+       *   deviceType?: string
+       *   platform?: string
        *   userAccount?: string
        *   userPassword?: string
        * }

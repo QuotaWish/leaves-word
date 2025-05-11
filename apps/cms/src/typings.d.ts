@@ -59,5 +59,6 @@ interface BaseResponse<T> {
  * 全局初始化状态
  */
 interface InitialState {
+  auth?: API.AuthUserVO;
   currentUser?: API.LoginUserVO;
 }

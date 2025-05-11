@@ -1,5 +1,5 @@
 import Footer from '@/components/Footer';
-import { userLoginUsingPost } from '@/services/backend/userController';
+import { userLoginTokenUsingPost } from '@/services/backend/userController';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
@@ -8,6 +8,8 @@ import { message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import { Link } from '@umijs/max';
 import Settings from '../../../../config/defaultSettings';
+import { getFingerPrint, getPlatform } from '@/composables/fingerprint';
+import { authTokenStorage } from '@/requestConfig';
 
 const Login: React.FC = () => {
   const [type, setType] = useState<string>('account');
@@ -27,16 +29,22 @@ const Login: React.FC = () => {
   const handleSubmit = async (values: API.UserLoginRequest) => {
     try {
       // 登录
-      const res = await userLoginUsingPost({
+      const res = await userLoginTokenUsingPost({
         ...values,
+        deviceId: getFingerPrint(),
+        deviceType: getPlatform(),
+        platform: 'CMS',
       });
+
+      authTokenStorage.set(res.data!.token!);
 
       const defaultLoginSuccessMessage = '登录成功！';
       message.success(defaultLoginSuccessMessage);
       // 保存已登录用户信息
       setInitialState({
         ...initialState,
-        currentUser: res.data,
+        auth: res.data,
+        currentUser: res.data?.user,
       });
       const urlParams = new URL(window.location.href).searchParams;
       history.push(urlParams.get('redirect') || '/');

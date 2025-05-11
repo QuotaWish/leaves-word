@@ -129,7 +129,6 @@ export default {
   'userController.getUserVOByIdUsingGET': ['GET', '/api/user/get/vo'],
   'userController.listUserByPageUsingPOST': ['POST', '/api/user/list/page'],
   'userController.listUserVOByPageUsingPOST': ['POST', '/api/user/list/page/vo'],
-  'userController.userLoginUsingPOST': ['POST', '/api/user/login'],
   'userController.userLoginTokenUsingPOST': ['POST', '/api/user/login/token'],
   'userController.userLoginByWxOpenUsingGET': ['GET', '/api/user/login/wx_open'],
   'userController.userLogoutUsingPOST': ['POST', '/api/user/logout'],

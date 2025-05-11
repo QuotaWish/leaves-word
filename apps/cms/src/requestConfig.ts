@@ -1,6 +1,7 @@
 ﻿import { BACKEND_HOST_LOCAL, BACKEND_HOST_PROD } from '@/constants';
 import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
+import { useLocalStorageState } from 'ahooks';
 
 // 与后端约定的响应数据格式
 interface ResponseStructure {
@@ -11,6 +12,28 @@ interface ResponseStructure {
 }
 
 const isDev = process.env.NODE_ENV === 'development';
+
+class AuthTokenStorage {
+  data?: API.SaTokenInfo
+
+  constructor() {
+    const storageData = localStorage.getItem('leaf-storage')
+    this.data = storageData ? JSON.parse(storageData) : undefined
+  }
+
+  set(data: API.SaTokenInfo) {
+    this.data = data
+    localStorage.setItem('leaf-storage', JSON.stringify(data))
+  }
+
+}
+
+export const authTokenStorage = new AuthTokenStorage()
+
+// export const [token, setToken] = useLocalStorageState('leaf-storage', {
+//   defaultValue: authTokenStorage,
+//   listenStorageChange: true,
+// });
 
 /**
  * @name 错误处理
@@ -24,7 +47,11 @@ export const requestConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
-      // 拦截请求配置，进行个性化处理。
+      const token = authTokenStorage.data
+      if (token?.tokenName && config.headers) {
+        config.headers[token.tokenName] = token.tokenValue!;
+      }
+
       return config;
     },
   ],
@@ -50,7 +77,7 @@ export const requestConfig: RequestConfig = {
       const code: number = data.code;
       // 未登录，且不为获取用户登录信息接口
       if (
-        code === 40100 &&
+        (code === 40100 || code === 50001) &&
         !requestPath.includes('user/get/login') &&
         !location.pathname.includes('/user/login')
       ) {
