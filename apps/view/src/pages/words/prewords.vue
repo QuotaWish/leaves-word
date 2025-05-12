@@ -59,7 +59,7 @@ onBeforeRouteLeave(async (to, from, next) => {
           confirmButtonText: "确认离开",
           cancelButtonText: "取消",
           type: "warning",
-        }
+        },
       );
       next(); // 用户确认离开
     } catch {
@@ -97,7 +97,7 @@ async function handleQuit() {
         confirmButtonText: "确认退出",
         cancelButtonText: "取消",
         type: "warning",
-      }
+      },
     );
     loadingOptions.start = false;
   } catch {
@@ -234,11 +234,11 @@ onActivated(() => {
     case PreWordsStatus.Prepared:
       handleStart();
       break;
-    case PreWordsStatus.Started:
-      abnormalDialog.visible = true;
-      abnormalDialog.message = "上次打卡未正常完成，数据已丢失，请重新开始。";
-      resetQuery();
-      break;
+    // case PreWordsStatus.Started:
+    // abnormalDialog.visible = true;
+    // abnormalDialog.message = "上次打卡未正常完成，数据已丢失，请重新开始。";
+    // resetQuery();
+    // break;
     default:
       resetQuery();
       break;
@@ -248,7 +248,10 @@ onActivated(() => {
 
 <template>
   <RoutePage
-    :class="{ wordVisible: loadingOptions.start, loading: loadingOptions.loading }"
+    :class="{
+      wordVisible: loadingOptions.start,
+      loading: loadingOptions.loading,
+    }"
     class="PreWordsPage"
   >
     <template #bg>
@@ -266,7 +269,10 @@ onActivated(() => {
       <p text-white class="transition-cubic head-title">准备打卡</p>
       <p text-white class="transition-cubic head-title next">稍等片刻</p>
 
-      <div mt-8 class="transition-cubic PreWordsPage-Section flex flex-col gap-3">
+      <div
+        mt-8
+        class="transition-cubic PreWordsPage-Section flex flex-col gap-3"
+      >
         <LineArrow @click="selectDict">
           <template #icon>
             <div i-carbon:book />
@@ -316,7 +322,9 @@ onActivated(() => {
     <div class="transition-cubic PreWordsPage-Progress">
       <div class="progress-info-row" mb-1 flex items-center justify-between>
         <div class="ai-message-wrapper">
-          <AIProcessingMessages :percentage="loadingOptions.preProgress / 100" />
+          <AIProcessingMessages
+            :percentage="loadingOptions.preProgress / 100"
+          />
         </div>
         <div v-if="loadingOptions.progress !== -1" class="progress-value">
           <NumberFlow
@@ -353,7 +361,10 @@ onActivated(() => {
 
     <TouchDialog v-model="dialogOptions.visible">
       <template #Main>
-        <component :is="dialogOptions.component" v-if="dialogOptions.component" />
+        <component
+          :is="dialogOptions.component"
+          v-if="dialogOptions.component"
+        />
       </template>
     </TouchDialog>
 
