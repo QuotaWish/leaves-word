@@ -20,12 +20,13 @@ const ins = ref(getCurrentInstance())
 <template>
   <RoutePage :class="{ empty }" :loading="loading" class="PageNavHolder">
     <template #header>
-      <NavBar
-        :title="title"
-        left-text="返回"
-        left-arrow
-        @click-left="router.back()"
-      />
+      <slot name="topHeader">
+        <NavBar :title="title" left-text="返回" left-arrow @click-left="router.back()" />
+      </slot>
+    </template>
+
+    <template #bg>
+      <slot name="bg" />
     </template>
 
     <div relative h-full flex flex-col class="PageNavHolder-Container">
@@ -36,7 +37,8 @@ const ins = ref(getCurrentInstance())
       <div :class="{ 'px-4': contentPadding }" class="PageNavHolder-Content h-full w-full">
         <slot />
 
-        <div class="RoutePage-Empty transition-cubic absolute-layout z-1 h-full w-full flex flex-col items-center justify-center gap-4 p-4">
+        <div
+          class="RoutePage-Empty transition-cubic absolute-layout z-1 h-full w-full flex flex-col items-center justify-center gap-4 p-4">
           <div class="RoutePage-Empty-Illusion">
             <div class="RoutePage-Empty-Illusion-Image">
               <img src="/svg/empty.svg" alt="empty">

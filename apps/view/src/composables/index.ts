@@ -1,4 +1,11 @@
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/zh-cn'
+
 export * from './theme'
+
+dayjs.locale('zh-cn')
+dayjs.extend(relativeTime)
 
 export async function sleep(time: number) {
   return new Promise(resolve => setTimeout(resolve, time))
@@ -68,4 +75,8 @@ export function useAutoVibrate(duration: number[]) {
 
 export function useInstanceRef<T extends abstract new (...args: any) => any>(_instance: Component) {
   return ref<InstanceType<T>>()
+}
+
+export function formatTimeAgo(time: string) {
+  return dayjs(time).locale('zh-cn').fromNow(true)
 }

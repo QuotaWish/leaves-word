@@ -14,12 +14,14 @@ import { globalAuthStorage } from '.'
 .AuthHolder {
   &.display {
     border-radius: 0;
+    pointer-events: all;
     transform: translateY(0) scale(1);
   }
 
   z-index: 100;
 
   border-radius: 18px;
+  pointer-events: none;
   transform: translateY(120%) scale(0.8);
   background-color: var(--el-bg-color);
 

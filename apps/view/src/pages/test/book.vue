@@ -4,7 +4,7 @@ import { Book, BookHeader, BookTitle, BookDescription } from '~/components/inspi
 
 <template>
   <div bg-black class="grid place-content-center p-10">
-    <Book>
+    <Book size="sm">
       <BookHeader>
         <Icon name="heroicons:book-open-solid" size="24" />
       </BookHeader>

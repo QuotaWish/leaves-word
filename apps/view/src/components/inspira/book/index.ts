@@ -1,4 +1,5 @@
 export const BOOK_RADIUS_MAP = {
+  mini: "rounded-mini",
   sm: "rounded-sm",
   md: "rounded-md",
   lg: "rounded-lg",
@@ -6,6 +7,7 @@ export const BOOK_RADIUS_MAP = {
 } as const;
 
 export const BOOK_SIZE_MAP = {
+  mini: { width: "120px", spineTranslation: "90px" },
   sm: { width: "180px", spineTranslation: "152px" },
   md: { width: "220px", spineTranslation: "192px" },
   lg: { width: "260px", spineTranslation: "232px" },
@@ -13,6 +15,7 @@ export const BOOK_SIZE_MAP = {
 } as const;
 
 export const BOOK_SHADOW_SIZE_MAP = {
+  mini: "-5px 0 15px 5px var(--shadowColor)",
   sm: "-5px 0 15px 5px var(--shadowColor)",
   md: "-7px 0 25px 7px var(--shadowColor)",
   lg: "-10px 0 35px 10px var(--shadowColor)",
@@ -50,6 +53,7 @@ export type BookRadius = keyof typeof BOOK_RADIUS_MAP;
 export type BookShadowSize = keyof typeof BOOK_SHADOW_SIZE_MAP;
 
 export { default as Book } from "./Book.vue";
+export { default as BookCover } from "./BookCover.vue"
 export { default as BookHeader } from "./BookHeader.vue";
 export { default as BookTitle } from "./BookTitle.vue";
 export { default as BookDescription } from "./BookDescription.vue";

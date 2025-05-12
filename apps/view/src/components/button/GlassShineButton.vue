@@ -50,6 +50,10 @@ const props = defineProps<{
 
   --fake-opacity: 0.75;
 
+  .dark & {
+    --fake-opacity: 0.25;
+  }
+
   &::before {
     content: "";
     position: absolute;
@@ -94,6 +98,10 @@ strong {
   color: #007EFF;
   filter: saturate(120%) brightness(80%);
   // text-shadow: 0 0 4px #00000070;
+
+  .dark & {
+    filter: saturate(120%) brightness(120%);
+  }
 }
 
 #glow {

@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="AuthBackground absolute-layout">
+  <div class="AuthBackground absolute-layout fake-background">
     <div class="AuthBackground-Mask" />
   </div>
 </template>
@@ -20,6 +20,14 @@
     height: 100%;
 
     background: linear-gradient(to top, #358EE1 30%, #0000);
+  }
+
+  &::after {
+    z-index: 1;
+  }
+
+  .dark & {
+    filter: brightness(0.8);
   }
 
   z-index: -1;
