@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import { UniEventAtBackButton, uniEventBus } from '~/composables/adapter/uniapp';
+import {
+  UniEventAtBackButton,
+  uniEventBus,
+} from "~/composables/adapter/uniapp";
 
-withDefaults(defineProps<{
-  adapt?: boolean
-  loading?: boolean
-}>(), {
-  adapt: true,
-  loading: false
-})
+withDefaults(
+  defineProps<{
+    adapt?: boolean;
+    loading?: boolean;
+  }>(),
+  {
+    adapt: true,
+    loading: false,
+  },
+);
 
 // const visible = ref(!false)
 
@@ -20,29 +26,29 @@ withDefaults(defineProps<{
 // onDeactivated(() => {
 //   visible.value = false
 // })
-const router = useRouter()
+const router = useRouter();
 function handleBackButton(event: any) {
-  if (event !== UniEventAtBackButton)
-    return
+  if (event !== UniEventAtBackButton) return;
 
-  console.log('handleBackButton')
-
-  router.back()
+  router.back();
 }
 
 onMounted(() => {
-  uniEventBus.on(handleBackButton)
-})
+  uniEventBus.on(handleBackButton);
+});
 
 onBeforeUnmount(() => {
-  uniEventBus.off(handleBackButton)
-})
+  uniEventBus.off(handleBackButton);
+});
 </script>
 
 <template>
   <!-- :class="{ visible }" -->
-  <WithPage :adapt="adapt" :class="{ pageLoading: loading }"
-    class="RoutePage transition-cubic absolute-layout flex flex-col">
+  <WithPage
+    :adapt="adapt"
+    :class="{ pageLoading: loading }"
+    class="RoutePage transition-cubic absolute-layout flex flex-col"
+  >
     <div class="RoutePage-Header">
       <slot name="header" />
     </div>
@@ -50,7 +56,8 @@ onBeforeUnmount(() => {
       <slot />
 
       <div
-        class="transition-cubic RoutePage-Loading absolute-layout z-1 h-full w-full flex flex-col items-center justify-center gap-4 p-4">
+        class="transition-cubic RoutePage-Loading absolute-layout z-1 h-full w-full flex flex-col items-center justify-center gap-4 p-4"
+      >
         <Loading />
       </div>
     </div>
@@ -82,7 +89,6 @@ onBeforeUnmount(() => {
 
   &-Header {
     :deep(.van-nav-bar) {
-
       .van-icon,
       .van-nav-bar__text {
         color: var(--theme-color-primary, var(--theme-color));

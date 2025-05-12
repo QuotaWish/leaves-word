@@ -1,120 +1,143 @@
 <script setup lang="ts">
-import { useRequest } from 'alova/client'
-import { toast, Toaster } from 'vue-sonner'
-import Auth from '~/modules/auth/index.vue'
-import Core from '~/modules/core/index.vue'
-import DeveloperFloatingBall from '~/modules/develop/index.vue'
-import Splash from '~/modules/splash/index.vue'
-import { type LeafDictStorage, ModeType } from '~/modules/words'
-import { modeManager } from '~/modules/words/mode'
-import { ComprehensiveMode } from '~/modules/words/mode/comprehensive'
+import { useRequest } from "alova/client";
+import { toast, Toaster } from "vue-sonner";
+import Auth from "~/modules/auth/index.vue";
+import Core from "~/modules/core/index.vue";
+import DeveloperFloatingBall from "~/modules/develop/index.vue";
+import Splash from "~/modules/splash/index.vue";
+import { type LeafDictStorage, ModeType } from "~/modules/words";
+import { modeManager } from "~/modules/words/mode";
+import { ComprehensiveMode } from "~/modules/words/mode/comprehensive";
 // import { DictWordMode } from '~/modules/words/mode/dict-word'
 // import { PunchMode } from '~/modules/words/mode/punch'
-import { SoundMode } from '~/modules/words/mode/sound'
-import { ReadingMode } from '~/modules/words/mode/reading'
+import { SoundMode } from "~/modules/words/mode/sound";
+import { ReadingMode } from "~/modules/words/mode/reading";
 
-import { initApi } from './composables/api'
-import { useLeafEventBus } from './composables/event'
-import { AuthSuccessEvent } from './composables/event/auth'
-import { ToastEvent } from './composables/event/toast-event'
-import { useBaseRouteStore } from './composables/store/useRouteStore'
-import { $logout, globalAuthStorage, initAuthModule } from './modules/auth'
+import { initApi } from "./composables/api";
+import { useLeafEventBus } from "./composables/event";
+import { AuthSuccessEvent } from "./composables/event/auth";
+import { ToastEvent } from "./composables/event/toast-event";
+import { useBaseRouteStore } from "./composables/store/useRouteStore";
+import { $logout, globalAuthStorage, initAuthModule } from "./modules/auth";
 
-modeManager.set(ModeType.COMPREHENSIVE, (dictionaryStorage: LeafDictStorage) => new ComprehensiveMode(dictionaryStorage))
+modeManager.set(
+  ModeType.COMPREHENSIVE,
+  (dictionaryStorage: LeafDictStorage) =>
+    new ComprehensiveMode(dictionaryStorage),
+);
 // modeManager.set(ModeType.PUNCH, (dictionaryStorage: DictStorage) => new PunchMode(dictionaryStorage))
-modeManager.set(ModeType.SOUND, (dictionaryStorage: LeafDictStorage) => new SoundMode(dictionaryStorage))
-modeManager.set(ModeType.READING, (dictionaryStorage: LeafDictStorage) => new ReadingMode(dictionaryStorage))
+modeManager.set(
+  ModeType.SOUND,
+  (dictionaryStorage: LeafDictStorage) => new SoundMode(dictionaryStorage),
+);
+modeManager.set(
+  ModeType.READING,
+  (dictionaryStorage: LeafDictStorage) => new ReadingMode(dictionaryStorage),
+);
 // modeManager.set(ModeType.READING, (dictionaryStorage: DictStorage) => new DictWordMode(dictionaryStorage))
 
-initApi()
-initAuthModule()
+initApi();
+initAuthModule();
 
-const eventBus = useLeafEventBus()
-const router = useRouter()
-const routes = router.getRoutes()
-const baseRouteStore = useBaseRouteStore()
+const eventBus = useLeafEventBus();
+const router = useRouter();
+const routes = router.getRoutes();
+const baseRouteStore = useBaseRouteStore();
 
 const theme = computed(() => {
-  return useDark().value ? 'dark' : 'light'
-})
+  return useDark().value ? "dark" : "light";
+});
 
 eventBus.registerListener(ToastEvent, {
   handleEvent(event) {
-    const { message, type } = event as ToastEvent
+    const { message, type } = event as ToastEvent;
 
     switch (type) {
-      case 'success':
-        toast.success(message)
-        break
-      case 'warning':
-        toast.warning(message)
-        break
-      case 'info':
-        toast.info(message)
-        break
-      case 'error':
-        toast.error(message)
-        break
+      case "success":
+        toast.success(message);
+        break;
+      case "warning":
+        toast.warning(message);
+        break;
+      case "info":
+        toast.info(message);
+        break;
+      case "error":
+        toast.error(message);
+        break;
     }
   },
-})
+});
 
-const { send: refreshUserData } = useRequest(() => Apis.userController.getLoginUserUsingGET(), {
-  immediate: false,
-})
+const { send: refreshUserData } = useRequest(
+  () => Apis.userController.getLoginUserUsingGET(),
+  {
+    immediate: false,
+  },
+);
 
 eventBus.registerListener(AuthSuccessEvent, {
   async handleEvent() {
-    const res = await refreshUserData()
+    const res = await refreshUserData();
     if (!res) {
-      $logout()
-      return
+      $logout();
+      return;
     }
 
-    globalAuthStorage.value.user = res.data
+    globalAuthStorage.value.user = res.data;
   },
-})
+});
 
-router.beforeEach((to, from) => {
-  const toDepth = routes.findIndex(v => v.path === to.path)
-  const fromDepth = routes.findIndex(v => v.path === from.path)
-  if (toDepth > fromDepth) {
-    // 前进
-    console.log('enter ', to.path)
+// router.beforeEach((to, from) => {
+//   const toDepth = routes.findIndex((v) => v.path === to.path);
+//   const fromDepth = routes.findIndex((v) => v.path === from.path);
+//   if (toDepth > fromDepth) {
+//     // 前进
+//     console.log("enter ", to.path);
 
-    if (to.matched?.length) {
-      const filterMatched = to.matched.filter(item => item.components)
-      const toComponentName = filterMatched?.[0]?.components?.default.name
-      if (toComponentName) {
-        baseRouteStore.updateExcludeRoutes({ type: 'add', value: toComponentName })
-      }
-    }
-  } else {
-    if (from.matched?.length) {
-      // 后退
-      console.log('leave ', from.path)
-      const filterMatched = from.matched.filter(item => item.components)
-      const fromComponentName = filterMatched?.[0]?.components?.default.name
-      if (fromComponentName) {
-        baseRouteStore.updateExcludeRoutes({ type: 'add', value: fromComponentName })
-      }
-    }
-  }
+//     if (to.matched?.length) {
+//       const filterMatched = to.matched.filter((item) => item.components);
+//       const toComponentName = filterMatched?.[0]?.components?.default.name;
+//       if (toComponentName) {
+//         baseRouteStore.updateExcludeRoutes({
+//           type: "add",
+//           value: toComponentName,
+//         });
+//       }
+//     }
+//   } else {
+//     if (from.matched?.length) {
+//       // 后退
+//       console.log("leave ", from.path);
+//       const filterMatched = from.matched.filter((item) => item.components);
+//       const fromComponentName = filterMatched?.[0]?.components?.default.name;
+//       if (fromComponentName) {
+//         baseRouteStore.updateExcludeRoutes({
+//           type: "add",
+//           value: fromComponentName,
+//         });
+//       }
+//     }
+//   }
 
-  return true
-})
+//   return true;
+// });
+function getComponentKey(comp: Component) {
+  return comp?.type.name || Math.random();
+}
 </script>
 
 <template>
   <el-config-provider :z-index="10000000">
     <Splash>
       <template #main>
-        <router-view v-slot="{ Component }">
+        <router-view v-slot="{ Component, route }">
           <TransitionPage>
             <!-- ['DictionaryPage', 'SignedPage'] -->
             <!-- <keep-alive :include="['IndexPage']" :exclude="baseRouteStore.excludeNames"> -->
-            <keep-alive :lru="10" :exclude="['DictionaryPage', 'SignedPage']">
-              <component :is="Component" />
+            <!-- :lru="10" :exclude="['DictionaryPage', 'SignedPage']" -->
+            <keep-alive>
+              <component :key="route.fullPath" :is="Component" />
             </keep-alive>
           </TransitionPage>
           <!-- <transition mode="out-in" :name="router.transition.name">

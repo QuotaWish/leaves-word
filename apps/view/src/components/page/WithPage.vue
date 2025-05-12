@@ -5,7 +5,7 @@ withDefaults(
   }>(),
   {
     adapt: true,
-  }
+  },
 );
 </script>
 

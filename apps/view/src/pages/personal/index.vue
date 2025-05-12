@@ -1,5 +1,5 @@
 <script setup>
-import PersonalModule from '~/modules/personal/index.vue'
+import PersonalModule from "~/modules/personal/index.vue";
 </script>
 
 <template>
@@ -18,7 +18,11 @@ import PersonalModule from '~/modules/personal/index.vue'
   overflow-x: hidden;
 
   /* 添加渐变背景 */
-  background: linear-gradient(135deg, rgba(var(--theme-color-rgb), 0.02) 0%, rgba(var(--theme-color-rgb), 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--theme-color-rgb), 0.02) 0%,
+    rgba(var(--theme-color-rgb), 0.05) 100%
+  );
 
   /* 设置滚动条样式 */
   &::-webkit-scrollbar {
@@ -55,5 +59,6 @@ import PersonalModule from '~/modules/personal/index.vue'
 
 <route lang="yaml">
 meta:
+  index: root
   transition: nav
 </route>

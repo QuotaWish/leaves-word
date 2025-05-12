@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { Empty, NavBar } from 'vant'
+import { Empty, NavBar } from "vant";
 
 defineProps<{
-  title: string
-  empty?: boolean
-  loading?: boolean
-}>()
+  title: string;
+  empty?: boolean;
+  loading?: boolean;
+}>();
 
-const router = useRouter()
+const router = useRouter();
 
-const ins = ref(getCurrentInstance())
+const ins = ref(getCurrentInstance());
 </script>
 
 <template>
@@ -24,20 +24,34 @@ const ins = ref(getCurrentInstance())
     </template>
 
     <div relative h-full flex flex-col class="SideNavHolder-Container">
-      <div v-if="ins?.slots.header" relative px-4 py-2 class="DictionaryHolder-Header">
+      <div
+        v-if="ins?.slots.header"
+        relative
+        px-4
+        py-2
+        class="DictionaryHolder-Header"
+      >
         <slot name="header" />
       </div>
 
       <div class="SideNavHolder-Content w-full flex flex-1 overflow-scroll">
-        <div v-if="ins?.slots.nav" class="SideNavHolder-Nav z-1 w-[80px] flex-shrink-0">
+        <div
+          v-if="ins?.slots.nav"
+          class="SideNavHolder-Nav z-1 w-[80px] flex-shrink-0"
+        >
           <slot name="nav" />
         </div>
-        <div class="SideNavHolder-Main w-full flex-1 gap-4 overflow-x-hidden overflow-y-scroll p-2">
+        <div
+          class="SideNavHolder-Main w-full flex-1 gap-4 overflow-x-hidden overflow-y-scroll p-2"
+        >
           <slot />
         </div>
       </div>
 
-      <div :class="{ visible: empty }" class="transition-cubic SideNavHolder-Empty absolute-layout z-10 flex items-center justify-center">
+      <div
+        :class="{ visible: empty }"
+        class="transition-cubic SideNavHolder-Empty absolute-layout z-10 flex items-center justify-center"
+      >
         <Empty description="你来到了荒漠." />
       </div>
     </div>
@@ -76,7 +90,7 @@ const ins = ref(getCurrentInstance())
 
   li {
     &::before {
-      content: '';
+      content: "";
       position: absolute;
 
       top: 15%;
