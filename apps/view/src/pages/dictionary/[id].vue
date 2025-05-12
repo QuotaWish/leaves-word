@@ -4,13 +4,7 @@ import type { EnglishDictionaryVO } from "~/composables/api/clients/globals";
 import { useRequest } from "alova/client";
 import { Tab, Tabs } from "vant";
 
-import {
-  Book,
-  BookCover,
-  BookDescription,
-  BookHeader,
-  BookTitle,
-} from "~/components/inspira/book";
+import { Book, BookCover } from "~/components/inspira/book";
 
 defineOptions({
   name: "DictionaryPage",
@@ -29,7 +23,7 @@ const { loading, send, onSuccess, onError } = useRequest(() =>
 );
 
 onSuccess((res) => {
-  dict.value = res.data.data;
+  if (res?.data?.data) dict.value = res.data.data;
 });
 
 onError(() => {
@@ -95,7 +89,13 @@ const featureCards = [
   },
 ];
 
-watch(() => route.params.id, send, { immediate: true });
+watch(
+  () => route.params.id,
+  (id) => {
+    if (id) send();
+  },
+  { immediate: true },
+);
 
 watch(active, () => {
   router.replace({
