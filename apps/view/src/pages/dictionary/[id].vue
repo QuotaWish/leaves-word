@@ -111,7 +111,11 @@ watch(active, () => {
     <div v-if="dict" class="DictionaryInfo-Cover">
       <Book autoAnimate size="mini">
         <BookCover>
-          <img :alt="dict.name" :src="dict?.image_url" />
+          <img
+            class="w-full h-full object-cover"
+            :alt="dict.name"
+            :src="dict?.image_url"
+          />
         </BookCover>
       </Book>
 

@@ -36,7 +36,7 @@ function addMessage(
   const avatar =
     role === "user"
       ? "https://avatars.githubusercontent.com/u/76239030?v=4"
-      : "https://files.catbox.moe/wp02xj.png";
+      : "https://files.catbox.moe/ssn1rx.png";
 
   messages.value.push({
     id: generateId(),
@@ -60,7 +60,6 @@ let finish = () => {};
 
 // 创建 XRequest 实例处理流式响应
 const xRequest = new XRequest({
-  baseURL: "http://localhost:8101", // 从 method 中获取 baseURL
   type: "fetch", // 使用 fetch 类型请求
   transformer: (data: string) => {
     try {
@@ -230,11 +229,14 @@ async function sendMessageToServer(content: string): Promise<void> {
     headers[`${token.tokenName}`] = `${token.tokenValue}`;
 
     // 发送请求 - 使用从 method 获取的 URL 路径
-    xRequest.send(`${method.url}?userId=${globalAuthStorage.value.user.id!}`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(requestData),
-    });
+    xRequest.send(
+      `${method.baseURL}${method.url}?userId=${globalAuthStorage.value.user.id!}`,
+      {
+        method: "POST",
+        headers,
+        body: JSON.stringify(requestData),
+      },
+    );
 
     return Promise.resolve();
   } catch (error) {
@@ -284,7 +286,7 @@ function handleCancel(): void {
 
 // 组件挂载时添加欢迎消息
 onMounted(() => {
-  addMessage("ai", "你好！我是你的AI助手，有什么我可以帮助你的吗？", true);
+  addMessage("ai", "千叶单词为您服务。", true);
 });
 </script>
 
