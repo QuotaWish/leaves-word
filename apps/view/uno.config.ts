@@ -3,8 +3,9 @@ import {
   presetAttributify,
   presetIcons,
   presetUno,
-  presetWebFonts,
 } from 'unocss'
+import presetAnimations from 'unocss-preset-animations'
+import { presetShadcn } from 'unocss-preset-shadcn'
 
 export default defineConfig({
   shortcuts: [
@@ -21,6 +22,8 @@ export default defineConfig({
       scale: 1.2,
       warn: true,
     }),
+    presetAnimations(),
+    presetShadcn(/* { color: '#146CE7' } */),
     // presetWebFonts({
     //   fonts: {
     //     sans: 'DM Sans',
