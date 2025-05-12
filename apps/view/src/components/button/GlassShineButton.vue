@@ -43,10 +43,12 @@ const props = defineProps<{
 
   cursor: pointer;
   backdrop-filter: blur(18px) saturate(180%);
-  border-radius: 5rem;
+  border-radius: 18px;
   transition: 0.5s;
   animation: gradient_301 5s ease infinite;
-  border: double 4px transparent;
+  border: double 2px transparent;
+
+  --fake-opacity: 0.75;
 
   &::before {
     content: "";
@@ -58,8 +60,8 @@ const props = defineProps<{
     width: 100%;
     height: 100%;
 
-    opacity: 0.5;
-    border-radius: 5rem;
+    opacity: 0.25;
+    border-radius: initial;
     background-size: 300% 300%;
     background-image:
       linear-gradient(137.48deg,
@@ -70,7 +72,6 @@ const props = defineProps<{
 
     background-origin: border-box;
     background-clip: content-box, border-box;
-
   }
 }
 
@@ -90,8 +91,9 @@ strong {
   font-family: "Avalors Personal Use";
   font-size: 1.25rem;
   letter-spacing: 5px;
-  color: #fff;
-  text-shadow: 0 0 4px #00000070;
+  color: #007EFF;
+  filter: saturate(120%) brightness(80%);
+  // text-shadow: 0 0 4px #00000070;
 }
 
 #glow {

@@ -99,13 +99,14 @@ async function handleAuth(event: Event) {
   text-align: center;
 
   width: 100%;
-  height: 70%;
+  height: 50%;
+  min-height: 450px;
 
   left: 0;
   bottom: 0;
 
   overflow: hidden;
-  border-radius: 38px;
+  border-radius: 38px 38px 0 0;
 
   &-Inner {
     padding: 2rem 2.5rem;

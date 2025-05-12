@@ -4,12 +4,24 @@
 
 <template>
   <div class="AuthBackground absolute-layout">
-    <div class="AuthBackground-Split" />
+    <div class="AuthBackground-Mask" />
   </div>
 </template>
 
 <style lang="scss" scoped>
 .AuthBackground {
+  &-Mask {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(to top, #358EE1 30%, #0000);
+  }
+
   z-index: -1;
 
   overflow: hidden;
@@ -18,7 +30,9 @@
   justify-content: center;
   align-items: center;
 
-  background: url('/images/auth-bg.png') no-repeat;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('/images/auth-bg.png');
 
   // background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
 

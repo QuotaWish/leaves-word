@@ -12,18 +12,14 @@ const step = ref(0)
 
     <div :class="{ auth: step === 1 }"
       class="AuthHolder-Welcome transition-cubic absolute h-full w-full flex flex-col justify-start px-8 py-[35%]">
-      <h1>
-        从种子开始萌发
-        <p>英语之旅</p>
-      </h1>
-
-      <div class="AuthHolder-Welcome-Action">
+      <div class="AuthHolder-Welcome-Action flex flex-col items-center justify-center gap-4">
         <GlassShineButton v-wave @click="step = 1">登录</GlassShineButton>
+        <GlassShineButton v-wave @click="step = 1">注册</GlassShineButton>
       </div>
     </div>
     <div :class="{ auth: step === 1 }"
       class="AuthHolder-Content transition-cubic absolute h-full w-full flex justify-center">
-      <div v-wave @click="step = 0" class="AuthHolder-Content-Back fake-background ">
+      <div v-wave @click="step = 0" class="AuthHolder-Content-Back fake-background">
         <div i-carbon-chevron-left />
       </div>
 
@@ -40,35 +36,29 @@ const step = ref(0)
 <style lang="scss" scoped>
 .AuthHolder {
   .auth.AuthHolder-Welcome {
-    transform: translateX(-100%);
+    transform: translateY(-100%);
   }
 
   .auth.AuthHolder-Content {
-    transform: translateX(0%);
+    transform: translateY(0%);
   }
 
   .AuthHolder-Welcome {
     &-Action {
-      margin: 50% 0;
-    }
+      position: absolute;
+      padding: 10%;
 
-    p {
-      margin: 1rem 0;
-      font-size: 34px;
-    }
+      width: 100%;
 
-    h1 {
-      font-size: 38px;
+      left: 0;
+      bottom: 5%;
     }
-
-    font-weight: 600;
-    color: #ffffff;
-    margin-bottom: 0.5rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   }
 
   .AuthHolder-Content {
-    transform: translateX(100%);
+    z-index: 10;
+
+    transform: translateY(100%);
   }
 
   .AuthHolder-Content-Back {
@@ -87,7 +77,9 @@ const step = ref(0)
     font-size: 24px;
     cursor: pointer;
     border-radius: 50%;
-    color: var(--el-fill-color);
+    --fake-opacity: 0.75;
+    transform: rotate(-90deg);
+    color: var(--el-text-color-primary);
     backdrop-filter: blur(18px) saturate(180%);
   }
 }
