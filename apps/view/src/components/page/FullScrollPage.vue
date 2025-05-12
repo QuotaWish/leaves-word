@@ -107,7 +107,7 @@ function handleScroll() {
 
   setTimeout(() => {
     scrollOptions.animating = false;
-  }, 200);
+  }, 500);
 }
 </script>
 
