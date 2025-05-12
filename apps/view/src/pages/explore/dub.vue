@@ -1,4 +1,3 @@
-image.png
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -107,14 +106,8 @@ const handleVideoError = () => {
     </div>
     <div class="dub-container">
       <div class="video-section">
-        <video
-          ref="videoRef"
-          class="main-video"
-          :src="currentVideo.url"
-          muted
-          playsinline
-          @loadeddata="handleVideoLoaded"
-          @error="handleVideoError">
+        <video ref="videoRef" class="main-video" :src="currentVideo.url" muted playsinline
+          @loadeddata="handleVideoLoaded" @error="handleVideoError">
         </video>
       </div>
       <!-- 添加字幕区域 -->
@@ -422,126 +415,3 @@ const handleVideoError = () => {
   }
 }
 </style>
-
-.difficulty-section {
-position: relative;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-gap: 16px;
-margin: 16px 0;
-padding: 16px;
-background: var(--el-bg-color-overlay);
-border-radius: 8px;
-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-
-.difficulty-info {
-display: flex;
-align-items: center;
-gap: 12px;
-width: 100%;
-max-width: 400px;
-
-.difficulty-label, .progress-label {
-min-width: 70px;
-color: var(--el-text-color-regular);
-font-size: 16px;
-}
-
-.el-rate {
-margin-top: 2px;
-}
-
-.el-progress {
-flex: 1;
-}
-}
-}
-const showVideoSelector = ref(false)
-
-function selectVideo(video: any) {
-  currentVideo.value = video
-  showVideoSelector.value = false
-  if (videoRef.value) {
-    videoRef.value.load() // 重新加载视频
-    if (isPlaying.value) {
-      videoRef.value.play()
-    }
-  }
-}
-
-<!-- 在template中添加 -->
-.video-selector {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.9);
-  z-index: 1000;
-  padding: 20px;
-  overflow-y: auto;
-
-  .selector-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-
-  .video-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-  }
-
-  .video-item {
-    background: #333;
-    border-radius: 8px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.2s;
-
-    &:hover {
-      transform: scale(1.03);
-    }
-
-    .video-thumbnail {
-      height: 120px;
-      background: #555;
-    }
-
-    .video-info {
-      padding: 10px;
-
-      h4 {
-        margin: 0 0 5px 0;
-        color: white;
-      }
-
-      p {
-        margin: 0;
-        color: #aaa;
-        font-size: 12px;
-      }
-    }
-  }
-}
-
-.select-button {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  padding: 8px 16px;
-  background: var(--el-color-primary);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  z-index: 100;
-}
-<!-- 在控制区域添加选择按钮 -->
-<button class="select-button" @click="showVideoSelector = true">
-  选择视频
-</button>
