@@ -3,6 +3,8 @@ import { useRequest } from 'alova/client'
 import Fingerprint2 from 'fingerprintjs2'
 import Apis from '~/composables/api/clients'
 
+const router = useRouter()
+
 const options = reactive({
   platform: '',
   fingerprint: '',
@@ -53,6 +55,8 @@ async function handleAuth(event: Event) {
     return
 
   await send()
+
+  router.push('/')
 }
 </script>
 
