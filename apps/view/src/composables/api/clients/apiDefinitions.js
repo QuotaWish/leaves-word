@@ -32,6 +32,8 @@ export default {
   'categoryController.listCategoryByPageUsingPOST': ['POST', '/api/category/list/page'],
   'categoryController.selectOneUsingGET': ['GET', '/api/category/selectOne'],
   'categoryController.updateCategoryUsingPOST': ['POST', '/api/category/update'],
+  'cozeController.createChatUsingPOST': ['POST', '/api/coze/createChat'],
+  'cozeController.startWorkflowUsingPOST': ['POST', '/api/coze/startWorkflow'],
   'dictionaryCategoryController.getDictionaryCategoryByDictionaryIdUsingGET': [
     'GET',
     '/api/dictionary_category/relative'

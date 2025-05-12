@@ -33,8 +33,17 @@ const props = withDefaults(defineProps<BookProps>(), {
   shadowSize: "lg",
 });
 
+const animated = ref(false);
 const computedGradient = computed(() => {
   return colorMap[props.color] || colorMap.zinc;
+});
+
+onMounted(() => {
+  if (props.autoAnimate) {
+    setTimeout(() => {
+      animated.value = true;
+    }, 500); // 0.5 秒延迟
+  }
 });
 </script>
 
@@ -44,20 +53,22 @@ const computedGradient = computed(() => {
       cn(
         'z-10 group [perspective:800px] w-min [--shadowColor:#bbb] dark:[--shadowColor:#111]',
         $props.class,
-        { 'simulated-hover': autoAnimate && !isStatic },
+        { 'simulated-hover': animated && !isStatic },
       )
     "
   >
     <div
       :style="{
         width: sizeMap[size].width,
-        transition: `transform ${props.duration}ms ease`,
+        transition: animated
+          ? 'transform 2000ms ease'
+          : `transform ${props.duration}ms ease`,
       }"
       class="[transform-style:preserve-3d] relative aspect-[3/4]"
       :class="[
         isStatic
           ? '[transform:rotateY(-30deg)]'
-          : autoAnimate
+          : animated
             ? '[transform:rotateY(-30deg)]'
             : '[transform:rotateY(0deg)] group-hover:[transform:rotateY(-30deg)]',
         radiusMap[radius],

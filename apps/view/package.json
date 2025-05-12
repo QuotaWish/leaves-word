@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@alova/adapter-axios": "^2.0.13",
+    "@coze/api": "^1.0.17",
     "@leaves-word/app-view": "file:",
     "@number-flow/vue": "^0.3.2",
     "@sentry/vite-plugin": "^3.1.1",
@@ -53,6 +54,7 @@
     "vite-plugin-version-date-mark": "^0.1.0",
     "vue": "^3.5.3",
     "vue-echarts": "^7.0.3",
+    "vue-element-plus-x": "^1.2.0",
     "vue-router": "^4.4.3",
     "vue-sonner": "^1.3.0",
     "wc-waterfall": "^0.1.3"

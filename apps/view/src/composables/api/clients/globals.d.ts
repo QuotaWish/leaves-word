@@ -255,6 +255,28 @@ export type CategoryQueryRequest = {
   sortField?: string;
   sortOrder?: string;
 };
+export type SseEmitter = {
+  timeout?: number;
+};
+export type ChatMessage = {
+  content?: string;
+  content_type?: string;
+  role?: string;
+};
+export type CreateChatRequest = {
+  additionalMessages?: ChatMessage[];
+  botId?: string;
+};
+export type Flowable_WorkflowEvent_ = object;
+export type BaseResponse_Flowable_WorkflowEvent_ = {
+  code?: number;
+  /**
+   * Flowable«WorkflowEvent»
+   * ---
+   */
+  data?: Flowable_WorkflowEvent_;
+  message?: string;
+};
 export type BaseResponse_List_Category_ = {
   code?: number;
   data?: Category[];
@@ -888,9 +910,6 @@ export type BaseResponse_string_ = {
   code?: number;
   data?: string;
   message?: string;
-};
-export type SseEmitter = {
-  timeout?: number;
 };
 export type MediaCreatorAddRequest = {
   mediaType?: 'LIVE' | 'IMAGE' | 'VIDEO' | 'AUDIO' | 'STATIC_VIDEO';
@@ -2108,6 +2127,114 @@ declare global {
       >(
         config: Config
       ): Alova2Method<BaseResponse_boolean_, 'categoryController.updateCategoryUsingPOST', Config>;
+    };
+    cozeController: {
+      /**
+       * ---
+       *
+       * [POST] createChat
+       *
+       * **path:** /api/coze/createChat
+       *
+       * ---
+       *
+       * **Query Parameters**
+       * ```ts
+       * type QueryParameters = {
+       *   // userId
+       *   // [required]
+       *   userId: string
+       * }
+       * ```
+       *
+       * ---
+       *
+       * **RequestBody**
+       * ```ts
+       * type RequestBody = {
+       *   additionalMessages?: Array<{
+       *     content?: string
+       *     content_type?: string
+       *     role?: string
+       *   }>
+       *   botId?: string
+       * }
+       * ```
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = {
+       *   timeout?: number
+       * }
+       * ```
+       */
+      createChatUsingPOST<
+        Config extends Alova2MethodConfig<SseEmitter> & {
+          params: {
+            /**
+             * userId
+             * [required]
+             */
+            userId: string;
+          };
+          data: CreateChatRequest;
+        }
+      >(
+        config: Config
+      ): Alova2Method<SseEmitter, 'cozeController.createChatUsingPOST', Config>;
+      /**
+       * ---
+       *
+       * [POST] startWorkflow
+       *
+       * **path:** /api/coze/startWorkflow
+       *
+       * ---
+       *
+       * **Query Parameters**
+       * ```ts
+       * type QueryParameters = {
+       *   // workflowId
+       *   // [required]
+       *   workflowId: string
+       * }
+       * ```
+       *
+       * ---
+       *
+       * **RequestBody**
+       * ```ts
+       * type RequestBody = object
+       * ```
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = {
+       *   code?: number
+       *   // [title] Flowable«WorkflowEvent»
+       *   data?: object
+       *   message?: string
+       * }
+       * ```
+       */
+      startWorkflowUsingPOST<
+        Config extends Alova2MethodConfig<BaseResponse_Flowable_WorkflowEvent_> & {
+          params: {
+            /**
+             * workflowId
+             * [required]
+             */
+            workflowId: string;
+          };
+          data: object;
+        }
+      >(
+        config: Config
+      ): Alova2Method<BaseResponse_Flowable_WorkflowEvent_, 'cozeController.startWorkflowUsingPOST', Config>;
     };
     dictionaryCategoryController: {
       /**
