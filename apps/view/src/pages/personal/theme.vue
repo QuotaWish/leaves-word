@@ -1,4 +1,3 @@
-div
 <script setup lang="ts">
 import PageNavHolder from "~/components/page/holder/PageNavHolder.vue";
 import ColorOption from "~/components/settings/ColorOption.vue";
@@ -10,7 +9,6 @@ import {
   changeThemeColor,
   useTheme,
 } from "~/composables/theme";
-import { ref } from "vue";
 
 // 主题色相关
 const themeColors = Object.entries(themeColorMap).map(([key, value]) => ({
@@ -50,6 +48,13 @@ const selectThemeColor = (color: string, event: MouseEvent) => {
       </div>
     </SettingsSection>
 
+    <LineArrow my-4>
+      <template #icon>
+        <div i-carbon-time />
+      </template>
+      显示模式设置
+    </LineArrow>
+
     <!-- 主题颜色 -->
     <SettingsSection plain title="主题颜色" icon="i-carbon-color-palette">
       <div class="color-options">
@@ -64,6 +69,29 @@ const selectThemeColor = (color: string, event: MouseEvent) => {
         />
       </div>
     </SettingsSection>
+
+    <LineArrow my-4>
+      <template #icon>
+        <div i-carbon-time />
+      </template>
+      混色配置
+    </LineArrow>
+
+    <LineArrow my-4>
+      <template #icon>
+        <div i-carbon-time />
+      </template>
+      真实阴影
+    </LineArrow>
+
+    <LineArrow my-4>
+      <template #icon>
+        <div i-carbon-time />
+      </template>
+      护眼模式
+    </LineArrow>
+
+    <br />
   </PageNavHolder>
 </template>
 

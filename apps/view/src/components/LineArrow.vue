@@ -35,7 +35,7 @@ section.LineArrow {
   justify-content: space-between;
 
   border-radius: 16px;
-  background: var(--el-bg-color);
+  background: var(--el-fill-color);
   transition: all 0.3s ease;
 
   &:active {
