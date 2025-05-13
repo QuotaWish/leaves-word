@@ -3,11 +3,12 @@ defineProps<{
   title: string;
   description?: string;
   arrow?: boolean;
+  danger?: boolean;
 }>();
 </script>
 
 <template>
-  <div class="settings-item theme-color-transition">
+  <div :class="{ danger }" class="settings-item theme-color-transition">
     <div class="item-content">
       <div class="item-title">{{ title }}</div>
       <div class="item-desc" v-if="description">{{ description }}</div>
@@ -41,6 +42,10 @@ defineProps<{
   &:last-child {
     border-bottom: none;
     border-radius: 0 0 8px 8px;
+  }
+
+  &.danger * {
+    color: var(--el-color-danger) !important;
   }
 
   .item-content {
