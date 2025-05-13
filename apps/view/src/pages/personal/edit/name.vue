@@ -37,7 +37,12 @@ onError(() => {
 </script>
 
 <template>
-  <PageNavHolder loading-mask :loading="loading" title="修改我的昵称">
+  <PageNavHolder
+    :content-padding="false"
+    loading-mask
+    :loading="loading"
+    title="修改我的昵称"
+  >
     <template #action>
       <el-button
         @click="send"
