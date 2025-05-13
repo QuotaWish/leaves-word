@@ -1,27 +1,36 @@
 <script lang="ts" setup>
-import { useFooterNav } from '.'
+import { useFooterNav } from ".";
 
-const router = useRouter()
+const router = useRouter();
 
-const { active, activeNav, navs } = useFooterNav()
+const { active, activeNav, navs } = useFooterNav();
 </script>
 
 <template>
   <nav
     :class="{ shrink: !active }"
-    class="Application-Footer transition-cubic" inline-flex gap-2 text-xl
+    class="Application-Footer transition-cubic"
+    inline-flex
+    gap-2
+    text-xl
   >
     <ul w-full flex justify-between>
       <li
-        v-for="(nav, ind) in navs" :id="`footer-nav-item-${ind + 1}`" :key="nav.path" flex flex-col items-center
-        :class="{ active: activeNav?.path === nav.path }" @click="router.push(nav.path)"
+        v-for="(nav, ind) in navs"
+        :id="`footer-nav-item-${ind + 1}`"
+        :key="nav.path"
+        flex
+        flex-col
+        items-center
+        :class="{ active: activeNav?.path === nav.path }"
+        @click="router.push(nav.path)"
       >
         <div class="transition-cubic nav-icon">
           <template v-if="nav.icon.startsWith('i-')">
             <div :class="nav.icon" />
           </template>
           <template v-else>
-            <img class="scale-[1.5]" :src="nav.icon">
+            <img class="scale-[1.5]" :src="nav.icon" />
           </template>
         </div>
         <p class="transition-cubic title">
@@ -89,6 +98,7 @@ const { active, activeNav, navs } = useFooterNav()
   opacity: 0.75;
   font-size: 30px;
   font-weight: 600;
+  user-select: none;
   align-items: center;
   justify-content: center;
 

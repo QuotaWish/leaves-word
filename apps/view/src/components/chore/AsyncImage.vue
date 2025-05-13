@@ -1,10 +1,25 @@
 <script setup lang="ts">
 import { useImage } from "@vueuse/core";
 
-const props = defineProps<{
-  alt?: string;
-  src: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    alt?: string;
+    src: string;
+    /**
+     * 默认会有一个渐变色图
+     * 启用之后会用 Loading 动画代替
+     */
+    loading?: boolean;
+    objectFit?: "cover" | "contain" | "fill" | "none" | "scale-down";
+    /**
+     * 启用之后图片会尽可能占据最大空间，而不是强制占据最大空间
+     */
+    normal?: boolean;
+  }>(),
+  {
+    objectFit: "cover",
+  },
+);
 
 const options = ref({ src: "" });
 const image = useImage(options);
@@ -20,22 +35,40 @@ watchEffect(() => {
       error: image.error.value,
       loading: image.isLoading.value,
       ready: image.isReady.value,
+      normal,
     }"
-    class="AsyncImage"
+    class="AsyncImage w-full h-full"
   >
     <img class="transition-cubic" :src="src" :alt="alt" />
-    <div class="AsyncImage-Empty transition-cubic absolute-layout"></div>
+    <div class="AsyncImage-Empty transition-cubic absolute-layout">
+      <Loading v-if="loading" />
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.AsyncImage.normal img {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  max-width: 100%;
+  width: unset;
+  height: 100%;
+  max-height: 100%;
+
+  transform: translate(-50%, -50%);
+}
+
 .AsyncImage {
   img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: v-bind(objectFit);
 
     opacity: 0;
+    filter: blur(1px);
   }
 
   &-Empty {
@@ -78,5 +111,7 @@ watchEffect(() => {
 
 .AsyncImage.ready img {
   opacity: 1;
+
+  filter: blur(0px);
 }
 </style>

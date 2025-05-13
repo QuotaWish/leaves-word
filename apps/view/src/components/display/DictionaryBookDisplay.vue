@@ -1,49 +1,59 @@
 <script setup lang="ts">
-import type { EnglishDictionary } from '~/composables/api/clients/globals'
-import { UseImage } from '@vueuse/components'
+import type { EnglishDictionary } from "~/composables/api/clients/globals";
+import { UseImage } from "@vueuse/components";
 
-const props = withDefaults(defineProps<{
-  modelValue: EnglishDictionary
-  onlyImage?: boolean
-  border?: boolean
-  active?: boolean
-}>(), {
-  border: true,
-  active: false,
-})
+const props = withDefaults(
+  defineProps<{
+    modelValue: EnglishDictionary;
+    onlyImage?: boolean;
+    border?: boolean;
+    active?: boolean;
+  }>(),
+  {
+    border: true,
+    active: false,
+  },
+);
 
-const showBorder = computed(() => props.border !== false)
+const showBorder = computed(() => props.border !== false);
 </script>
 
 <template>
   <div :class="{ onlyImage }" class="DictionaryBookDisplay">
     <div :class="{ border: showBorder, active }" class="cover">
-      <UseImage v-if="modelValue.image_url" :src="modelValue.image_url">
-        <template #loading>
-          <Loading />
-        </template>
+      <AsyncImage
+        :src="modelValue.image_url ?? ''"
+        :loading="!!modelValue.image_url"
+        normal
+        obect-fit="contain"
+      />
 
-        <template #error>
-          <div class="image-slot">
-            <i class="el-icon-picture-outline" />
-          </div>
-        </template>
-      </UseImage>
-      <!-- <div v-if="modelValue.image_url" class="cover-wrapper absolute-layout min-h[80px] min-w[80px]">
-
+      <!-- <div v-else class="no-image">
+        <span>{{ modelValue.name?.slice(0, 1) || "D" }}</span>
       </div> -->
-      <div v-else class="no-image">
-        <span>{{ modelValue.name?.slice(0, 1) || 'D' }}</span>
-      </div>
 
-      <div v-if="active"
-        class="absolute-layout flex items-center justify-center fake-background z-10 DictionaryBookDisplay-Active">
-        <div font-bold text-2xl w-10 h-10 flex items-center justify-center rounded-full>
+      <div
+        v-if="active"
+        class="absolute-layout flex items-center justify-center fake-background z-10 DictionaryBookDisplay-Active"
+      >
+        <div
+          font-bold
+          text-2xl
+          w-10
+          h-10
+          flex
+          items-center
+          justify-center
+          rounded-full
+        >
           <div text-white i-carbon-checkmark />
         </div>
       </div>
 
-      <div v-if="modelValue.published_words && !onlyImage" class="DictionaryBookDisplay-Stat z-5">
+      <div
+        v-if="modelValue.published_words && !onlyImage"
+        class="DictionaryBookDisplay-Stat z-5"
+      >
         <span>{{ modelValue.published_words }}&nbsp;词</span>
       </div>
     </div>
@@ -112,13 +122,13 @@ const showBorder = computed(() => props.border !== false)
     width: 100%;
     max-height: 100%;
 
-    :deep(img) {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      max-width: 100%;
-      max-height: 100%;
-    }
+    // :deep(img) {
+    //   width: 100%;
+    //   height: 100%;
+    //   object-fit: contain;
+    //   max-width: 100%;
+    //   max-height: 100%;
+    // }
 
     .no-image {
       width: 100%;
