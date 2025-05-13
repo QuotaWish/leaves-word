@@ -10,6 +10,8 @@ import {
   useTheme,
 } from "~/composables/theme";
 
+const router = useRouter();
+
 // 主题色相关
 const themeColors = Object.entries(themeColorMap).map(([key, value]) => ({
   name: key,
@@ -48,9 +50,9 @@ const selectThemeColor = (color: string, event: MouseEvent) => {
       </div>
     </SettingsSection>
 
-    <LineArrow my-4>
+    <LineArrow @click="router.push('/personal/theme/display')" my-4>
       <template #icon>
-        <div i-carbon-time />
+        <div i-carbon-screen />
       </template>
       显示模式设置
     </LineArrow>

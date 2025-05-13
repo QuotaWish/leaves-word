@@ -7,6 +7,7 @@
 export {}
 declare global {
   const APP_LOGO: typeof import('./src/composables/constants')['APP_LOGO']
+  const DisplayModeState: typeof import('./src/composables/theme')['DisplayModeState']
   const ENDS_URL: typeof import('./src/composables/constants')['ENDS_URL']
   const EffectScope: typeof import('vue')['EffectScope']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
@@ -34,6 +35,7 @@ declare global {
   const defaultThemeColor: typeof import('./src/composables/theme')['defaultThemeColor']
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
   const defineComponent: typeof import('vue')['defineComponent']
+  const displayModeState: typeof import('./src/composables/theme')['displayModeState']
   const eagerComputed: typeof import('@vueuse/core')['eagerComputed']
   const effectScope: typeof import('vue')['effectScope']
   const extendRef: typeof import('@vueuse/core')['extendRef']
@@ -318,6 +320,9 @@ declare global {
   // @ts-ignore
   export type { Component, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
+  // @ts-ignore
+  export type { DisplayModeState, DisplayModeState } from './src/composables/theme'
+  import('./src/composables/theme')
 }
 
 // for vue template auto import
@@ -326,6 +331,7 @@ declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly APP_LOGO: UnwrapRef<typeof import('./src/composables/constants')['APP_LOGO']>
+    readonly DisplayModeState: UnwrapRef<typeof import('./src/composables/theme')['DisplayModeState']>
     readonly ENDS_URL: UnwrapRef<typeof import('./src/composables/constants')['ENDS_URL']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
@@ -353,6 +359,7 @@ declare module 'vue' {
     readonly defaultThemeColor: UnwrapRef<typeof import('./src/composables/theme')['defaultThemeColor']>
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
+    readonly displayModeState: UnwrapRef<typeof import('./src/composables/theme')['displayModeState']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>

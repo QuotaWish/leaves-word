@@ -1,10 +1,8 @@
+import { useColorMode, useDark, usePreferredDark, useStorage } from '@vueuse/core'
 import { ref, watch } from 'vue'
-import { useDark, useToggle, useStorage, usePreferredDark, useColorMode } from '@vueuse/core'
 
-// 检测浏览器是否支持CSS过渡API
 const supportsTransition = typeof document !== 'undefined' && 'startViewTransition' in document
 
-// 颜色模式管理 - 使用VueUse的useDark处理暗色模式
 export const isDark = useDark({
   selector: 'html',
   attribute: 'class',
@@ -14,15 +12,13 @@ export const isDark = useDark({
 })
 
 // 直接创建一个显式的切换函数，确保classList正确更新
-const toggle = (forcedValue?: boolean) => {
+function toggle(forcedValue?: boolean) {
   const newValue = forcedValue !== undefined ? forcedValue : !isDark.value
   isDark.value = newValue
 
-  // 确保class被正确添加或移除
   if (typeof document !== 'undefined') {
     document.documentElement.classList.toggle('dark', newValue)
 
-    // 更新localStorage
     localStorage.setItem('color-schema', newValue ? 'dark' : 'light')
   }
 
@@ -34,15 +30,14 @@ const toggle = (forcedValue?: boolean) => {
  * @param forcedValue 指定切换的目标值，undefined则自动切换
  * @param event 鼠标事件，用于创建点击动画效果
  */
-export const toggleDark = (forcedValue?: boolean, event?: MouseEvent) => {
-  // 如果传入了点击事件，则使用圆形扩散效果
+export function toggleDark(forcedValue?: boolean, event?: MouseEvent) {
   if (event && supportsTransition) {
     const x = event.clientX
     const y = event.clientY
     // 计算最大半径 - 从点击位置到最远角落的距离
     const endRadius = Math.hypot(
       Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y)
+      Math.max(y, window.innerHeight - y),
     )
 
     // 启动过渡动画
@@ -55,7 +50,7 @@ export const toggleDark = (forcedValue?: boolean, event?: MouseEvent) => {
     transition.ready.then(() => {
       const clipPath = [
         `circle(0px at ${x}px ${y}px)`,
-        `circle(${endRadius}px at ${x}px ${y}px)`
+        `circle(${endRadius}px at ${x}px ${y}px)`,
       ]
 
       document.documentElement.animate(
@@ -68,7 +63,7 @@ export const toggleDark = (forcedValue?: boolean, event?: MouseEvent) => {
           pseudoElement: isDark.value
             ? '::view-transition-old(root)'
             : '::view-transition-new(root)',
-        }
+        },
       )
     })
   } else if (supportsTransition) {
@@ -82,6 +77,18 @@ export const toggleDark = (forcedValue?: boolean, event?: MouseEvent) => {
     toggle(forcedValue)
   }
 }
+
+/**
+ * 显示模式设置
+ */
+export class DisplayModeState {
+  /**
+   * 自动切换至暗黑模式
+   */
+  autoDark: "manual" | "sync" | "sunshine" = "manual"
+}
+
+export const displayModeState = useLocalStorage('leaf-display', new DisplayModeState())
 
 // 主题色管理 - 支持的主题颜色类型
 export type ThemeColor = 'blue' | 'green' | 'purple' | 'orange' | 'red'
@@ -147,7 +154,7 @@ watch(themeColor, (newColor) => {
  * @param color 目标主题色
  * @param event 鼠标事件，用于创建点击动画效果
  */
-export const changeThemeColor = (color: ThemeColor, event?: MouseEvent) => {
+export function changeThemeColor(color: ThemeColor, event?: MouseEvent) {
   // 如果传入了点击事件，则使用圆形扩散效果
   if (event && supportsTransition) {
     const x = event.clientX
@@ -155,7 +162,7 @@ export const changeThemeColor = (color: ThemeColor, event?: MouseEvent) => {
     // 计算最大半径
     const endRadius = Math.hypot(
       Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y)
+      Math.max(y, window.innerHeight - y),
     )
 
     // 保存当前颜色，用于动画过渡
@@ -171,32 +178,32 @@ export const changeThemeColor = (color: ThemeColor, event?: MouseEvent) => {
     transition.ready.then(() => {
       const clipPath = [
         `circle(0px at ${x}px ${y}px)`,
-        `circle(${endRadius}px at ${x}px ${y}px)`
+        `circle(${endRadius}px at ${x}px ${y}px)`,
       ]
 
       document.documentElement.animate(
         {
-          clipPath: clipPath,
+          clipPath,
         },
         {
           duration: 300,
           easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
           pseudoElement: '::view-transition-new(root)',
-        }
+        },
       )
 
       // 为主题色相关元素添加过渡动画
-      document.querySelectorAll('.theme-transition-element').forEach(el => {
+      document.querySelectorAll('.theme-transition-element').forEach((el) => {
         el.animate(
           [
             { backgroundColor: oldColors.primary },
-            { backgroundColor: newColors.primary }
+            { backgroundColor: newColors.primary },
           ],
           {
             duration: 300,
             easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-            fill: 'forwards'
-          }
+            fill: 'forwards',
+          },
         )
       })
     })
@@ -276,22 +283,22 @@ if (typeof document !== 'undefined') {
 
 // 暴露API检测功能 - 提供浏览器特性检测结果
 export const features = {
-  supportsTransition,   // 是否支持视图过渡API
-  prefersDark: usePreferredDark(),  // 系统是否偏好暗色模式
+  supportsTransition, // 是否支持视图过渡API
+  prefersDark: usePreferredDark(), // 系统是否偏好暗色模式
 }
 
 /**
  * 完整的主题管理API - 返回所有主题相关的状态和函数
  * @returns 主题管理API对象
  */
-export const useTheme = () => {
+export function useTheme() {
   return {
-    isDark,              // 暗色模式状态
-    toggleDark,          // 切换暗色模式的函数
-    themeColor,          // 当前主题色
-    changeThemeColor,    // 更改主题色的函数
-    themeColorMap,       // 主题色映射表
-    features,            // 特性检测结果
+    isDark, // 暗色模式状态
+    toggleDark, // 切换暗色模式的函数
+    themeColor, // 当前主题色
+    changeThemeColor, // 更改主题色的函数
+    themeColorMap, // 主题色映射表
+    features, // 特性检测结果
   }
 }
 

@@ -28,11 +28,8 @@ const baseFontSize = computed(() => {
 
 <template>
   <div class="PlanCover absolute-layout">
-    <div
-      v-if="data?.poster"
-      class="fake-background PlanCover-Bg absolute-layout"
-    >
-      <AsyncImage :src="data.poster" alt="Cover" />
+    <div class="fake-background PlanCover-Bg absolute-layout">
+      <AsyncImage :src="data?.poster" alt="Cover" />
       <!-- <img :src="data.poster" alt="Cover" /> -->
     </div>
     <!-- Card Placeholder -->
