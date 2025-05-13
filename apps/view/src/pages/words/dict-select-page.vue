@@ -161,9 +161,3 @@ onMounted(() => {
   background-color: var(--el-bg-color);
 }
 </style>
-
-<route lang="yaml">
-meta:
-  index: sub
-  transition: nav
-</route>
