@@ -39,7 +39,12 @@ function handleLogout() {
         </div>
       </SettingsItem>
 
-      <SettingsItem title="个性签名" desc="自定义个性签名" :show-arrow="true">
+      <SettingsItem
+        title="个性签名"
+        desc="自定义个性签名"
+        :show-arrow="true"
+        @click="router.push('/personal/edit/profile')"
+      >
         <div class="SettingsItem-right mx-2">
           {{ globalAuthStorage.user.userProfile || "-" }}
         </div>

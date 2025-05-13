@@ -22,6 +22,7 @@ import { useBaseRouteStore } from "./composables/store/useRouteStore";
 import { $logout, globalAuthStorage, initAuthModule } from "./modules/auth";
 import ExploreIndex from "./pages/explore/index.vue";
 import PersonalIndex from "./pages/personal/index.vue";
+import { setToastDefaultOptions } from "vant";
 
 modeManager.set(
   ModeType.COMPREHENSIVE,
@@ -162,6 +163,11 @@ router.beforeEach(async (to, from) => {
   // }
 
   return true;
+});
+
+setToastDefaultOptions({
+  duration: 1200,
+  forbidClick: true,
 });
 </script>
 

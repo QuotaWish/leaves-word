@@ -6,7 +6,7 @@ import SettingsInput from "~/components/settings/SettingsInput.vue";
 import { globalAuthStorage } from "~/modules/auth";
 
 const router = useRouter();
-const originName = globalAuthStorage.value.user.userName ?? "";
+const originProfile = globalAuthStorage.value.user.userProfile ?? "";
 
 const { loading, form, send, onSuccess, onError } = useForm(
   (formData: any) =>
@@ -16,14 +16,14 @@ const { loading, form, send, onSuccess, onError } = useForm(
   {
     initialForm: {
       userAvatar: globalAuthStorage.value.user.userAvatar,
-      userName: originName,
-      userProfile: globalAuthStorage.value.user.userProfile,
+      userName: globalAuthStorage.value.user.userName,
+      userProfile: originProfile,
     },
   },
 );
 
 onSuccess(async () => {
-  globalAuthStorage.value.user.userName = form.value.userName;
+  globalAuthStorage.value.user.userProfile = form.value.userProfile;
 
   showSuccessToast("修改成功");
 
@@ -42,22 +42,28 @@ onError(() => {
     :content-padding="false"
     loading-mask
     :loading="loading"
-    title="修改我的昵称"
+    title="修改我的个性签名"
   >
     <template #action>
       <el-button
-        @click="send"
         link
-        :disabled="originName === form.userName"
+        :disabled="originProfile === form.userProfile"
         type="primary"
+        @click="send"
       >
         保存
       </el-button>
     </template>
 
-    <SettingsInput v-model="form.userName" placeholder="输入你的昵称" :max="10">
-      <template #mention> {{ form.userName.length }}/10字 </template>
+    <SettingsInput
+      v-model="form.userProfile"
+      placeholder="输入你的个性签名"
+      :max="30"
+    >
+      <template #mention> {{ form.userProfile.length }}/30字 </template>
     </SettingsInput>
-    <p px-2 text-sm op-75>*您的昵称将在社交，打卡，分享时用作展示</p>
+    <p px-2 text-sm op-75>
+      *您的个性签名将在社交，打卡，查看个人资料时用作展示
+    </p>
   </PageNavHolder>
 </template>
