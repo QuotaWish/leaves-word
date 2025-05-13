@@ -1,19 +1,11 @@
 <script setup lang="ts">
 import PageNavHolder from "~/components/page/holder/PageNavHolder.vue";
-import ColorOption from "~/components/settings/ColorOption.vue";
-import {
-  isDark,
-  toggleDark,
-  themeColor,
-  themeColorMap,
-  changeThemeColor,
-  useTheme,
-  displayModeState,
-} from "~/composables/theme";
+import { displayModeState } from "~/composables/theme";
 
-const autoDarkModes = reactive([
+const router = useRouter();
+const autoDarkModes = reactive<any>([
   {
-    kety: "manual",
+    key: "manual",
     title: "手动切换模式",
     desc: "手动切换至暗黑模式",
     active: computed(() => displayModeState.value.autoDark === "manual"),
@@ -39,19 +31,23 @@ const autoDarkModes = reactive([
     <SettingsSection plain title="自动切换至暗黑模式" icon="i-carbon-time">
       <div class="AutoDarkMode flex flex-col justify-between gap-4">
         <div
-          @click="displayModeState.autoDark = autoDarkMode.key as any"
-          class="AutoDarkMode-Item"
-          :class="{ active: autoDarkMode.active }"
           v-for="(autoDarkMode, index) in autoDarkModes"
           :key="index"
+          class="AutoDarkMode-Item"
+          :class="{ active: autoDarkMode.active }"
+          @click="displayModeState.autoDark = autoDarkMode.key"
         >
-          <p font-bold>{{ autoDarkMode.title }}</p>
-          <p text-sm>{{ autoDarkMode.desc }}</p>
+          <p font-bold>
+            {{ autoDarkMode.title }}
+          </p>
+          <p text-sm>
+            {{ autoDarkMode.desc }}
+          </p>
         </div>
       </div>
     </SettingsSection>
 
-    <LineArrow my-4>
+    <LineArrow @click="router.push('/personal/theme/dark-help')" my-4>
       <template #icon>
         <div i-carbon-help />
       </template>
@@ -65,7 +61,7 @@ const autoDarkModes = reactive([
 <style lang="scss" scoped>
 .AutoDarkMode-Item {
   &.active {
-    border: 1px solid var(--theme-color-primary);
+    border: 2px solid var(--theme-color-primary);
   }
   &:active {
     background-color: var(--el-fill-color-light);
@@ -76,5 +72,6 @@ const autoDarkModes = reactive([
   user-select: none;
   border-radius: 18px;
   background-color: var(--el-fill-color);
+  border: 2px solid #0000;
 }
 </style>

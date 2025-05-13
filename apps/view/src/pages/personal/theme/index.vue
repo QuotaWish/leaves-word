@@ -107,7 +107,7 @@ const selectThemeColor = (color: string, event: MouseEvent) => {
 .color-options {
   display: flex;
   gap: 2rem;
-  justify-content: center;
+  justify-content: space-between;
   padding: 0.5rem;
 }
 

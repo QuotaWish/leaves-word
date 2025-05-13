@@ -59,6 +59,7 @@ declare module 'vue-router/auto-routes' {
     '/personal/edit/name': RouteRecordInfo<'/personal/edit/name', '/personal/edit/name', Record<never, never>, Record<never, never>>,
     '/personal/settings': RouteRecordInfo<'/personal/settings', '/personal/settings', Record<never, never>, Record<never, never>>,
     '/personal/theme/': RouteRecordInfo<'/personal/theme/', '/personal/theme', Record<never, never>, Record<never, never>>,
+    '/personal/theme/dark-help': RouteRecordInfo<'/personal/theme/dark-help', '/personal/theme/dark-help', Record<never, never>, Record<never, never>>,
     '/personal/theme/display': RouteRecordInfo<'/personal/theme/display', '/personal/theme/display', Record<never, never>, Record<never, never>>,
     '/search': RouteRecordInfo<'/search', '/search', Record<never, never>, Record<never, never>>,
     '/test/book': RouteRecordInfo<'/test/book', '/test/book', Record<never, never>, Record<never, never>>,

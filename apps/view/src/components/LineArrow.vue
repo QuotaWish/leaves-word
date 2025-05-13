@@ -32,6 +32,7 @@ section.LineArrow {
   overflow: hidden;
   user-select: none;
 
+  cursor: pointer;
   justify-content: space-between;
 
   border-radius: 16px;
@@ -60,6 +61,7 @@ section.LineArrow {
     }
 
     .arrow-icon {
+      font-weight: 600;
       color: var(--theme-color-primary);
     }
   }
@@ -77,6 +79,9 @@ section.LineArrow {
     transform: rotate(45deg);
     pointer-events: none;
     color: var(--theme-color);
+    .dark & {
+      filter: invert(1);
+    }
   }
 
   .head-icon {

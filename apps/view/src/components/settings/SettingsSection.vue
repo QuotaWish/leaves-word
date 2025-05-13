@@ -77,7 +77,7 @@ defineProps<{
 
 .settings-section.plain {
   div.settings-section-header {
-    margin: 1rem 0;
+    margin: 0.5rem 0;
     padding: 0 0.5rem;
 
     border: none;
@@ -85,9 +85,14 @@ defineProps<{
 
   .header-title {
     flex: 1;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-weight: 300;
     color: var(--el-text-color-primary);
+  }
+
+  .header-icon {
+    width: 24px;
+    height: 24px;
   }
 
   .settings-section-content {

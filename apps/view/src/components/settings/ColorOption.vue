@@ -69,7 +69,7 @@ defineEmits<{
 }
 
 .color-name {
-  font-size: 14px;
+  font-size: 12px;
   transition: color 0.3s ease;
   margin-top: 0.25rem;
 }
