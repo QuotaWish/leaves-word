@@ -42,6 +42,9 @@ function buildTree(categories: CategoryTree[]): CategoryTree[] {
     } else {
       map.get(parentId)!.children!.push(node);
     }
+
+    // 对 children 做排序
+    node.children = (node.children || []).sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
   });
 
   return roots;
@@ -97,7 +100,9 @@ export const MultiCategoryTreeSelect = ({
   onChange,
 }: MultiCategoryTreeSelectProps) => {
   const fetchData = useCallback(async () => {
-    const { data, code } = await listCategoryByPageUsingPost({} as API.CategoryQueryRequest);
+    const { data, code } = await listCategoryByPageUsingPost({
+      pageSize: 200,
+    } as API.CategoryQueryRequest);
 
     if (code === 0) {
       return data?.records ?? [];
@@ -292,6 +297,7 @@ const CategoryAdminPage: React.FC = () => {
             sortField,
             sortOrder,
             ...filter,
+            pageSize: 200,
           } as API.CategoryQueryRequest);
 
           setData(data?.records || []);
