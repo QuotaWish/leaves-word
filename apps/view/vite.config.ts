@@ -81,5 +81,8 @@ export default ({ mode }: { mode: string }) => {
     build: {
       sourcemap: true,
     },
+    esbuild: {
+      keepNames: true,
+    },
   })
 }

@@ -122,9 +122,6 @@ eventBus.registerListener(AuthSuccessEvent, {
 
 //   return true;
 // });
-function getComponentKey(comp: Component) {
-  return comp?.type.name || Math.random();
-}
 </script>
 
 <template>
@@ -137,7 +134,7 @@ function getComponentKey(comp: Component) {
             <!-- <keep-alive :include="['IndexPage']" :exclude="baseRouteStore.excludeNames"> -->
             <!-- :lru="10" :exclude="['DictionaryPage', 'SignedPage']" -->
             <keep-alive>
-              <component :key="route.fullPath" :is="Component" />
+              <component :is="Component" />
             </keep-alive>
           </TransitionPage>
           <!-- <transition mode="out-in" :name="router.transition.name">

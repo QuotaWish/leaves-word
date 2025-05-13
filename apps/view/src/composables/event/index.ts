@@ -72,17 +72,17 @@ export function useLeafEventBus(): EventManager {
   return eventManager;
 }
 
-
+console.log("%cinit event listener", "color: #0000ff")
 // 消息接收事件
-export class MessageReceivedEvent implements LeafEvent {
-  public readonly eventName = 'message:received';
+// export class MessageReceivedEvent implements LeafEvent {
+//   public readonly eventName = 'message:received';
 
-  constructor(
-    public readonly id: number,
-    public readonly content: string,
-    public readonly timestamp: number,
-  ) {}
-}
+//   constructor(
+//     public readonly id: number,
+//     public readonly content: string,
+//     public readonly timestamp: number,
+//   ) {}
+// }
 
 // 使用示例：
 /*
