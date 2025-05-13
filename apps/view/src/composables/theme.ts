@@ -91,6 +91,27 @@ export class DisplayModeState {
 
 export const displayModeState = useLocalStorage('leaf-display', new DisplayModeState())
 
+const themeMedia = window.matchMedia("(prefers-color-scheme: dark)");
+
+themeMedia.addEventListener('change', (e) => {
+  if (displayModeState.value.autoDark !== 'sync') {
+    return
+  }
+
+  toggleDark(e.matches, {
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2,
+  } as any)
+});
+
+watch(() => displayModeState.value.autoDark, (value) => {
+  if (value === 'sync') {
+    toggleDark(themeMedia.matches)
+  } else if (value !== 'sunshine') {
+    // TODO
+  }
+}, { immediate: true })
+
 // 主题色管理 - 支持的主题颜色类型
 export type ThemeColor = 'blue' | 'green' | 'purple' | 'orange' | 'red'
 export const defaultThemeColor: ThemeColor = 'blue'
@@ -270,7 +291,7 @@ if (typeof document !== 'undefined') {
     html.dark::view-transition-new(root) {
       z-index: 1;
     }
-    
+
     /* 主题色过渡效果 */
     .theme-color-transition {
       transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;

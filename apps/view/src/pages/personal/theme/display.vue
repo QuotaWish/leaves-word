@@ -17,6 +17,7 @@ const autoDarkModes = reactive<any>([
     active: computed(() => displayModeState.value.autoDark === "sync"),
   },
   {
+    disabled: true,
     key: "sunshine",
     title: "日月升降模式",
     desc: "日落时自动切换至暗黑模式",
@@ -34,7 +35,10 @@ const autoDarkModes = reactive<any>([
           v-for="(autoDarkMode, index) in autoDarkModes"
           :key="index"
           class="AutoDarkMode-Item"
-          :class="{ active: autoDarkMode.active }"
+          :class="{
+            active: autoDarkMode.active,
+            disabled: autoDarkMode.disabled,
+          }"
           @click="displayModeState.autoDark = autoDarkMode.key"
         >
           <p font-bold>
@@ -65,6 +69,10 @@ const autoDarkModes = reactive<any>([
   }
   &:active {
     background-color: var(--el-fill-color-light);
+  }
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
   padding: 1rem;
 
