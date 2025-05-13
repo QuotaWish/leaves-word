@@ -6,7 +6,12 @@ const props = defineProps<{
   src: string;
 }>();
 
-const image = useImage({ src: props.src });
+const options = ref({ src: "" });
+const image = useImage(options);
+
+watchEffect(() => {
+  options.value.src = props.src;
+});
 </script>
 
 <template>
