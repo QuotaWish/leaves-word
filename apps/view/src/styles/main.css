@@ -24,7 +24,7 @@ button.el-button--large {
 
 .fake-background::after {
   z-index: -1;
-  content: '';
+  content: "";
   position: absolute;
 
   top: 0;
@@ -56,16 +56,16 @@ button.el-button--large {
 }
 
 .coffee-font {
-  font-family: 'Milky Coffee';
+  font-family: "Milky Coffee";
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Milky Coffee';
+  font-family: "Milky Coffee";
   src:
-    url('/font/MilkyCoffee.woff2') format('woff2'),
-    url('font/MilkyCoffee.woff') format('woff');
+    url("/font/MilkyCoffee.woff2") format("woff2"),
+    url("font/MilkyCoffee.woff") format("woff");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -100,4 +100,9 @@ body {
 
   padding: 1rem !important;
   border-radius: 18px !important;
+}
+
+.van-popup.van-toast {
+  border-radius: 18px;
+  backdrop-filter: blur(18px) saturate(180%);
 }

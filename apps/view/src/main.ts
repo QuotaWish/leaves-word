@@ -4,6 +4,7 @@ import Particles from '@tsparticles/vue3'
 import ElementPlus from 'element-plus'
 import VWave from 'v-wave'
 
+import { Toast } from 'vant'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -47,6 +48,7 @@ Sentry.init({
 app.use(pinia)
 app.use(ElementPlus)
 app.use(router)
+app.use(Toast)
 app.use(VWave, {
   color: 'currentColor',
 })

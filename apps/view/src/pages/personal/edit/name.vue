@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useForm } from "alova/client";
+import { showFailToast, showSuccessToast } from "vant";
+
 import SettingsInput from "~/components/settings/SettingsInput.vue";
 import { globalAuthStorage } from "~/modules/auth";
-import { ToastEvent } from "../../../composables/event/toast-event";
 
 const router = useRouter();
 const originName = globalAuthStorage.value.user.userName ?? "";
@@ -22,17 +23,17 @@ const { loading, form, send, onSuccess, onError } = useForm(
 );
 
 onSuccess(async () => {
-  globalAuthStorage.value.user.userName = form.userName;
+  globalAuthStorage.value.user.userName = form.value.userName;
 
-  sendToast(new ToastEvent("修改成功", "success"));
+  showSuccessToast("修改成功");
 
-  await sleep(500);
+  await sleep(2200);
 
   router.back();
 });
 
 onError(() => {
-  sendToast(new ToastEvent("修改失败", "error"));
+  showFailToast("修改失败");
 });
 </script>
 
@@ -57,5 +58,6 @@ onError(() => {
     <SettingsInput v-model="form.userName" placeholder="输入你的昵称" :max="10">
       <template #mention> {{ form.userName.length }}/10字 </template>
     </SettingsInput>
+    <p px-2 text-sm op-75>*您的昵称将在社交，打卡，分享时用作展示</p>
   </PageNavHolder>
 </template>

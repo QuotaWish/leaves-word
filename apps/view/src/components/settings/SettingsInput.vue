@@ -20,7 +20,7 @@ const model = useVModel(props, "modelValue", emits);
       h-full
       type="text"
       v-model="model"
-      :max="max"
+      :maxlength="max"
     />
     <div class="SettingsInput-Mention px-2 text-sm op-75">
       <slot name="mention" />
