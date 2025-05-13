@@ -1,39 +1,52 @@
 <script setup lang="ts">
-import { Empty, NavBar } from "vant";
-
 defineProps<{
   title: string;
   empty?: boolean;
+  header?: boolean;
   loading?: boolean;
+  loadingMask?: boolean;
+  /**
+   * 沉浸模式
+   * 启用之后，会加入自定义标题，整体会更加沉浸
+   */
+  immersive?: boolean;
 }>();
-
-const router = useRouter();
 
 const ins = ref(getCurrentInstance());
 </script>
 
 <template>
-  <RoutePage :loading="loading" class="SideNavHolder">
-    <template #header>
-      <NavBar
-        :title="title"
-        left-text="返回"
-        left-arrow
-        @click-left="router.back()"
-      />
+  <PageNavHolder
+    :immersive
+    :empty
+    :header
+    :loadingMask
+    :contentPadding="false"
+    :title="title"
+    :loading="loading"
+    class="SideNavHolder"
+  >
+    <template #topHeader>
+      <slot name="topHeader" />
+    </template>
+
+    <template #action>
+      <slot name="action" />
+    </template>
+
+    <template #bg>
+      <slot name="bg" />
+    </template>
+
+    <template v-if="ins?.slots.header" #header>
+      <slot name="header" />
+    </template>
+
+    <template #empty>
+      <slot name="empty" />
     </template>
 
     <div relative h-full flex flex-col class="SideNavHolder-Container">
-      <div
-        v-if="ins?.slots.header"
-        relative
-        px-4
-        py-2
-        class="DictionaryHolder-Header"
-      >
-        <slot name="header" />
-      </div>
-
       <div class="SideNavHolder-Content w-full flex flex-1 overflow-scroll">
         <div
           v-if="ins?.slots.nav"
@@ -47,35 +60,13 @@ const ins = ref(getCurrentInstance());
           <slot />
         </div>
       </div>
-
-      <div
-        :class="{ visible: empty }"
-        class="transition-cubic SideNavHolder-Empty absolute-layout z-10 flex items-center justify-center"
-      >
-        <Empty description="你来到了荒漠." />
-      </div>
     </div>
-  </RoutePage>
+  </PageNavHolder>
 </template>
 
 <style lang="scss" scoped>
-.SideNavHolder-Empty {
-  &.visible {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  opacity: 0;
-  pointer-events: none;
-  background-color: var(--el-fill-color-lighter);
-}
-
-.SideNavHolder {
-  background-color: var(--el-bg-color);
-}
-
 .SideNavHolder-Main {
-  background-color: var(--el-fill-color);
+  background-color: var(--el-fill-color-dark);
 }
 </style>
 
@@ -85,7 +76,7 @@ const ins = ref(getCurrentInstance());
     &::before {
       transform: scale(1);
     }
-    background-color: var(--el-fill-color);
+    background-color: var(--el-fill-color-dark);
   }
 
   li {
@@ -116,7 +107,5 @@ const ins = ref(getCurrentInstance());
     align-items: center;
     justify-content: center;
   }
-
-  background-color: var(--el-bg-color);
 }
 </style>
