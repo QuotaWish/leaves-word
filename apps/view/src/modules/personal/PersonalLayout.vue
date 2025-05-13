@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import WithHeadPage from '~/components/page/WithHeadPage.vue';
-
-
+import WithHeadPage from "~/components/page/WithHeadPage.vue";
 </script>
 
 <template>
@@ -16,9 +14,7 @@ import WithHeadPage from '~/components/page/WithHeadPage.vue';
       <slot name="footer" />
     </footer>
 
-    <template #shrinkHeader>
-      个人中心
-    </template>
+    <template #shrinkHeader> 个人中心 </template>
   </WithHeadPage>
 </template>
 
@@ -44,7 +40,7 @@ import WithHeadPage from '~/components/page/WithHeadPage.vue';
   overflow-x: hidden;
   overflow-y: auto;
 
-  background-color: var(--el-fill-color);
+  background-color: var(--el-bg-color-page);
 }
 
 .PersonalLayout {

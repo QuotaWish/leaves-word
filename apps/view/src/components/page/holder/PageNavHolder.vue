@@ -145,7 +145,7 @@ function handleScroll() {
 }
 
 .PageNavHolder {
-  background-color: var(--el-bg-color);
+  background-color: var(--el-bg-color-page);
 }
 
 .PageNavHolder-Main {

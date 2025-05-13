@@ -55,14 +55,10 @@ watch(
         <SettingsItem
           title="主题设置"
           desc="暗黑模式与主题色选择"
-          :show-arrow="true"
+          arrow
           @click="navigateToThemePage"
         />
-        <SettingsItem
-          title="皮肤定制"
-          desc="自定义颜色、字体和背景"
-          :show-arrow="true"
-        />
+        <SettingsItem title="皮肤定制" desc="自定义颜色、字体和背景" arrow />
       </SettingsSection>
 
       <!-- 基础设置 -->
@@ -71,16 +67,8 @@ watch(
         icon="i-carbon:settings"
         color="#FF9F0A"
       >
-        <SettingsItem
-          title="通知设置"
-          desc="管理消息接收方式"
-          :show-arrow="true"
-        />
-        <SettingsItem
-          title="隐私设置"
-          desc="数据安全与权限管理"
-          :show-arrow="true"
-        />
+        <SettingsItem title="通知设置" desc="管理消息接收方式" arrow />
+        <SettingsItem title="隐私设置" desc="数据安全与权限管理" arrow />
       </SettingsSection>
 
       <!-- 广告与推广 -->
@@ -92,11 +80,7 @@ watch(
           :switch-value="noAdsEnabled"
           @switch-change="toggleNoAds"
         />
-        <SettingsItem
-          title="活动海报"
-          desc="查看最新平台活动"
-          :show-arrow="true"
-        />
+        <SettingsItem title="活动海报" desc="查看最新平台活动" arrow />
       </SettingsSection>
 
       <!-- 高级设置 - 添加开发者模式 -->
@@ -109,7 +93,7 @@ watch(
         <SettingsItem
           title="开发者模式"
           desc="启用高级开发工具和调试功能"
-          :show-arrow="true"
+          arrow
           @click="navigateToDeveloperPage"
         />
       </SettingsSection>

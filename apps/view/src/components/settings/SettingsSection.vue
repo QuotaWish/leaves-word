@@ -27,7 +27,7 @@ defineProps<{
 <style lang="scss" scoped>
 .settings-section {
   border-radius: 15px;
-  background-color: var(--el-fill-color-light);
+  background-color: var(--el-bg-color);
   overflow: hidden;
   margin-bottom: 1rem;
   border: 1px solid var(--el-border-color-light);

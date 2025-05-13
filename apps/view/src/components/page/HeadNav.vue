@@ -104,7 +104,7 @@ function handleAction(): void {
 .HeadNav {
   height: 44px;
   width: 100%;
-  background-color: var(--el-bg-color);
+  background-color: var(--el-bg-color-page);
   position: relative;
   box-sizing: border-box;
   font-size: 14px;
