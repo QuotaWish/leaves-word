@@ -3,7 +3,7 @@ const props = defineProps<{
   components: Component[];
 }>();
 
-const component = ref<Component>();
+const component = shallowRef<Component>();
 
 /**
  * Preload 时机
