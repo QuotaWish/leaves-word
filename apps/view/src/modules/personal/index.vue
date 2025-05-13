@@ -1,96 +1,107 @@
 <script setup>
-import VersionBar from '~/components/chore/VersionBar.vue'
-import { useDevMode } from '~/modules/develop'
-import { calendarManager } from '~/modules/words'
-import PersonalHeaderDisplay from './PersonalHeaderDisplay.vue'
-import PersonalLayout from './PersonalLayout.vue'
-import { globalAuthStorage } from '~/modules/auth'
-import { ref, computed } from 'vue'
+import VersionBar from "~/components/chore/VersionBar.vue";
+import { globalAuthStorage } from "~/modules/auth";
+import { useDevMode } from "~/modules/develop";
+import { calendarManager } from "~/modules/words";
+import PersonalHeaderDisplay from "./PersonalHeaderDisplay.vue";
+import PersonalLayout from "./PersonalLayout.vue";
 
-const router = useRouter()
-const { devModeEnabled, toggleDevMode } = useDevMode()
+const router = useRouter();
+const { devModeEnabled, toggleDevMode } = useDevMode();
 
 // 添加用户名计算属性
-const userName = computed(() => globalAuthStorage.value?.user?.userName || '未设置昵称')
+const userName = computed(
+  () =>
+    globalAuthStorage.value?.user?.userName ||
+    `#${globalAuthStorage.value?.user?.id}`,
+);
 
-const clickCount = ref(0)
-const lastClickTime = ref(0)
+const clickCount = ref(0);
+const lastClickTime = ref(0);
 
 function handleVersionClick() {
-  const now = Date.now()
+  const now = Date.now();
 
   // 如果两次点击间隔超过1.5秒，重置计数
   if (now - lastClickTime.value > 1500) {
-    clickCount.value = 0
+    clickCount.value = 0;
   }
 
-  lastClickTime.value = now
-  clickCount.value++
+  lastClickTime.value = now;
+  clickCount.value++;
 
   // 连续点击7次后启用开发者模式
   if (clickCount.value === 7) {
-    toggleDevMode(true)
-    clickCount.value = 0
+    toggleDevMode(true);
+    clickCount.value = 0;
     // eslint-disable-next-line no-alert
-    alert('开发者模式已启用')
+    alert("开发者模式已启用");
   }
 }
 
 async function handleClear() {
-  calendarManager.clear()
+  calendarManager.clear();
 
-  await useRequestAnimationFrame()
+  await useRequestAnimationFrame();
 
   // eslint-disable-next-line no-alert
-  alert('已清除打卡数据')
+  alert("已清除打卡数据");
 }
 
 // 模拟AI分析数据
 const aiAnalysisData = ref({
   wordCount: 12453,
-  favoriteCategory: '商务英语',
+  favoriteCategory: "商务英语",
   progress: 76,
   consistencyScore: 92,
   wordFrequency: [
-    { word: 'Innovation', count: 124 },
-    { word: 'Development', count: 98 },
-    { word: 'Strategy', count: 85 },
-    { word: 'Analysis', count: 71 },
-    { word: 'Professional', count: 68 },
+    { word: "Innovation", count: 124 },
+    { word: "Development", count: 98 },
+    { word: "Strategy", count: 85 },
+    { word: "Analysis", count: 71 },
+    { word: "Professional", count: 68 },
   ],
   studyTime: {
     morning: 35,
     afternoon: 25,
-    evening: 40
+    evening: 40,
   },
   learningStyle: {
     visual: 85,
     auditory: 45,
-    reading: 65
-  }
-})
+    reading: 65,
+  },
+});
 
 // 模拟学习建议
 const studySuggestions = ref([
-  '尝试在早晨学习，数据显示您在早晨时段的记忆效果最佳',
-  '多进行真实英语对话练习，提高口语能力',
-  '使用间隔重复技术复习词汇，增强长期记忆'
-])
+  "尝试在早晨学习，数据显示您在早晨时段的记忆效果最佳",
+  "多进行真实英语对话练习，提高口语能力",
+  "使用间隔重复技术复习词汇，增强长期记忆",
+]);
 
 // 模拟AI预测
 const nextWeekPrediction = ref({
-  topicSuggestion: '环境类词汇',
-  bestStudyDay: '星期三',
+  topicSuggestion: "环境类词汇",
+  bestStudyDay: "星期三",
   estimatedWords: 250,
-  completion: 85
-})
+  completion: 85,
+});
 </script>
 
 <template>
   <PersonalLayout>
     <template #header>
       <PersonalHeaderDisplay>
-        <div v-if="globalAuthStorage.user" h-full w-full flex px-2 items-center justify-between>
+        <div
+          v-if="globalAuthStorage.user"
+          h-full
+          w-full
+          flex
+          items-center
+          justify-between
+          px-2
+        >
           <div flex items-center gap-4 class="header-main">
             <div class="header-img">
               <UserAvatar />
@@ -99,13 +110,17 @@ const nextWeekPrediction = ref({
               <p font-size-5 font-bold class="name">
                 {{ userName }}
               </p>
-              <p class="indent-[2px]" font-size-4 op-60>
-                英语学习，随时随地
-              </p>
+              <p class="indent-[2px]" font-size-4 op-60>英语学习，随时随地</p>
             </div>
           </div>
 
-          <div @click="$router.push('/personal/edit')" flex justify-end font-size-6 class="header-line">
+          <div
+            flex
+            justify-end
+            font-size-6
+            class="header-line"
+            @click="$router.push('/personal/edit')"
+          >
             <div i-ri:edit-2-fill class="cursor-pointer" />
           </div>
         </div>
@@ -117,7 +132,7 @@ const nextWeekPrediction = ref({
         <SignCalendarMonthly my-4 />
 
         <!-- AI学习风格分析卡片 -->
-        <div  class="ai-analysis-card">
+        <div class="ai-analysis-card">
           <div class="ai-card-header">
             <div class="ai-icon">
               <div i-carbon:machine-learning-model />
@@ -129,23 +144,38 @@ const nextWeekPrediction = ref({
               <div class="style-item">
                 <div class="style-label">视觉学习</div>
                 <div class="style-bar">
-                  <div class="style-fill" :style="`width: ${aiAnalysisData.learningStyle.visual}%`"></div>
+                  <div
+                    class="style-fill"
+                    :style="`width: ${aiAnalysisData.learningStyle.visual}%`"
+                  ></div>
                 </div>
-                <div class="style-value">{{ aiAnalysisData.learningStyle.visual }}%</div>
+                <div class="style-value">
+                  {{ aiAnalysisData.learningStyle.visual }}%
+                </div>
               </div>
               <div class="style-item">
                 <div class="style-label">听觉学习</div>
                 <div class="style-bar">
-                  <div class="style-fill" :style="`width: ${aiAnalysisData.learningStyle.auditory}%`"></div>
+                  <div
+                    class="style-fill"
+                    :style="`width: ${aiAnalysisData.learningStyle.auditory}%`"
+                  ></div>
                 </div>
-                <div class="style-value">{{ aiAnalysisData.learningStyle.auditory }}%</div>
+                <div class="style-value">
+                  {{ aiAnalysisData.learningStyle.auditory }}%
+                </div>
               </div>
               <div class="style-item">
                 <div class="style-label">阅读学习</div>
                 <div class="style-bar">
-                  <div class="style-fill" :style="`width: ${aiAnalysisData.learningStyle.reading}%`"></div>
+                  <div
+                    class="style-fill"
+                    :style="`width: ${aiAnalysisData.learningStyle.reading}%`"
+                  ></div>
                 </div>
-                <div class="style-value">{{ aiAnalysisData.learningStyle.reading }}%</div>
+                <div class="style-value">
+                  {{ aiAnalysisData.learningStyle.reading }}%
+                </div>
               </div>
             </div>
           </div>
@@ -162,7 +192,9 @@ const nextWeekPrediction = ref({
           <div class="ai-card-content">
             <div class="ai-stat-row">
               <div class="ai-stat">
-                <div class="stat-value">{{ aiAnalysisData.wordCount }}</div>
+                <div class="stat-value">
+                  {{ aiAnalysisData.wordCount }}
+                </div>
                 <div class="stat-label">已学单词</div>
               </div>
               <div class="ai-stat">
@@ -170,7 +202,9 @@ const nextWeekPrediction = ref({
                 <div class="stat-label">完成度</div>
               </div>
               <div class="ai-stat">
-                <div class="stat-value">{{ aiAnalysisData.consistencyScore }}</div>
+                <div class="stat-value">
+                  {{ aiAnalysisData.consistencyScore }}
+                </div>
                 <div class="stat-label">连贯性</div>
               </div>
             </div>
@@ -179,9 +213,18 @@ const nextWeekPrediction = ref({
               <div class="graph-title">学习时段分布</div>
               <div class="time-distribution">
                 <div class="time-bar">
-                  <div class="time-segment morning" :style="`width: ${aiAnalysisData.studyTime.morning}%`"></div>
-                  <div class="time-segment afternoon" :style="`width: ${aiAnalysisData.studyTime.afternoon}%`"></div>
-                  <div class="time-segment evening" :style="`width: ${aiAnalysisData.studyTime.evening}%`"></div>
+                  <div
+                    class="time-segment morning"
+                    :style="`width: ${aiAnalysisData.studyTime.morning}%`"
+                  ></div>
+                  <div
+                    class="time-segment afternoon"
+                    :style="`width: ${aiAnalysisData.studyTime.afternoon}%`"
+                  ></div>
+                  <div
+                    class="time-segment evening"
+                    :style="`width: ${aiAnalysisData.studyTime.evening}%`"
+                  ></div>
                 </div>
                 <div class="time-labels">
                   <span>早晨</span>
@@ -194,8 +237,12 @@ const nextWeekPrediction = ref({
             <div class="word-frequency">
               <div class="graph-title">常用词汇</div>
               <div class="word-tags">
-                <span v-for="item in aiAnalysisData.wordFrequency" :key="item.word" class="word-tag"
-                  :style="`font-size: ${Math.max(12, 12 + item.count / 20)}px`">
+                <span
+                  v-for="item in aiAnalysisData.wordFrequency"
+                  :key="item.word"
+                  class="word-tag"
+                  :style="`font-size: ${Math.max(12, 12 + item.count / 20)}px`"
+                >
                   {{ item.word }}
                 </span>
               </div>
@@ -231,19 +278,27 @@ const nextWeekPrediction = ref({
           <div class="ai-card-content">
             <div class="prediction-item">
               <div class="prediction-label">建议主题:</div>
-              <div class="prediction-value">{{ nextWeekPrediction.topicSuggestion }}</div>
+              <div class="prediction-value">
+                {{ nextWeekPrediction.topicSuggestion }}
+              </div>
             </div>
             <div class="prediction-item">
               <div class="prediction-label">最佳学习日:</div>
-              <div class="prediction-value">{{ nextWeekPrediction.bestStudyDay }}</div>
+              <div class="prediction-value">
+                {{ nextWeekPrediction.bestStudyDay }}
+              </div>
             </div>
             <div class="prediction-item">
               <div class="prediction-label">预计词汇量:</div>
-              <div class="prediction-value">{{ nextWeekPrediction.estimatedWords }}</div>
+              <div class="prediction-value">
+                {{ nextWeekPrediction.estimatedWords }}
+              </div>
             </div>
             <div class="prediction-item">
               <div class="prediction-label">完成度预测:</div>
-              <div class="prediction-value">{{ nextWeekPrediction.completion }}%</div>
+              <div class="prediction-value">
+                {{ nextWeekPrediction.completion }}%
+              </div>
             </div>
           </div>
         </div>
@@ -267,12 +322,10 @@ const nextWeekPrediction = ref({
     </template>
 
     <template #footer>
-      <p @click="handleVersionClick" class="select-none">
+      <p class="select-none" @click="handleVersionClick">
         <VersionBar />
       </p>
-      <p font-size-3 class="select-none">
-        Powered by QuotaWish.
-      </p>
+      <p font-size-3 class="select-none">Powered by QuotaWish.</p>
     </template>
   </PersonalLayout>
 </template>
@@ -401,7 +454,11 @@ const nextWeekPrediction = ref({
 
       .style-fill {
         height: 100%;
-        background: linear-gradient(to right, var(--theme-color-primary), var(--theme-color-light));
+        background: linear-gradient(
+          to right,
+          var(--theme-color-primary),
+          var(--theme-color-light)
+        );
         border-radius: 4px;
 
         .light & {
@@ -441,7 +498,11 @@ const nextWeekPrediction = ref({
   .stat-value {
     font-size: 20px;
     font-weight: 600;
-    background: linear-gradient(to right, var(--theme-color-primary), var(--theme-color-light));
+    background: linear-gradient(
+      to right,
+      var(--theme-color-primary),
+      var(--theme-color-light)
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 4px;
@@ -498,11 +559,11 @@ const nextWeekPrediction = ref({
       height: 100%;
 
       &.morning {
-        background: linear-gradient(to right, #FF9966, #FF5E62);
+        background: linear-gradient(to right, #ff9966, #ff5e62);
       }
 
       &.afternoon {
-        background: linear-gradient(to right, #36D1DC, #5B86E5);
+        background: linear-gradient(to right, #36d1dc, #5b86e5);
       }
 
       &.evening {
@@ -563,7 +624,7 @@ const nextWeekPrediction = ref({
     }
 
     &::before {
-      content: '•';
+      content: "•";
       position: absolute;
       left: -15px;
       color: var(--theme-color-primary);
