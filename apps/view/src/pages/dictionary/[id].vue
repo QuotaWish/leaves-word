@@ -176,7 +176,7 @@ watch(active, () => {
       </div>
     </div>
 
-    <div v-if="dict" class="DictionaryInfo-Container">
+    <div v-if="dict" class="DictionaryInfo-Container fake-background">
       <div class="rounded-lg">
         <Tabs v-model:active="active" sticky>
           <Tab title="学习">
@@ -300,11 +300,13 @@ watch(active, () => {
       color: var(--el-text-color-primary) !important;
     }
 
-    // background-color: #00000000 !important;
+    background-color: var(--el-fill-color) !important;
   }
 
   position: relative;
 
   height: 100%;
+
+  backdrop-filter: blur(18px) saturate(180%);
 }
 </style>

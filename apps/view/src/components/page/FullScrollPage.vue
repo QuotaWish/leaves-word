@@ -24,49 +24,6 @@ const scrollOptions = reactive({
   animating: false,
 });
 
-const touchState = reactive({
-  startY: 0,
-  endY: 0,
-  isTouching: false,
-});
-
-function handleTouchStart(event: TouchEvent) {
-  touchState.isTouching = true;
-  touchState.startY = event.touches[0].clientY;
-}
-
-function handleTouchMove(event: TouchEvent) {
-  if (!touchState.isTouching) {
-    return;
-  }
-  touchState.endY = event.touches[0].clientY;
-}
-
-function handleTouchEnd() {
-  if (!touchState.isTouching) {
-    return;
-  }
-
-  const deltaY = touchState.startY - touchState.endY;
-  const threshold = (scroller.value?.clientHeight ?? 0) * 0.2;
-
-  if (Math.abs(deltaY) > threshold || Math.abs(deltaY) > 100) {
-    scrollOptions.animating = true;
-    scrollOptions.next = deltaY > 0;
-
-    setTimeout(() => {
-      if (scrollOptions.next) {
-        scrollOptions.lastY = 10000;
-      } else {
-        scrollOptions.lastY = 0;
-      }
-      scrollOptions.animating = false;
-    }, 500);
-  }
-
-  touchState.isTouching = false;
-}
-
 function slide() {
   const slideTo = scrollOptions.next;
   const height = scroller.value?.clientHeight ?? 0;
@@ -151,9 +108,7 @@ function handleScroll() {
 
     <div
       @scroll="handleScroll"
-      @touchstart="handleTouchStart"
-      @touchmove="handleTouchMove"
-      @touchend="handleTouchEnd"
+      @touchmove="handleScroll"
       ref="scroll"
       class="FullScrollPage-Content select-none overflow-y-scroll absolute-layout"
     >
