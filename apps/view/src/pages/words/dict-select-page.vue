@@ -156,8 +156,4 @@ onMounted(() => {
   </DictionaryHolder>
 </template>
 
-<style lang="scss" scoped>
-.DictionarySelectPage {
-  background-color: var(--el-bg-color);
-}
-</style>
+<style lang="scss" scoped></style>
