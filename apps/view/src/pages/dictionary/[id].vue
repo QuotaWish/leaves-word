@@ -108,7 +108,11 @@ watch(active, () => {
 
 <template>
   <FullScrollPage :content-padding="false" :loading="loading" title="词典">
-    <div v-if="dict" class="DictionaryInfo-Cover">
+    <template #action>
+      <el-button type="info" link>反馈</el-button>
+    </template>
+
+    <div v-if="dict" class="DictionaryInfo-Cover py-4">
       <Book autoAnimate size="mini">
         <BookCover>
           <img

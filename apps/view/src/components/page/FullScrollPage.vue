@@ -95,6 +95,9 @@ function handleScroll() {
         :title="title"
         expand
       >
+        <template #action>
+          <slot name="action" />
+        </template>
       </HeadNav>
     </template>
 
