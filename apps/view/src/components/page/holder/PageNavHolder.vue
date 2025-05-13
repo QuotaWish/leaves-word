@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { NavBar } from "vant";
 import HeadNav from "../HeadNav.vue";
 
 withDefaults(
@@ -31,7 +30,7 @@ const ins = ref(getCurrentInstance());
   >
     <template #header>
       <slot name="topHeader">
-        <HeadNav :disabled="loading" @back="router.back">
+        <HeadNav :title="title" :disabled="loading" @back="router.back">
           <template #action>
             <slot name="action" />
           </template>
