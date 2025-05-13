@@ -83,6 +83,7 @@ declare module 'vue' {
     Statistics: typeof import('./src/components/Statistics.vue')['default']
     TheCounter: typeof import('./src/components/TheCounter.vue')['default']
     TheInput: typeof import('./src/components/TheInput.vue')['default']
+    ThemeMode: typeof import('./src/components/settings/ThemeMode.vue')['default']
     TouchDialog: typeof import('./src/components/dialog/TouchDialog.vue')['default']
     TouchSlider: typeof import('./src/components/TouchSlider.vue')['default']
     TransitionPage: typeof import('./src/components/page/TransitionPage.vue')['default']

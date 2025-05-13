@@ -1,14 +1,14 @@
 <script setup lang="ts">
 defineProps<{
-  color: string
-  name: string
-  label: string
-  active: boolean
-}>()
+  color: string;
+  name: string;
+  label: string;
+  active: boolean;
+}>();
 
 defineEmits<{
-  (e: 'select', event: MouseEvent): void
-}>()
+  (e: "select", event: MouseEvent): void;
+}>();
 </script>
 
 <template>
@@ -50,8 +50,8 @@ defineEmits<{
 }
 
 .color-preview {
-  width: 70px;
-  height: 70px;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
   margin-bottom: 0.75rem;
   display: flex;

@@ -1,7 +1,6 @@
 div
 <script setup lang="ts">
 import PageNavHolder from "~/components/page/holder/PageNavHolder.vue";
-import SettingsOption from "~/components/settings/SettingsOption.vue";
 import ColorOption from "~/components/settings/ColorOption.vue";
 import {
   isDark,
@@ -11,17 +10,7 @@ import {
   changeThemeColor,
   useTheme,
 } from "~/composables/theme";
-import { ref, computed } from "vue";
-
-const theme = useTheme();
-
-// 当前主题设置
-const currentTheme = computed(() => (isDark.value ? "暗黑模式" : "亮色模式"));
-
-// 切换暗黑模式
-const handleDarkToggle = (event: MouseEvent) => {
-  toggleDark(undefined, event);
-};
+import { ref } from "vue";
 
 // 主题色相关
 const themeColors = Object.entries(themeColorMap).map(([key, value]) => ({
@@ -41,53 +30,28 @@ const themeColors = Object.entries(themeColorMap).map(([key, value]) => ({
 const selectThemeColor = (color: string, event: MouseEvent) => {
   changeThemeColor(color as any, event);
 };
-
-// 自定义设置
-const fontSize = ref(14);
-const enableAnimation = ref(true);
 </script>
 
 <template>
   <PageNavHolder immersive class="ThemePage" title="主题设置">
     <!-- 显示模式 -->
-    <PageSettingsSection title="显示模式" icon="i-carbon-screen">
+    <SettingsSection plain title="显示模式" icon="i-carbon-screen">
       <div class="display-mode my-4">
-        <div
-          class="mode-item theme-color-transition"
-          :class="{ active: !isDark }"
+        <ThemeMode
+          mode="light"
+          :active="!isDark"
           @click="($event) => toggleDark(false, $event)"
-        >
-          <div class="mode-preview light-preview">
-            <div class="preview-header"></div>
-            <div class="preview-content">
-              <div class="content-line"></div>
-              <div class="content-line"></div>
-              <div class="content-line short"></div>
-            </div>
-          </div>
-          <div class="mode-name">亮色模式</div>
-        </div>
-
-        <div
-          class="mode-item theme-color-transition"
-          :class="{ active: isDark }"
+        />
+        <ThemeMode
+          mode="dark"
+          :active="isDark"
           @click="($event) => toggleDark(true, $event)"
-        >
-          <div class="mode-preview dark-preview">
-            <div class="preview-header"></div>
-            <div class="preview-content">
-              <div class="content-line"></div>
-              <div class="content-line"></div>
-              <div class="content-line short"></div>
-            </div>
-          </div>
-          <div class="mode-name">暗黑模式</div>
-        </div>
+        />
       </div>
-    </PageSettingsSection>
+    </SettingsSection>
 
     <!-- 主题颜色 -->
-    <PageSettingsSection title="主题颜色" icon="i-carbon-color-palette">
+    <SettingsSection plain title="主题颜色" icon="i-carbon-color-palette">
       <div class="color-options">
         <ColorOption
           v-for="colorItem in themeColors"
@@ -99,117 +63,19 @@ const enableAnimation = ref(true);
           @select="($event) => selectThemeColor(colorItem.name, $event)"
         />
       </div>
-    </PageSettingsSection>
-
-    <!-- 自定义设置 -->
-    <PageSettingsSection title="自定义设置" icon="i-carbon-settings-adjust">
-      <div class="custom-options">
-        <SettingsOption title="字体大小" description="调整应用内文字大小">
-          <el-slider v-model="fontSize" :min="12" :max="20" :step="1" />
-        </SettingsOption>
-
-        <SettingsOption title="动画效果" description="启用页面过渡动画">
-          <el-switch v-model="enableAnimation" />
-        </SettingsOption>
-      </div>
-    </PageSettingsSection>
+    </SettingsSection>
   </PageNavHolder>
 </template>
 
 <style lang="scss" scoped>
 .display-mode {
   display: flex;
-  justify-content: center;
-  gap: 3rem;
-}
-
-.mode-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &.active {
-    .mode-preview {
-      border-color: var(--theme-color-primary, var(--el-color-primary));
-      box-shadow: 0 0 0 3px
-        rgba(var(--theme-color-primary-rgb, 23, 119, 255), 0.2);
-    }
-
-    .mode-name {
-      color: var(--theme-color-primary, var(--el-color-primary));
-      font-weight: 600;
-    }
-  }
-}
-
-.mode-preview {
-  width: 120px;
-  height: 180px;
-  border-radius: 16px;
-  border: 2px solid var(--el-border-color);
-  overflow: hidden;
-  margin-bottom: 1.25rem;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.light-preview {
-  background-color: #fff;
-
-  .preview-header {
-    background-color: #f0f2f5;
-  }
-
-  .content-line {
-    background-color: #e0e0e0;
-  }
-}
-
-.dark-preview {
-  background-color: #1a1a1a;
-
-  .preview-header {
-    background-color: #333;
-  }
-
-  .content-line {
-    background-color: #444;
-  }
-}
-
-.preview-header {
-  height: 24px;
-  width: 100%;
-}
-
-.preview-content {
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.content-line {
-  height: 12px;
-  width: 100%;
-  border-radius: 4px;
-
-  &.short {
-    width: 60%;
-  }
-}
-
-.mode-name {
-  font-size: 1.1rem;
-  transition: color 0.3s ease;
-  margin-top: 0.5rem;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .color-options {
   display: flex;
-  flex-wrap: wrap;
   gap: 2rem;
   justify-content: center;
   padding: 0.5rem;

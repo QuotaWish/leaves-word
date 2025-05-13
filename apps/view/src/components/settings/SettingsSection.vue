@@ -1,13 +1,14 @@
 <script setup lang="ts">
 defineProps<{
-  title: string
-  icon?: string
-  gradient?: boolean
-}>()
+  title: string;
+  icon?: string;
+  gradient?: boolean;
+  plain?: boolean;
+}>();
 </script>
 
 <template>
-  <div class="settings-section theme-color-transition">
+  <div :class="{ plain }" class="settings-section theme-color-transition">
     <div class="settings-section-header">
       <div class="header-icon" v-if="icon">
         <div :class="icon" />
@@ -32,18 +33,13 @@ defineProps<{
   border: 1px solid var(--el-border-color-light);
   transition: all 0.3s ease;
   position: relative;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(var(--theme-color-primary-rgb), 0.1);
-  }
-  
+
   .settings-section-header {
     display: flex;
     align-items: center;
     padding: 0.75rem 1rem;
     border-bottom: 1px solid var(--el-border-color-light);
-    
+
     .header-icon {
       display: flex;
       align-items: center;
@@ -55,20 +51,20 @@ defineProps<{
       color: var(--theme-color-primary, #2e7d32);
       margin-right: 0.75rem;
     }
-    
+
     .header-title {
       flex: 1;
       font-size: 1.1rem;
       font-weight: 600;
       color: var(--el-text-color-primary);
     }
-    
+
     .header-end {
       display: flex;
       align-items: center;
     }
   }
-  
+
   .settings-section-content {
     padding: 0;
   }
@@ -78,5 +74,24 @@ defineProps<{
 .dark .settings-section {
   background-color: var(--el-bg-color-overlay);
   border-color: var(--el-border-color-darker);
+}
+
+.settings-section.plain {
+  div.settings-section-header {
+    margin: 1rem 0;
+    padding: 0 0.5rem;
+
+    border: none;
+  }
+
+  .header-title {
+    flex: 1;
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--el-text-color-primary);
+  }
+
+  border: none;
+  background: none;
 }
 </style>
