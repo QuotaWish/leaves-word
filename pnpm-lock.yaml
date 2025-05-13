@@ -404,7 +404,7 @@ importers:
         version: 1.1.0(axios@1.7.9)(encoding@0.1.13)
       '@leaves-word/app-view':
         specifier: 'file:'
-        version: file:apps/view(@vue/runtime-core@3.5.13)(diff-match-patch@1.0.5)(encoding@0.1.13)(mermaid@11.6.0)(typescript-api-pro@0.0.6)(typescript@5.7.3)(unocss@0.62.4(postcss@8.5.1)(rollup@4.34.4)(vite@5.4.14(@types/node@22.13.1)(less@4.2.2)(lightningcss@1.22.1)(sass@1.84.0)(sugarss@2.0.0)(terser@5.38.1)))(vite@5.4.14(@types/node@22.13.1)(less@4.2.2)(lightningcss@1.22.1)(sass@1.84.0)(sugarss@2.0.0)(terser@5.38.1))
+        version: file:apps/view(@vue/runtime-core@3.5.13)(diff-match-patch@1.0.5)(encoding@0.1.13)(mermaid@11.6.0)(rollup@4.34.4)(typescript-api-pro@0.0.6)(typescript@5.7.3)(unocss@0.62.4(postcss@8.5.1)(rollup@4.34.4)(vite@5.4.14(@types/node@22.13.1)(less@4.2.2)(lightningcss@1.22.1)(sass@1.84.0)(sugarss@2.0.0)(terser@5.38.1)))(vite@5.4.14(@types/node@22.13.1)(less@4.2.2)(lightningcss@1.22.1)(sass@1.84.0)(sugarss@2.0.0)(terser@5.38.1))
       '@number-flow/vue':
         specifier: ^0.3.2
         version: 0.3.4(vue@3.5.13(typescript@5.7.3))
@@ -420,9 +420,6 @@ importers:
       '@tsparticles/vue3':
         specifier: ^3.0.1
         version: 3.0.1(typescript@5.7.3)
-      '@types/codemirror':
-        specifier: ^5.60.15
-        version: 5.60.15
       '@unocss/preset-wind3':
         specifier: ^66.1.1
         version: 66.1.1
@@ -453,12 +450,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      codemirror:
-        specifier: '5'
-        version: 5.65.18
-      codemirror-editor-vue3:
-        specifier: ^2.8.0
-        version: 2.8.0(codemirror@5.65.18)(diff-match-patch@1.0.5)(vue@3.5.13(typescript@5.7.3))
       echarts:
         specifier: ^5.6.0
         version: 5.6.0
@@ -19742,7 +19733,7 @@ snapshots:
       mermaid: 11.6.0
       radash: 12.1.0
 
-  '@leaves-word/app-view@file:apps/view(@vue/runtime-core@3.5.13)(diff-match-patch@1.0.5)(encoding@0.1.13)(mermaid@11.6.0)(typescript-api-pro@0.0.6)(typescript@5.7.3)(unocss@0.62.4(postcss@8.5.1)(rollup@4.34.4)(vite@5.4.14(@types/node@22.13.1)(less@4.2.2)(lightningcss@1.22.1)(sass@1.84.0)(sugarss@2.0.0)(terser@5.38.1)))(vite@5.4.14(@types/node@22.13.1)(less@4.2.2)(lightningcss@1.22.1)(sass@1.84.0)(sugarss@2.0.0)(terser@5.38.1))':
+  '@leaves-word/app-view@file:apps/view(@vue/runtime-core@3.5.13)(diff-match-patch@1.0.5)(encoding@0.1.13)(mermaid@11.6.0)(rollup@4.34.4)(typescript-api-pro@0.0.6)(typescript@5.7.3)(unocss@0.62.4(postcss@8.5.1)(rollup@4.34.4)(vite@5.4.14(@types/node@22.13.1)(less@4.2.2)(lightningcss@1.22.1)(sass@1.84.0)(sugarss@2.0.0)(terser@5.38.1)))(vite@5.4.14(@types/node@22.13.1)(less@4.2.2)(lightningcss@1.22.1)(sass@1.84.0)(sugarss@2.0.0)(terser@5.38.1))':
     dependencies:
       '@alova/adapter-axios': 2.0.13(alova@3.2.10)(axios@1.7.9)
       '@coze/api': 1.1.0(axios@1.7.9)(encoding@0.1.13)
@@ -19770,6 +19761,7 @@ snapshots:
       js-confetti: 0.12.0
       markdown-it: 14.1.0
       pinia: 3.0.1(typescript@5.7.3)(vue@3.5.13(typescript@5.7.3))
+      rollup-plugin-visualizer: 5.14.0(rollup@4.34.4)
       sass: 1.84.0
       simple-keyboard: 3.8.41
       tailwind-merge: 3.3.0
@@ -19795,6 +19787,8 @@ snapshots:
       - encoding
       - magicast
       - mermaid
+      - rolldown
+      - rollup
       - supports-color
       - typescript
       - typescript-api-pro
