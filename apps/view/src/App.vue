@@ -22,6 +22,7 @@ import { AuthSuccessEvent } from "./composables/event/auth";
 import { ToastEvent } from "./composables/event/toast-event";
 import { useBaseRouteStore } from "./composables/store/useRouteStore";
 import { $logout, globalAuthStorage, initAuthModule } from "./modules/auth";
+import { getJSDocReturnTag } from "typescript";
 
 modeManager.set(
   ModeType.COMPREHENSIVE,
@@ -91,40 +92,84 @@ eventBus.registerListener(AuthSuccessEvent, {
   },
 });
 
-// router.beforeEach((to, from) => {
-//   const toDepth = routes.findIndex((v) => v.path === to.path);
-//   const fromDepth = routes.findIndex((v) => v.path === from.path);
-//   if (toDepth > fromDepth) {
-//     // 前进
-//     console.log("enter ", to.path);
+router.beforeEach(async (to, from) => {
+  if (!from.meta?.transition) {
+    return;
+  }
 
-//     if (to.matched?.length) {
-//       const filterMatched = to.matched.filter((item) => item.components);
-//       const toComponentName = filterMatched?.[0]?.components?.default.name;
-//       if (toComponentName) {
-//         baseRouteStore.updateExcludeRoutes({
-//           type: "add",
-//           value: toComponentName,
-//         });
-//       }
-//     }
-//   } else {
-//     if (from.matched?.length) {
-//       // 后退
-//       console.log("leave ", from.path);
-//       const filterMatched = from.matched.filter((item) => item.components);
-//       const fromComponentName = filterMatched?.[0]?.components?.default.name;
-//       if (fromComponentName) {
-//         baseRouteStore.updateExcludeRoutes({
-//           type: "add",
-//           value: fromComponentName,
-//         });
-//       }
-//     }
-//   }
+  if (!to.matched?.length) {
+    return;
+  }
 
-//   return true;
-// });
+  const filterMatched = to.matched.filter((item: any) => item.components);
+  const toComponentName = filterMatched?.[0]?.components?.default.name;
+
+  console.log(to, from);
+
+  await sleep(300);
+
+  baseRouteStore.updateExcludeRoutes({
+    type: "add",
+    value: toComponentName!,
+  });
+
+  console.log(baseRouteStore.excludeNames);
+
+  await sleep(300);
+
+  baseRouteStore.updateExcludeRoutes({
+    type: "remove",
+    value: toComponentName!,
+  });
+
+  console.log(baseRouteStore.excludeNames);
+
+  // setTimeout(() => {
+  //   baseRouteStore.updateExcludeRoutes({
+  //     type: "add",
+  //     value: toComponentName,
+  //   });
+
+  //   console.log(baseRouteStore.excludeNames);
+  // }, 300);
+
+  // const toDepth = routes.findIndex((v) => v.path === to.path);
+  // const fromDepth = routes.findIndex((v) => v.path === from.path);
+  // if (toDepth > fromDepth) {
+  //   // 前进
+  //   console.log("enter ", to.path, "leave", from.path);
+
+  //   if (to.matched?.length) {
+  //     const filterMatched = to.matched.filter((item) => item.components);
+  //     const toComponentName = filterMatched?.[0]?.components?.default.name;
+  //     if (toComponentName) {
+  //       setTimeout(() => {
+  //         baseRouteStore.updateExcludeRoutes({
+  //           type: "add",
+  //           value: toComponentName,
+  //         });
+
+  //         console.log(baseRouteStore.excludeNames);
+  //       }, 500);
+  //     }
+  //   }
+  // } else {
+  //   if (from.matched?.length) {
+  //     // 后退
+  //     console.log("leave ", from.path);
+  //     const filterMatched = from.matched.filter((item) => item.components);
+  //     const fromComponentName = filterMatched?.[0]?.components?.default.name;
+  //     if (fromComponentName) {
+  //       baseRouteStore.updateExcludeRoutes({
+  //         type: "add",
+  //         value: fromComponentName,
+  //       });
+  //     }
+  //   }
+  // }
+
+  return true;
+});
 </script>
 
 <template>
@@ -134,17 +179,13 @@ eventBus.registerListener(AuthSuccessEvent, {
         <router-view v-slot="{ Component, route }">
           <TransitionPage>
             <!-- ['DictionaryPage', 'SignedPage'] -->
-            <!-- <keep-alive :include="['IndexPage']" :exclude="baseRouteStore.excludeNames"> -->
+            <!-- <keep-alive :include="['IndexPage']" > -->
             <!-- :lru="10" :exclude="['DictionaryPage', 'SignedPage']" -->
-            <keep-alive>
+            <keep-alive :exclude="baseRouteStore.excludeNames">
               <component :is="Component" />
             </keep-alive>
           </TransitionPage>
-          <!-- <transition mode="out-in" :name="router.transition.name">
-
-        </transition> -->
         </router-view>
-        <!-- <RouterView /> -->
 
         <Auth />
         <Core />

@@ -6,26 +6,26 @@ import {
   ElOption,
   ElSelect,
   ElTooltip,
-} from 'element-plus'
-import { MOCK_DEVICES, useGlobalSplashState } from '.'
-import DarkModeSwitch from '~/components/button/DarkModeSwitch.vue'
+} from "element-plus";
+import { MOCK_DEVICES, useGlobalSplashState } from ".";
+import DarkModeSwitch from "~/components/button/DarkModeSwitch.vue";
 
-const splashState = useGlobalSplashState()
+const splashState = useGlobalSplashState();
 
-const mockDevice = computed(() => splashState.mockDevice)
-const devices = Object.values(MOCK_DEVICES)
+const mockDevice = computed(() => splashState.mockDevice);
+const devices = Object.values(MOCK_DEVICES);
 
-const { pixelRatio } = useDevicePixelRatio()
+const { pixelRatio } = useDevicePixelRatio();
 
 // 工具菜单选项
 const tools = [
-  { label: '元素检查', icon: 'cursor' },
-  { label: '控制台', icon: 'terminal' },
-  { label: '网络', icon: 'connection' },
-  { label: '性能', icon: 'trend-charts' },
-  { label: '应用', icon: 'mobile' },
-  { label: '存储', icon: 'database' },
-]
+  { label: "元素检查", icon: "cursor" },
+  { label: "控制台", icon: "terminal" },
+  { label: "网络", icon: "connection" },
+  { label: "性能", icon: "trend-charts" },
+  { label: "应用", icon: "mobile" },
+  { label: "存储", icon: "database" },
+];
 </script>
 
 <template>
@@ -38,7 +38,7 @@ const tools = [
 
       <ElDropdown trigger="click">
         <div class="menu-trigger flex cursor-pointer items-center gap-1">
-          <Icon name="menu" class="text-gray-600" />
+          <!-- <Icon name="menu" class="text-gray-600" /> -->
           <span class="text-sm">菜单</span>
         </div>
         <template #dropdown>
@@ -54,7 +54,9 @@ const tools = [
       </ElDropdown>
     </div>
 
-    <div class="SplashMenu-Center w-[30%] justify-center flex items-center gap-4">
+    <div
+      class="SplashMenu-Center w-[30%] justify-center flex items-center gap-4"
+    >
       <div class="device-selector flex items-center gap-3">
         <ElSelect v-model="mockDevice.value" class="min-w-[120px]" size="small">
           <ElOption
@@ -133,7 +135,7 @@ const tools = [
     }
   }
 
-  input[type='number'] {
+  input[type="number"] {
     &::-webkit-inner-spin-button,
     &::-webkit-outer-spin-button {
       -webkit-appearance: none;
