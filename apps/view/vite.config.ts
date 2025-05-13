@@ -1,9 +1,10 @@
+import path from 'node:path'
+import process from 'node:process'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 /// <reference types="vitest" />
 
-import path from 'node:path'
-import process from 'node:process'
 import Vue from '@vitejs/plugin-vue'
+import { visualizer } from 'rollup-plugin-visualizer'
 import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
@@ -24,54 +25,56 @@ export default ({ mode }: { mode: string }) => {
       },
     },
 
-    plugins: [VueMacros({
-      defineOptions: false,
-      defineModels: false,
-      plugins: {
-        vue: Vue({
-          script: {
-            propsDestructure: true,
-            defineModel: true,
-          },
-        }),
-      },
-    }), // https://github.com/posva/unplugin-vue-router
-    VueRouter(), // https://github.com/antfu/unplugin-auto-import
-    AutoImport({
-      imports: [
-        'vue',
-        '@vueuse/core',
-        VueRouterAutoImports,
-        {
-          // add any other imports you were relying on
-          'vue-router/auto': ['useLink'],
+    plugins: [
+      visualizer({ open: true }),
+      VueMacros({
+        defineOptions: false,
+        defineModels: false,
+        plugins: {
+          vue: Vue({
+            script: {
+              propsDestructure: true,
+              defineModel: true,
+            },
+          }),
         },
-      ],
-      dts: true,
-      dirs: [
-        './src/composables',
-      ],
-      vueTemplate: true,
-    }), // https://github.com/antfu/vite-plugin-components
-    Components({
-      dts: true,
-    }), // https://github.com/antfu/unocss
-    // see uno.config.ts for config
-    UnoCSS({}),
-    // sentry connect
-    sentryVitePlugin({
-      authToken: env.VITE_SENTRY_AUTH_TOKEN,
-      org: 'quotawish',
-      project: 'leaves_word',
-    }),
-    // version displayer
-    vitePluginVersionMark({
-      name: 'LEAVES_WORD',
-      ifShortSHA: true,
-      ifMeta: true,
-      ifLog: true,
-      ifGlobal: true,
-    })],
+      }), // https://github.com/posva/unplugin-vue-router
+      VueRouter(), // https://github.com/antfu/unplugin-auto-import
+      AutoImport({
+        imports: [
+          'vue',
+          '@vueuse/core',
+          VueRouterAutoImports,
+          {
+            // add any other imports you were relying on
+            'vue-router/auto': ['useLink'],
+          },
+        ],
+        dts: true,
+        dirs: [
+          './src/composables',
+        ],
+        vueTemplate: true,
+      }), // https://github.com/antfu/vite-plugin-components
+      Components({
+        dts: true,
+      }), // https://github.com/antfu/unocss
+      // see uno.config.ts for config
+      UnoCSS({}),
+      // sentry connect
+      sentryVitePlugin({
+        authToken: env.VITE_SENTRY_AUTH_TOKEN,
+        org: 'quotawish',
+        project: 'leaves_word',
+      }),
+      // version displayer
+      vitePluginVersionMark({
+        name: 'LEAVES_WORD',
+        ifShortSHA: true,
+        ifMeta: true,
+        ifLog: true,
+        ifGlobal: true,
+      })],
 
     // https://github.com/vitest-dev/vitest
     test: {

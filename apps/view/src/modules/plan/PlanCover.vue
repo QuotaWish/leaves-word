@@ -28,14 +28,20 @@ const baseFontSize = computed(() => {
 
 <template>
   <div class="PlanCover absolute-layout">
-    <div v-if="data?.poster" class="fake-background PlanCover-Bg absolute-layout">
+    <div
+      v-if="data?.poster"
+      class="fake-background PlanCover-Bg absolute-layout"
+    >
       <img :src="data.poster" alt="Cover" />
     </div>
     <!-- Card Placeholder -->
     <!-- <div class="card-placeholder">
       <slot name="card" />
     </div> -->
-    <div v-if="data?.content" class="fake-background PlanCover-Main absolute-layout">
+    <div
+      v-if="data?.content"
+      class="fake-background PlanCover-Main absolute-layout"
+    >
       <div
         class="PlanCover-Main-Inner transition-cubic absolute left-1/2 w-full flex flex-col items-start justify-end px-8 -translate-x-1/2"
       >
@@ -65,6 +71,36 @@ const baseFontSize = computed(() => {
       z-index: 0;
     }
 
+    &::before {
+      z-index: -1;
+      content: "";
+      position: absolute;
+
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      background-image: radial-gradient(
+          at 52.38761793452339% 82.31064325079734%,
+          hsla(240, 96.87500000000001%, 37.64705882352941%, 1) 0%,
+          hsla(240, 96.87500000000001%, 37.64705882352941%, 0) 100%
+        ),
+        radial-gradient(
+          at 86.82007697305298% 74.65300915074025%,
+          hsla(238.70967741935485, 96.87500000000001%, 37.64705882352941%, 1) 0%,
+          hsla(238.70967741935485, 96.87500000000001%, 37.64705882352941%, 0)
+            100%
+        ),
+        radial-gradient(
+          at 65.59645556619355% 7.589701045235964%,
+          hsla(237.72972972972974, 95.85492227979276%, 37.84313725490196%, 1) 0%,
+          hsla(237.72972972972974, 95.85492227979276%, 37.84313725490196%, 0)
+            100%
+        );
+    }
+
     transform: scale(1.1);
     // filter: blur(12px) brightness(0.8) saturate(140%);
     --fake-opacity: 0.05;
@@ -74,7 +110,11 @@ const baseFontSize = computed(() => {
   &-Main {
     z-index: 1;
     padding: 2rem;
-    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.4) 100%
+    );
 
     &-Inner {
       bottom: calc(var(--footer-height) + 2rem);

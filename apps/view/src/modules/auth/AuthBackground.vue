@@ -1,6 +1,4 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="AuthBackground absolute-layout fake-background">
@@ -19,7 +17,7 @@
     width: 100%;
     height: 100%;
 
-    background: linear-gradient(to top, #358EE1 30%, #0000);
+    background: linear-gradient(to top, #358ee1 30%, #0000);
   }
 
   &::after {
@@ -40,7 +38,7 @@
 
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url('/images/auth-bg.png');
+  background-image: url("/images/auth-bg-zipped.png");
 
   // background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
 

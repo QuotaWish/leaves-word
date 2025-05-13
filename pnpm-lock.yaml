@@ -477,6 +477,9 @@ importers:
       pinia:
         specifier: ^3.0.1
         version: 3.0.1(typescript@5.7.3)(vue@3.5.13(typescript@5.7.3))
+      rollup-plugin-visualizer:
+        specifier: ^5.14.0
+        version: 5.14.0(rollup@4.34.4)
       sass:
         specifier: ^1.81.0
         version: 1.84.0
@@ -13581,6 +13584,19 @@ packages:
   robust-predicates@3.0.2:
     resolution: {integrity: sha512-IXgzBWvWQwE6PrDI05OvmXUIruQTcoMDzRsOd5CDvHCVLcLHMTSYvOK5Cm46kWqlV3yAbuSpBZdJ5oP5OUoStg==}
 
+  rollup-plugin-visualizer@5.14.0:
+    resolution: {integrity: sha512-VlDXneTDaKsHIw8yzJAFWtrzguoJ/LnQ+lMpoVfYJ3jJF4Ihe5oYLAqLklIK/35lgUY+1yEzCkHyZ1j4A5w5fA==}
+    engines: {node: '>=18'}
+    hasBin: true
+    peerDependencies:
+      rolldown: 1.x
+      rollup: 2.x || 3.x || 4.x
+    peerDependenciesMeta:
+      rolldown:
+        optional: true
+      rollup:
+        optional: true
+
   rollup-plugin-visualizer@5.9.0:
     resolution: {integrity: sha512-bbDOv47+Bw4C/cgs0czZqfm8L82xOZssk4ayZjG40y9zbXclNk7YikrZTDao6p7+HDiGxrN0b65SgZiVm9k1Cg==}
     engines: {node: '>=14'}
@@ -19729,6 +19745,7 @@ snapshots:
   '@leaves-word/app-view@file:apps/view(@vue/runtime-core@3.5.13)(diff-match-patch@1.0.5)(encoding@0.1.13)(mermaid@11.6.0)(typescript-api-pro@0.0.6)(typescript@5.7.3)(unocss@0.62.4(postcss@8.5.1)(rollup@4.34.4)(vite@5.4.14(@types/node@22.13.1)(less@4.2.2)(lightningcss@1.22.1)(sass@1.84.0)(sugarss@2.0.0)(terser@5.38.1)))(vite@5.4.14(@types/node@22.13.1)(less@4.2.2)(lightningcss@1.22.1)(sass@1.84.0)(sugarss@2.0.0)(terser@5.38.1))':
     dependencies:
       '@alova/adapter-axios': 2.0.13(alova@3.2.10)(axios@1.7.9)
+      '@coze/api': 1.1.0(axios@1.7.9)(encoding@0.1.13)
       '@number-flow/vue': 0.3.4(vue@3.5.13(typescript@5.7.3))
       '@sentry/vite-plugin': 3.2.2(encoding@0.1.13)
       '@sentry/vue': 8.55.0(pinia@3.0.1(typescript@5.7.3)(vue@3.5.13(typescript@5.7.3)))(vue@3.5.13(typescript@5.7.3))
@@ -19772,6 +19789,7 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - '@vue/runtime-core'
+      - bufferutil
       - debug
       - diff-match-patch
       - encoding
@@ -19781,6 +19799,7 @@ snapshots:
       - typescript
       - typescript-api-pro
       - unocss
+      - utf-8-validate
       - vite
 
   '@ljharb/through@2.3.14':
@@ -20785,7 +20804,7 @@ snapshots:
   '@socket.io/component-emitter@3.1.2':
     optional: true
 
-  '@stylelint/postcss-css-in-js@0.37.3(postcss-syntax@0.36.2(postcss@8.5.1))(postcss@7.0.39)':
+  '@stylelint/postcss-css-in-js@0.37.3(postcss-syntax@0.36.2)(postcss@7.0.39)':
     dependencies:
       '@babel/core': 7.26.7
       postcss: 7.0.39
@@ -20801,7 +20820,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@stylelint/postcss-markdown@0.36.2(postcss-syntax@0.36.2(postcss@8.5.1))(postcss@7.0.39)':
+  '@stylelint/postcss-markdown@0.36.2(postcss-syntax@0.36.2)(postcss@7.0.39)':
     dependencies:
       postcss: 7.0.39
       postcss-syntax: 0.36.2(postcss@8.5.1)
@@ -31653,7 +31672,7 @@ snapshots:
     dependencies:
       postcss: 8.5.1
 
-  postcss-html@0.36.0(postcss-syntax@0.36.2(postcss@8.5.1))(postcss@7.0.39):
+  postcss-html@0.36.0(postcss-syntax@0.36.2)(postcss@7.0.39):
     dependencies:
       htmlparser2: 3.10.1
       postcss: 7.0.39
@@ -31869,7 +31888,7 @@ snapshots:
     dependencies:
       postcss: 7.0.39
     optionalDependencies:
-      postcss-html: 0.36.0(postcss-syntax@0.36.2(postcss@8.5.1))(postcss@7.0.39)
+      postcss-html: 0.36.0(postcss-syntax@0.36.2)(postcss@7.0.39)
       postcss-less: 3.1.4
       postcss-scss: 2.1.1
 
@@ -33598,6 +33617,15 @@ snapshots:
 
   robust-predicates@3.0.2: {}
 
+  rollup-plugin-visualizer@5.14.0(rollup@4.34.4):
+    dependencies:
+      open: 8.4.2
+      picomatch: 4.0.2
+      source-map: 0.7.4
+      yargs: 17.7.2
+    optionalDependencies:
+      rollup: 4.34.4
+
   rollup-plugin-visualizer@5.9.0(rollup@3.29.5):
     dependencies:
       open: 8.4.2
@@ -34364,8 +34392,8 @@ snapshots:
 
   stylelint@13.13.1:
     dependencies:
-      '@stylelint/postcss-css-in-js': 0.37.3(postcss-syntax@0.36.2(postcss@8.5.1))(postcss@7.0.39)
-      '@stylelint/postcss-markdown': 0.36.2(postcss-syntax@0.36.2(postcss@8.5.1))(postcss@7.0.39)
+      '@stylelint/postcss-css-in-js': 0.37.3(postcss-syntax@0.36.2)(postcss@7.0.39)
+      '@stylelint/postcss-markdown': 0.36.2(postcss-syntax@0.36.2)(postcss@7.0.39)
       autoprefixer: 9.8.8
       balanced-match: 2.0.0
       chalk: 4.1.2
@@ -34391,7 +34419,7 @@ snapshots:
       micromatch: 4.0.8
       normalize-selector: 0.2.0
       postcss: 7.0.39
-      postcss-html: 0.36.0(postcss-syntax@0.36.2(postcss@8.5.1))(postcss@7.0.39)
+      postcss-html: 0.36.0(postcss-syntax@0.36.2)(postcss@7.0.39)
       postcss-less: 3.1.4
       postcss-media-query-parser: 0.2.3
       postcss-resolve-nested-selector: 0.1.6
