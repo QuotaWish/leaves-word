@@ -3,6 +3,7 @@ import PageNavHolder from "~/components/page/holder/PageNavHolder.vue";
 import ColorOption from "~/components/settings/ColorOption.vue";
 import {
   changeThemeColor,
+  displayModeState,
   isDark,
   themeColor,
   themeColorMap,
@@ -54,6 +55,17 @@ function selectThemeColor(color: string, event: MouseEvent) {
         <div i-carbon-screen />
       </template>
       显示模式设置
+      <template #end>
+        <template v-if="displayModeState.autoDark === 'manual'">
+          手动切换模式
+        </template>
+        <template v-if="displayModeState.autoDark === 'sync'">
+          系统随动模式
+        </template>
+        <template v-if="displayModeState.autoDark === 'sunshine'">
+          日月升降模式
+        </template>
+      </template>
     </LineArrow>
 
     <!-- 主题颜色 -->
