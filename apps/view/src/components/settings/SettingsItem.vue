@@ -26,10 +26,21 @@ defineProps<{
   display: flex;
   justify-content: space-between;
   align-items: center;
+  user-select: none;
+  background-color: var(--el-bg-color);
   border-bottom: 1px solid var(--el-border-color-light);
+
+  &:active {
+    background-color: var(--el-fill-color);
+  }
+
+  &:first-child {
+    border-radius: 8px 8px 0 0;
+  }
 
   &:last-child {
     border-bottom: none;
+    border-radius: 0 0 8px 8px;
   }
 
   .item-content {

@@ -5,9 +5,6 @@ import { useRouter } from "vue-router";
 
 defineOptions({
   name: "ExplorePage",
-  meta: {
-    transition: "nav",
-  },
 });
 
 const icons = [

@@ -1,5 +1,9 @@
 <script setup>
 import PersonalModule from "~/modules/personal/index.vue";
+
+defineOptions({
+  name: "PersonalPage",
+});
 </script>
 
 <template>

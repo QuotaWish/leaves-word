@@ -42,11 +42,6 @@ defineEmits<{
       font-weight: 600;
     }
   }
-
-  &:hover:not(.active) .color-preview {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  }
 }
 
 .color-preview {
@@ -74,7 +69,7 @@ defineEmits<{
 }
 
 .color-name {
-  font-size: 1rem;
+  font-size: 14px;
   transition: color 0.3s ease;
   margin-top: 0.25rem;
 }

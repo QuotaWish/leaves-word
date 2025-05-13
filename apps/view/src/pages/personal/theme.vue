@@ -72,21 +72,21 @@ const selectThemeColor = (color: string, event: MouseEvent) => {
 
     <LineArrow my-4>
       <template #icon>
-        <div i-carbon-time />
+        <div i-carbon:boolean />
       </template>
       混色配置
     </LineArrow>
 
     <LineArrow my-4>
       <template #icon>
-        <div i-carbon-time />
+        <div i-carbon:color-switch />
       </template>
       真实阴影
     </LineArrow>
 
     <LineArrow my-4>
       <template #icon>
-        <div i-carbon-time />
+        <div i-carbon:view />
       </template>
       护眼模式
     </LineArrow>

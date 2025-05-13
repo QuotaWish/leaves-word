@@ -169,10 +169,10 @@ router.beforeEach(async (to, from) => {
   <el-config-provider :z-index="10000000">
     <Splash>
       <template #main>
-        <router-view v-slot="{ Component, route }">
+        <router-view v-slot="{ Component }">
           <TransitionPage>
             <!-- ['DictionaryPage', 'SignedPage'] -->
-            <!-- <keep-alive :include="['IndexPage']" > -->
+            <!-- 'IndexPage', 'PersonalPage', 'ExplorePage' -->
             <!-- :lru="10" :exclude="['DictionaryPage', 'SignedPage']" -->
             <keep-alive :exclude="baseRouteStore.excludeNames">
               <component :is="Component" />

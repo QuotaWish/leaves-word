@@ -368,21 +368,12 @@ const nextWeekPrediction = ref({
 .ai-suggestions-card,
 .ai-prediction-card {
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  margin-bottom: 16px;
+  background: var(--el-bg-color);
+  // border: 1px solid var(--el-border-color);
+  margin-bottom: 1rem;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 
   width: 100%;
-
-  .light & {
-    background: #fff;
-    backdrop-filter: none;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-  }
 }
 
 .ai-card-header {

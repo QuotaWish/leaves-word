@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ElMessageBox } from "element-plus";
-import PageSettingsItem from "~/components/display/settings/PageSettingsItem.vue";
 import PageNavHolder from "~/components/page/holder/PageNavHolder.vue";
 import { useLeafEventBus } from "~/composables/event";
 import { TryAuthLogoutEvent } from "~/composables/event/auth";
@@ -25,48 +24,40 @@ function handleLogout() {
     <div
       class="SettingsPage-Container h-full w-full flex flex-col overflow-y-scroll p-4"
     >
-      <PageSettingsItem title="头像" desc="自定义头像" :show-arrow="true">
+      <SettingsItem title="头像" desc="自定义头像" :show-arrow="true">
         <UserAvatar border-rounded size="64px" />
-      </PageSettingsItem>
+      </SettingsItem>
 
-      <PageSettingsItem
+      <SettingsItem
         title="昵称"
         desc="自定义昵称"
         :show-arrow="true"
         @click="router.push('/personal/edit/name')"
       >
-        <div class="PageSettingsItem-right mx-2">
+        <div class="SettingsItem-right mx-2">
           {{ globalAuthStorage.user?.userName || "-" }}
         </div>
-      </PageSettingsItem>
+      </SettingsItem>
 
-      <PageSettingsItem
-        title="个性签名"
-        desc="自定义个性签名"
-        :show-arrow="true"
-      >
-        <div class="PageSettingsItem-right mx-2">
+      <SettingsItem title="个性签名" desc="自定义个性签名" :show-arrow="true">
+        <div class="SettingsItem-right mx-2">
           {{ globalAuthStorage.user.userProfile || "-" }}
         </div>
-      </PageSettingsItem>
+      </SettingsItem>
 
-      <PageSettingsItem
-        title="UnionID"
-        desc="自定义唯一标识符"
-        :show-arrow="true"
-      >
-        <div class="PageSettingsItem-right mx-2">
+      <SettingsItem title="UnionID" desc="自定义唯一标识符" :show-arrow="true">
+        <div class="SettingsItem-right mx-2">
           {{ globalAuthStorage.user.unionId || "-" }}
         </div>
-      </PageSettingsItem>
+      </SettingsItem>
 
-      <PageSettingsItem title="IdentifyID" desc="自定义唯一标识符">
-        <div class="PageSettingsItem-right mx-2">
+      <SettingsItem title="IdentifyID" desc="自定义唯一标识符">
+        <div class="SettingsItem-right mx-2">
           #{{ globalAuthStorage.user.id || "-" }}
         </div>
-      </PageSettingsItem>
+      </SettingsItem>
 
-      <PageSettingsItem
+      <SettingsItem
         danger
         title="退出登录"
         desc="退出登录"

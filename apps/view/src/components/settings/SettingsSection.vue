@@ -70,7 +70,6 @@ defineProps<{
   }
 }
 
-// 暗黑模式适配
 .dark .settings-section {
   background-color: var(--el-bg-color-overlay);
   border-color: var(--el-border-color-darker);
@@ -89,6 +88,13 @@ defineProps<{
     font-size: 1.1rem;
     font-weight: 300;
     color: var(--el-text-color-primary);
+  }
+
+  .settings-section-content {
+    padding: 0.5rem;
+    border-radius: 16px;
+
+    background-color: var(--el-bg-color);
   }
 
   border: none;

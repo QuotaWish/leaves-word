@@ -35,11 +35,11 @@ section.LineArrow {
   justify-content: space-between;
 
   border-radius: 16px;
-  background: var(--el-fill-color);
+  background: var(--el-bg-color);
   transition: all 0.3s ease;
 
   &:active {
-    transform: scale(0.95);
+    background: var(--el-fill-color);
   }
 
   &.with-gradient {
