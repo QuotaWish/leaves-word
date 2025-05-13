@@ -11,6 +11,7 @@ export default antfu(
       'style/quotes': 'off',
       'style/brace-style': 'off',
       'style/operator-linebreak': 'off',
+      'vue/html-self-closing': 'off',
     },
   },
 )

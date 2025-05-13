@@ -1,7 +1,6 @@
 import * as Sentry from '@sentry/vue'
 import { loadSlim } from '@tsparticles/slim'
 import Particles from '@tsparticles/vue3'
-import { InstallCodeMirror } from 'codemirror-editor-vue3'
 import ElementPlus from 'element-plus'
 import VWave from 'v-wave'
 
@@ -51,7 +50,6 @@ app.use(router)
 app.use(VWave, {
   color: 'currentColor',
 })
-app.use(InstallCodeMirror)
 app.use(Particles, {
   init: async (engine) => {
     await loadSlim(engine)

@@ -10,6 +10,7 @@ declare module 'vue' {
     AIProcessingMessages: typeof import('./src/components/chore/AIProcessingMessages.vue')['default']
     AIWordAnalysis: typeof import('./src/components/words/mode/AIWordAnalysis.vue')['default']
     AnimateIcon: typeof import('./src/components/icon/AnimateIcon.vue')['default']
+    AsyncImage: typeof import('./src/components/chore/AsyncImage.vue')['default']
     AurorBackground: typeof import('./src/components/inspira/auror-background/index.vue')['default']
     Book: typeof import('./src/components/inspira/book/Book.vue')['default']
     BookCover: typeof import('./src/components/inspira/book/BookCover.vue')['default']
