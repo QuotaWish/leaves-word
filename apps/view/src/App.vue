@@ -174,7 +174,10 @@ router.beforeEach(async (to, from) => {
             <!-- ['DictionaryPage', 'SignedPage'] -->
             <!-- 'IndexPage', 'PersonalPage', 'ExplorePage' -->
             <!-- :lru="10" :exclude="['DictionaryPage', 'SignedPage']" -->
-            <keep-alive :exclude="baseRouteStore.excludeNames">
+            <keep-alive
+              :include="['IndexPage', 'PersonalPage', 'ExplorePage']"
+              :exclude="baseRouteStore.excludeNames"
+            >
               <component :is="Component" />
             </keep-alive>
           </TransitionPage>
