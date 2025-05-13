@@ -2,12 +2,11 @@
 import PageNavHolder from "~/components/page/holder/PageNavHolder.vue";
 import ColorOption from "~/components/settings/ColorOption.vue";
 import {
+  changeThemeColor,
   isDark,
-  toggleDark,
   themeColor,
   themeColorMap,
-  changeThemeColor,
-  useTheme,
+  toggleDark,
 } from "~/composables/theme";
 
 const router = useRouter();
@@ -27,9 +26,9 @@ const themeColors = Object.entries(themeColorMap).map(([key, value]) => ({
 }));
 
 // 选择主题色
-const selectThemeColor = (color: string, event: MouseEvent) => {
+function selectThemeColor(color: string, event: MouseEvent) {
   changeThemeColor(color as any, event);
-};
+}
 </script>
 
 <template>
@@ -50,7 +49,7 @@ const selectThemeColor = (color: string, event: MouseEvent) => {
       </div>
     </SettingsSection>
 
-    <LineArrow @click="router.push('/personal/theme/display')" my-4>
+    <LineArrow my-4 @click="router.push('/personal/theme/display')">
       <template #icon>
         <div i-carbon-screen />
       </template>

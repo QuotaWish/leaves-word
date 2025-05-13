@@ -1,5 +1,5 @@
-import { useColorMode, useDark, usePreferredDark, useStorage } from '@vueuse/core'
-import { ref, watch } from 'vue'
+import { useDark, usePreferredDark, useStorage } from '@vueuse/core'
+import { watch } from 'vue'
 
 const supportsTransition = typeof document !== 'undefined' && 'startViewTransition' in document
 
@@ -14,13 +14,14 @@ export const isDark = useDark({
 // 直接创建一个显式的切换函数，确保classList正确更新
 function toggle(forcedValue?: boolean) {
   const newValue = forcedValue !== undefined ? forcedValue : !isDark.value
-  isDark.value = newValue
 
   if (typeof document !== 'undefined') {
     document.documentElement.classList.toggle('dark', newValue)
 
     localStorage.setItem('color-schema', newValue ? 'dark' : 'light')
   }
+
+  isDark.value = newValue
 
   return newValue
 }
@@ -41,8 +42,8 @@ export function toggleDark(forcedValue?: boolean, event?: MouseEvent) {
     )
 
     // 启动过渡动画
-    // @ts-ignore - View Transition API不在所有类型定义中
-    const transition = document.startViewTransition(async () => {
+    // @ts-expect-error - View Transition API不在所有类型定义中
+    const transition = document.startViewTransition(() => {
       toggle(forcedValue)
     })
 
@@ -68,7 +69,7 @@ export function toggleDark(forcedValue?: boolean, event?: MouseEvent) {
     })
   } else if (supportsTransition) {
     // 使用默认的滑动过渡效果
-    // @ts-ignore - View Transition API不在所有类型定义中
+    // @ts-expect-error - View Transition API不在所有类型定义中
     document.startViewTransition(() => {
       toggle(forcedValue)
     })
@@ -170,7 +171,7 @@ export function changeThemeColor(color: ThemeColor, event?: MouseEvent) {
     const oldColors = themeColorMap[oldColor]
     const newColors = themeColorMap[color]
 
-    // @ts-ignore - View Transition API不在所有类型定义中
+    // @ts-expect-error - View Transition API不在所有类型定义中
     const transition = document.startViewTransition(() => {
       themeColor.value = color
     })
@@ -209,7 +210,7 @@ export function changeThemeColor(color: ThemeColor, event?: MouseEvent) {
     })
   } else if (supportsTransition) {
     // 使用简单过渡效果
-    // @ts-ignore - View Transition API不在所有类型定义中
+    // @ts-expect-error - View Transition API不在所有类型定义中
     document.startViewTransition(() => {
       themeColor.value = color
     })
