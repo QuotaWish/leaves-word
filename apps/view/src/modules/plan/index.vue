@@ -1,21 +1,27 @@
 <script setup lang="ts">
-import { useGlobalSplashState } from '~/modules/splash/index'
-import PlanLayout from './PlanLayout.vue'
+import { useGlobalSplashState } from "~/modules/splash/index";
+import PlanLayout from "./PlanLayout.vue";
 
-const router = useRouter()
-const immersiveMode = ref(false)
-const globalSplashState = useGlobalSplashState()
+const router = useRouter();
+const immersiveMode = ref(false);
+const globalSplashState = useGlobalSplashState();
 watch(immersiveMode, (val: boolean) => {
-  globalSplashState.footerVisible.value = !val
-})
+  globalSplashState.footerVisible.value = !val;
+});
 </script>
 
 <template>
   <PlanLayout :class="{ immersive: immersiveMode }">
     <template #header>
       <div flex items-center>
-        <RoundInfo type="success" flex items-center gap-2 @click="router.push('/search')">
-          <img w-6 src="/ai-logo.png">
+        <RoundInfo
+          type="success"
+          flex
+          items-center
+          gap-2
+          @click="router.push('/search')"
+        >
+          <img w-6 src="/ai-logo.png" />
           搜一搜
         </RoundInfo>
       </div>
@@ -40,19 +46,23 @@ watch(immersiveMode, (val: boolean) => {
     </template>
 
     <template #cover>
-      <div class="PlanCover-Wrapper absolute-layout" @click="immersiveMode = !immersiveMode">
+      <div
+        class="PlanCover-Wrapper absolute-layout"
+        @click="immersiveMode = !immersiveMode"
+      >
         <slot name="cover" />
 
         <div class="Immersive-Wrapper absolute-layout">
-          <div class="Immersive-Decoration transition-cubic absolute transition-duration-500">
-          </div>
+          <div
+            class="Immersive-Decoration transition-cubic absolute transition-duration-500"
+          ></div>
 
-          <div class="Immersive-Footer transition-cubic absolute transition-duration-500">
+          <div
+            class="Immersive-Footer transition-cubic absolute transition-duration-500"
+          >
             <div class="Immersive-Footer-Inner flex flex-col">
               <Logo />
-              <p class="text-white">
-                千叶单词 - 每日一言
-              </p>
+              <p class="text-white">千叶单词 - 每日一言</p>
             </div>
           </div>
         </div>
@@ -124,19 +134,31 @@ watch(immersiveMode, (val: boolean) => {
   filter: blur(10px) saturate(180%) brightness(120%);
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     padding: 8px;
-    background: linear-gradient(90deg,
-        #00f5a0, #00d9f5, #00a1ff, #a100ff,
-        #f400a1, #f5a000, #00f5a0, #00d9f5,
-        #00a1ff);
+    background: linear-gradient(
+      90deg,
+      #00f5a0,
+      #00d9f5,
+      #00a1ff,
+      #a100ff,
+      #f400a1,
+      #f5a000,
+      #00f5a0,
+      #00d9f5,
+      #00a1ff
+    );
     background-size: 400% 100%;
     animation: flow 10s ease-in-out infinite;
     border-radius: inherit;
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
     mask-composite: exclude;
     -webkit-mask-composite: xor;
   }
@@ -145,7 +167,7 @@ watch(immersiveMode, (val: boolean) => {
 .PlanLayout {
   &.immersive {
     .IndexPage-Card {
-      transform: scale(0.01);
+      transform: scale(0.0001);
     }
 
     .PlanLayout-Header {
