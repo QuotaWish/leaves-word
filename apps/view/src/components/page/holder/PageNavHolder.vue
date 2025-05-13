@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { NavBar } from "vant";
+import HeadNav from "../HeadNav.vue";
 
 withDefaults(
   defineProps<{
@@ -7,6 +8,7 @@ withDefaults(
     empty?: boolean;
     header?: boolean;
     loading?: boolean;
+    loadingMask?: boolean;
     contentPadding?: boolean;
   }>(),
   {
@@ -21,15 +23,19 @@ const ins = ref(getCurrentInstance());
 </script>
 
 <template>
-  <RoutePage :class="{ empty }" :loading="loading" class="PageNavHolder">
+  <RoutePage
+    :class="{ empty }"
+    :loadingMask="loadingMask"
+    :loading="loading"
+    class="PageNavHolder"
+  >
     <template #header>
       <slot name="topHeader">
-        <NavBar
-          :title="title"
-          left-text="返回"
-          left-arrow
-          @click-left="router.back()"
-        />
+        <HeadNav :disabled="loading" @back="router.back">
+          <template #action>
+            <slot name="action" />
+          </template>
+        </HeadNav>
       </slot>
     </template>
 

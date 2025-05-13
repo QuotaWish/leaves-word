@@ -8,6 +8,7 @@ withDefaults(
   defineProps<{
     adapt?: boolean;
     loading?: boolean;
+    loadingMask?: boolean;
   }>(),
   {
     adapt: true,
@@ -30,6 +31,8 @@ const router = useRouter();
 function handleBackButton(event: any) {
   if (event !== UniEventAtBackButton) return;
 
+  if (props.loading) return;
+
   router.back();
 }
 
@@ -46,7 +49,7 @@ onBeforeUnmount(() => {
   <!-- :class="{ visible }" -->
   <WithPage
     :adapt="adapt"
-    :class="{ pageLoading: loading }"
+    :class="{ pageLoading: loading, loadingMask }"
     class="RoutePage transition-cubic absolute-layout flex flex-col"
   >
     <div class="RoutePage-Header">
@@ -56,7 +59,7 @@ onBeforeUnmount(() => {
       <slot />
 
       <div
-        class="transition-cubic RoutePage-Loading absolute-layout z-1 h-full w-full flex flex-col items-center justify-center gap-4 p-4"
+        class="transition-cubic fake-background RoutePage-Loading absolute-layout z-1 h-full w-full flex flex-col items-center justify-center gap-4 p-4"
       >
         <Loading />
       </div>
@@ -73,6 +76,13 @@ onBeforeUnmount(() => {
   .RoutePage.pageLoading & {
     opacity: 1;
     pointer-events: all;
+  }
+
+  .RoutePage.loadingMask & {
+    --fake-opacity: 1;
+    --fake-color: var(--el-mask-color);
+    background-color: transparent;
+    // backdrop-filter: blur(18px) saturate(180%);
   }
 
   opacity: 0;

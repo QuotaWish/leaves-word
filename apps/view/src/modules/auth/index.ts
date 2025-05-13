@@ -1,6 +1,7 @@
 import type { User } from '~/composables/api/clients/globals'
 import { useLeafEventBus } from '~/composables/event'
-import { AuthLogoutEvent, AuthSuccessEvent, ToastEvent, TryAuthLogoutEvent } from '~/composables/event/auth'
+import { AuthLogoutEvent, AuthSuccessEvent, TryAuthLogoutEvent } from '~/composables/event/auth'
+import { ToastEvent } from '~/composables/event/toast-event'
 
 /**
  * AuthModule 是负责APP验证的入口
@@ -57,7 +58,7 @@ watch(() => globalAuthStorage.value.isLogin, (val) => {
 }, { immediate: true })
 
 eventBus.registerListener(TryAuthLogoutEvent, {
-  handleEvent(event) {
+  handleEvent() {
     $logout()
   },
 })

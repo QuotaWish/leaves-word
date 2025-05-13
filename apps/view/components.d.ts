@@ -72,6 +72,7 @@ declare module 'vue' {
     ScrollFadeContainer: typeof import('./src/components/chore/ScrollFadeContainer.vue')['default']
     SearchBar: typeof import('./src/components/input/SearchBar.vue')['default']
     SettingsCard: typeof import('./src/components/settings/SettingsCard.vue')['default']
+    SettingsInput: typeof import('./src/components/settings/SettingsInput.vue')['default']
     SettingsItem: typeof import('./src/components/settings/SettingsItem.vue')['default']
     SettingsOption: typeof import('./src/components/settings/SettingsOption.vue')['default']
     SettingsSection: typeof import('./src/components/settings/SettingsSection.vue')['default']

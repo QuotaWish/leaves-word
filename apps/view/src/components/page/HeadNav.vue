@@ -9,6 +9,7 @@ interface HeadNavProps {
   isTransparent?: boolean;
   isBlur?: boolean;
   expand?: boolean;
+  disabled?: boolean;
 }
 
 const props = withDefaults(defineProps<HeadNavProps>(), {
@@ -19,6 +20,7 @@ const props = withDefaults(defineProps<HeadNavProps>(), {
   isTransparent: false,
   isBlur: false,
   expand: false,
+  disabled: false,
 });
 
 const emit = defineEmits<{
@@ -34,6 +36,8 @@ const truncatedTitle = computed(() => {
 });
 
 function handleBack(): void {
+  if (props.disabled) return;
+
   emit("back");
 }
 
@@ -53,7 +57,7 @@ function handleAction(): void {
     }"
   >
     <div class="HeadNav-Inner px-2">
-      <div class="head-nav__left">
+      <div :class="{ disabled }" class="head-nav__left">
         <slot name="left">
           <div class="head-nav__back" @click="handleBack">
             <i class="head-nav__back-icon" />
@@ -67,7 +71,7 @@ function handleAction(): void {
         </slot>
       </div>
       <div class="head-nav__right">
-        <slot name="right">
+        <slot name="action">
           <div v-if="showAction" class="head-nav__action" @click="handleAction">
             {{ actionText }}
           </div>
@@ -100,7 +104,7 @@ function handleAction(): void {
 .HeadNav {
   height: 44px;
   width: 100%;
-  background-color: var(--el-fill-color);
+  background-color: var(--el-bg-color);
   position: relative;
   box-sizing: border-box;
   font-size: 14px;
@@ -125,6 +129,11 @@ function handleAction(): void {
   justify-content: flex-start;
   padding-left: 16px;
   cursor: pointer;
+}
+
+.head-nav__left.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .head-nav__back {

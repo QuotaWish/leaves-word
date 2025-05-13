@@ -13,16 +13,15 @@ import { ReadingMode } from "~/modules/words/mode/reading";
 // import { PunchMode } from '~/modules/words/mode/punch'
 import { SoundMode } from "~/modules/words/mode/sound";
 
-import PersonalIndex from "./pages/personal/index.vue";
-import ExploreIndex from "./pages/explore/index.vue";
-
 import { initApi } from "./composables/api";
+
 import { useLeafEventBus } from "./composables/event";
 import { AuthSuccessEvent } from "./composables/event/auth";
 import { ToastEvent } from "./composables/event/toast-event";
 import { useBaseRouteStore } from "./composables/store/useRouteStore";
 import { $logout, globalAuthStorage, initAuthModule } from "./modules/auth";
-import { getJSDocReturnTag } from "typescript";
+import ExploreIndex from "./pages/explore/index.vue";
+import PersonalIndex from "./pages/personal/index.vue";
 
 modeManager.set(
   ModeType.COMPREHENSIVE,
@@ -45,7 +44,7 @@ initAuthModule();
 
 const eventBus = useLeafEventBus();
 const router = useRouter();
-const routes = router.getRoutes();
+// const routes = router.getRoutes();
 const baseRouteStore = useBaseRouteStore();
 
 const theme = computed(() => {
@@ -104,8 +103,6 @@ router.beforeEach(async (to, from) => {
   const filterMatched = to.matched.filter((item: any) => item.components);
   const toComponentName = filterMatched?.[0]?.components?.default.name;
 
-  console.log(to, from);
-
   await sleep(300);
 
   baseRouteStore.updateExcludeRoutes({
@@ -113,16 +110,12 @@ router.beforeEach(async (to, from) => {
     value: toComponentName!,
   });
 
-  console.log(baseRouteStore.excludeNames);
-
   await sleep(300);
 
   baseRouteStore.updateExcludeRoutes({
     type: "remove",
     value: toComponentName!,
   });
-
-  console.log(baseRouteStore.excludeNames);
 
   // setTimeout(() => {
   //   baseRouteStore.updateExcludeRoutes({
