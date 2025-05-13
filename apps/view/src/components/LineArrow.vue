@@ -35,7 +35,7 @@ section.LineArrow {
   justify-content: space-between;
 
   border-radius: 16px;
-  background: var(--el-fill-color);
+  background: var(--el-bg-color);
   transition: all 0.3s ease;
 
   &:active {
@@ -43,15 +43,19 @@ section.LineArrow {
   }
 
   &.with-gradient {
-    background: linear-gradient(135deg,
-        var(--theme-color-light),
-        var(--theme-color-dark));
+    background: linear-gradient(
+      135deg,
+      var(--theme-color-primary),
+      var(--theme-color-dark)
+    );
     color: white;
 
     .head-icon {
-      background: linear-gradient(135deg,
-          var(--theme-color-primary),
-          var(--theme-color-light));
+      background: linear-gradient(
+        135deg,
+        var(--theme-color-primary),
+        var(--theme-color-light)
+      );
       color: white;
     }
 
