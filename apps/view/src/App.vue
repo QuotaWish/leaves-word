@@ -8,10 +8,13 @@ import Splash from "~/modules/splash/index.vue";
 import { type LeafDictStorage, ModeType } from "~/modules/words";
 import { modeManager } from "~/modules/words/mode";
 import { ComprehensiveMode } from "~/modules/words/mode/comprehensive";
+import { ReadingMode } from "~/modules/words/mode/reading";
 // import { DictWordMode } from '~/modules/words/mode/dict-word'
 // import { PunchMode } from '~/modules/words/mode/punch'
 import { SoundMode } from "~/modules/words/mode/sound";
-import { ReadingMode } from "~/modules/words/mode/reading";
+
+import PersonalIndex from "./pages/personal/index.vue";
+import ExploreIndex from "./pages/explore/index.vue";
 
 import { initApi } from "./composables/api";
 import { useLeafEventBus } from "./composables/event";
@@ -146,7 +149,8 @@ eventBus.registerListener(AuthSuccessEvent, {
         <Auth />
         <Core />
         <DeveloperFloatingBall />
-        <Toaster mt-8 :theme="theme" richColors position="top-center" />
+        <Toaster :theme="theme" richcolors mt-8 position="top-center" />
+        <PreloadPage :components="[PersonalIndex, ExploreIndex]" />
 
         <!-- <div class="absolute-layout bottom-0 left-0 w-full z-1000 h-10 bg-red-500">
           {{ baseRouteStore.excludeNames }}

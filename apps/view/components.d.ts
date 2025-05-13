@@ -63,6 +63,7 @@ declare module 'vue' {
     PageSettingsSection: typeof import('./src/components/display/settings/PageSettingsSection.vue')['default']
     PlanSelector: typeof import('./src/components/words/PlanSelector.vue')['default']
     PlayIcon: typeof import('./src/components/icon/PlayIcon.vue')['default']
+    PreloadPage: typeof import('./src/components/page/PreloadPage.vue')['default']
     PronounceDisplay: typeof import('./src/components/words/composer/PronounceDisplay.vue')['default']
     RoundInfo: typeof import('./src/components/display/RoundInfo.vue')['default']
     RoutePage: typeof import('./src/components/page/RoutePage.vue')['default']
