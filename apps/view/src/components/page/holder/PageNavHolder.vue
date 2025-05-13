@@ -9,6 +9,11 @@ withDefaults(
     loading?: boolean;
     loadingMask?: boolean;
     contentPadding?: boolean;
+    /**
+     * 沉浸模式
+     * 启用之后，会加入自定义标题，整体会更加沉浸
+     */
+    immersive?: boolean;
   }>(),
   {
     contentPadding: true,
@@ -19,11 +24,24 @@ const router = useRouter();
 
 // 获取插槽
 const ins = ref(getCurrentInstance());
+
+const immersiveOptions = reactive({
+  enable: false,
+});
+const scroller = useTemplateRef("scroll");
+const IMMERSIVE_HEIGHT = 20;
+
+function handleScroll() {
+  const scrollEl = scroller.value;
+  if (!scrollEl) return;
+
+  immersiveOptions.enable = scrollEl.scrollTop >= IMMERSIVE_HEIGHT;
+}
 </script>
 
 <template>
   <RoutePage
-    :class="{ empty }"
+    :class="{ empty, immersive: immersiveOptions.enable }"
     :loadingMask="loadingMask"
     :loading="loading"
     class="PageNavHolder"
@@ -33,6 +51,14 @@ const ins = ref(getCurrentInstance());
         <HeadNav :title="title" :disabled="loading" @back="router.back">
           <template #action>
             <slot name="action" />
+          </template>
+
+          <template v-if="immersive" #title>
+            <span
+              class="PageNavHolder-ImmersiveTitle transition-cubic"
+              :class="{ enter: immersiveOptions.enable }"
+              >{{ title }}</span
+            >
           </template>
         </HeadNav>
       </slot>
@@ -48,9 +74,14 @@ const ins = ref(getCurrentInstance());
       </div>
 
       <div
+        ref="scroll"
+        @scroll="handleScroll"
         :class="{ 'px-4': contentPadding }"
         class="PageNavHolder-Content h-full w-full"
       >
+        <h1 mb-4 text-3xl v-if="immersive">
+          {{ title }}
+        </h1>
         <slot />
 
         <div
@@ -75,6 +106,17 @@ const ins = ref(getCurrentInstance());
 </template>
 
 <style lang="scss" scoped>
+.PageNavHolder-ImmersiveTitle {
+  &.enter {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  display: block;
+
+  opacity: 0;
+  transform: translateY(100%);
+}
+
 .RoutePage-Empty {
   &-Illusion {
     &-Image {
