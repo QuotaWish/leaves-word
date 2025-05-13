@@ -5,7 +5,13 @@ defineProps<{
 </script>
 
 <template>
-  <div :class="[type]" flex items-center gap-2 class="RoundInfo fake-background">
+  <div
+    :class="[type]"
+    flex
+    items-center
+    gap-2
+    class="RoundInfo fake-background"
+  >
     <slot />
   </div>
 </template>
@@ -20,7 +26,7 @@ defineProps<{
 }
 
 .RoundInfo.success {
-  --c: var(--el-color-success);
+  --c: #40a244; //var(--el-color-success);
 }
 
 .RoundInfo {
@@ -30,6 +36,7 @@ defineProps<{
 
   font-size: 1em;
   font-weight: 600;
+  user-select: none;
   border-radius: 16px;
   color: var(--c);
   --fake-opacity: 0.25;
