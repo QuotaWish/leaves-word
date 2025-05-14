@@ -42,7 +42,7 @@ watch(
 </script>
 
 <template>
-  <PageNavHolder immersive class="SettingsPage" title="个人设置">
+  <PageNavHolder immersive class="SettingsPage" title="个性化设置">
     <div
       class="SettingsPage-Container w-full h-full overflow-y-scroll flex flex-col"
     >
