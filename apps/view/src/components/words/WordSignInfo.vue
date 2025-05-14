@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import PlanSelector from "~/components/words/PlanSelector.vue";
-import { calendarManager, globalPreference, useTargetData } from "~/modules/words";
+import {
+  calendarManager,
+  globalPreference,
+  useTargetData,
+} from "~/modules/words";
 
 import LeafSpeedButton from "../button/LeafSpeedButton.vue";
 import WordSignInfoCard from "./card/WordSignInfoCard.vue";
 import Cat from "/svg/cat.svg";
 import Checked from "/svg/complete.svg";
+import ModeSelector from "./ModeSelector.vue";
 
 const router = useRouter();
 
@@ -49,6 +54,13 @@ function selectPlan() {
   });
 }
 
+function selectMode() {
+  Object.assign(dialogOptions, {
+    visible: true,
+    component: ModeSelector,
+  });
+}
+
 async function handleCheckSign() {
   await sleep(300);
 
@@ -57,8 +69,11 @@ async function handleCheckSign() {
 </script>
 
 <template>
-  <WordSignInfoCard :class="{ signed: todayData?.signed }" text-black
-    class="transition-cubic WordSignInfo-Wrapper transition-duration-500">
+  <WordSignInfoCard
+    :class="{ signed: todayData?.signed }"
+    text-black
+    class="transition-cubic WordSignInfo-Wrapper transition-duration-500"
+  >
     <div class="leaf-decoration top-left" />
     <div class="leaf-decoration bottom-right" />
 
@@ -67,22 +82,43 @@ async function handleCheckSign() {
         <img :src="Cat" />
       </div>
 
-      <div class="WordSignInfo-Dictionary" @click="router.push(`/dictionary/${dictionary.id}`)">
+      <div
+        class="WordSignInfo-Dictionary"
+        @click="router.push(`/dictionary/${dictionary.id}`)"
+      >
         <DictionaryBookDisplay onlyImage :model-value="dictionary.data" />
       </div>
 
       <div class="WordSignInfo-Content">
         <p w-full flex justify-between class="WordSignInfo-Content-Title">
           <span>{{ dictionary.data?.name }}</span>
-          <span mr-4 flex items-center text-sm font-normal op-75 active:op-100 @click="selectDict">
+          <span
+            mr-4
+            flex
+            items-center
+            text-sm
+            font-normal
+            op-75
+            active:op-100
+            @click="selectDict"
+          >
             调整词书
             <i i-carbon-chevron-right block />
           </span>
         </p>
-        <p w-full flex items-center justify-between class="WordSignInfo-Content-Desc">
+        <p
+          w-full
+          flex
+          items-center
+          justify-between
+          class="WordSignInfo-Content-Desc"
+        >
           <span>{{ learnedAmo }}/{{ totalAmo }} 已学习</span>
-          <span mr-4 text-sm op-75>剩余
-            {{ Math.ceil((totalAmo - learnedAmo) / globalPreference.amount) }} 天</span>
+          <span mr-4 text-sm op-75
+            >剩余
+            {{ Math.ceil((totalAmo - learnedAmo) / globalPreference.amount) }}
+            天</span
+          >
         </p>
         <LineProgress :progress="progress" />
       </div>
@@ -91,14 +127,39 @@ async function handleCheckSign() {
     <template #lower>
       <p w-full flex items-center justify-between>
         <span font-bold class="title">今日计划</span>
-        <span v-if="!todayData?.signed" text-sm op-50>随时随地，单词好记</span>
-        <span flex items-center text-sm font-normal op-75 active:op-100 @click="selectPlan">
+        <span
+          flex
+          items-center
+          gap-1
+          v-if="!todayData?.signed && targetSignMode"
+          text-sm
+          op-50
+          @click="selectMode"
+        >
+          {{ targetSignMode.getModeName() }}
+          <i block i-carbon:chevron-sort />
+        </span>
+        <span
+          flex
+          items-center
+          text-sm
+          font-normal
+          op-75
+          active:op-100
+          @click="selectPlan"
+        >
           调整计划
           <i i-carbon-chevron-right block />
         </span>
       </p>
 
-      <div my-4 flex items-center justify-between class="WordSignInfo-DetailBlockWrapper">
+      <div
+        my-4
+        flex
+        items-center
+        justify-between
+        class="WordSignInfo-DetailBlockWrapper"
+      >
         <template v-if="todayData?.signed">
           <div class="WordSignInfo-DetailBlock">
             <p text-sm font-bold op-75>已学习</p>
@@ -126,7 +187,9 @@ async function handleCheckSign() {
             <p text-sm op-75>需复习</p>
 
             <p>
-              <span mr-3 text-3xl font-bold> {{ globalPreference.amount }} </span>词
+              <span mr-3 text-3xl font-bold>
+                {{ globalPreference.amount }} </span
+              >词
             </p>
           </div>
         </template>
@@ -151,7 +214,9 @@ async function handleCheckSign() {
           打卡
         </LeafButton>
 
-        <div my-4 ml-1 flex items-center gap-1 text-sm op-75>随时随地，单词好记。</div>
+        <div my-4 ml-1 flex items-center gap-1 text-sm op-75>
+          随时随地，单词好记。
+        </div>
 
         <div class="WordSignInfo-Checked">
           <img :src="Checked" />
@@ -169,9 +234,14 @@ async function handleCheckSign() {
     <template #empty>
       <div class="WordSignInfo-Empty">
         <div class="WordSignInfo-Empty-Icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="empty-book-svg">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            class="empty-book-svg"
+          >
             <path
-              d="M21,4H3C1.9,4,1,4.9,1,6v13c0,1.1,0.9,2,2,2h18c1.1,0,2-0.9,2-2V6C23,4.9,22.1,4,21,4z M21,19H3V6h18V19z M10,14h8v2h-8V14z M10,10h8v2h-8V10z M5,10h3v2H5V10z M5,14h3v2H5V14z" />
+              d="M21,4H3C1.9,4,1,4.9,1,6v13c0,1.1,0.9,2,2,2h18c1.1,0,2-0.9,2-2V6C23,4.9,22.1,4,21,4z M21,19H3V6h18V19z M10,14h8v2h-8V14z M10,10h8v2h-8V10z M5,10h3v2H5V10z M5,14h3v2H5V14z"
+            />
           </svg>
         </div>
         <div class="WordSignInfo-Empty-Title">暂未选择词书</div>
@@ -184,7 +254,10 @@ async function handleCheckSign() {
 
     <TouchDialog v-model="dialogOptions.visible">
       <template #Main>
-        <component :is="dialogOptions.component" v-if="dialogOptions.component" />
+        <component
+          :is="dialogOptions.component"
+          v-if="dialogOptions.component"
+        />
       </template>
     </TouchDialog>
   </WordSignInfoCard>
