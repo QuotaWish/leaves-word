@@ -42,7 +42,7 @@ function handleScroll() {
 <template>
   <RoutePage
     :class="{ empty, immersive: immersiveOptions.enable }"
-    :loadingMask="loadingMask"
+    :loading-mask="loadingMask"
     :loading="loading"
     class="PageNavHolder"
   >
@@ -75,11 +75,17 @@ function handleScroll() {
 
       <div
         ref="scroll"
-        @scroll="handleScroll"
         :class="{ 'px-4': contentPadding }"
         class="PageNavHolder-Content h-full w-full"
+        @scroll="handleScroll"
       >
-        <h1 mb-4 text-3xl v-if="immersive">
+        <h1
+          class="PageNavHolder-ImmersiveMainTitle transition-cubic"
+          v-if="immersive"
+          :class="{ enter: immersiveOptions.enable }"
+          mb-4
+          text-3xl
+        >
           {{ title }}
         </h1>
         <slot />
@@ -115,6 +121,17 @@ function handleScroll() {
 
   opacity: 0;
   transform: translateY(100%);
+}
+
+.PageNavHolder-ImmersiveMainTitle {
+  &.enter {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  display: block;
+
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .RoutePage-Empty {
