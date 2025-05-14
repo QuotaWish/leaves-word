@@ -14,8 +14,6 @@ const props = withDefaults(defineProps<IRoutePageProps>(), {
 
 const emits = defineEmits<IRoutePageEmits>();
 
-const refreshingModel = useVModel(props, "refreshing", emits);
-
 const router = useRouter();
 function handleBackButton(event: any) {
   if (event !== UniEventAtBackButton) return;
@@ -40,6 +38,15 @@ onDeactivated(() => {
 onUnmounted(() => {
   uniEventBus.off(handleBackButton);
 });
+
+const innerRefresh = ref(false);
+async function handleRefresh() {
+  await sleep(500);
+
+  props.onrefresh?.(() => {
+    innerRefresh.value = false;
+  });
+}
 </script>
 
 <template>
@@ -59,9 +66,15 @@ onUnmounted(() => {
       <PullRefresh
         :disabled="!enablePullRefresh"
         h-full
-        @refresh="emits('refresh')"
-        v-model="refreshingModel"
+        @refresh="handleRefresh"
+        v-model="innerRefresh"
       >
+        <!-- 加载提示 -->
+        <template #loading>
+          <div flex justify-center items-center w-full h-full>
+            <Loading class="w-[24px] h-[24px]" />
+          </div>
+        </template>
         <slot />
       </PullRefresh>
 
@@ -100,6 +113,7 @@ onUnmounted(() => {
 .RoutePage {
   z-index: 1;
 
+  user-select: none;
   // border-radius: 18px;
   // transform: translateX(120%);
   background-color: var(--el-fill-color);

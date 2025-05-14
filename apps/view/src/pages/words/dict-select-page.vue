@@ -70,12 +70,19 @@ function handleBookClick(book: EnglishDictionary) {
 onMounted(() => {
   send();
 });
+
+async function handleRefresh(callback: Function) {
+  /* const res =  */ await send(true);
+
+  callback();
+}
 </script>
 
 <template>
   <DictionaryHolder
     :empty="!loading && !bookData.length"
     class="DictionarySelectPage"
+    @refresh="handleRefresh"
   >
     <template #header>
       <div class="search-bar">

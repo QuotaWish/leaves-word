@@ -1,29 +1,19 @@
 <script setup lang="ts">
-defineProps<{
-  title: string;
-  empty?: boolean;
-  header?: boolean;
-  loading?: boolean;
-  loadingMask?: boolean;
-  /**
-   * 沉浸模式
-   * 启用之后，会加入自定义标题，整体会更加沉浸
-   */
-  immersive?: boolean;
-}>();
+import { ISideNavHolderEmits, ISideNavHolderProps } from "../types";
+
+const props = defineProps<ISideNavHolderProps>();
+
+// const emits = defineEmits<ISideNavHolderEmits>();
 
 const ins = ref(getCurrentInstance());
+
+console.log(ins);
 </script>
 
 <template>
   <PageNavHolder
-    :immersive
-    :empty
-    :header
-    :loadingMask
+    v-bind="{ ...props }"
     :contentPadding="false"
-    :title="title"
-    :loading="loading"
     class="SideNavHolder"
   >
     <template #topHeader>

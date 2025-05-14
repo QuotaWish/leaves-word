@@ -35,11 +35,37 @@ export interface IRoutePageProps extends IWIthPageProps {
   loading?: boolean;
   loadingMask?: boolean;
   innerClass?: string;
-  refreshing?: boolean;
   enablePullRefresh?: boolean;
+
+  onrefresh?: (done: IRefreshDone) => void;
 }
 
+export type IRefreshDone = () => void
+
 export interface IRoutePageEmits {
-  (e: 'refresh'): void
-  (e: 'update:refreshing', value: boolean): void
+  // (e: 'refresh', done: IRefreshDone): void
+}
+
+export interface IPageNavHolderProps extends IRoutePageProps {
+  title: string;
+  empty?: boolean;
+  header?: boolean;
+  contentPadding?: boolean;
+  /**
+   * 沉浸模式
+   * 启用之后，会加入自定义标题，整体会更加沉浸
+   */
+  immersive?: boolean;
+}
+
+export interface IPageNavHolderEmits extends IRoutePageEmits {
+
+}
+
+export interface ISideNavHolderProps extends IPageNavHolderProps {
+
+}
+
+export interface ISideNavHolderEmits extends IPageNavHolderEmits {
+
 }

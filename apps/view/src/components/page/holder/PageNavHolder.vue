@@ -1,24 +1,12 @@
 <script setup lang="ts">
 import HeadNav from "../HeadNav.vue";
+import { IPageNavHolderEmits, IPageNavHolderProps } from "../types";
 
-withDefaults(
-  defineProps<{
-    title: string;
-    empty?: boolean;
-    header?: boolean;
-    loading?: boolean;
-    loadingMask?: boolean;
-    contentPadding?: boolean;
-    /**
-     * 沉浸模式
-     * 启用之后，会加入自定义标题，整体会更加沉浸
-     */
-    immersive?: boolean;
-  }>(),
-  {
-    contentPadding: true,
-  },
-);
+const props = withDefaults(defineProps<IPageNavHolderProps>(), {
+  contentPadding: true,
+});
+
+// const emits = defineEmits<IPageNavHolderEmits>();
 
 const router = useRouter();
 
@@ -42,8 +30,7 @@ function handleScroll() {
 <template>
   <RoutePage
     :class="{ empty, immersive: immersiveOptions.enable }"
-    :loading-mask="loadingMask"
-    :loading="loading"
+    v-bind="{ ...props }"
     class="PageNavHolder"
   >
     <template #header>
