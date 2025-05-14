@@ -25,6 +25,8 @@ function buildTree(categories: CategoryTree[]): CategoryTree[] {
   const map = new Map<number, CategoryTree>();
   const roots: CategoryTree[] = [];
 
+  // console.log(categories, map, roots);
+
   // 创建所有节点的映射并初始化children
   categories.forEach((item) => {
     map.set(item.id!, { ...item, children: [] });
@@ -37,7 +39,7 @@ function buildTree(categories: CategoryTree[]): CategoryTree[] {
 
     // if (item.id === +value) return;
 
-    if (parentId === 0 || !map.has(parentId)) {
+    if (parentId === 0 || !map.has(parentId) || item.isRoot) {
       roots.push(node);
     } else {
       map.get(parentId)!.children!.push(node);
