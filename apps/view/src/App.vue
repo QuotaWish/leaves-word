@@ -3,7 +3,7 @@ import { useRequest } from "alova/client";
 import { toast, Toaster } from "vue-sonner";
 import Auth from "~/modules/auth/index.vue";
 import Core from "~/modules/core/index.vue";
-import FloatingBall from "~/modules/ai/bubble/index.ts";
+import FloatingBall from "~/modules/ai/bubble/index";
 import DeveloperConsole from "~/modules/develop/index.vue";
 import Splash from "~/modules/splash/index.vue";
 import {

@@ -25,6 +25,8 @@ declare module 'vue' {
     DarkModeSwitch: typeof import('./src/components/button/DarkModeSwitch.vue')['default']
     DictationPage: typeof import('./src/components/input/DictationPage.vue')['default']
     DictionaryBookDisplay: typeof import('./src/components/display/DictionaryBookDisplay.vue')['default']
+    DictionaryHolder: typeof import('./src/components/display/dictionary/DictionaryHolder.vue')['default']
+    DictionarySelector: typeof import('./src/components/display/dictionary/DictionarySelector.vue')['default']
     DictionaryWord: typeof import('./src/components/words/dictionary/DictionaryWord.vue')['default']
     DictSelector: typeof import('./src/components/words/DictSelector.vue')['default']
     DraggableHolder: typeof import('./src/components/draggable-cards/DraggableHolder.vue')['default']

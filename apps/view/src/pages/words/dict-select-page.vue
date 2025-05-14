@@ -1,8 +1,8 @@
 <script setup lang="ts">
 // import WordSelector from '@/components/words/WordSelector.vue'
 import { useDebounceFn } from "@vueuse/core";
-import { useCategoryTree } from "~/modules/core/dictionary";
-import DictionaryHolder from "~/modules/core/dictionary/DictionaryHolder.vue";
+import { useCategoryTree } from "~/components/display/dictionary";
+import DictionaryHolder from "~/components/display/dictionary/DictionaryHolder.vue";
 // import BookItem from './BookItem.vue'
 import { globalPreference } from "~/modules/words/core/feat/preference";
 import "wc-waterfall";

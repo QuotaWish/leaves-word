@@ -66,6 +66,7 @@ async function handleRefresh() {
       <PullRefresh
         :disabled="!enablePullRefresh"
         h-full
+        w-full
         @refresh="handleRefresh"
         v-model="innerRefresh"
       >
