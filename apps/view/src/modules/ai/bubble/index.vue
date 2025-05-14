@@ -7,6 +7,7 @@ const status = reactive({
   expand: false,
   visible: false,
   dragging: false,
+  moved: false,
 });
 
 const bubble = useTemplateRef("bubble");
@@ -85,9 +86,13 @@ const { x, y } = useDraggable(bubble, {
     status.dragging = false;
     status.visible = false;
 
-    setTimeout(() => {
-      status.expand = false;
-    }, 300);
+    if (status.moved) {
+      setTimeout(() => {
+        status.expand = false;
+      }, 300);
+
+      status.moved = false;
+    }
 
     const containerEl = container.value!;
 
@@ -102,6 +107,8 @@ const { x, y } = useDraggable(bubble, {
     );
   },
   onMove(position) {
+    status.moved = true;
+
     const containerEl = container.value!;
 
     const { x, y } = position;
@@ -132,7 +139,7 @@ watchEffect(() => {
 async function handleClick() {
   if (status.visible) {
     status.visible = false;
-    status.expand = true;
+    status.expand = false;
     return;
   }
 
