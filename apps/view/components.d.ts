@@ -61,6 +61,7 @@ declare module 'vue' {
     PageNavHolder: typeof import('./src/components/page/holder/PageNavHolder.vue')['default']
     PageSettingsItem: typeof import('./src/components/display/settings/PageSettingsItem.vue')['default']
     PageSettingsSection: typeof import('./src/components/display/settings/PageSettingsSection.vue')['default']
+    ParticleImage: typeof import('./src/components/inspira/particle-image/ParticleImage.vue')['default']
     PlanSelector: typeof import('./src/components/words/PlanSelector.vue')['default']
     PlayIcon: typeof import('./src/components/icon/PlayIcon.vue')['default']
     PreloadPage: typeof import('./src/components/page/PreloadPage.vue')['default']

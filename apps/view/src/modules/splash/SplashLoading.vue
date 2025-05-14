@@ -1,22 +1,26 @@
 <script setup lang="ts">
-import VersionBar from '~/components/chore/VersionBar.vue'
-import { APP_LOGO } from '~/composables/constants';
-import { ScreenMode, useGlobalSplashState } from '.';
+import VersionBar from "~/components/chore/VersionBar.vue";
+import { APP_LOGO } from "~/composables/constants";
+import { ScreenMode, useGlobalSplashState } from ".";
 
-const globalSplashState = useGlobalSplashState()
-const loading = ref(true)
+const globalSplashState = useGlobalSplashState();
+const loading = ref(true);
 
-  ; (async () => {
-  await sleep(2000)
+(async () => {
+  await sleep(2000);
 
-  loading.value = false
-})()
+  loading.value = false;
+})();
 
-watch(() => globalSplashState.screenMode.value, () => {
-  if ( globalSplashState.screenMode.value === ScreenMode.BUILDER ) {
-    loading.value = false
-  }
-}, { immediate: true })
+watch(
+  () => globalSplashState.screenMode.value,
+  () => {
+    if (globalSplashState.screenMode.value === ScreenMode.BUILDER) {
+      loading.value = false;
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
@@ -24,8 +28,8 @@ watch(() => globalSplashState.screenMode.value, () => {
     <div class="SplashLoading-Page transition-cubic">
       <div class="SplashLoading-Page-Main">
         <div class="SplashLoading-Logo">
-          <img :src="APP_LOGO" alt="Logo" class="logo">
-          <img :src="APP_LOGO" alt="Logo" class="logo-bg">
+          <img :src="APP_LOGO" alt="Logo" class="logo" />
+          <img :src="APP_LOGO" alt="Logo" class="logo-bg" />
         </div>
         <div class="SplashLoading-Page-Text">
           <h1>千叶单词</h1>

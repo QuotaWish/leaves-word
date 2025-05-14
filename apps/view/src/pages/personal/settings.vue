@@ -4,7 +4,7 @@ import { useDevMode } from "~/modules/develop";
 import { useRouter } from "vue-router";
 
 // 导入开发者模式设置
-const { devModeEnabled, toggleDevMode } = useDevMode();
+const { devModeEnabled } = useDevMode();
 const router = useRouter();
 
 // 页面跳转函数
@@ -101,63 +101,4 @@ watch(
   </PageNavHolder>
 </template>
 
-<style lang="scss" scoped>
-// 修改后的暗色模式样式
-:deep(.switch-container .switch) {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 20px;
-  visibility: visible !important;
-
-  input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--el-switch-off-color);
-    transition: 0.4s;
-    border-radius: 20px;
-    border: 1px solid var(--el-border-color);
-
-    html.dark & {
-      background-color: var(--el-fill-color-dark);
-      border-color: var(--el-border-color-dark);
-    }
-
-    &::before {
-      position: absolute;
-      content: "";
-      height: 16px;
-      width: 16px;
-      left: 2px;
-      bottom: 1px;
-      background-color: white;
-      transition: 0.4s;
-      border-radius: 50%;
-    }
-  }
-
-  input:checked + .slider {
-    background-color: var(--theme-color);
-    border-color: var(--theme-color);
-
-    html.dark & {
-      background-color: var(--theme-color-dark);
-      border-color: var(--theme-color-dark);
-    }
-
-    &::before {
-      transform: translateX(20px);
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>
