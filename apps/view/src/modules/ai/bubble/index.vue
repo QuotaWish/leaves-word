@@ -132,20 +132,20 @@ async function handleClick() {
 <template>
   <Teleport to="#rootMain" defer>
     <div
-      :class="{ dragging: status.dragging }"
       ref="container"
+      :class="{ dragging: status.dragging }"
       class="AIBubble-Container absolute-layout"
     >
       <div
+        ref="bubble"
         class="AIBubble"
         :style="`--x: ${x}px; --y: ${y}px`"
-        @click="handleClick"
         :class="{
           left: status.prefer === 'left',
           right: status.prefer === 'right',
           expand: status.expand,
         }"
-        ref="bubble"
+        @click="handleClick"
       >
         <div class="ball-content"></div>
         <div class="ball-pulse"></div>
@@ -159,7 +159,7 @@ async function handleClick() {
       </div>
 
       <div
-        class="AIBubble-Container-Placeholder z-10 absolute-layout transition-cubic"
+        class="AIBubble-Container-Placeholder transition-cubic absolute-layout z-10"
       >
         <div
           :class="{ active: status.prefer === 'left' }"
