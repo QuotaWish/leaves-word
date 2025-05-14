@@ -65,7 +65,7 @@ export function useCategoryTree(data: Book[]) {
     const rootNodes: BookCategory[] = []
     categoryMap.forEach((category) => {
       const parentId = category.parentId
-      if (parentId === 0 || !categoryMap.has(parentId!)) {
+      if (category.isRoot || parentId === 0 || !categoryMap.has(parentId!)) {
         rootNodes.push(category)
       }
       else {
@@ -85,6 +85,15 @@ export function useCategoryTree(data: Book[]) {
       else if (uncategorizedId !== undefined) {
         categoryMap.get(uncategorizedId)?.books.push(book)
       }
+    })
+
+    // 第四步：排序
+
+    // 先排序roots
+    rootNodes.sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+
+    rootNodes.forEach(item => {
+      item.children.sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
     })
 
     categoryTree.value = rootNodes

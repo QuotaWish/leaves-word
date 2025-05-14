@@ -106,15 +106,28 @@ async function handleRefresh(callback: Function) {
           />
         </template>
         <ul h-full class="DictionarySelectPage-Nav">
-          <li
-            v-for="nav in bookData"
-            :key="nav.id"
-            :class="{ active: nav.id === selectCategory?.id }"
-            text-center
-            @click="handleSelectCategory(nav)"
-          >
-            {{ nav.name }}
-          </li>
+          <template v-for="navTag in bookData" :key="navTag.id">
+            <li
+              :class="{ active: navTag.id === selectCategory?.id }"
+              class="DictionarySelectPage-NavTag"
+              flex
+              items-center
+              gap-1
+              @click="handleSelectCategory(navTag)"
+            >
+              <!-- <div i-carbon-tag /> -->
+              <span>{{ navTag.name }}</span>
+            </li>
+            <li
+              v-for="nav in navTag.children"
+              :key="nav.id"
+              :class="{ active: nav.id === selectCategory?.id }"
+              text-center
+              @click="handleSelectCategory(nav)"
+            >
+              {{ nav.name }}
+            </li>
+          </template>
         </ul>
       </el-skeleton>
     </template>
@@ -163,4 +176,13 @@ async function handleRefresh(callback: Function) {
   </DictionaryHolder>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.DictionarySelectPage-NavTag {
+  z-index: 1;
+  position: sticky;
+
+  top: 0;
+
+  background-color: var(--el-bg-color) !important;
+}
+</style>
