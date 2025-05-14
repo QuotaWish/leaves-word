@@ -2,6 +2,7 @@
 import { floatingBubbleState } from "./index";
 
 const status = reactive({
+  prefer: "left",
   expand: false,
   dragging: false,
 });
@@ -41,8 +42,33 @@ const computedPosition = computed(() => {
   };
 });
 
-const { x, y, style } = useDraggable(bubble, {
-  axis: "y",
+const DURATION = 500;
+async function moveToTarget(
+  targetX: number,
+  initX: number,
+  callback: (x: number) => void,
+) {
+  const step = DURATION / (targetX - initX);
+  console.warn(
+    `from ${initX} to ${targetX} with ${DURATION} and step for ${step}`,
+  );
+  let currentX = initX;
+
+  while (!status.dragging && Math.abs(currentX - targetX) > 5) {
+    currentX += step;
+    callback(currentX);
+
+    if (Math.random() >= 0.5) {
+      await sleep(1);
+    }
+  }
+
+  await sleep(1);
+
+  callback(targetX);
+}
+
+const { x, y } = useDraggable(bubble, {
   initialValue: { x: 0, y: computedPosition.value.y },
   preventDefault: true,
   containerElement: container,
@@ -51,34 +77,45 @@ const { x, y, style } = useDraggable(bubble, {
   },
   onEnd() {
     status.dragging = false;
-  },
-  onMove(position, event) {
+
     const containerEl = container.value!;
 
-    const y = position.y;
+    const width = containerEl.clientWidth;
+
+    moveToTarget(
+      status.prefer === "left" ? 0 : width - 50,
+      x.value,
+      (moveX) => {
+        x.value = moveX;
+      },
+    );
+  },
+  onMove(position) {
+    const containerEl = container.value!;
+
+    const { x, y } = position;
     const height = containerEl.clientHeight;
+    const width = containerEl.clientWidth;
 
-    console.log(y, height);
-
-    if (y < height * 0.2) {
-      position.y = height * 0.2;
-    } else if (Math.abs(height - y) > height * 0.2) {
-      position.y = height * 0.8;
+    if (y < height * 0.1) {
+      position.y = height * 0.1;
+    } else if (Math.abs(height - y) < height * 0.15) {
+      position.y = height * 0.85;
     }
 
-    // 判断 不能超出两侧
+    if (x < 0) {
+      position.x = 0;
+    } else if (x > width - 50) {
+      position.x = width - 50;
+    }
 
-    // const bubbleEl = bubble.value!;
-
-    // const offsetTop = bubbleEl.offsetTop;
-    // const { y } = event;
-    // console.log(event);
-    // console.dir(bubbleEl);
-
-    // // position.y = y - offsetTop;
-
-    // console.log("final y", position.y);
+    status.prefer = x < width / 2 ? "left" : "right";
   },
+});
+
+watchEffect(() => {
+  floatingBubbleState.value.pos.x = x.value;
+  floatingBubbleState.value.pos.y = y.value;
 });
 </script>
 
@@ -113,8 +150,14 @@ const { x, y, style } = useDraggable(bubble, {
       <div
         class="AIBubble-Container-Placeholder z-10 absolute-layout transition-cubic"
       >
-        <div class="AIBubble-Container-Placeholder-Left transition-cubic" />
-        <div class="AIBubble-Container-Placeholder-Right transition-cubic" />
+        <div
+          :class="{ active: status.prefer === 'left' }"
+          class="AIBubble-Container-Placeholder-Left transition-cubic"
+        />
+        <div
+          :class="{ active: status.prefer === 'right' }"
+          class="AIBubble-Container-Placeholder-Right transition-cubic"
+        />
       </div>
     </div>
   </Teleport>
@@ -129,8 +172,25 @@ const { x, y, style } = useDraggable(bubble, {
   // background-color: #00000080;
 }
 
+@keyframes shinning {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 0.85;
+  }
+}
+
 .AIBubble-Container-Placeholder {
   & > div {
+    &.active {
+      opacity: 0.85;
+      animation: shinning 1s infinite;
+      background-color: var(--el-border-color);
+      box-shadow: 0 0 10px 2px var(--el-fill-color-light);
+    }
     position: absolute;
 
     top: 10%;
@@ -138,9 +198,9 @@ const { x, y, style } = useDraggable(bubble, {
     width: 30px;
     height: 80%;
 
-    opacity: 0.75;
+    opacity: 0.5;
     border-radius: 18px;
-    background-color: var(--el-border-color);
+    background-color: var(--el-fill-color);
   }
 
   &-Left {
