@@ -6,7 +6,11 @@ import Core from "~/modules/core/index.vue";
 import FloatingBall from "~/modules/ai/bubble/index.ts";
 import DeveloperConsole from "~/modules/develop/index.vue";
 import Splash from "~/modules/splash/index.vue";
-import { type LeafDictStorage, ModeType } from "~/modules/words";
+import {
+  globalPreference,
+  type LeafDictStorage,
+  ModeType,
+} from "~/modules/words";
 import { modeManager } from "~/modules/words/mode";
 import { ComprehensiveMode } from "~/modules/words/mode/comprehensive";
 import { ReadingMode } from "~/modules/words/mode/reading";
@@ -25,6 +29,7 @@ import ExploreIndex from "./pages/explore/index.vue";
 import PersonalIndex from "./pages/personal/index.vue";
 import { setToastDefaultOptions } from "vant";
 import { useUserStore } from "./composables/store/user-store";
+import { UserConfigSaveEvent } from "./composables/event/config";
 
 modeManager.set(
   ModeType.COMPREHENSIVE,
@@ -90,6 +95,41 @@ const { send: getUserConfig } = useRequest(
   },
 );
 
+watch(
+  () => globalPreference.value,
+  () => {
+    userStore.privateConfig.preference = markRaw(globalPreference.value);
+
+    userStore.saveConfig();
+  },
+  {
+    deep: true,
+  },
+);
+
+const { send: saveUserConfig } = useRequest(
+  () =>
+    Apis.userConfigController.updateCurrentUserConfigUsingPOST({
+      data: {
+        privateConfig: userStore.privateConfig,
+        publicConfig: userStore.publicConfig,
+      },
+    }),
+  {
+    immediate: false,
+  },
+);
+
+eventBus.registerListener(UserConfigSaveEvent, {
+  async handleEvent(event) {
+    console.log(`[UserConfigSaveEvent] ${event.executor}`);
+
+    const config = await saveUserConfig();
+
+    console.log(`[UserConfigSaveEvent] ${config.data}`, config);
+  },
+});
+
 eventBus.registerListener(AuthSuccessEvent, {
   async handleEvent() {
     const res = await refreshUserData();
@@ -101,6 +141,8 @@ eventBus.registerListener(AuthSuccessEvent, {
     const config = await getUserConfig();
 
     userStore.updateConfig(config.data);
+
+    globalPreference.value = userStore.privateConfig.preference;
 
     globalAuthStorage.value.user = res.data;
   },

@@ -2,13 +2,17 @@
  * 基于类的事件系统
  */
 
+type F = abstract new (...args: any) => void
+
 export interface LeafEvent {
   name: string;
 }
 
+type LeafInstanceType<T> = InstanceType<T>
+
 // 事件监听器接口
 export interface EventListener<T extends LeafEvent> {
-  handleEvent: (event: T) => void;
+  handleEvent: (event: LeafInstanceType<T>) => void;
 }
 
 // 事件管理器
@@ -19,7 +23,7 @@ class EventManager {
    * 注册事件监听器
    */
   public registerListener<T extends LeafEvent>(
-    EventClass: LeafEvent,
+    EventClass: T,
     listener: EventListener<T>,
   ): void {
     const eventName = EventClass.name;
