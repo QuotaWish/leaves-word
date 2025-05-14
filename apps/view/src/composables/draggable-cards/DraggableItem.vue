@@ -3,6 +3,8 @@ const props = defineProps<{
   active: boolean;
   order: number;
   topOrder: number;
+  hasNext: boolean;
+  display: boolean;
 }>();
 
 const emits = defineEmits(["next"]);
@@ -37,8 +39,9 @@ const { x, y } = useDraggable(dragger, {
      * 如果没有超过界限，回归
      */
     if (
-      Math.abs(x.value - options.centerX) < DRAG_RANGE &&
-      Math.abs(y.value - options.centerY) < DRAG_RANGE
+      !props.hasNext ||
+      (Math.abs(x.value - options.centerX) < DRAG_RANGE &&
+        Math.abs(y.value - options.centerY) < DRAG_RANGE)
     ) {
       x.value = options.centerX;
       y.value = options.centerY;
@@ -83,7 +86,7 @@ onMounted(() => {
 });
 
 const style = computed(() => {
-  if (options.hide) {
+  if (options.hide || !props.display) {
     return `transition: 0.25s ease-out; opacity: 0;transform: scale(0.85);--item-x: ${x.value}px;--item-y: ${y.value}px`;
   }
 
