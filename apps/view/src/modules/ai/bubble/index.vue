@@ -21,6 +21,8 @@ function initializePosition() {
     y: startY,
     layout: "right",
   };
+
+  floatingBubbleState.value.init = true;
 }
 
 onMounted(() => {
@@ -117,6 +119,14 @@ watchEffect(() => {
   floatingBubbleState.value.pos.x = x.value;
   floatingBubbleState.value.pos.y = y.value;
 });
+
+async function handleClick() {
+  status.expand = true;
+
+  await sleep(3000);
+
+  status.expand = false;
+}
 </script>
 
 <template>
@@ -129,14 +139,15 @@ watchEffect(() => {
       <div
         class="AIBubble"
         :style="`--x: ${x}px; --y: ${y}px`"
+        @click="handleClick"
         :class="{
+          left: status.prefer === 'left',
+          right: status.prefer === 'right',
           expand: status.expand,
         }"
         ref="bubble"
       >
-        <div class="ball-content">
-          <i class="i-mdi-robot text-xl"></i>
-        </div>
+        <div class="ball-content"></div>
         <div class="ball-pulse"></div>
         <div class="ball-ring"></div>
         <!-- <div class="glow-overlay" v-if="isGlowing"></div> -->
@@ -164,6 +175,14 @@ watchEffect(() => {
 </template>
 
 <style lang="scss" scoped>
+.AIBubble.left {
+  transform: translateX(-50%);
+}
+
+.AIBubble.right {
+  transform: translateX(50%);
+}
+
 .AIBubble-Container {
   z-index: 100;
 
@@ -221,7 +240,7 @@ watchEffect(() => {
 }
 
 .AIBubble {
-  position: absolute;
+  position: fixed;
 
   top: var(--y);
   left: var(--x);
@@ -249,6 +268,7 @@ watchEffect(() => {
     border-radius 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   overflow: hidden;
 
+  opacity: 0.25;
   pointer-events: all;
 
   &::before {
@@ -267,18 +287,22 @@ watchEffect(() => {
     z-index: 1;
   }
 
-  &:hover {
+  &:hover,
+  &.expand {
+    opacity: 1;
     box-shadow:
       0 4px 20px rgba(79, 86, 255, 0.6),
       0 0 40px rgba(255, 73, 128, 0.4);
     transform: scale(1.05);
+
+    .ball-pulse,
+    .ball-ring {
+      animation-play-state: running;
+    }
+
+    animation: glow-pulse 1s ease-out infinite;
   }
 
-  &:active {
-    transform: scale(0.95);
-  }
-
-  // 拖动状态样式
   &.dragging {
     transition: none !important; // 拖动时完全禁用所有过渡效果
 
@@ -291,86 +315,6 @@ watchEffect(() => {
 
     .ball-content {
       transform: scale(0.9);
-    }
-  }
-
-  // 左侧贴边样式
-  &.stick-left {
-    left: 0 !important;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border-top-right-radius: 50%;
-    border-bottom-right-radius: 50%;
-
-    &.collapsed {
-      transform: translateX(-60%);
-
-      &:hover:not(.dragging) {
-        transform: translateX(-55%) scale(1.05);
-      }
-
-      &:active:not(.dragging) {
-        transform: translateX(-55%) scale(0.95);
-      }
-    }
-  }
-
-  // 右侧贴边样式
-  &.stick-right {
-    right: 0 !important;
-    left: auto !important;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-top-left-radius: 50%;
-    border-bottom-left-radius: 50%;
-
-    &.collapsed {
-      transform: translateX(60%);
-
-      &:hover:not(.dragging) {
-        transform: translateX(55%) scale(1.05);
-      }
-
-      &:active:not(.dragging) {
-        transform: translateX(55%) scale(0.95);
-      }
-    }
-  }
-
-  // 收缩状态样式
-  &.collapsed {
-    width: 30px;
-    height: 30px;
-    opacity: 0.7;
-
-    .ball-content {
-      transform: scale(0.7);
-    }
-
-    .ball-pulse,
-    .ball-ring {
-      animation-play-state: paused;
-    }
-
-    &:hover:not(.dragging) {
-      opacity: 0.9;
-    }
-  }
-
-  // 展开状态样式
-  &.expanded {
-    width: 50px;
-    height: 50px;
-    opacity: 1;
-    transform: translateX(0);
-
-    .ball-content {
-      transform: scale(1);
-    }
-
-    .ball-pulse,
-    .ball-ring {
-      animation-play-state: running;
     }
   }
 
@@ -412,11 +356,6 @@ watchEffect(() => {
     box-sizing: border-box;
     z-index: 0;
     animation: rotate 10s linear infinite;
-  }
-
-  // 炫光效果
-  &.glow-effect {
-    animation: glow-pulse 1s ease-out;
   }
 
   // 炫光叠加层
