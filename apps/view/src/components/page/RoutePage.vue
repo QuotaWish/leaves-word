@@ -9,6 +9,7 @@ withDefaults(
     adapt?: boolean;
     loading?: boolean;
     loadingMask?: boolean;
+    innerClass?: string;
   }>(),
   {
     adapt: true,
@@ -55,7 +56,10 @@ onBeforeUnmount(() => {
     <div class="RoutePage-Header">
       <slot name="header" />
     </div>
-    <div class="RoutePage-Main relative w-full flex-1 overflow-hidden">
+    <div
+      :class="innerClass"
+      class="RoutePage-Main relative w-full flex-1 overflow-hidden"
+    >
       <slot />
 
       <div

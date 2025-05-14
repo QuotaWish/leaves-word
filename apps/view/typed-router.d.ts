@@ -65,6 +65,7 @@ declare module 'vue-router/auto-routes' {
     '/search': RouteRecordInfo<'/search', '/search', Record<never, never>, Record<never, never>>,
     '/test/book': RouteRecordInfo<'/test/book', '/test/book', Record<never, never>, Record<never, never>>,
     '/test/chat': RouteRecordInfo<'/test/chat', '/test/chat', Record<never, never>, Record<never, never>>,
+    '/test/slide-cards': RouteRecordInfo<'/test/slide-cards', '/test/slide-cards', Record<never, never>, Record<never, never>>,
     '/words/': RouteRecordInfo<'/words/', '/words', Record<never, never>, Record<never, never>>,
     '/words/dict-select-page': RouteRecordInfo<'/words/dict-select-page', '/words/dict-select-page', Record<never, never>, Record<never, never>>,
     '/words/dictation': RouteRecordInfo<'/words/dictation', '/words/dictation', Record<never, never>, Record<never, never>>,
