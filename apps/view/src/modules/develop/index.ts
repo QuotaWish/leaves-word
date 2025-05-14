@@ -1,5 +1,5 @@
 import { useStorage } from '@vueuse/core'
-import DeveloperFloatingBall from './index.vue'
+import DeveloperConsole from './index.vue'
 
 // 提供访问开发者模式设置的工具函数
 export function useDevMode() {
@@ -22,5 +22,5 @@ export function useDevMode() {
   }
 }
 
-export { DeveloperFloatingBall }
-export default DeveloperFloatingBall
+export { DeveloperConsole }
+export default DeveloperConsole

@@ -3,7 +3,8 @@ import { useRequest } from "alova/client";
 import { toast, Toaster } from "vue-sonner";
 import Auth from "~/modules/auth/index.vue";
 import Core from "~/modules/core/index.vue";
-import DeveloperFloatingBall from "~/modules/develop/index.vue";
+import FloatingBall from "~/modules/ai/bubble/index.ts";
+import DeveloperConsole from "~/modules/develop/index.vue";
 import Splash from "~/modules/splash/index.vue";
 import { type LeafDictStorage, ModeType } from "~/modules/words";
 import { modeManager } from "~/modules/words/mode";
@@ -93,7 +94,9 @@ eventBus.registerListener(AuthSuccessEvent, {
 });
 
 router.beforeEach(async (to, from) => {
-  if (!from.meta?.transition) {
+  const metaTransition = from.meta?.transition;
+
+  if (!metaTransition || metaTransition === "nav") {
     return;
   }
 
@@ -191,13 +194,10 @@ setToastDefaultOptions({
 
         <Auth />
         <Core />
-        <DeveloperFloatingBall />
+        <FloatingBall />
+        <DeveloperConsole />
         <Toaster :theme="theme" richcolors mt-8 position="top-center" />
         <PreloadPage :components="[PersonalIndex, ExploreIndex]" />
-
-        <!-- <div class="absolute-layout bottom-0 left-0 w-full z-1000 h-10 bg-red-500">
-          {{ baseRouteStore.excludeNames }}
-        </div> -->
       </template>
     </Splash>
   </el-config-provider>

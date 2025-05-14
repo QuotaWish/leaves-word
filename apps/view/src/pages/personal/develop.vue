@@ -1,22 +1,28 @@
 <script setup lang="ts">
-import { formatDate } from '@vueuse/core'
-import PageNavHolder from '~/components/page/holder/PageNavHolder.vue'
-import { useDevMode } from '~/modules/develop'
-import { useGlobalSplashState, ScreenMode } from '~/modules/splash'
+import { formatDate } from "@vueuse/core";
+import PageNavHolder from "~/components/page/holder/PageNavHolder.vue";
+import { useDevMode } from "~/modules/develop";
+import { useGlobalSplashState, ScreenMode } from "~/modules/splash";
 
 // 导入开发者模式设置
-const { devModeEnabled, toggleDevMode } = useDevMode()
-const globalSplashState = useGlobalSplashState()
-const host = ref('')
+const { devModeEnabled, toggleDevMode } = useDevMode();
+const globalSplashState = useGlobalSplashState();
+const host = ref("");
 
 onMounted(() => {
-  host.value = window.location.href
-})
+  host.value = window.location.href;
+});
 </script>
 
 <template>
-  <PageNavHolder :content-padding="false" class="DevelopPage" title="开发者模式">
-    <div class="DevelopPage-Container h-full p-4 overflow-y-scroll flex flex-col gap-3">
+  <PageNavHolder
+    :content-padding="false"
+    class="DevelopPage"
+    title="开发者模式"
+  >
+    <div
+      class="DevelopPage-Container h-full p-4 overflow-y-scroll flex flex-col gap-3"
+    >
       <!-- 开发工具 -->
       <div class="DevelopPage-Section">
         <LineArrow>
@@ -27,26 +33,24 @@ onMounted(() => {
         </LineArrow>
         <div class="DevelopPage-SectionItem">
           <div class="DevelopPage-SectionItem-content">
-            <div class="DevelopPage-SectionItem-title">
-              开发者模式状态
-            </div>
+            <div class="DevelopPage-SectionItem-title">开发者模式状态</div>
             <div class="DevelopPage-SectionItem-desc">
               控制开发者模式的启用状态
             </div>
           </div>
           <label class="switch">
-            <input type="checkbox" :checked="devModeEnabled" @change="toggleDevMode">
+            <input
+              type="checkbox"
+              :checked="devModeEnabled"
+              @change="toggleDevMode"
+            />
             <span class="slider" />
           </label>
         </div>
         <div class="DevelopPage-SectionItem">
           <div class="DevelopPage-SectionItem-content">
-            <div class="DevelopPage-SectionItem-title">
-              日志查看器
-            </div>
-            <div class="DevelopPage-SectionItem-desc">
-              查看应用运行日志
-            </div>
+            <div class="DevelopPage-SectionItem-title">日志查看器</div>
+            <div class="DevelopPage-SectionItem-desc">查看应用运行日志</div>
           </div>
           <span class="arrow" />
         </div>
@@ -62,9 +66,7 @@ onMounted(() => {
         </LineArrow>
         <div class="DevelopPage-SectionItem">
           <div class="DevelopPage-SectionItem-content">
-            <div class="DevelopPage-SectionItem-title">
-              Host
-            </div>
+            <div class="DevelopPage-SectionItem-title">Host</div>
             <div class="DevelopPage-SectionItem-desc">
               {{ host }}
             </div>
@@ -73,17 +75,25 @@ onMounted(() => {
         </div>
         <div class="DevelopPage-SectionItem">
           <div class="DevelopPage-SectionItem-content">
-            <div class="DevelopPage-SectionItem-title">
-              Mode
-            </div>
+            <div class="DevelopPage-SectionItem-title">Mode</div>
             <div class="DevelopPage-SectionItem-desc">
-              <template v-if="globalSplashState.screenMode.value === ScreenMode.MOBILE">
+              <template
+                v-if="globalSplashState.screenMode.value === ScreenMode.MOBILE"
+              >
                 MOBILE
               </template>
-              <template v-else-if="globalSplashState.screenMode.value === ScreenMode.WRAPPED">
+              <template
+                v-else-if="
+                  globalSplashState.screenMode.value === ScreenMode.WRAPPED
+                "
+              >
                 WRAPPED
               </template>
-              <template v-else-if="globalSplashState.screenMode.value === ScreenMode.BUILDER">
+              <template
+                v-else-if="
+                  globalSplashState.screenMode.value === ScreenMode.BUILDER
+                "
+              >
                 Builder
               </template>
             </div>
@@ -92,9 +102,7 @@ onMounted(() => {
         </div>
         <div class="DevelopPage-SectionItem">
           <div class="DevelopPage-SectionItem-content">
-            <div class="DevelopPage-SectionItem-title">
-              BuildTime
-            </div>
+            <div class="DevelopPage-SectionItem-title">BuildTime</div>
             <div class="DevelopPage-SectionItem-desc">
               <VersionBar detailed />
             </div>
@@ -113,23 +121,15 @@ onMounted(() => {
         </LineArrow>
         <div class="DevelopPage-SectionItem">
           <div class="DevelopPage-SectionItem-content">
-            <div class="DevelopPage-SectionItem-title">
-              网络监控
-            </div>
-            <div class="DevelopPage-SectionItem-desc">
-              监控网络请求和响应
-            </div>
+            <div class="DevelopPage-SectionItem-title">网络监控</div>
+            <div class="DevelopPage-SectionItem-desc">监控网络请求和响应</div>
           </div>
           <span class="arrow" />
         </div>
         <div class="DevelopPage-SectionItem">
           <div class="DevelopPage-SectionItem-content">
-            <div class="DevelopPage-SectionItem-title">
-              性能分析
-            </div>
-            <div class="DevelopPage-SectionItem-desc">
-              分析应用性能瓶颈
-            </div>
+            <div class="DevelopPage-SectionItem-title">性能分析</div>
+            <div class="DevelopPage-SectionItem-desc">分析应用性能瓶颈</div>
           </div>
           <span class="arrow" />
         </div>
@@ -145,9 +145,7 @@ onMounted(() => {
         </LineArrow>
         <div class="DevelopPage-SectionItem">
           <div class="DevelopPage-SectionItem-content">
-            <div class="DevelopPage-SectionItem-title">
-              本地存储查看
-            </div>
+            <div class="DevelopPage-SectionItem-title">本地存储查看</div>
             <div class="DevelopPage-SectionItem-desc">
               查看和修改本地存储数据
             </div>
@@ -156,12 +154,8 @@ onMounted(() => {
         </div>
         <div class="DevelopPage-SectionItem">
           <div class="DevelopPage-SectionItem-content">
-            <div class="DevelopPage-SectionItem-title">
-              清除应用缓存
-            </div>
-            <div class="DevelopPage-SectionItem-desc">
-              重置应用数据和缓存
-            </div>
+            <div class="DevelopPage-SectionItem-title">清除应用缓存</div>
+            <div class="DevelopPage-SectionItem-desc">重置应用数据和缓存</div>
           </div>
           <span class="arrow" />
         </div>
@@ -177,23 +171,15 @@ onMounted(() => {
         </LineArrow>
         <div class="DevelopPage-SectionItem">
           <div class="DevelopPage-SectionItem-content">
-            <div class="DevelopPage-SectionItem-title">
-              UI测试
-            </div>
-            <div class="DevelopPage-SectionItem-desc">
-              测试界面组件
-            </div>
+            <div class="DevelopPage-SectionItem-title">UI测试</div>
+            <div class="DevelopPage-SectionItem-desc">测试界面组件</div>
           </div>
           <span class="arrow" />
         </div>
         <div class="DevelopPage-SectionItem">
           <div class="DevelopPage-SectionItem-content">
-            <div class="DevelopPage-SectionItem-title">
-              API测试
-            </div>
-            <div class="DevelopPage-SectionItem-desc">
-              测试后端接口
-            </div>
+            <div class="DevelopPage-SectionItem-title">API测试</div>
+            <div class="DevelopPage-SectionItem-desc">测试后端接口</div>
           </div>
           <span class="arrow" />
         </div>
@@ -279,7 +265,7 @@ onMounted(() => {
 
 .slider:before {
   position: absolute;
-  content: '';
+  content: "";
   height: 26px;
   width: 26px;
   left: 2px;
@@ -290,18 +276,18 @@ onMounted(() => {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-input:checked+.slider {
+input:checked + .slider {
   background-color: var(--theme-color);
   transition: background-color 0.3s ease;
 }
 
-input:checked+.slider:before {
+input:checked + .slider:before {
   transform: translateX(20px);
   transition: transform 0.3s ease;
 }
 
 .arrow::after {
-  content: '>';
+  content: ">";
   color: #999;
   font-size: 14px;
 }
