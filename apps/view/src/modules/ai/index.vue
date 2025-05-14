@@ -317,10 +317,9 @@ onMounted(() => {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #f5f7fa;
+  background-color: var(--el-fill-color);
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
@@ -331,16 +330,16 @@ onMounted(() => {
   overflow-y: auto;
   background-image: linear-gradient(
     to bottom,
-    rgba(240, 244, 248, 0.8),
-    rgba(255, 255, 255, 0.8)
+    var(--el-fill-color),
+    var(--el-fill-color-light)
   );
 }
 
 .chat-input {
   padding: 1rem 1.5rem;
   width: 100%;
-  background-color: #ffffff;
-  border-top: 1px solid #e4e7ed;
+  background-color: var(--el-bg-color);
+  border-top: 1px solid var(--el-border-color);
   position: absolute;
   bottom: 0;
   left: 0;

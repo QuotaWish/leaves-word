@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import BubbleAIHolder from "./BubbleAIHolder.vue";
 import { floatingBubbleState } from "./index";
 
 const status = reactive({
   prefer: "left",
   expand: false,
+  visible: false,
   dragging: false,
 });
 
@@ -75,10 +77,13 @@ const { x, y } = useDraggable(bubble, {
   preventDefault: true,
   containerElement: container,
   onStart() {
+    if (status.expand) return false;
     status.dragging = true;
+    status.visible = false;
   },
   onEnd() {
     status.dragging = false;
+    status.visible = false;
 
     const containerEl = container.value!;
 
@@ -121,6 +126,17 @@ watchEffect(() => {
 });
 
 async function handleClick() {
+  if (status.visible) {
+    status.visible = false;
+    status.expand = true;
+    return;
+  }
+
+  if (status.expand) {
+    status.visible = true;
+    return;
+  }
+
   status.expand = true;
 
   await sleep(3000);
@@ -134,12 +150,12 @@ async function handleClick() {
     <div
       ref="container"
       :class="{ dragging: status.dragging }"
+      :style="`--x: ${x}px; --y: ${y}px`"
       class="AIBubble-Container absolute-layout"
     >
       <div
         ref="bubble"
         class="AIBubble"
-        :style="`--x: ${x}px; --y: ${y}px`"
         :class="{
           left: status.prefer === 'left',
           right: status.prefer === 'right',
@@ -170,6 +186,8 @@ async function handleClick() {
           class="AIBubble-Container-Placeholder-Right transition-cubic"
         />
       </div>
+
+      <BubbleAIHolder :expand="status.visible" />
     </div>
   </Teleport>
 </template>
