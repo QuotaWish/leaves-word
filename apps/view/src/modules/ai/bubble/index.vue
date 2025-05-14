@@ -85,6 +85,10 @@ const { x, y } = useDraggable(bubble, {
     status.dragging = false;
     status.visible = false;
 
+    setTimeout(() => {
+      status.expand = false;
+    }, 300);
+
     const containerEl = container.value!;
 
     const width = containerEl.clientWidth;
