@@ -122,6 +122,7 @@ const { active, activeNav, navs } = useFooterNav();
   flex: 1 0 64px;
   // border-top: 1px solid var(--el-border-color);
 
+  --fake-color: var(--el-fill-color-darker);
   // --fake-opacity: 0.85;
   // backdrop-filter: blur(18px) saturate(180%) brightness(120%);
 }

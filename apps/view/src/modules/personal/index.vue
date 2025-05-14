@@ -9,11 +9,14 @@ import PersonalLayout from "./PersonalLayout.vue";
 const router = useRouter();
 const { devModeEnabled, toggleDevMode } = useDevMode();
 
-// 添加用户名计算属性
 const userName = computed(
   () =>
     globalAuthStorage.value?.user?.userName ||
     `#${globalAuthStorage.value?.user?.id}`,
+);
+
+const userProfile = computed(
+  () => globalAuthStorage.value?.user?.userProfile || "英语学习，随时随地",
 );
 
 const clickCount = ref(0);
@@ -110,7 +113,7 @@ const nextWeekPrediction = ref({
               <p font-size-5 font-bold class="name">
                 {{ userName }}
               </p>
-              <p class="indent-[2px]" font-size-4 op-60>英语学习，随时随地</p>
+              <p class="indent-[2px]" font-size-4 op-60>{{ userProfile }}</p>
             </div>
           </div>
 

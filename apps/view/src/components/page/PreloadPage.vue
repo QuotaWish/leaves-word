@@ -15,13 +15,13 @@ onMounted(async () => {
 
     component.value = comp;
 
-    await sleep(16.67);
+    await sleep(1667);
   }
 });
 </script>
 
 <template>
-  <div class="PreloadPage display-none">
+  <div class="PreloadPage hidden">
     <component :is="component" />
   </div>
 </template>
