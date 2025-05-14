@@ -27,6 +27,8 @@ declare module 'vue' {
     DictionaryBookDisplay: typeof import('./src/components/display/DictionaryBookDisplay.vue')['default']
     DictionaryWord: typeof import('./src/components/words/dictionary/DictionaryWord.vue')['default']
     DictSelector: typeof import('./src/components/words/DictSelector.vue')['default']
+    DraggableHolder: typeof import('./src/components/draggable-cards/DraggableHolder.vue')['default']
+    DraggableItem: typeof import('./src/components/draggable-cards/DraggableItem.vue')['default']
     DrawerPage: typeof import('./src/components/page/DrawerPage.vue')['default']
     DrawerStateButton: typeof import('./src/components/button/DrawerStateButton.vue')['default']
     Etymology: typeof import('./src/components/words/mode/etymology/index.vue')['default']

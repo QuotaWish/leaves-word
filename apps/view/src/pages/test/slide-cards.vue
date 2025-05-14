@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DraggableHolder from "~/composables/draggable-cards/DraggableHolder.vue";
+import DraggableHolder from "~/components/draggable-cards/DraggableHolder.vue";
 
 const cards = reactive([
   {
