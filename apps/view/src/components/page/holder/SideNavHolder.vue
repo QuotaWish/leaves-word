@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ISideNavHolderEmits, ISideNavHolderProps } from "../types";
 
-const props = defineProps<ISideNavHolderProps>();
+const props = withDefaults(defineProps<ISideNavHolderProps>(), { adapt: true });
 
 // const emits = defineEmits<ISideNavHolderEmits>();
 
@@ -11,11 +11,7 @@ console.log(ins);
 </script>
 
 <template>
-  <PageNavHolder
-    v-bind="{ ...props }"
-    :contentPadding="false"
-    class="SideNavHolder"
-  >
+  <PageNavHolder v-bind="props" :contentPadding="false" class="SideNavHolder">
     <template #topHeader>
       <slot name="topHeader" />
     </template>

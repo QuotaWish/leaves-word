@@ -3,6 +3,7 @@ import HeadNav from "../HeadNav.vue";
 import { IPageNavHolderEmits, IPageNavHolderProps } from "../types";
 
 const props = withDefaults(defineProps<IPageNavHolderProps>(), {
+  adapt: true,
   contentPadding: true,
 });
 
@@ -30,7 +31,7 @@ function handleScroll() {
 <template>
   <RoutePage
     :class="{ empty, immersive: immersiveOptions.enable }"
-    v-bind="{ ...props }"
+    v-bind="props"
     class="PageNavHolder"
   >
     <template #header>

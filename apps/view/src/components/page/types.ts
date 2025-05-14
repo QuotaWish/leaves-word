@@ -25,7 +25,6 @@ export const DrawerControl: InjectionKey<{
 
 export interface IWIthPageProps {
   /**
-   * @deprecated non-use
    * Force enable adapt mode to simulate BUILDER display mode.
    */
   adapt?: boolean;

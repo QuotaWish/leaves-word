@@ -52,7 +52,7 @@ async function handleRefresh() {
 <template>
   <!-- :class="{ visible }" -->
   <WithPage
-    :adapt="adapt"
+    v-bind="props"
     :class="{ pageLoading: loading, loadingMask }"
     class="RoutePage transition-cubic absolute-layout flex flex-col"
   >
