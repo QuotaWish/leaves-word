@@ -1,12 +1,9 @@
 <script setup lang="ts">
-withDefaults(
-  defineProps<{
-    adapt?: boolean;
-  }>(),
-  {
-    adapt: true,
-  },
-);
+import { IWIthPageProps } from "./types";
+
+withDefaults(defineProps<IWIthPageProps>(), {
+  adapt: true,
+});
 </script>
 
 <template>

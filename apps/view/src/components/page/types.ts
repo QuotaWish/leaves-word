@@ -1,3 +1,4 @@
+import { deprecate } from 'util';
 import { InjectionKey } from "vue";
 
 export enum DrawerState {
@@ -21,3 +22,24 @@ export const DrawerControl: InjectionKey<{
   hide: () => void
   show: () => void
 }> = Symbol('INNER_DRAWER_CONTROL')
+
+export interface IWIthPageProps {
+  /**
+   * @deprecated non-use
+   * Force enable adapt mode to simulate BUILDER display mode.
+   */
+  adapt?: boolean;
+}
+
+export interface IRoutePageProps extends IWIthPageProps {
+  loading?: boolean;
+  loadingMask?: boolean;
+  innerClass?: string;
+  refreshing?: boolean;
+  enablePullRefresh?: boolean;
+}
+
+export interface IRoutePageEmits {
+  (e: 'refresh'): void
+  (e: 'update:refreshing', value: boolean): void
+}

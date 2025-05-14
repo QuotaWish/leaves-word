@@ -1,33 +1,21 @@
 <script setup lang="ts">
+import { PullRefresh } from "vant";
 import {
   UniEventAtBackButton,
   uniEventBus,
 } from "~/composables/adapter/uniapp";
+import { IRoutePageEmits, IRoutePageProps } from "./types";
 
-withDefaults(
-  defineProps<{
-    adapt?: boolean;
-    loading?: boolean;
-    loadingMask?: boolean;
-    innerClass?: string;
-  }>(),
-  {
-    adapt: true,
-    loading: false,
-  },
-);
+const props = withDefaults(defineProps<IRoutePageProps>(), {
+  adapt: true,
+  loading: false,
+  enablePullRefresh: false,
+});
 
-// const visible = ref(!false)
+const emits = defineEmits<IRoutePageEmits>();
 
-// onActivated(() => {
-//   nextTick(() => {
-//     visible.value = true
-//   })
-// })
+const refreshingModel = useVModel(props, "refreshing", emits);
 
-// onDeactivated(() => {
-//   visible.value = false
-// })
 const router = useRouter();
 function handleBackButton(event: any) {
   if (event !== UniEventAtBackButton) return;
@@ -42,6 +30,14 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  uniEventBus.off(handleBackButton);
+});
+
+onDeactivated(() => {
+  uniEventBus.off(handleBackButton);
+});
+
+onUnmounted(() => {
   uniEventBus.off(handleBackButton);
 });
 </script>
@@ -60,7 +56,14 @@ onBeforeUnmount(() => {
       :class="innerClass"
       class="RoutePage-Main relative w-full flex-1 overflow-hidden"
     >
-      <slot />
+      <PullRefresh
+        :disabled="!enablePullRefresh"
+        h-full
+        @refresh="emits('refresh')"
+        v-model="refreshingModel"
+      >
+        <slot />
+      </PullRefresh>
 
       <div
         class="transition-cubic fake-background RoutePage-Loading absolute-layout z-1 h-full w-full flex flex-col items-center justify-center gap-4 p-4"
