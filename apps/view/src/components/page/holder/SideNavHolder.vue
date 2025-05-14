@@ -36,7 +36,7 @@ console.log(ins);
       <div class="SideNavHolder-Content w-full flex flex-1 overflow-hidden">
         <div
           v-if="ins?.slots.nav"
-          class="SideNavHolder-Nav z-1 w-[80px] h-full overflow-scroll flex-shrink-0"
+          class="SideNavHolder-Nav z-1 w-[80px] h-full overflow-x-hidden overflow-y-scroll flex-shrink-0"
         >
           <slot name="nav" />
         </div>

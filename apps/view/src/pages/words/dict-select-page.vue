@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // import WordSelector from '@/components/words/WordSelector.vue'
 import { useDebounceFn } from "@vueuse/core";
-import { useCategoryTree } from "~/components/display/dictionary";
+import { Book, useCategoryTree } from "~/components/display/dictionary";
 import DictionaryHolder from "~/components/display/dictionary/DictionaryHolder.vue";
 // import BookItem from './BookItem.vue'
 import { globalPreference } from "~/modules/words/core/feat/preference";
@@ -28,6 +28,7 @@ const route = useRoute();
 const router = useRouter();
 const bookData = ref<DisplayCategory[]>([]);
 const selectCategory = ref<DisplayCategory>();
+const dictMap = ref(new Map<number, Book>());
 
 const type = computed(() => route.query.type);
 
@@ -38,12 +39,36 @@ const { loading, send, onSuccess } = useRequest(() =>
 onSuccess((res) => {
   const result = res.data.data || [];
 
-  bookData.value = useCategoryTree(result).value;
+  const { categoryTree, dictionaryMap } = useCategoryTree(result);
 
-  if (!selectCategory.value) {
-    selectCategory.value = bookData.value[0];
-  }
+  bookData.value = categoryTree.value;
+  dictMap.value = dictionaryMap.value;
+
+  nextTick(indexNav);
 });
+
+function indexNav() {
+  const targetDict = dictMap.value.get(+(globalPreference.value.dict.id || 0));
+  const firstCategory = targetDict?.categoryList?.[0];
+  if (!targetDict || !firstCategory) {
+    selectCategory.value = bookData.value[0];
+    return;
+  }
+
+  const category = bookData.value.find((item) => item.id === firstCategory.id);
+
+  selectCategory.value = category;
+
+  const targetId = `nav-${selectCategory.value?.id}`;
+  const target = document.getElementById(targetId);
+
+  if (target) {
+    target.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
+  }
+}
 
 const searchQuery = ref("");
 
@@ -113,6 +138,7 @@ async function handleRefresh(callback: Function) {
               flex
               items-center
               gap-1
+              :id="`nav-${navTag.id!}`"
               @click="handleSelectCategory(navTag)"
             >
               <!-- <div i-carbon-tag /> -->
@@ -121,6 +147,7 @@ async function handleRefresh(callback: Function) {
             <li
               v-for="nav in navTag.children"
               :key="nav.id"
+              :id="`nav-${nav.id!}`"
               :class="{ active: nav.id === selectCategory?.id }"
               text-center
               @click="handleSelectCategory(nav)"

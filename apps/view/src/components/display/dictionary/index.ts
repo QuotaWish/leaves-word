@@ -10,16 +10,19 @@ export interface BookCategory extends Category {
 export type Book = EnglishDictionaryWithCategoryVO
 export function useCategoryTree(data: Book[]) {
   const categoryTree = ref<BookCategory[]>([])
+  const dictionaryMap = ref(new Map<number, Book>())
 
   function buildCategorySubTree(newData: Book[]) {
     const categoryMap = new Map<number, BookCategory>()
     let uncategorizedId: number | undefined
 
-    console.log(categoryMap, newData)
+    dictionaryMap.value.clear()
 
     // 第一步：收集所有唯一分类，并初始化树节点
     const uncategorizedBooks: Book[] = []
     newData.forEach((book) => {
+      dictionaryMap.value.set(+book.id!, book)
+
       if (book.categoryList?.length) {
         book.categoryList.forEach((category) => {
           const categoryId = category.id
@@ -107,5 +110,5 @@ export function useCategoryTree(data: Book[]) {
     { immediate: true, deep: true },
   )
 
-  return categoryTree
+  return { categoryTree, dictionaryMap }
 }
