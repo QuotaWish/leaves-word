@@ -19,11 +19,12 @@ import { initApi } from "./composables/api";
 import { useLeafEventBus } from "./composables/event";
 import { AuthSuccessEvent } from "./composables/event/auth";
 import { ToastEvent } from "./composables/event/toast-event";
-import { useBaseRouteStore } from "./composables/store/useRouteStore";
+import { useBaseRouteStore } from "./composables/store/route-store";
 import { $logout, globalAuthStorage, initAuthModule } from "./modules/auth";
 import ExploreIndex from "./pages/explore/index.vue";
 import PersonalIndex from "./pages/personal/index.vue";
 import { setToastDefaultOptions } from "vant";
+import { useUserStore } from "./composables/store/user-store";
 
 modeManager.set(
   ModeType.COMPREHENSIVE,
@@ -81,6 +82,14 @@ const { send: refreshUserData } = useRequest(
   },
 );
 
+const userStore = useUserStore();
+const { send: getUserConfig } = useRequest(
+  () => Apis.userConfigController.getCurrentUserConfigUsingGET(),
+  {
+    immediate: false,
+  },
+);
+
 eventBus.registerListener(AuthSuccessEvent, {
   async handleEvent() {
     const res = await refreshUserData();
@@ -88,6 +97,10 @@ eventBus.registerListener(AuthSuccessEvent, {
       $logout();
       return;
     }
+
+    const config = await getUserConfig();
+
+    userStore.updateConfig(config.data);
 
     globalAuthStorage.value.user = res.data;
   },
@@ -120,50 +133,6 @@ router.beforeEach(async (to, from) => {
     type: "remove",
     value: toComponentName!,
   });
-
-  // setTimeout(() => {
-  //   baseRouteStore.updateExcludeRoutes({
-  //     type: "add",
-  //     value: toComponentName,
-  //   });
-
-  //   console.log(baseRouteStore.excludeNames);
-  // }, 300);
-
-  // const toDepth = routes.findIndex((v) => v.path === to.path);
-  // const fromDepth = routes.findIndex((v) => v.path === from.path);
-  // if (toDepth > fromDepth) {
-  //   // 前进
-  //   console.log("enter ", to.path, "leave", from.path);
-
-  //   if (to.matched?.length) {
-  //     const filterMatched = to.matched.filter((item) => item.components);
-  //     const toComponentName = filterMatched?.[0]?.components?.default.name;
-  //     if (toComponentName) {
-  //       setTimeout(() => {
-  //         baseRouteStore.updateExcludeRoutes({
-  //           type: "add",
-  //           value: toComponentName,
-  //         });
-
-  //         console.log(baseRouteStore.excludeNames);
-  //       }, 500);
-  //     }
-  //   }
-  // } else {
-  //   if (from.matched?.length) {
-  //     // 后退
-  //     console.log("leave ", from.path);
-  //     const filterMatched = from.matched.filter((item) => item.components);
-  //     const fromComponentName = filterMatched?.[0]?.components?.default.name;
-  //     if (fromComponentName) {
-  //       baseRouteStore.updateExcludeRoutes({
-  //         type: "add",
-  //         value: fromComponentName,
-  //       });
-  //     }
-  //   }
-  // }
 
   return true;
 });
