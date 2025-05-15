@@ -11,7 +11,6 @@ interface TransitionElement extends HTMLElement {
 const route = useRoute();
 
 // 在元素被插入到 DOM 之前被调用
-// 用这个来设置元素的 "enter-from" 状态
 function onBeforeEnter(tempEl: Element) {
   const el = tempEl as TransitionElement;
   const { fullPath, meta } = route;
@@ -44,6 +43,7 @@ function onBeforeEnter(tempEl: Element) {
     });
   } else {
     Object.assign(el.style, {
+      zIndex: "10",
       transition: "none !important",
       transform: "translateX(120%)",
       borderRadius: "25px",
@@ -74,6 +74,7 @@ async function onEnter(tempEl: Element, done: any) {
       });
     } else {
       Object.assign(el.style, {
+        zIndex: "",
         transition: "",
         transform: "translateX(0%)",
       });
@@ -105,15 +106,14 @@ function onEnterCancelled(tempEl: Element) {
 }
 
 // 在 leave 钩子之前调用
-// 大多数时候，你应该只会用到 leave 钩子
 function onBeforeLeave(tempEl: Element) {
   const el = tempEl as TransitionElement;
 
   const transitionData = el.$transition;
+
   if (transitionData?.mode !== "leave") return;
 
-  // const { meta } = route;
-  // const { transition } = meta;
+  const { levels } = transitionData;
 
   Object.assign(el.style, {
     position: "absolute",
@@ -122,6 +122,14 @@ function onBeforeLeave(tempEl: Element) {
     width: "100%",
     height: "100%",
   });
+
+  if (transitionData.name !== "nav" && levels >= 2) {
+    Object.assign(el.style, {
+      transition: "0.3s",
+      transform: "translateX(0%)",
+      borderRadius: "35px",
+    });
+  }
 
   el.$transition.enable = true;
 }
@@ -133,7 +141,14 @@ async function onLeave(tempEl: Element, done: any) {
   const transitionData = el.$transition;
   if (!transitionData?.enable) return done();
 
+  const { fullPath } = route;
+
+  const currentLevels = `${fullPath}`.split("/").length - 1;
   const { levels } = transitionData;
+
+  console.log("leave", tempEl, levels);
+
+  await sleep(1);
 
   if (transitionData.name === "nav" && levels < 2) {
     Object.assign(el.style, {
@@ -150,6 +165,12 @@ async function onLeave(tempEl: Element, done: any) {
         transform: "scale(0.9)",
         borderRadius: "35px",
       });
+    } else if (currentLevels > levels) {
+      Object.assign(el.style, {
+        transition: "0.3s !important",
+        transform: "translateX(-120%)",
+        borderRadius: "35px",
+      });
     } else {
       Object.assign(el.style, {
         transition: "0.3s !important",
@@ -159,7 +180,7 @@ async function onLeave(tempEl: Element, done: any) {
     }
   }
 
-  await sleep(500);
+  await sleep(5000);
 
   done();
 }

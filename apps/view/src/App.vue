@@ -194,10 +194,7 @@ setToastDefaultOptions({
             <!-- ['DictionaryPage', 'SignedPage'] -->
             <!-- 'IndexPage', 'PersonalPage', 'ExplorePage' -->
             <!-- :lru="10" :exclude="['DictionaryPage', 'SignedPage']" -->
-            <keep-alive
-              :include="['IndexPage', 'PersonalPage', 'ExplorePage']"
-              :exclude="baseRouteStore.excludeNames"
-            >
+            <keep-alive :exclude="baseRouteStore.excludeNames">
               <component :is="Component" />
             </keep-alive>
           </TransitionPage>
