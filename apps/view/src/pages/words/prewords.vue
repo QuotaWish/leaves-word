@@ -2,15 +2,15 @@
 import type { LeafPrepareSign } from "~/modules/words/mode";
 import NumberFlow from "@number-flow/vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { onActivated, onMounted, onUnmounted, ref } from "vue";
 import { onBeforeRouteLeave } from "vue-router";
 import AIProcessingMessages from "~/components/chore/AIProcessingMessages.vue";
 import ModeSelector from "~/components/words/ModeSelector.vue";
 import PlanSelector from "~/components/words/PlanSelector.vue";
-import { useTargetData } from "~/modules/words";
+import { useErrorFeebleAudio, useStartupAudio, useTargetData } from "~/modules/words";
 import { globalPreference } from "~/modules/words/core/feat/preference";
 
 const router = useRouter();
+const startupAudio = useStartupAudio();
 const { targetSignMode } = useTargetData();
 
 /**
@@ -135,6 +135,10 @@ function calculateTime(amo: number) {
 }
 
 async function handleStart() {
+  const startupAudioEl = await startupAudio
+
+  startupAudioEl.play();
+
   loadingOptions.loading = true;
   loadingOptions.progress = -1;
 
@@ -175,6 +179,8 @@ async function handleStart() {
     loadingOptions.progress = Math.min(p * 100, 100);
   });
 
+  startupAudioEl.pause();
+
   if (!done) {
     loadingOptions.progress = -1;
     loadingOptions.loading = false;
@@ -182,6 +188,8 @@ async function handleStart() {
     // 显示错误信息
     abnormalDialog.message = "单词数据加载失败，请稍后重试";
     abnormalDialog.visible = true;
+
+    (await useErrorFeebleAudio()).play();
 
     return;
   }

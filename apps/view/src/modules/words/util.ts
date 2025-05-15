@@ -112,6 +112,10 @@ export function useErrorAudio(): Promise<HTMLAudioSoundElement> {
   return useSound(WORDS_AUDIO.error)
 }
 
+export function useErrorFeebleAudio(): Promise<HTMLAudioSoundElement> {
+  return useSound(WORDS_AUDIO.errorFeeble)
+}
+
 export function useSuccessAudio(): Promise<HTMLAudioSoundElement> {
   return useSound(WORDS_AUDIO.success)
 }
@@ -122,6 +126,10 @@ export function useCherryTapAudio(): Promise<HTMLAudioSoundElement> {
 
 export function useVictoryAudio(): Promise<HTMLAudioSoundElement> {
   return useSound(WORDS_AUDIO.victory)
+}
+
+export function useStartupAudio(): Promise<HTMLAudioSoundElement> {
+  return useSound(WORDS_AUDIO.startUp)
 }
 
 const TRANSFORM_TYPE_MAP = {
