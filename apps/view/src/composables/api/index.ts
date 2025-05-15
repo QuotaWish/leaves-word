@@ -48,7 +48,7 @@ const { onAuthRequired, onResponseRefreshToken } = createClientTokenAuthenticati
       const loginTime = globalAuthStorage.value.loginTime
       const target = loginTime + +token.tokenTimeout
 
-      return target < Date.now() - 1000
+      return target >= Date.now() - 10000
     },
     handler: async () => {
       eventBus.fireEvent(new ToastEvent('登录过期，请重新登录', 'error'))
