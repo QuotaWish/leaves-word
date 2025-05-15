@@ -180,7 +180,7 @@ async function onLeave(tempEl: Element, done: any) {
     }
   }
 
-  await sleep(5000);
+  await sleep(500);
 
   done();
 }

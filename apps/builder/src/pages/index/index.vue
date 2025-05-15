@@ -1,10 +1,13 @@
 <template>
   <view class="WordPage">
-    <view class="loading-container" :style="{
-      opacity: isLoading ? 1 : 0,
-      visibility: isLoading ? 'visible' : 'hidden',
-      position: isLoading ? 'relative' : 'absolute',
-    }">
+    <view
+      class="loading-container"
+      :style="{
+        opacity: isLoading ? 1 : 0,
+        visibility: isLoading ? 'visible' : 'hidden',
+        position: isLoading ? 'relative' : 'absolute',
+      }"
+    >
       <image class="logo" src="/static/logo.svg" />
       <view class="text-area">
         <text class="title">{{ loadingText }}</text>
@@ -12,40 +15,16 @@
       <view class="loading-spinner"></view>
     </view>
 
-    <template v-if="provider">
-		<LeafWebView v-if="provider === 'web'" />
-		<LeafTiktokWebView v-if="provider === 'toutiao' || provider === 'tiktok'" />
-	</template>
-<!-- 
-    <view class="error-container" :style="{ display: loadError ? 'flex' : 'none' }">
-      <text class="error-text">{{ errorText }}</text>
-      <button class="reload-btn" @click="reloadWebView">重新加载</button>
-    </view> -->
+    <LeafWebView />
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, getCurrentInstance } from "vue";
-import { onBackPress, onShow } from "@dcloudio/uni-app";
+import { ref } from "vue";
 import LeafWebView from "@/components/LeafWebView.vue";
-import LeafTiktokWebView from '@/components/LeafTiktokWebView.vue'
 
-const height = ref(0)
-const url = ref("");
 const isLoading = ref(true);
-const loadError = ref(false);
 const loadingText = ref("加载中...");
-const errorText = ref("加载失败，请检查网络连接");
-const timeoutTimer = ref<number | null>(null);
-const leafDoneReceived = ref(false);
-const provider = ref("")
-
-uni.getProvider({
-	service: 'oauth',
-	success: (res) => {
-		provider.value = res.provider?.[0]
-	}
-})
 </script>
 
 <style>
