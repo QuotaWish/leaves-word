@@ -6,7 +6,7 @@ import SettingsInput from "~/components/settings/SettingsInput.vue";
 import { globalAuthStorage } from "~/modules/auth";
 
 const router = useRouter();
-const originName = globalAuthStorage.value.user.userName ?? "";
+let originName = globalAuthStorage.value.user.userName ?? "";
 
 const { loading, form, send, onSuccess, onError } = useForm(
   (formData: any) =>
@@ -24,6 +24,8 @@ const { loading, form, send, onSuccess, onError } = useForm(
 
 onSuccess(async () => {
   globalAuthStorage.value.user.userName = form.value.userName;
+
+  originName = form.value.userName;
 
   showSuccessToast("修改成功");
 
