@@ -61,6 +61,7 @@ onMounted(async () => {
     }
 
     const statistics = todaySubData.statistics
+    console.log(statistics)
     const targetComponent = statistics?.type.toUpperCase() as keyof typeof statCompMapper
 
     displayComponent.value = statCompMapper[targetComponent]
@@ -104,8 +105,10 @@ onMounted(async () => {
 
         <h1>
           <div class="number-flow-container">
-            <NumberFlow :prefix="days < 10 ? '0' : ''" :continuous="true" :will-change="true" :animated="true"
-              :value="days" />
+            <NumberFlow
+              :prefix="days < 10 ? '0' : ''" :continuous="true" :will-change="true" :animated="true"
+              :value="days"
+            />
           </div>
           <span>天</span>
         </h1>
@@ -124,20 +127,20 @@ onMounted(async () => {
       <div class="Signed-SubCard">
         <div class="fake-background Signed-SubCardItem">
           <p>过招单词</p>
-          <p class="amo">
-          <div class="number-flow-container">
-            <NumberFlow :continuous="true" :will-change="true" :animated="true" :value="num" />
+          <div class="amo">
+            <div class="number-flow-container">
+              <NumberFlow :continuous="true" :will-change="true" :animated="true" :value="num" />
+            </div>
           </div>
-          </p>
         </div>
 
         <div class="Signed-SubCardItem fake-background">
           <p>学分</p>
-          <p class="amo">
-          <div class="number-flow-container">
-            <NumberFlow :continuous="true" :will-change="true" :animated="true" :value="score" />
+          <div class="amo">
+            <div class="number-flow-container">
+              <NumberFlow :continuous="true" :will-change="true" :animated="true" :value="score" />
+            </div>
           </div>
-          </p>
         </div>
       </div>
     </template>
@@ -260,7 +263,7 @@ onMounted(async () => {
       color: var(--el-text-color-regular);
     }
 
-    &>span {
+    & > span {
       font-size: 24px;
       font-weight: 600;
       background-image: linear-gradient(45deg, #ffffff, #e0e0e0);
@@ -407,7 +410,7 @@ onMounted(async () => {
   &-Preview {
     width: 100%;
 
-    &>span {
+    & > span {
       display: block;
       font-size: 16px;
       font-weight: 500;
@@ -552,7 +555,7 @@ onMounted(async () => {
 .preview-content {
   width: 100%;
 
-  &>span {
+  & > span {
     display: block;
     font-size: 16px;
     font-weight: 500;
@@ -590,7 +593,7 @@ onMounted(async () => {
   padding: 0 20px;
   margin-bottom: 20px;
 
-  &>span {
+  & > span {
     display: block;
     font-size: 16px;
     font-weight: 500;
