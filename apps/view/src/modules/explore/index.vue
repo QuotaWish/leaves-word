@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ExploreBackground from './ExploreBackground.vue'
+import ExploreBackground from "./ExploreBackground.vue";
 </script>
 
 <template>
@@ -9,9 +9,7 @@ import ExploreBackground from './ExploreBackground.vue'
     </template>
 
     <template #header>
-      <h1 class="title">
-        探索
-      </h1>
+      <h1 class="title">探索</h1>
     </template>
 
     <div class="ExplorePage-Main p-4">
@@ -25,5 +23,7 @@ import ExploreBackground from './ExploreBackground.vue'
   display: flex;
 
   flex-direction: column;
+
+  background-color: var(--el-fill-color);
 }
 </style>

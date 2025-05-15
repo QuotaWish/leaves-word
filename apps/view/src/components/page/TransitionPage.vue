@@ -12,13 +12,18 @@ const route = useRoute();
 const router = useRouter();
 
 const lastPath = ref("");
+const TRANSITION = "0.35s cubic-bezier(0.25, 0.8, 0.25, 1)";
+const TRANSITION_LONG = "0.5s cubic-bezier(0.25, 0.8, 0.25, 1)";
 
 router.beforeEach(async (to, from, next) => {
   const { meta, fullPath } = from;
   if (!meta) return next();
 
   const { transition } = meta;
-  if (transition === "nav") return next();
+  if (transition === "nav") {
+    lastPath.value = "##NAV##";
+    return next();
+  }
 
   lastPath.value = fullPath;
 
@@ -41,40 +46,39 @@ function onBeforeEnter(tempEl: Element) {
     enable: true,
   };
 
-  if (transition === "nav" && levels !== 1) {
-    Object.assign(el.style, {
-      transition: "none !important",
-      transform: "scale(1.02)",
-      opacity: 0,
-    });
-    return;
-  }
-
-  // 如果是一层 就代表是返回
-  if (levels === 1) {
-    Object.assign(el.style, {
-      transition: "none !important",
-      transform: "scale(0.9)",
-      borderRadius: "35px",
-    });
-  } else {
-    if (levels > lastLevels) {
+  if ((transition === "nav" && levels <= 1) || levels === lastLevels) {
+    if (lastLevels <= 1) {
       Object.assign(el.style, {
         zIndex: "10",
         transition: "none !important",
-        transform: "translateX(120%)",
-        borderRadius: "25px",
+        transform: "scale(1.02)",
+        opacity: 0,
       });
     } else {
-      if (levels > lastLevels) {
-        Object.assign(el.style, {
-          zIndex: "-10",
-          transition: "none !important",
-          transform: "translateX(-120%)",
-          borderRadius: "25px",
-        });
-      }
+      Object.assign(el.style, {
+        transition: "none !important",
+        transform: "scale(0.9)",
+        opacity: 0,
+      });
     }
+
+    return;
+  }
+
+  if (levels > lastLevels || lastPath.value === "##NAV##") {
+    Object.assign(el.style, {
+      zIndex: "10",
+      transition: "none",
+      transform: "translateX(120%)",
+      borderRadius: "25px",
+    });
+  } else if (levels < lastLevels) {
+    Object.assign(el.style, {
+      zIndex: "-10",
+      transition: "none",
+      transform: "translateX(-10%)",
+      borderRadius: "25px",
+    });
   }
 }
 
@@ -87,22 +91,25 @@ async function onEnter(tempEl: Element, done: any) {
 
   await sleep(10);
 
-  if (transitionData.name === "nav") {
+  const lastLevels = `${lastPath.value}`.split("/").length - 1;
+
+  if (transitionData.name === "nav" || transitionData.levels === lastLevels) {
     Object.assign(el.style, {
-      transition: "0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
+      transition: TRANSITION,
       transform: "scale(1)",
       opacity: 1,
+      zIndex: "",
     });
   } else {
     if (transitionData.levels === 1) {
       Object.assign(el.style, {
-        transition: "0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
+        transition: TRANSITION,
         transform: "scale(1)",
       });
     } else {
       Object.assign(el.style, {
         zIndex: "",
-        transition: "",
+        transition: TRANSITION,
         transform: "translateX(0%)",
       });
     }
@@ -150,11 +157,17 @@ function onBeforeLeave(tempEl: Element) {
     height: "100%",
   });
 
-  if (transitionData.name !== "nav" && levels >= 2) {
+  if (transitionData.name === "nav") {
     Object.assign(el.style, {
-      transition: "0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
+      transition: TRANSITION,
+      transform: "scale(0.9)",
+      borderRadius: "25px",
+    });
+  } else if (transitionData.name !== "nav" && levels >= 2) {
+    Object.assign(el.style, {
+      transition: TRANSITION,
       transform: "translateX(0%)",
-      borderRadius: "35px",
+      borderRadius: "25px",
     });
   }
 
@@ -173,41 +186,52 @@ async function onLeave(tempEl: Element, done: any) {
   const currentLevels = `${fullPath}`.split("/").length - 1;
   const { levels } = transitionData;
 
-  console.log("leave", tempEl, levels);
-
   await sleep(1);
 
-  if (transitionData.name === "nav" && levels < 2) {
-    Object.assign(el.style, {
-      zIndex: 10,
-      transition: "0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
-      transform: "scale(0.98)",
-      opacity: 0,
-    });
+  if (
+    (transitionData.name === "nav" && levels <= 1) ||
+    currentLevels === levels
+  ) {
+    if (currentLevels === levels) {
+      Object.assign(el.style, {
+        zIndex: "-100",
+        transition: TRANSITION,
+        transform: "scale(0.9)",
+        borderRadius: "25px",
+      });
+
+      await sleep(350);
+    } else {
+      Object.assign(el.style, {
+        transition: TRANSITION_LONG,
+        transform: "scale(0.9)",
+        borderRadius: "25px",
+      });
+
+      await sleep(500);
+    }
   } else {
     // 如果不是一层 就代表是返回
-    if (levels === 1) {
+    if (currentLevels >= levels) {
+      await sleep(50);
+
       Object.assign(el.style, {
-        transition: "0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important",
-        transform: "scale(0.9)",
-        borderRadius: "35px",
-      });
-    } else if (currentLevels > levels) {
-      Object.assign(el.style, {
-        transition: "0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important",
-        transform: "translateX(-120%)",
-        borderRadius: "35px",
+        transition: TRANSITION,
+        transform: "translateX(-10%)",
+        borderRadius: "25px",
       });
     } else {
       Object.assign(el.style, {
-        transition: "0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important",
+        transition: TRANSITION,
         transform: "translateX(120%)",
-        borderRadius: "35px",
+        borderRadius: "25px",
       });
-    }
-  }
 
-  await sleep(500);
+      await sleep(50);
+    }
+
+    await sleep(300);
+  }
 
   done();
 }

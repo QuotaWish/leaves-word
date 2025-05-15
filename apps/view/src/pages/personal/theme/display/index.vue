@@ -51,7 +51,7 @@ const autoDarkModes = reactive<any>([
       </div>
     </SettingsSection>
 
-    <LineArrow @click="router.push('/personal/theme/dark-help')" my-4>
+    <LineArrow @click="router.push('/personal/theme/display/dark-help')" my-4>
       <template #icon>
         <div i-carbon-help />
       </template>
