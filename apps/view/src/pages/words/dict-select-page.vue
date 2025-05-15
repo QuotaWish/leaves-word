@@ -133,6 +133,7 @@ async function handleRefresh(callback: Function) {
         <ul h-full class="DictionarySelectPage-Nav">
           <template v-for="navTag in bookData" :key="navTag.id">
             <li
+              v-if="navTag.children?.length"
               :class="{ active: navTag.id === selectCategory?.id }"
               class="DictionarySelectPage-NavTag"
               flex
@@ -144,7 +145,7 @@ async function handleRefresh(callback: Function) {
               <!-- <div i-carbon-tag /> -->
               <span>{{ navTag.name }}</span>
             </li>
-            <li
+            <!-- <li
               v-for="nav in navTag.children"
               :key="nav.id"
               :id="`nav-${nav.id!}`"
@@ -153,7 +154,7 @@ async function handleRefresh(callback: Function) {
               @click="handleSelectCategory(nav)"
             >
               {{ nav.name }}
-            </li>
+            </li> -->
           </template>
         </ul>
       </el-skeleton>
@@ -185,16 +186,26 @@ async function handleRefresh(callback: Function) {
           </div>
         </div>
       </template>
-      <template v-if="selectCategory?.books?.length">
-        <wc-waterfall :gap="12" :cols="2" :key="selectCategory?.id">
-          <DictionaryBookDisplay
-            :active="String(book.id) === globalPreference.dict.id"
-            v-for="book in selectCategory.books"
-            :key="book.id"
-            :model-value="book"
-            @click="handleBookClick(book)"
-          />
-        </wc-waterfall>
+      <template v-if="selectCategory?.children?.length">
+        <template
+          :key="category.id"
+          v-for="category in selectCategory.children"
+        >
+          <div class="DictionarySelectPage-NavCategoryTag">
+            {{ category.name }}
+          </div>
+          <wc-waterfall :gap="12" :cols="2">
+            <DictionaryBookDisplay
+              :active="String(book.id) === globalPreference.dict.id"
+              v-for="book in category.books"
+              :key="book.id"
+              :model-value="book"
+              @click="handleBookClick(book)"
+            />
+          </wc-waterfall>
+
+          <br />
+        </template>
       </template>
       <template v-else-if="!loading">
         <div class="empty-tip">暂无词典</div>
@@ -205,11 +216,26 @@ async function handleRefresh(callback: Function) {
 
 <style lang="scss" scoped>
 .DictionarySelectPage-NavTag {
-  z-index: 1;
-  position: sticky;
+}
 
-  top: 0;
+.DictionarySelectPage-NavCategoryTag {
+  &::before {
+    content: "";
+    position: absolute;
 
-  background-color: var(--el-bg-color) !important;
+    top: 15%;
+    left: 0;
+
+    width: 5px;
+    height: 70%;
+
+    transition: 0.25s;
+    transform: scale(1);
+    border-radius: 10px 10px;
+    background-color: var(--theme-color-primary);
+  }
+  position: relative;
+  margin: 0.5rem 0;
+  padding-left: 0.5rem;
 }
 </style>

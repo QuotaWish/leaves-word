@@ -93,7 +93,7 @@ console.log(ins);
     align-items: center;
     justify-content: center;
 
-    background-color: var(--el-fill-color-light);
+    background-color: var(--el-fill-color);
   }
 }
 </style>
