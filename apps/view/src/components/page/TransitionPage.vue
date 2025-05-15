@@ -9,6 +9,21 @@ interface TransitionElement extends HTMLElement {
 }
 
 const route = useRoute();
+const router = useRouter();
+
+const lastPath = ref("");
+
+router.beforeEach(async (to, from, next) => {
+  const { meta, fullPath } = from;
+  if (!meta) return next();
+
+  const { transition } = meta;
+  if (transition === "nav") return next();
+
+  lastPath.value = fullPath;
+
+  next();
+});
 
 // 在元素被插入到 DOM 之前被调用
 function onBeforeEnter(tempEl: Element) {
@@ -18,6 +33,7 @@ function onBeforeEnter(tempEl: Element) {
 
   // 判断 fullPath 层级
   const levels = `${fullPath}`.split("/").length - 1;
+  const lastLevels = `${lastPath.value}`.split("/").length - 1;
   el.$transition = {
     name: transition as string,
     mode: "enter",
@@ -42,12 +58,23 @@ function onBeforeEnter(tempEl: Element) {
       borderRadius: "35px",
     });
   } else {
-    Object.assign(el.style, {
-      zIndex: "10",
-      transition: "none !important",
-      transform: "translateX(120%)",
-      borderRadius: "25px",
-    });
+    if (levels > lastLevels) {
+      Object.assign(el.style, {
+        zIndex: "10",
+        transition: "none !important",
+        transform: "translateX(120%)",
+        borderRadius: "25px",
+      });
+    } else {
+      if (levels > lastLevels) {
+        Object.assign(el.style, {
+          zIndex: "-10",
+          transition: "none !important",
+          transform: "translateX(-120%)",
+          borderRadius: "25px",
+        });
+      }
+    }
   }
 }
 
@@ -62,14 +89,14 @@ async function onEnter(tempEl: Element, done: any) {
 
   if (transitionData.name === "nav") {
     Object.assign(el.style, {
-      transition: "0.3s",
+      transition: "0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
       transform: "scale(1)",
       opacity: 1,
     });
   } else {
     if (transitionData.levels === 1) {
       Object.assign(el.style, {
-        transition: "0.3s",
+        transition: "0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
         transform: "scale(1)",
       });
     } else {
@@ -125,7 +152,7 @@ function onBeforeLeave(tempEl: Element) {
 
   if (transitionData.name !== "nav" && levels >= 2) {
     Object.assign(el.style, {
-      transition: "0.3s",
+      transition: "0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
       transform: "translateX(0%)",
       borderRadius: "35px",
     });
@@ -153,7 +180,7 @@ async function onLeave(tempEl: Element, done: any) {
   if (transitionData.name === "nav" && levels < 2) {
     Object.assign(el.style, {
       zIndex: 10,
-      transition: "0.3s",
+      transition: "0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
       transform: "scale(0.98)",
       opacity: 0,
     });
@@ -161,19 +188,19 @@ async function onLeave(tempEl: Element, done: any) {
     // 如果不是一层 就代表是返回
     if (levels === 1) {
       Object.assign(el.style, {
-        transition: "0.3s !important",
+        transition: "0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important",
         transform: "scale(0.9)",
         borderRadius: "35px",
       });
     } else if (currentLevels > levels) {
       Object.assign(el.style, {
-        transition: "0.3s !important",
+        transition: "0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important",
         transform: "translateX(-120%)",
         borderRadius: "35px",
       });
     } else {
       Object.assign(el.style, {
-        transition: "0.3s !important",
+        transition: "0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important",
         transform: "translateX(120%)",
         borderRadius: "35px",
       });
