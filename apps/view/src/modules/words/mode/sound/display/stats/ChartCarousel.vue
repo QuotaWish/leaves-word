@@ -149,7 +149,10 @@ function initAllCharts() {
     if (initializedCount > 0 || chartDefs.value.length === 0) { // Consider initialized if no charts or some charts are up
       allChartsInitialized.value = true
     }
-    resizeCurrentChart() // Resize after initialization
+
+    setTimeout(() => {
+      resizeCurrentChart()
+    }, 2000)
   })
 }
 
@@ -284,8 +287,8 @@ onBeforeUnmount(() => {
           <div v-show="currentIndex === index" class="chart-item-wrapper">
             <div
               v-if="chart.hasData ? chart.hasData() : true"
-              class="chart-canvas"
               :ref="(el) => setChartRef(el, chart.refId)"
+              class="chart-canvas"
             />
             <div v-else class="empty-chart-placeholder">
               <svg

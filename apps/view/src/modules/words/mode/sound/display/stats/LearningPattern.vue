@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import * as echarts from 'echarts';
-import { onMounted, onBeforeUnmount, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { isDark } from '~/composables/theme';
 
 const props = defineProps<{
@@ -36,7 +35,7 @@ const exampleCorrectRate = computed(() => {
 });
 
 // 计算各个时间段的数量
-const getTimeDistribution = () => {
+function getTimeDistribution() {
   // 初始化时间段计数对象
   const timeDistribution = {
     // 听写单词在各时间段的数量
@@ -44,19 +43,19 @@ const getTimeDistribution = () => {
       '0-3秒': 0,
       '3-5秒': 0,
       '5-10秒': 0,
-      '10秒以上': 0
+      '10秒以上': 0,
     },
     // 例句单词在各时间段的数量
     example: {
       '0-3秒': 0,
       '3-5秒': 0,
       '5-10秒': 0,
-      '10秒以上': 0
-    }
+      '10秒以上': 0,
+    },
   };
 
   // 统计听写单词
-  dictationWords.value.forEach(word => {
+  dictationWords.value.forEach((word) => {
     const timeSpent = word.timeSpent;
     if (timeSpent <= 3000) {
       timeDistribution.dictation['0-3秒']++;
@@ -70,7 +69,7 @@ const getTimeDistribution = () => {
   });
 
   // 统计例句单词
-  exampleWords.value.forEach(word => {
+  exampleWords.value.forEach((word) => {
     const timeSpent = word.timeSpent;
     if (timeSpent <= 3000) {
       timeDistribution.example['0-3秒']++;
@@ -84,10 +83,10 @@ const getTimeDistribution = () => {
   });
 
   return timeDistribution;
-};
+}
 
 // 初始化时间模式图表
-const initTimePatternChart = () => {
+function initTimePatternChart() {
   if (!timePatternChart.value) {
     return;
   }
@@ -103,57 +102,57 @@ const initTimePatternChart = () => {
       text: '反应时间分布',
       left: 'center',
       textStyle: {
-        color: textColor
-      }
+        color: textColor,
+      },
     },
     tooltip: {
       trigger: 'axis',
       axisPointer: {
-        type: 'shadow'
-      }
+        type: 'shadow',
+      },
     },
     legend: {
       data: ['听写', '例句'],
       bottom: '0%',
       textStyle: {
-        color: textColor
-      }
+        color: textColor,
+      },
     },
     grid: {
       left: '3%',
       right: '4%',
       bottom: '15%',
       top: '15%',
-      containLabel: true
+      containLabel: true,
     },
     xAxis: {
       type: 'category',
       data: ['0-3秒', '3-5秒', '5-10秒', '10秒以上'],
       axisLine: {
         lineStyle: {
-          color: textColor
-        }
+          color: textColor,
+        },
       },
       axisLabel: {
-        color: textColor
-      }
+        color: textColor,
+      },
     },
     yAxis: {
       type: 'value',
       minInterval: 1,
       axisLine: {
         lineStyle: {
-          color: textColor
-        }
+          color: textColor,
+        },
       },
       axisLabel: {
-        color: textColor
+        color: textColor,
       },
       splitLine: {
         lineStyle: {
-          color: 'rgba(128, 128, 128, 0.2)'
-        }
-      }
+          color: 'rgba(128, 128, 128, 0.2)',
+        },
+      },
     },
     series: [
       {
@@ -163,11 +162,11 @@ const initTimePatternChart = () => {
           timeDistribution.dictation['0-3秒'],
           timeDistribution.dictation['3-5秒'],
           timeDistribution.dictation['5-10秒'],
-          timeDistribution.dictation['10秒以上']
+          timeDistribution.dictation['10秒以上'],
         ],
         itemStyle: {
-          color: '#7e57c2'
-        }
+          color: '#7e57c2',
+        },
       },
       {
         name: '例句',
@@ -176,20 +175,20 @@ const initTimePatternChart = () => {
           timeDistribution.example['0-3秒'],
           timeDistribution.example['3-5秒'],
           timeDistribution.example['5-10秒'],
-          timeDistribution.example['10秒以上']
+          timeDistribution.example['10秒以上'],
         ],
         itemStyle: {
-          color: '#2196f3'
-        }
-      }
-    ]
+          color: '#2196f3',
+        },
+      },
+    ],
   };
 
   timeChart.setOption(option);
-};
+}
 
 // 初始化单词类型图表
-const initWordTypeChart = () => {
+function initWordTypeChart() {
   if (!wordTypeChart.value) {
     return;
   }
@@ -210,12 +209,12 @@ const initWordTypeChart = () => {
       text: '听力掌握情况',
       left: 'center',
       textStyle: {
-        color: textColor
-      }
+        color: textColor,
+      },
     },
     tooltip: {
       trigger: 'item',
-      formatter: '{a} <br/>{b}: {c} ({d}%)'
+      formatter: '{a} <br/>{b}: {c} ({d}%)',
     },
     legend: {
       orient: 'vertical',
@@ -223,8 +222,8 @@ const initWordTypeChart = () => {
       top: 'center',
       data: ['听写正确', '听写错误', '例句正确', '例句错误'],
       textStyle: {
-        color: textColor
-      }
+        color: textColor,
+      },
     },
     series: [
       {
@@ -234,35 +233,35 @@ const initWordTypeChart = () => {
         avoidLabelOverlap: false,
         itemStyle: {
           borderRadius: 10,
-          borderWidth: 2
+          borderWidth: 2,
         },
         label: {
           show: false,
-          position: 'center'
+          position: 'center',
         },
         emphasis: {
           label: {
             show: true,
             fontSize: 14,
             fontWeight: 'bold',
-            color: textColor
-          }
+            color: textColor,
+          },
         },
         labelLine: {
-          show: false
+          show: false,
         },
         data: [
           { value: dictCorrect, name: '听写正确', itemStyle: { color: '#4caf50' } },
           { value: dictIncorrect, name: '听写错误', itemStyle: { color: '#f44336' } },
           { value: exampleCorrect, name: '例句正确', itemStyle: { color: '#2196f3' } },
-          { value: exampleIncorrect, name: '例句错误', itemStyle: { color: '#ff9800' } }
-        ]
-      }
-    ]
+          { value: exampleIncorrect, name: '例句错误', itemStyle: { color: '#ff9800' } },
+        ],
+      },
+    ],
   };
 
   typeChart.setOption(option);
-};
+}
 
 // 获取学习模式分析
 const getLearningPatternAnalysis = computed(() => {
@@ -315,6 +314,7 @@ onMounted(() => {
 
     // 添加窗口大小变化监听
     window.addEventListener('resize', handleResize);
+    setTimeout(() => handleResize(), 3000)
   });
 });
 
@@ -333,19 +333,21 @@ onBeforeUnmount(() => {
 });
 
 // 处理窗口大小变化
-const handleResize = () => {
+function handleResize() {
   if (timeChart) {
     timeChart.resize();
   }
   if (typeChart) {
     typeChart.resize();
   }
-};
+}
 </script>
 
 <template>
   <div class="learning-pattern">
-    <h3 class="section-title"><span class="ai-badge">AI</span> 学习模式分析</h3>
+    <h3 class="section-title">
+      <span class="ai-badge">AI</span> 学习模式分析
+    </h3>
 
     <div class="pattern-insight">
       <div class="insight-icon">
@@ -501,8 +503,7 @@ const handleResize = () => {
   }
 
   .section-title {
-    font-size:
-    1.1rem;
+    font-size: 1.1rem;
   }
 
   .pattern-insight {
