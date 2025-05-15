@@ -1,169 +1,184 @@
 <script lang="ts">
-// @ts-ignore
-const envType = process.env.NODE_ENV;
+	// @ts-ignore
+	const envType = process.env.NODE_ENV;
 
-interface LeafEvent {
-  event: string;
-  data: any;
-}
+	interface LeafEvent {
+		event : string;
+		data : any;
+	}
 
-// 根据不同环境设置不同的URL
-const getEnvironmentUrl = (): string => {
-  let baseUrl = "";
-  if (envType === "development") {
-    baseUrl = "http://172.21.176.1:3334";
-  } else {
-    baseUrl = "https://appx.leaf.tagzxia.com";
-  }
+	// 根据不同环境设置不同的URL
+	const getEnvironmentUrl = () : string => {
+		let baseUrl = "";
+		if (envType === "development") {
+			baseUrl = "http://192.168.58.223:3333";
+		} else {
+			baseUrl = "https://appx.leaf.tagzxia.com";
+		}
 
-  // 添加query=builder参数
-  const separator = baseUrl.includes("?") ? "&" : "?";
-  return `${baseUrl}${separator}query=builder`;
-};
+		// 添加query=builder参数
+		const separator = baseUrl.includes("?") ? "&" : "?";
+		return `${baseUrl}${separator}query=builder`;
+	};
 
-let wv: any;
-export default {
-  name: 'LeafWebView',
-  emits: ['ready'],
-  data() {
-    return {
-      url: '',
-      timeoutTimer: null as number | null,
-      leafDoneReceived: false,
-      loadError: false,
-      errorText: '',
-      height: 0
-    }
-  },
-  methods: {
-    loadWebView(): void {
-      this.url = getEnvironmentUrl();
+	let wv : any;
+	export default {
+		name: 'LeafWebView',
+		emits: ['ready'],
+		data() {
+			return {
+				url: '',
+				timeoutTimer: null as number | null,
+				leafDoneReceived: false,
+				loadError: false,
+				errorText: '',
+				height: 0
+			}
+		},
+		methods: {
+			loadWebView() : void {
+				this.url = getEnvironmentUrl();
 
-      console.log('loadWebView', this.url);
+				console.log('loadWebView', this.url);
 
-      // create webview
-      setTimeout(() => {
-        wv = plus.webview.create(this.url, "leaf-webview")
+				// create webview
+				setTimeout(() => {
+					wv = plus.webview.create(this.url, "leaf-webview")
 
-        // @ts-ignore
-        const currentWebview = this.$parent.$scope.$getAppWebview()
-        currentWebview.append(wv)
+					// @ts-ignore
+					const currentWebview = this.$parent.$scope.$getAppWebview()
+					currentWebview.append(wv)
 
-        this.handleLoad()
-      })
+					this.handleLoad()
+				})
 
 
-      if (this.timeoutTimer !== null) {
-        clearTimeout(this.timeoutTimer);
-      }
+				if (this.timeoutTimer !== null) {
+					clearTimeout(this.timeoutTimer);
+				}
 
-      this.timeoutTimer = setTimeout(() => {
-        if (!this.leafDoneReceived) {
-          this.errorText = "页面加载超时，是否重新加载？";
-          this.loadError = true;
-        }
-      }, 3 * 60 * 1000); // 3分钟
-    },
+				this.timeoutTimer = setTimeout(() => {
+					if (!this.leafDoneReceived) {
+						this.errorText = "页面加载超时，是否重新加载？";
+						this.loadError = true;
+					}
+				}, 3 * 60 * 1000); // 3分钟
+			},
 
-    reloadWebView(): void {
-      this.loadError = false;
-      this.loadWebView();
-    },
+			reloadWebView() : void {
+				this.loadError = false;
+				this.loadWebView();
+			},
 
-    handleError(event: any): void {
-      console.error("Webview 加载失败:", event);
-      this.loadError = true;
+			handleError(event : any) : void {
+				console.error("Webview 加载失败:", event);
+				this.loadError = true;
 
-      uni.showToast({
-        title: "页面加载失败，请检查网络连接",
-        icon: "none",
-      });
-    },
+				uni.showToast({
+					title: "页面加载失败，请检查网络连接",
+					icon: "none",
+				});
+			},
 
-    handleMessage(event: any): void {
-      console.log("收到网页消息:", event);
-      try {
-        const message = event.detail ? event.detail : event;
+			onKeyboardHeightChange(res) {
+				const { height } = res
 
-        if (message && message.data === "@leaf:done") {
-          this.leafDoneReceived = true;
-          if (this.timeoutTimer !== null) {
-            clearTimeout(this.timeoutTimer);
-            this.timeoutTimer = null;
+				this.postMessage({
+					event: 'keyboard',
+					data: height
+				});
+			},
 
-            this.$emit('ready');
-          }
-        }
-      } catch (error) {
-        console.error("处理消息时出错:", error);
-      }
-    },
+			handleMessage(event : any) : void {
+				console.log("收到网页消息:", event);
+				try {
+					const message = event.detail ? event.detail : event;
 
-    postMessage(msg: LeafEvent): void {
-      wv.evalJS(`window.$uniMsg(${JSON.stringify(msg)})`);
-    },
+					if (message && message.data === "@leaf:done") {
+						this.leafDoneReceived = true;
+						if (this.timeoutTimer !== null) {
+							clearTimeout(this.timeoutTimer);
+							this.timeoutTimer = null;
 
-    handleLoad() {
-    uni.getSystemInfo({
-      success: (res) => {
-        this.height = res.windowHeight;
-      }
-    });
+							this.$emit('ready');
+						}
+					}
+				} catch (error) {
+					console.error("处理消息时出错: ", error);
+				}
+			},
 
-    // @ts-ignore
-    const currentWebview = this.$parent.$scope.$getAppWebview()
-    setTimeout(() => {
-      wv.setStyle({
-        height: `${this.height}px`
-      });
+			postMessage(msg : LeafEvent) : void {
+				wv.evalJS(`window.$uniMsg(${JSON.stringify(msg)})`);
+			},
 
-      // if (plus.os.name !== 'iOS') {
-      //   uni.onKeyboardHeightChange((res) => {
-      //     if (res.height === 0) {
-      //       wv.setStyle({
-      //         height: `${this.height}px`
-      //       });
-      //     } else {
-      //       wv.setStyle({
-      //         height: 'null'
-      //       });
-      //     }
+			handleLoad() {
+				uni.getSystemInfo({
+					success: (res) => {
+						this.height = res.windowHeight;
+					}
+				});
 
-      //     console.log("=====", res.height, wv.getStyle());
-      //   });
-      // }
-    }, 1000);
-  }
-  },
+				// @ts-ignore
+				const currentWebview = this.$parent.$scope.$getAppWebview()
+				setTimeout(() => {
+					wv.setStyle({
+						height: `${this.height}px`
+					});
 
-  mounted(): void {
-    this.loadWebView();
-  },
+					// if (plus.os.name !== 'iOS') {
+					//   uni.onKeyboardHeightChange((res) => {
+					//     if (res.height === 0) {
+					//       wv.setStyle({
+					//         height: `${this.height}px`
+					//       });
+					//     } else {
+					//       wv.setStyle({
+					//         height: 'null'
+					//       });
+					//     }
 
-  beforeDestroy(): void {
-    if (this.timeoutTimer !== null) {
-      clearTimeout(this.timeoutTimer);
-      this.timeoutTimer = null;
-    }
-  },
+					//     console.log("=====", res.height, wv.getStyle());
+					//   });
+					// }
+				}, 1000);
+			}
+		},
 
-  // 处理返回按钮事件
-  onBackPress(e: any): boolean {
-    // console.log('onBackPress', e);
+		mounted() : void {
+			this.loadWebView();
 
-    // this.postMessage({
-    //   event: 'backpress',
-    //   data: e
-    // });
+			uni.onKeyboardHeightChange(this.onKeyboardHeightChange)
+		},
 
-    return true;
-  },
-}
+		onUnload() {
+			uni.offKeyboardHeightChange(this.onKeyboardHeightChange)
+		},
+
+		beforeDestroy() : void {
+			if (this.timeoutTimer !== null) {
+				clearTimeout(this.timeoutTimer);
+				this.timeoutTimer = null;
+			}
+		},
+
+		// 处理返回按钮事件
+		// onBackPress(e: any): boolean {
+		//   // console.log('onBackPress', e);
+
+		//   // this.postMessage({
+		//   //   event: 'backpress',
+		//   //   data: e
+		//   // });
+
+		//   return true;
+		// },
+	}
 </script>
 
 <template>
-  <view></view>
-  <!-- <web-view :progress="false" :src="url" @error="handleError" class="web-view" @load="handleViewLoaded" ref="webViewRef"
+	<view></view>
+	<!-- <web-view :progress="false" :src="url" @error="handleError" class="web-view" @load="handleViewLoaded" ref="webViewRef"
     :style="{
       popGesture: 'none',
       opacity: isLoading ? 0 : 1,

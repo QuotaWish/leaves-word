@@ -19,7 +19,11 @@ export function useUniApp() {
   const scope = new EffectScope()
 
   function intendHandler() {
+    uniEventBus.on((event, data) => {
+      if (event !== 'keyboard') return;
 
+      document.documentElement.style.setProperty('--keyboard-height-inner', `${data?.data ?? 0}px`)
+    })
   }
 
   function styleHandler() {
@@ -40,12 +44,12 @@ export function useUniApp() {
     })
   }
 
-  function messageHandler(message: string) {
+  function messageHandler(message: any) {
     try {
-      const data = JSON.parse(message)
+      const data = message //JSON.parse(message)
       uniEventBus.emit(data?.event, data)
 
-      console.log('messageHandler', data)
+      console.debug('messageHandler', data)
     } catch (e) {
       console.error(`messageHandler error: ${e}`)
     }
@@ -57,10 +61,6 @@ export function useUniApp() {
       data
     }, '*')
   }
-
-  // function styleHandler() {
-
-  // }
 
   function init(onReady: Function) {
     document.addEventListener('UniAppJSBridgeReady', () => {
@@ -75,6 +75,7 @@ export function useUniApp() {
 
       scope.run(() => {
         styleHandler()
+        intendHandler()
 
         console.log('styleHandler done')
       })

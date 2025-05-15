@@ -93,6 +93,10 @@ body {
   overflow: hidden;
 }
 
+html {
+  --keyboard-height: var(--keyboard-height-inner, 0px);
+}
+
 .el-message-box {
   .el-button {
     border-radius: 12px !important;
