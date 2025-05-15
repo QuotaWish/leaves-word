@@ -1,76 +1,70 @@
 <script setup lang="ts">
-import { UniEventAtBackButton, uniEventBus } from '~/composables/adapter/uniapp';
-import WithPage from './WithPage.vue';
+import WithPage from "./WithPage.vue";
 
-withDefaults(defineProps<{
-  adapt?: boolean
-}>(), {
-  adapt: true
-})
+withDefaults(
+  defineProps<{
+    adapt?: boolean;
+  }>(),
+  {
+    adapt: true,
+  },
+);
 
-const instance = getCurrentInstance()
-const percent = ref(0)
-const headerRef = ref<HTMLElement>()
-const containerRef = ref<HTMLElement>()
+const instance = getCurrentInstance();
+const percent = ref(0);
+const headerRef = ref<HTMLElement>();
+const containerRef = ref<HTMLElement>();
 
-const headerSize = useElementSize(headerRef)
+const headerSize = useElementSize(headerRef);
 
 const handleScroll = () => {
-  const container = containerRef.value
-  if ( !container ) return
+  const container = containerRef.value;
+  if (!container) return;
 
-  const headerHeight = headerSize.height.value || 88
-  const scrollTop = container.scrollTop
+  const headerHeight = headerSize.height.value || 88;
+  const scrollTop = container.scrollTop;
 
-  percent.value = Math.min((scrollTop / headerHeight) * 100, 100)
-}
+  percent.value = Math.min((scrollTop / headerHeight) * 100, 100);
+};
 
 nextTick(() => {
-  const container = containerRef.value
-  if (!container) return
+  const container = containerRef.value;
+  if (!container) return;
 
-  container.addEventListener('scroll', handleScroll)
-})
-
-onBeforeUnmount(() => {
-  const container = containerRef.value
-  if (!container) return
-
-  container.removeEventListener('scroll', handleScroll)
-})
-
-const router = useRouter()
-const handleBackButton = (event: any) => {
-  if (event !== UniEventAtBackButton) return
-
-  router.back()
-}
-
-onMounted(() => {
-  uniEventBus.on(handleBackButton)
-})
+  container.addEventListener("scroll", handleScroll);
+});
 
 onBeforeUnmount(() => {
-  uniEventBus.off(handleBackButton)
-})
+  const container = containerRef.value;
+  if (!container) return;
 
-onActivated(handleScroll)
+  container.removeEventListener("scroll", handleScroll);
+});
+
+onActivated(handleScroll);
 </script>
 
 <template>
   <WithPage :adapt="adapt" class="WithHeadPage">
-    <div ref="containerRef" class="w-full h-full overflow-y-scroll overflow-x-hidden">
-      <div ref="headerRef" v-if="instance?.slots.header" class="WithHeadPage-Header">
+    <div
+      ref="containerRef"
+      class="w-full h-full overflow-y-scroll overflow-x-hidden"
+    >
+      <div
+        ref="headerRef"
+        v-if="instance?.slots.header"
+        class="WithHeadPage-Header"
+      >
         <slot name="header" />
       </div>
       <slot />
-
     </div>
-    <div :style="{ transform: `translateY(${percent - 100}%)` }" class="WithHeadPage-HeaderShrink fake-background transition-cubic">
+    <div
+      :style="{ transform: `translateY(${percent - 100}%)` }"
+      class="WithHeadPage-HeaderShrink fake-background transition-cubic"
+    >
       <slot name="shrinkHeader">
-        <slot name="header">
-          DefaultPage
-        </slot>
+        <slot name="header"> DefaultPage </slot>
       </slot>
     </div>
 

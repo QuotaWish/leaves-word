@@ -30,6 +30,10 @@ import PersonalIndex from "./pages/personal/index.vue";
 import { setToastDefaultOptions } from "vant";
 import { useUserStore } from "./composables/store/user-store";
 import { UserConfigSaveEvent } from "./composables/event/config";
+import {
+  UniEventAtBackButton,
+  uniEventBus,
+} from "./composables/adapter/uniapp";
 
 modeManager.set(
   ModeType.COMPREHENSIVE,
@@ -183,6 +187,14 @@ setToastDefaultOptions({
   duration: 1200,
   forbidClick: true,
 });
+
+function handleBackButton(event: any) {
+  if (event !== UniEventAtBackButton) return;
+
+  router.go(-1);
+}
+
+uniEventBus.on(handleBackButton);
 </script>
 
 <template>
@@ -196,11 +208,11 @@ setToastDefaultOptions({
             <!-- :lru="10" :exclude="['DictionaryPage', 'SignedPage']" -->
             <keep-alive :exclude="baseRouteStore.excludeNames">
               <component :is="Component" />
-            </keep-alive>
-          </TransitionPage>
+            </keep-alive> </TransitionPage
+          >\
         </router-view>
 
-        <Auth />
+        <!-- <Auth /> -->
         <Core />
         <FloatingBall />
         <DeveloperConsole />

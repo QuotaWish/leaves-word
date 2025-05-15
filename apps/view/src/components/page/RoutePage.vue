@@ -1,9 +1,5 @@
 <script setup lang="ts">
 import { PullRefresh } from "vant";
-import {
-  UniEventAtBackButton,
-  uniEventBus,
-} from "~/composables/adapter/uniapp";
 import { IRoutePageEmits, IRoutePageProps } from "./types";
 
 const props = withDefaults(defineProps<IRoutePageProps>(), {
@@ -15,28 +11,9 @@ const props = withDefaults(defineProps<IRoutePageProps>(), {
 const emits = defineEmits<IRoutePageEmits>();
 
 const router = useRouter();
-function handleBackButton(event: any) {
-  if (event !== UniEventAtBackButton) return;
 
-  if (props.loading) return;
-
-  router.back();
-}
-
-onMounted(() => {
-  uniEventBus.on(handleBackButton);
-});
-
-onBeforeUnmount(() => {
-  uniEventBus.off(handleBackButton);
-});
-
-onDeactivated(() => {
-  uniEventBus.off(handleBackButton);
-});
-
-onUnmounted(() => {
-  uniEventBus.off(handleBackButton);
+router.beforeEach(async (to, from, next) => {
+  if (!props.loading) next();
 });
 
 const innerRefresh = ref(false);

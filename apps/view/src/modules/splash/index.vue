@@ -19,8 +19,6 @@ function checkScreenSize() {
   check();
   init(() => {
     console.log("init");
-
-    useWebSizeAdapter();
   });
   onBeforeUnmount(() => {
     destroy();
@@ -36,6 +34,8 @@ function checkScreenSize() {
       spalshState.screenMode.value = ScreenMode.BUILDER;
     } else {
       spalshState.screenMode.value = ScreenMode.MOBILE;
+
+      useWebSizeAdapter();
     }
   }
 
