@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { SoundPrepareWord } from "..";
-import { type HTMLAudioSoundElement, useErrorAudio, useSuccessAudio, useWordSound } from "~/modules/words";
+import { type HTMLAudioSoundElement, useErrorAudio, usePhraseSound, useSuccessAudio, useWordSound } from "~/modules/words";
 import { SoundExampleStage, SoundWordType, WordState } from "..";
 import { useLogger } from '../../../util';
 import SoundInput from './addon/SoundInput.vue';
@@ -128,7 +128,11 @@ async function playAudio(content?: string) {
   }
 
   try {
-    lastAudio = await useWordSound(content ?? prepareData.currentWord.word.data!.word_head!);
+    if (content) {
+      lastAudio = await usePhraseSound(content);
+    } else {
+      lastAudio = await useWordSound(prepareData.currentWord.word.data!.word_head!);
+    }
   } catch (_e) {
     setTimeout(() => playAudio(content), 1200)
     return
@@ -210,17 +214,18 @@ const inputChecker = useInputChecker(props.prepare)
 // 创建一个函数记录当前学习详情
 function recordLearningDetails(isCorrect: boolean) {
   const currentWord = currentWordItem.value;
-  if (!currentWord) return;
+  if (!currentWord)
+    return;
 
   console.log('[Word.vue] 记录学习详情开始', {
     word: currentWord.word.word,
     type: currentWord.type,
-    isCorrect
+    isCorrect,
   });
 
   // 记录音频播放次数
   if (lastAudio) {
-    prepareData.recordAudioPlay();  // 记录音频播放
+    prepareData.recordAudioPlay(); // 记录音频播放
   }
 
   // 计算此次尝试的编辑距离（如果不正确）
@@ -234,7 +239,8 @@ function recordLearningDetails(isCorrect: boolean) {
       const minLen = Math.min(target.length, input.length);
       let sameChars = 0;
       for (let i = 0; i < minLen; i++) {
-        if (target[i] === input[i]) sameChars++;
+        if (target[i] === input[i])
+          sameChars++;
       }
       editDistance = maxLen - sameChars;
     }
@@ -405,20 +411,26 @@ function handleQuit() {
 </script>
 
 <template>
-  <SoundDisplayLayout :hint="hint" v-model:input="userInput" :max="prepare.taskAmount" :left="prepare.getLeftWords()"
+  <SoundDisplayLayout
+    v-model:input="userInput" :hint="hint" :max="prepare.taskAmount" :left="prepare.getLeftWords()"
     :state="wordState" :loading="currentWordItem === null" @quit="handleQuit"
-    @replay="playAudio(currentWordItem?.type === SoundWordType.EXAMPLE ? currentWordItem.example.parts[currentWordItem.example.stage] : undefined);">
+    @replay="playAudio(currentWordItem?.type === SoundWordType.EXAMPLE ? currentWordItem.example.parts[currentWordItem.example.stage] : undefined);"
+  >
     <template #badge>
       {{ wordTypeLabel }}
     </template>
 
     <div class="SoundWordMode-InputContainer">
-      <SoundInput v-model:input="userInput" :origin="inputOrigin" :state="wordState" :type="currentWordItem?.type"
-        :example-stage="currentWordItem?.example.stage" @check-input="checkAnswer" />
+      <SoundInput
+        v-model:input="userInput" :origin="inputOrigin" :state="wordState" :type="currentWordItem?.type"
+        :example-stage="currentWordItem?.example.stage" @check-input="checkAnswer"
+      />
 
       <div :class="{ visible: errorObj.visible }" class="result-display transition-cubic">
-        <div class="flex flex-col w-full gap-1">
-          <p font-bold>正确答案</p>
+        <div class="w-full flex flex-col gap-1">
+          <p font-bold>
+            正确答案
+          </p>
           <p>{{ correctAnswer }}</p>
         </div>
       </div>

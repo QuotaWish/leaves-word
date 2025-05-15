@@ -1,9 +1,8 @@
 import { modeManager } from '../mode'
 import { ModeType } from './enums'
-import { globalPreference } from './feat/preference'
+import { currentStorage, globalPreference } from './feat/preference'
 
 export const useTargetData = createGlobalState(() => {
-  const targetDict = computed(() => null) // dictionaries.find(item => item.id === globalData.value.dict) || dictionaries[0])
   const targetMode = computed(() => {
     const manager = [...(modeManager?.keys?.() || [])]
     const result = manager?.find(item => item === globalPreference.value.mode)
@@ -13,19 +12,19 @@ export const useTargetData = createGlobalState(() => {
 
     return result
   })
+
   const targetSignMode = computed(() => {
     const manager = modeManager.get(targetMode.value)
 
-    if (!manager || !globalPreference.value.dict.storage)
+    if (!manager || !currentStorage.value)
       return null
 
-    const managerIns = manager(globalPreference.value.dict.storage)
+    const managerIns = manager(currentStorage.value)
 
     return managerIns
   })
 
   return {
-    targetDict,
     targetMode,
     targetSignMode,
   }

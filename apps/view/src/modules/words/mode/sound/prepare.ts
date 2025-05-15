@@ -1,7 +1,7 @@
 import type { Component } from 'vue'
-import { toRaw } from 'vue'
 import type { DictionaryWordWithWordVO } from '~/composables/api/clients/globals'
 import { useRequest } from 'alova/client'
+import { toRaw } from 'vue'
 import Apis from '~/composables/api/clients'
 import { type ISoundWordItem, SoundExampleStage, type SoundMode } from '.'
 import { SoundWordType } from '.'
@@ -113,7 +113,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       console.warn('[SoundPrepare] 返回现有统计对象:', {
         wordsDetailsLength: this.statistics.data.wordsDetails?.length || 0,
         dictationWords: this.statistics.data.dictationWords || 0,
-        exampleWords: this.statistics.data.exampleWords || 0
+        exampleWords: this.statistics.data.exampleWords || 0,
       });
     }
     return this.statistics;
@@ -125,15 +125,13 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     this.taskAmount = amo
     this.startTime = Date.now()
     this.wordStartTime = Date.now()
-
-    console.log(this)
   }
 
   async preloadWordData(word: ISoundWordItem) {
     const { word: mainWord } = word
     logDebug('Preloading word data for:', mainWord.word);
 
-    const audioSound = await useWordSound(mainWord.word)
+    // const audioSound = await useWordSound(mainWord.word)
 
     const obj: ISoundWordItem = {
       word: mainWord,
@@ -147,7 +145,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
 
     return {
       obj,
-      audioSound,
+      // audioSound,
     }
   }
 
@@ -295,6 +293,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       // 所有阶段完成，记录为已学习
       this.wordsFinished.push(currentWord.word);
 
+      console.log(this.mode, this.mode.dictionaryStorage)
       this.mode.dictionaryStorage.setLearned(currentWord.word.word);
       logDebug('Word completed all stages:', currentWord.word.word);
 
@@ -356,7 +355,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       wordsFinishedLength: this.wordsFinished.length,
       startTime: this.startTime,
       currentEndTime: this.endTime,
-      currentStatistics: this.statistics
+      currentStatistics: this.statistics,
     });
 
     if (this.wordsQueue.length) {
@@ -374,7 +373,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       this.statistics.cost = this.endTime - this.startTime
       console.warn('[SoundPrepare] 更新统计对象时间:', {
         endTime: this.statistics.endTime,
-        cost: this.statistics.cost
+        cost: this.statistics.cost,
       });
 
       // 强制更新一次会话统计数据
@@ -385,7 +384,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     const words = this.wordsFinished.map(i => i.word)
     console.warn('[SoundPrepare] 准备创建日历数据:', {
       duration,
-      wordsCount: words.length
+      wordsCount: words.length,
     });
 
     if (!this.calendarData) {
@@ -409,7 +408,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
           endTime: this.statistics.endTime,
           cost: this.statistics.cost,
           type: this.statistics.type,
-          data: JSON.parse(JSON.stringify(plainData)) // 确保深拷贝
+          data: JSON.parse(JSON.stringify(plainData)), // 确保深拷贝
         };
 
         // 用纯JavaScript对象创建新的统计对象
@@ -429,14 +428,14 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       console.warn('[SoundPrepare] 将统计数据保存到日历中:', {
         statisticsData,
         dataDetails: statisticsData.data.wordsDetails?.length || 0,
-        dictationWords: statisticsData.data.dictationWords || 0
+        dictationWords: statisticsData.data.dictationWords || 0,
       });
     }
 
     console.warn('[SoundPrepare] 完成，最终统计数据:', {
       statistics: this.statistics,
       calendarData: this.calendarData,
-      dataEntries: this.calendarData?.data.length
+      dataEntries: this.calendarData?.data.length,
     });
 
     return true
@@ -469,7 +468,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     console.warn('[SoundPrepare] recordLearningDetails 接收数据:', {
       word: this.currentWord.word.word,
       details,
-      statistics: this.statistics
+      statistics: this.statistics,
     });
 
     // 保存用户输入和错误数据，供 recordWordLearningData 使用
@@ -484,7 +483,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     console.warn('[SoundPrepare] 更新后的统计数据:', {
       wordDetails: this.statistics?.data.wordsDetails,
       dictationWords: this.statistics?.data.dictationWords,
-      exampleWords: this.statistics?.data.exampleWords
+      exampleWords: this.statistics?.data.exampleWords,
     });
   }
 
@@ -510,7 +509,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       audioPlayCount: this.audioPlayCount,
       userInput: this._lastUserInput,
       editDistance: this._lastEditDistance,
-      existingStatistics: stat.data
+      existingStatistics: stat.data,
     });
 
     if (!stat.data.wordsDetails) {
@@ -527,7 +526,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     console.warn('[SoundPrepare] 查找单词详情:', {
       wordText,
       detailIndex,
-      existingDetailsCount: wordDetails.length
+      existingDetailsCount: wordDetails.length,
     });
 
     if (detailIndex === -1) {
@@ -613,7 +612,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
 
     console.warn('[SoundPrepare] 更新 wordsDetails 后:', {
       updatedDetailsCount: wordDetails.length,
-      wordsDetails: wordDetails
+      wordsDetails: wordDetails,
     });
 
     this.updateBasicStats(success);
@@ -625,7 +624,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       sessionDuration: stat.data.sessionDuration,
       dictationCorrectRate: stat.data.dictationCorrectRate,
       exampleCorrectRate: stat.data.exampleCorrectRate,
-      averageEditDistance: stat.data.averageEditDistance
+      averageEditDistance: stat.data.averageEditDistance,
     });
   }
 
@@ -644,15 +643,15 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       success,
       currentStats: {
         dictationWords: stat.data.dictationWords,
-        exampleWords: stat.data.exampleWords
-      }
+        exampleWords: stat.data.exampleWords,
+      },
     });
 
     // 获取单词的详细数据，检查是否是首次答对
     const wordDetails = stat.data.wordsDetails || [];
     const wordText = this.currentWord.word.word;
     const existingDetail = wordDetails.find(d =>
-      d.word === wordText && d.type === this.currentWord?.type
+      d.word === wordText && d.type === this.currentWord?.type,
     );
 
     // 单词已存在于详情中，且之前就已经答对了，则不增加计数
@@ -660,7 +659,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     console.warn('[SoundPrepare] 单词状态检查:', {
       existing: !!existingDetail,
       previouslyCorrect: existingDetail?.isCorrect,
-      isFirstCorrect
+      isFirstCorrect,
     });
 
     if (this.currentWord.type === SoundWordType.DICTATION && isFirstCorrect) {
@@ -703,7 +702,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
     console.warn('[SoundPrepare] updateSessionStatistics 开始:', {
       wordsDetailsLength: details.length,
       startTime: this.startTime,
-      currentTime: Date.now()
+      currentTime: Date.now(),
     });
 
     if (details.length === 0) {
@@ -756,7 +755,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       dictationDuration,
       exampleDuration,
       totalEditDistance,
-      editDistanceCount
+      editDistanceCount,
     });
 
     const stat = this.statistics!;
@@ -778,7 +777,7 @@ export class SoundPrepareWord extends LeafPrepareSign<SoundMode, ISoundWordItem,
       audioPlayCount: stat.data.audioPlayCount,
       dictationCorrectRate: stat.data.dictationCorrectRate,
       exampleCorrectRate: stat.data.exampleCorrectRate,
-      averageEditDistance: stat.data.averageEditDistance
+      averageEditDistance: stat.data.averageEditDistance,
     });
   }
 

@@ -24,6 +24,8 @@ export const obj: IGlobalPreference = {
   amount: 10,
 }
 
+export const currentStorage = shallowRef()
+
 export const globalPreference = useLocalStorage<IGlobalPreference>('global-preference', JSON.parse(JSON.stringify(obj)))
 
 const { send: getDict, loading } = useRequest(() => Apis.englishDictionaryController.getEnglishDictionaryVOByIdUsingGET({
@@ -56,7 +58,7 @@ watch(() => globalPreference.value.dict.id, (newVal) => {
     }
 
     globalPreference.value.dict.data = res.data
-    globalPreference.value.dict.storage = new LeafDictStorage(res.data)
+    globalPreference.value.dict.storage = currentStorage.value = new LeafDictStorage(res.data)
   })
 }, {
   immediate: true,

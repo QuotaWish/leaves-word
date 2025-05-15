@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import type { LeafPrepareSign } from "~/modules/words/mode";
+import NumberFlow from "@number-flow/vue";
+import { ElMessage, ElMessageBox } from "element-plus";
 import { onActivated, onMounted, onUnmounted, ref } from "vue";
 import { onBeforeRouteLeave } from "vue-router";
-import { ElMessage, ElMessageBox } from "element-plus";
-import NumberFlow from "@number-flow/vue";
 import AIProcessingMessages from "~/components/chore/AIProcessingMessages.vue";
 import ModeSelector from "~/components/words/ModeSelector.vue";
 import PlanSelector from "~/components/words/PlanSelector.vue";
 import { useTargetData } from "~/modules/words";
 import { globalPreference } from "~/modules/words/core/feat/preference";
-import type { LeafPrepareSign } from "~/modules/words/mode";
 
 const router = useRouter();
 const { targetSignMode } = useTargetData();
@@ -194,7 +194,6 @@ async function handleStart() {
 
   await sleep(500);
 
-  // start - 这是关键步骤，设置为true表示开始学习
   loadingOptions.start = true;
 
   router.push({
@@ -211,7 +210,8 @@ async function handleStart() {
 
 async function handleDone() {
   loadingOptions.start = false;
-  await router.replace("/words/signed");
+  await router.push("/words/signed");
+  await router.push("/words/signed");
 }
 
 function handleBack() {
@@ -266,8 +266,12 @@ onActivated(() => {
         <span class="prewords-headword-item item-5">S</span>
       </div>
 
-      <p text-white class="transition-cubic head-title">准备打卡</p>
-      <p text-white class="transition-cubic head-title next">稍等片刻</p>
+      <p text-white class="transition-cubic head-title">
+        准备打卡
+      </p>
+      <p text-white class="transition-cubic head-title next">
+        稍等片刻
+      </p>
 
       <div
         mt-8
@@ -287,7 +291,9 @@ onActivated(() => {
           <template #icon>
             <div i-carbon:plan />
           </template>
-          <template #end> {{ globalPreference.amount }}个/组 </template>
+          <template #end>
+            {{ globalPreference.amount }}个/组
+          </template>
           制定计划
         </LineArrow>
 
@@ -307,7 +313,7 @@ onActivated(() => {
         <div i-carbon-time />
         预计用时 {{ calculateTime(globalPreference.amount) }} 分钟
       </div>
-      <LeafButton class="h-[52px]" v-wave animated w-full @click="handleStart">
+      <LeafButton v-wave class="h-[52px]" animated w-full @click="handleStart">
         开始打卡
       </LeafButton>
       <!-- <el-button class="large-button" size="large" w-full type="primary" @click="handleStart">
@@ -315,7 +321,9 @@ onActivated(() => {
       </el-button> -->
 
       <p mt-6 cursor-pointer text-center @click="handleBack">
-        <el-text type="danger" active:op-50> 退出 </el-text>
+        <el-text type="danger" active:op-50>
+          退出
+        </el-text>
       </p>
     </div>
 
@@ -376,8 +384,9 @@ onActivated(() => {
             type="primary"
             style="margin-top: 16px"
             @click="abnormalDialog.visible = false"
-            >确定</el-button
           >
+            确定
+          </el-button>
         </div>
       </template>
     </TouchDialog>
@@ -583,7 +592,7 @@ onActivated(() => {
 .PreWordsPage {
   &::before {
     z-index: 0;
-    content: "";
+    content: '';
     position: absolute;
 
     left: 0;

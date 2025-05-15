@@ -27,6 +27,25 @@ export default {
       return `/api/tts?text=${encodeURIComponent(word.trim())}`;
     }
   },
+  getPhrasePronounce(phrase: string) {
+    return fetch("https://tts.tagzxia.com/v1/audio/speech", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer DEo1g79CuJVrunSmUhUmPhMHnRr5iZWd"
+      },
+      body: JSON.stringify({
+        model: "tts-1",
+        input: phrase,
+        voice: "en-US-AndrewNeural"
+      })
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.arrayBuffer(); // 如果你需要的是音频文件内容
+    });
+  },
   getDailyQuote() {
     // const url = `https://dailyquote.quotawish.com/weapps/dailyquote/quote`
     const obj = Apis.userController.getDailyQuoteUsingGET()

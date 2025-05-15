@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useRequest } from "alova/client";
+import { setToastDefaultOptions } from "vant";
 import { toast, Toaster } from "vue-sonner";
+import FloatingBall from "~/modules/ai/bubble/index";
 import Auth from "~/modules/auth/index.vue";
 import Core from "~/modules/core/index.vue";
-import FloatingBall from "~/modules/ai/bubble/index";
 import DeveloperConsole from "~/modules/develop/index.vue";
 import Splash from "~/modules/splash/index.vue";
 import {
@@ -14,26 +15,25 @@ import {
 import { modeManager } from "~/modules/words/mode";
 import { ComprehensiveMode } from "~/modules/words/mode/comprehensive";
 import { ReadingMode } from "~/modules/words/mode/reading";
+
 // import { DictWordMode } from '~/modules/words/mode/dict-word'
 // import { PunchMode } from '~/modules/words/mode/punch'
 import { SoundMode } from "~/modules/words/mode/sound";
 
-import { initApi } from "./composables/api";
-
-import { useLeafEventBus } from "./composables/event";
-import { AuthSuccessEvent } from "./composables/event/auth";
-import { ToastEvent } from "./composables/event/toast-event";
-import { useBaseRouteStore } from "./composables/store/route-store";
-import { $logout, globalAuthStorage, initAuthModule } from "./modules/auth";
-import ExploreIndex from "./pages/explore/index.vue";
-import PersonalIndex from "./pages/personal/index.vue";
-import { setToastDefaultOptions } from "vant";
-import { useUserStore } from "./composables/store/user-store";
-import { UserConfigSaveEvent } from "./composables/event/config";
 import {
   UniEventAtBackButton,
   uniEventBus,
 } from "./composables/adapter/uniapp";
+import { initApi } from "./composables/api";
+import { useLeafEventBus } from "./composables/event";
+import { AuthSuccessEvent } from "./composables/event/auth";
+import { UserConfigSaveEvent } from "./composables/event/config";
+import { ToastEvent } from "./composables/event/toast-event";
+import { useBaseRouteStore } from "./composables/store/route-store";
+import { useUserStore } from "./composables/store/user-store";
+import { $logout, globalAuthStorage, initAuthModule } from "./modules/auth";
+import ExploreIndex from "./pages/explore/index.vue";
+import PersonalIndex from "./pages/personal/index.vue";
 
 modeManager.set(
   ModeType.COMPREHENSIVE,
@@ -189,7 +189,8 @@ setToastDefaultOptions({
 });
 
 function handleBackButton(event: any) {
-  if (event !== UniEventAtBackButton) return;
+  if (event !== UniEventAtBackButton)
+    return;
 
   router.go(-1);
 }
@@ -208,8 +209,8 @@ uniEventBus.on(handleBackButton);
             <!-- :lru="10" :exclude="['DictionaryPage', 'SignedPage']" -->
             <keep-alive :exclude="baseRouteStore.excludeNames">
               <component :is="Component" />
-            </keep-alive> </TransitionPage
-          >\
+            </keep-alive>
+          </TransitionPage>\
         </router-view>
 
         <Auth />

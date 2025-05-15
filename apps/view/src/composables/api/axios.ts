@@ -16,7 +16,6 @@
 
 import axios, { AxiosRequestConfig, type AxiosResponse, type CreateAxiosDefaults } from 'axios'
 import { ElMessage } from 'element-plus'
-import { globalAuthStorage } from '~/modules/auth'
 import type { IStandardResponse } from './index.type'
 
 export function genAxios(options: CreateAxiosDefaults) {
@@ -58,9 +57,6 @@ export function genAxios(options: CreateAxiosDefaults) {
           reqConfig.data = formData
         }
       }
-
-      if (globalAuthStorage.value.isLogin)
-        reqConfig.headers.Authorization = `Bearer ${globalAuthStorage.value.token}`
 
       return reqConfig
     },
