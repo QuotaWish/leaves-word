@@ -212,7 +212,7 @@ uniEventBus.on(handleBackButton);
           >\
         </router-view>
 
-        <!-- <Auth /> -->
+        <Auth />
         <Core />
         <FloatingBall />
         <DeveloperConsole />
