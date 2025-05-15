@@ -3,6 +3,7 @@ export function useWebSizeAdapter() {
   let scrollerHeight = '100%'
 
   tryOnMounted(() => {
+    console.log(`Web Adapter initialized!`)
     const { height } = useWindowSize()
 
     const unwatch = watchEffect(() => {
