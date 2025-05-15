@@ -13,7 +13,7 @@ const getEnvironmentUrl = (): string => {
   if (envType === "development") {
     baseUrl = "http://172.21.176.1:3334";
   } else {
-    baseUrl = "https://app.leaf.tagzxia.com";
+    baseUrl = "https://appx.leaf.tagzxia.com";
   }
 
   // 添加query=builder参数

@@ -7,7 +7,7 @@ interface LeafEvent {
 // 根据不同环境设置不同的URL
 const getEnvironmentUrl = (): string => {
   let baseUrl = "";
-  baseUrl = "https://app.leaf.tagzxia.com";
+  baseUrl = "https://appx.leaf.tagzxia.com";
 
   // 添加query=builder参数
   const separator = baseUrl.includes("?") ? "&" : "?";
