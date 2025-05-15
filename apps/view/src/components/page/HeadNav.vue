@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineEmits, defineProps } from "vue";
+import { useGlobalPageState } from './state';
 
 interface HeadNavProps {
   title?: string;
@@ -28,6 +29,9 @@ const emit = defineEmits<{
   (e: "action"): void;
 }>();
 
+const globalPageState = useGlobalPageState()
+const backTitle = ref("")
+
 const truncatedTitle = computed(() => {
   if (props.title.length <= 10) {
     return props.title;
@@ -36,7 +40,8 @@ const truncatedTitle = computed(() => {
 });
 
 function handleBack(): void {
-  if (props.disabled) return;
+  if (props.disabled)
+    return;
 
   emit("back");
 }
@@ -44,6 +49,14 @@ function handleBack(): void {
 function handleAction(): void {
   emit("action");
 }
+
+onMounted(() => {
+  backTitle.value = globalPageState.value.title.substring(0, 10)
+})
+
+onBeforeRouteLeave(() => {
+  globalPageState.value.title = props.title
+})
 </script>
 
 <template>
@@ -61,7 +74,7 @@ function handleAction(): void {
         <slot name="left">
           <div class="head-nav__back" @click="handleBack">
             <i class="head-nav__back-icon" />
-            <span class="head-nav__back-text">返回</span>
+            <span class="head-nav__back-text">{{ backTitle || "返回" }}</span>
           </div>
         </slot>
       </div>
@@ -123,7 +136,7 @@ function handleAction(): void {
 }
 
 .head-nav__left {
-  width: 80px;
+  max-width: 150px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -150,10 +163,37 @@ function handleAction(): void {
   border-bottom: 2px solid var(--el-text-color-primary);
   transform: rotate(45deg);
   margin-right: 4px;
+
+  opacity: 0;
+  animation: iconEnter 0.5s 0.35s forwards;
 }
 
 .head-nav__back-text {
   font-size: 14px;
+  opacity: 0;
+  animation: backTextEnter 0.35s 0.25s forwards;
+}
+
+@keyframes iconEnter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes backTextEnter {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .head-nav__title {

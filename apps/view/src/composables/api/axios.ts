@@ -77,15 +77,15 @@ export function genAxios(options: CreateAxiosDefaults) {
     async (res) => {
       console.error(res)
 
-      if (!res.response || res.code === 'ERR_INTERNET_DISCONNECTED') {
-        return ElMessage.error({
-          message: '无法连接至远程服务器!',
-          grouping: true,
-        })
-      }
+      // if (!res.response || res.code === 'ERR_INTERNET_DISCONNECTED') {
+      //   return ElMessage.error({
+      //     message: '无法连接至远程服务器!',
+      //     grouping: true,
+      //   })
+      // }
 
-      if (res.code === 'ERR_NETWORK' && (res.message.includes('timeout') || res.message === 'Network Error'))
-        return ElMessage.error('请检查您的网络!')
+      // if (res.code === 'ERR_NETWORK' && (res.message.includes('timeout') || res.message === 'Network Error'))
+      //   return ElMessage.error('请检查您的网络!')
 
       return res.response.data
     },
