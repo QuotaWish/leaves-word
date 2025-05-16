@@ -68,6 +68,8 @@ declare module 'vue' {
     PlayIcon: typeof import('./src/components/icon/PlayIcon.vue')['default']
     PreloadPage: typeof import('./src/components/page/PreloadPage.vue')['default']
     PronounceDisplay: typeof import('./src/components/words/composer/PronounceDisplay.vue')['default']
+    RainbowBackground: typeof import('./src/components/display/RainbowBackground.vue')['default']
+    RoundButton: typeof import('./src/components/button/RoundButton.vue')['default']
     RoundInfo: typeof import('./src/components/display/RoundInfo.vue')['default']
     RoutePage: typeof import('./src/components/page/RoutePage.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

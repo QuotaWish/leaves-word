@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "@alova/adapter-axios": "^2.0.13",
-    "@coze/api": "^1.0.17",
+    "@coze/api": "^1.1.0",
+    "@coze/realtime-api": "^1.2.0",
     "@leaves-word/app-view": "file:",
     "@number-flow/vue": "^0.3.2",
     "@sentry/vite-plugin": "^3.1.1",

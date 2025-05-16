@@ -104,8 +104,6 @@ onBeforeRouteLeave(() => {
   margin-top: -44px;
 
   height: 88px;
-
-
 }
 
 .HeadNav-Inner {
@@ -223,7 +221,12 @@ onBeforeRouteLeave(() => {
 }
 
 .head-nav__right {
+  position: absolute;
+
   width: 80px;
+
+  right: 0;
+
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -231,7 +234,7 @@ onBeforeRouteLeave(() => {
 }
 
 .head-nav__action {
-  color: #333;
+  color: #111;
   font-size: 14px;
 }
 </style>
