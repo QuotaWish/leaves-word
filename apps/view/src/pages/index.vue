@@ -1,10 +1,17 @@
 <script setup lang="ts" generic="T extends any, O extends any">
+import { useGlobalPageState } from '~/components/page/state';
 import Plan from "~/modules/plan/index.vue";
 import PlanCover from "~/modules/plan/PlanCover.vue";
 
 defineOptions({
   name: "IndexPage",
 });
+
+const globalPageState = useGlobalPageState()
+
+onActivated(() => {
+  globalPageState.value.title = "计划"
+})
 </script>
 
 <template>
@@ -25,7 +32,7 @@ defineOptions({
 .IndexPage-Card {
   &::before {
     z-index: 1;
-    content: "";
+    content: '';
     position: absolute;
 
     top: 0;

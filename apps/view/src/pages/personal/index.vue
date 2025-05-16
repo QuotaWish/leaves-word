@@ -1,9 +1,14 @@
 <script setup>
+import { useGlobalPageState } from '~/components/page/state';
 import PersonalModule from "~/modules/personal/index.vue";
 
 defineOptions({
   name: "PersonalPage",
 });
+
+const globalPageState = useGlobalPageState()
+
+globalPageState.value.title = "个人中心"
 </script>
 
 <template>
@@ -22,11 +27,7 @@ defineOptions({
   overflow-x: hidden;
 
   /* 添加渐变背景 */
-  background: linear-gradient(
-    135deg,
-    rgba(var(--theme-color-rgb), 0.02) 0%,
-    rgba(var(--theme-color-rgb), 0.05) 100%
-  );
+  background: linear-gradient(135deg, rgba(var(--theme-color-rgb), 0.02) 0%, rgba(var(--theme-color-rgb), 0.05) 100%);
 
   /* 设置滚动条样式 */
   &::-webkit-scrollbar {

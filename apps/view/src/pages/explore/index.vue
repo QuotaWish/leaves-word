@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { Swipe, SwipeItem } from "vant";
-import Explore from "~/modules/explore/index.vue";
 import { useRouter } from "vue-router";
+import { useGlobalPageState } from '~/components/page/state';
+import Explore from "~/modules/explore/index.vue";
 
 defineOptions({
   name: "ExplorePage",
 });
+
+const globalPageState = useGlobalPageState()
+
+globalPageState.value.title = "探索"
 
 const icons = [
   {
@@ -73,7 +78,8 @@ const icons = [
 const router = useRouter();
 
 function directPage(icon: any) {
-  if (icon.path) router.push(icon.path);
+  if (icon.path)
+    router.push(icon.path);
 }
 const swiperList: Array<string> = [
   "https://img2.quotawish.com/2025/03/04/67c71582b0b5e.gif",
@@ -110,9 +116,9 @@ const swiperList: Array<string> = [
         :touch-distance="10"
       >
         <SwipeItem
-          class="ExplorePage-BannerItem"
           v-for="(item, idx) in swiperList"
           :key="idx"
+          class="ExplorePage-BannerItem"
           @click="
             idx === 0
               ? router.push('/explore/comprehensive')
@@ -134,7 +140,7 @@ const swiperList: Array<string> = [
         >
           <h3
             absolute
-            class="ExplorePage-BannerItem-TransTitle left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] z-10 font-bold text-4xl text-white"
+            class="ExplorePage-BannerItem-TransTitle left-[50%] top-[50%] z-10 translate-x-[-50%] translate-y-[-50%] text-4xl text-white font-bold"
           >
             词汇测试
           </h3>
@@ -187,11 +193,7 @@ const swiperList: Array<string> = [
   color: #fff;
   overflow: hidden;
   border-radius: 25px;
-  background-image: linear-gradient(
-    to right,
-    rgb(248, 99, 99),
-    rgb(74, 74, 231)
-  );
+  background-image: linear-gradient(to right, rgb(248, 99, 99), rgb(74, 74, 231));
 }
 
 .ExplorePage-Banner .van-swipe {
