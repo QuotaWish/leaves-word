@@ -52,9 +52,54 @@ export function useSound(url: string) {
 }
 
 export function useWordSound(word: string): Promise<HTMLAudioSoundElement> {
-  const url = $api.utils.getWordPronounce(word)
+  const request = $api.utils.getWordPronounce(word)
 
-  return useSound(url)
+  const audio = new Audio() as HTMLAudioSoundElement
+
+  audio.getTimer = () => {
+    return audio.duration
+  }
+
+  audio.waitForPlay = () => {
+    return new Promise<void>((resolve) => {
+      audio.play()
+
+      audio.onended = () => {
+        resolve()
+      }
+    })
+  }
+
+  return new Promise<HTMLAudioSoundElement>((resolve, reject) => {
+    const timeoutId = setTimeout(() => {
+      console.warn(`Audio load timeout: ${word}`)
+      reject(new Error(`Audio load timeout: ${word}`))
+    }, 8000)
+
+    setTimeout(async () => {
+      const res = await request
+
+      const blob = new Blob([res], { type: "audio/mpeg" });
+      const audioUrl = URL.createObjectURL(blob)
+
+      audio.src = audioUrl
+
+      audio.oncanplaythrough = () => {
+        clearTimeout(timeoutId)
+        resolve(audio)
+      }
+
+      audio.onerror = (e) => {
+        clearTimeout(timeoutId)
+        console.error(`Audio load error: ${word}`, e)
+        reject(new Error(`Audio load error: ${word}`))
+      }
+    })
+
+    audio.load()
+
+    return audio
+  })
 }
 
 export function usePhraseSound(phrase: string): Promise<HTMLAudioSoundElement> {

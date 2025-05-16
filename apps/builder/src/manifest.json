@@ -88,7 +88,13 @@
                 }
             },
             "splashscreen" : {
-                "useOriginalMsgbox" : true
+                "useOriginalMsgbox" : false,
+                "androidStyle" : "default",
+                "android" : {
+                    "hdpi" : "unpackage/res/icons/f7e0c28bed207b12243a2d0e10b0ccc4.png",
+                    "xhdpi" : "unpackage/res/icons/f7e0c28bed207b12243a2d0e10b0ccc4.png",
+                    "xxhdpi" : "unpackage/res/icons/f7e0c28bed207b12243a2d0e10b0ccc4.png"
+                }
             },
             "safearea" : {
                 "bottom" : {

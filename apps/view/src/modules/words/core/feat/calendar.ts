@@ -138,6 +138,3 @@ export class CalendarData<S extends Statistics<object>> {
     return calendar
   }
 }
-
-if (localStorage.getItem('calendar-data') === '{}')
-  localStorage.removeItem('calendar-data')

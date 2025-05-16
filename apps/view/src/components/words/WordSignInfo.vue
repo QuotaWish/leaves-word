@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import PlanSelector from "~/components/words/PlanSelector.vue";
 import {
+  calendarData,
   calendarManager,
   globalPreference,
   useTargetData,
@@ -8,9 +9,9 @@ import {
 
 import LeafSpeedButton from "../button/LeafSpeedButton.vue";
 import WordSignInfoCard from "./card/WordSignInfoCard.vue";
+import ModeSelector from "./ModeSelector.vue";
 import Cat from "/svg/cat.svg";
 import Checked from "/svg/complete.svg";
-import ModeSelector from "./ModeSelector.vue";
 
 const router = useRouter();
 
@@ -22,7 +23,13 @@ const learnedAmo = computed(() => 5); // storage.value?.getLearnedWords().length
 const totalAmo = computed(() => dictionary.value.data?.published_words ?? 0);
 
 const progress = computed(() => learnedAmo.value / totalAmo.value);
-const todayData = computed(() => calendarManager.getTodayData());
+const todayData = ref()
+
+onMounted(() => {
+  todayData.value = calendarManager.getTodayData()
+
+  console.log("todayData", todayData)
+})
 
 function calculateTime(amo: number) {
   const mode = targetSignMode.value;
@@ -86,7 +93,7 @@ async function handleCheckSign() {
         class="WordSignInfo-Dictionary"
         @click="router.push(`/dictionary/${dictionary.id}`)"
       >
-        <DictionaryBookDisplay onlyImage :model-value="dictionary.data" />
+        <DictionaryBookDisplay only-image :model-value="dictionary.data" />
       </div>
 
       <div class="WordSignInfo-Content">
@@ -114,11 +121,9 @@ async function handleCheckSign() {
           class="WordSignInfo-Content-Desc"
         >
           <span>{{ learnedAmo }}/{{ totalAmo }} 已学习</span>
-          <span mr-4 text-sm op-75
-            >剩余
+          <span mr-4 text-sm op-75>剩余
             {{ Math.ceil((totalAmo - learnedAmo) / globalPreference.amount) }}
-            天</span
-          >
+            天</span>
         </p>
         <LineProgress :progress="progress" />
       </div>
@@ -128,16 +133,16 @@ async function handleCheckSign() {
       <p w-full flex items-center justify-between>
         <span font-bold class="title">今日计划</span>
         <span
+          v-if="!todayData?.signed && targetSignMode"
           flex
           items-center
           gap-1
-          v-if="!todayData?.signed && targetSignMode"
           text-sm
           op-50
           @click="selectMode"
         >
           {{ targetSignMode.getModeName() }}
-          <i block i-carbon:chevron-sort />
+          <i i-carbon:chevron-sort block />
         </span>
         <span
           flex
@@ -162,7 +167,9 @@ async function handleCheckSign() {
       >
         <template v-if="todayData?.signed">
           <div class="WordSignInfo-DetailBlock">
-            <p text-sm font-bold op-75>已学习</p>
+            <p text-sm font-bold op-75>
+              已学习
+            </p>
 
             <p>
               <span mr-3 text-3xl font-bold>
@@ -174,7 +181,9 @@ async function handleCheckSign() {
         </template>
         <template v-else>
           <div class="WordSignInfo-DetailBlock">
-            <p text-sm op-75>需新学</p>
+            <p text-sm op-75>
+              需新学
+            </p>
 
             <p>
               <span mr-3 text-3xl font-bold>
@@ -184,12 +193,13 @@ async function handleCheckSign() {
             </p>
           </div>
           <div class="WordSignInfo-DetailBlock">
-            <p text-sm op-75>需复习</p>
+            <p text-sm op-75>
+              需复习
+            </p>
 
             <p>
               <span mr-3 text-3xl font-bold>
-                {{ globalPreference.amount }} </span
-              >词
+                {{ globalPreference.amount }} </span>词
             </p>
           </div>
         </template>
@@ -225,7 +235,7 @@ async function handleCheckSign() {
     </template>
 
     <template #loading>
-      <div flex items-center justify-center gap-2 flex-col>
+      <div flex flex-col items-center justify-center gap-2>
         <Loading />
         <span text-sm op-75>获取数据中...</span>
       </div>
@@ -244,8 +254,12 @@ async function handleCheckSign() {
             />
           </svg>
         </div>
-        <div class="WordSignInfo-Empty-Title">暂未选择词书</div>
-        <div class="WordSignInfo-Empty-Desc">选择词书以立即开始</div>
+        <div class="WordSignInfo-Empty-Title">
+          暂未选择词书
+        </div>
+        <div class="WordSignInfo-Empty-Desc">
+          选择词书以立即开始
+        </div>
         <LeafButton plain class="WordSignInfo-Empty-Button" @click="selectDict">
           选择词书
         </LeafButton>
