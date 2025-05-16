@@ -48,6 +48,8 @@ export interface IRoutePageEmits {
 
 export interface IPageNavHolderProps extends IRoutePageProps {
   title: string;
+  navColor?: string;
+  headColor?: string;
   header?: boolean;
   contentPadding?: boolean;
   /**

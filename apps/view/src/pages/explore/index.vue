@@ -56,9 +56,9 @@ const icons = [
     color: ["#0DB2B3", "#0B7B8A"],
   },
   {
-    name: "红色旋风",
+    name: "红色革命",
     icon: "i-carbon-tropical-storm-tracks",
-    path: "/explore/red-typhoon",
+    path: "/explore/revolution",
     color: ["#FE0000", "#F30102"],
   },
   {

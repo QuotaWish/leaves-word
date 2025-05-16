@@ -3,6 +3,8 @@ import { computed, defineEmits, defineProps } from "vue";
 import { useGlobalPageState } from './state';
 
 interface HeadNavProps {
+  color?: string;
+  headColor?: string;
   title?: string;
   showBack?: boolean;
   showAction?: boolean;
@@ -14,6 +16,7 @@ interface HeadNavProps {
 }
 
 const props = withDefaults(defineProps<HeadNavProps>(), {
+  color: "",
   title: "标题",
   showBack: true,
   showAction: false,
@@ -68,6 +71,8 @@ onBeforeRouteLeave(() => {
       'fake-background': isBlur,
       expand,
     }"
+
+    :style="`--nav-color: ${color ?? ''};--head-color: ${headColor ?? ''}`"
   >
     <div class="HeadNav-Inner px-2">
       <div :class="{ disabled }" class="head-nav__left">
@@ -99,6 +104,8 @@ onBeforeRouteLeave(() => {
   margin-top: -44px;
 
   height: 88px;
+
+
 }
 
 .HeadNav-Inner {
@@ -117,10 +124,12 @@ onBeforeRouteLeave(() => {
 .HeadNav {
   height: 44px;
   width: 100%;
-  background-color: var(--el-bg-color-page);
   position: relative;
   box-sizing: border-box;
   font-size: 14px;
+
+  color: var(--head-color, var(--el-text-color-primary)) !important;
+  background-color: var(--nav-color, var(--el-bg-color-page));
 }
 
 .head-nav--transparent {
@@ -133,6 +142,8 @@ onBeforeRouteLeave(() => {
   backdrop-filter: blur(18px) saturate(180%);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: none;
+
+  --fake-color: var(--nav-color, var(--el-bg-color-page));
 }
 
 .head-nav__left {
@@ -152,15 +163,14 @@ onBeforeRouteLeave(() => {
 .head-nav__back {
   display: flex;
   align-items: center;
-  color: var(--el-text-color-primary);
 }
 
 .head-nav__back-icon {
   display: inline-block;
   width: 8px;
   height: 8px;
-  border-left: 2px solid var(--el-text-color-primary);
-  border-bottom: 2px solid var(--el-text-color-primary);
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
   transform: rotate(45deg);
   margin-right: 4px;
 
@@ -202,7 +212,6 @@ onBeforeRouteLeave(() => {
   text-align: center;
   font-size: 16px;
   font-weight: 500;
-  color: var(--el-text-color-primary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

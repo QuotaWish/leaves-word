@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { IPageNavHolderProps } from "../types";
 import HeadNav from "../HeadNav.vue";
-import { IPageNavHolderEmits } from "../types";
 
 const props = withDefaults(defineProps<IPageNavHolderProps>(), {
   adapt: true,
+  navColor: "",
   contentPadding: true,
 });
 
@@ -38,7 +38,7 @@ function handleScroll() {
   >
     <template #header>
       <slot name="topHeader">
-        <HeadNav :title="title" :disabled="loading" @back="router.back">
+        <HeadNav :expand="immersive" :head-color="immersive ? (immersiveOptions.enable ? headColor : '') : headColor" :color="immersive ? (immersiveOptions.enable ? navColor : '') : navColor" :title="title" :disabled="loading" @back="router.back">
           <template #action>
             <slot name="action" />
           </template>

@@ -29,10 +29,10 @@ interface Article {
   imageUrl: string
 }
 
+const router = useRouter()
 const activeTab = ref('study')
 const searchQuery = ref('')
 const isGenerating = ref(false)
-const isDialogVisible = ref(false)
 const selectedArticle = ref<Article | null>(null)
 const aiResponse = ref('')
 const userPrompt = ref('')
@@ -158,7 +158,13 @@ function getArticleVocabulary(article: Article): Vocabulary[] {
 
 function showArticle(article: Article): void {
   selectedArticle.value = article
-  isDialogVisible.value = true
+
+  router.push({
+    path: '/explore/revolution/article',
+    query: {
+      article: article.id
+    }
+  })
 }
 
 function generateAiResponse(): void {
@@ -187,7 +193,7 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
 </script>
 
 <template>
-  <div class="RedTyphoonPage h-full overflow-y-scroll">
+  <div class="RedTyphoonPage">
     <div class="RedTyphoonPage-Banner">
       <h1>红色旋风</h1>
       <h2>Revolution in English</h2>
@@ -345,73 +351,6 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
         </div>
       </ElCard>
     </div>
-
-    <!-- 文章详情对话框 -->
-    <ElDialog
-      v-model="isDialogVisible"
-      fullscreen
-      :show-close="true"
-      class="RedTyphoonPage-ArticleDialog"
-    >
-      <template v-if="selectedArticle">
-        <div class="RedTyphoonPage-ArticleDetail">
-          <div class="RedTyphoonPage-ArticleHeader">
-            <img
-              :src="selectedArticle.imageUrl"
-              alt="Article header"
-              class="RedTyphoonPage-ArticleHeaderImage"
-            >
-            <div class="RedTyphoonPage-ArticleOverlay"></div>
-            <h2 class="RedTyphoonPage-ArticleTitle">
-              {{ selectedArticle.title }}
-            </h2>
-            <p class="RedTyphoonPage-ArticleAuthorDetail">
-              By {{ selectedArticle.author }}
-            </p>
-          </div>
-
-          <div class="RedTyphoonPage-ArticleBody">
-            <div class="RedTyphoonPage-VocabHighlight">
-              <div class="i-carbon-dictionary"></div>
-              <span>重点词汇</span>
-              <div class="RedTyphoonPage-VocabTags">
-                <div
-                  v-for="word in getArticleVocabulary(selectedArticle)"
-                  :key="word.id"
-                  class="RedTyphoonPage-VocabTag"
-                >
-                  <span>{{ word.english }}</span>
-                  <span>{{ word.chinese }}</span>
-                </div>
-              </div>
-            </div>
-
-            <p
-              v-for="(paragraph, index) in selectedArticle.content.split('\n\n')"
-              :key="index"
-              class="RedTyphoonPage-Paragraph"
-            >
-              {{ paragraph }}
-            </p>
-
-            <div class="RedTyphoonPage-ArticleActions">
-              <ElButton class="RedTyphoonPage-ArticleButton">
-                <div class="i-carbon-volume-up"></div>
-                朗读文章
-              </ElButton>
-              <ElButton class="RedTyphoonPage-ArticleButton">
-                <div class="i-carbon-document-export"></div>
-                导出笔记
-              </ElButton>
-              <ElButton type="primary" class="RedTyphoonPage-ArticleButton">
-                <div class="i-carbon-translate"></div>
-                翻译练习
-              </ElButton>
-            </div>
-          </div>
-        </div>
-      </template>
-    </ElDialog>
   </div>
 </template>
 
@@ -571,79 +510,6 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
     gap: 1rem;
   }
 
-  &-Article {
-    display: flex;
-    cursor: pointer;
-    transition: transform 0.2s;
-
-    &:hover {
-      transform: translateY(-3px);
-    }
-
-    &Content {
-      flex: 1;
-      padding-right: 1rem;
-
-      h3 {
-        font-size: 1.1rem;
-        font-weight: 500;
-        margin-bottom: 0.5rem;
-        color: var(--el-text-color-primary);
-      }
-    }
-
-    &Author {
-      font-size: 0.875rem;
-      color: var(--el-text-color-secondary);
-      margin-bottom: 0.75rem;
-    }
-
-    &Excerpt {
-      font-size: 0.875rem;
-      color: var(--el-text-color-secondary);
-      line-height: 1.5;
-      margin-bottom: 1rem;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    &Image {
-      width: 120px;
-      height: 120px;
-      flex-shrink: 0;
-      border-radius: 8px;
-      overflow: hidden;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
-
-    &Vocab {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-
-      [class^='i-'] {
-        color: #d32f2f;
-        font-size: 1rem;
-      }
-    }
-
-    &VocabTag {
-      font-size: 0.75rem;
-      color: var(--el-text-color-regular);
-      background-color: var(--el-fill-color-light);
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-    }
-  }
-
   &-AI {
     &Card {
       border-radius: 12px;
@@ -755,64 +621,6 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
     }
   }
 
-  &-ArticleDialog {
-    .el-dialog__body {
-      padding: 0;
-    }
-  }
-
-  &-ArticleDetail {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  &-ArticleHeader {
-    position: relative;
-    height: 250px;
-
-    &Image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
-
-  &-ArticleOverlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
-  }
-
-  &-ArticleTitle {
-    position: absolute;
-    bottom: 50px;
-    left: 1.5rem;
-    right: 1.5rem;
-    color: white;
-    font-size: 1.75rem;
-    font-weight: 600;
-  }
-
-  &-ArticleAuthorDetail {
-    position: absolute;
-    bottom: 20px;
-    left: 1.5rem;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1rem;
-  }
-
-  &-ArticleBody {
-    flex: 1;
-    padding: 1.5rem;
-    max-width: 800px;
-    margin: 0 auto;
-    width: 100%;
-  }
-
   &-VocabHighlight {
     display: flex;
     align-items: center;
@@ -831,6 +639,75 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
     span {
       font-weight: 500;
       color: #d32f2f;
+    }
+  }
+
+  &-Article {
+    display: flex;
+    cursor: pointer;
+    border-radius: 18px;
+
+    &Content {
+      flex: 1;
+      padding-right: 1rem;
+
+      h3 {
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: var(--el-text-color-primary);
+      }
+    }
+
+    &Author {
+      font-size: 0.875rem;
+      color: var(--el-text-color-secondary);
+      margin-bottom: 0.75rem;
+    }
+
+    &Excerpt {
+      font-size: 0.875rem;
+      color: var(--el-text-color-secondary);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    &Image {
+      width: 120px;
+      height: 120px;
+      flex-shrink: 0;
+      border-radius: 8px;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    &Vocab {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+
+      [class^='i-'] {
+        color: #d32f2f;
+        font-size: 1rem;
+      }
+    }
+
+    &VocabTag {
+      font-size: 0.75rem;
+      color: var(--el-text-color-regular);
+      background-color: var(--el-fill-color-light);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
     }
   }
 
@@ -865,27 +742,6 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
     }
   }
 
-  &-Paragraph {
-    font-size: 1rem;
-    line-height: 1.8;
-    color: var(--el-text-color-primary);
-    margin-bottom: 1.5rem;
-  }
-
-  &-ArticleActions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 2rem;
-  }
-
-  &-ArticleButton {
-    display: flex;
-    align-items: center;
-
-    [class^='i-'] {
-      margin-right: 0.5rem;
-    }
-  }
+  
 }
 </style>
