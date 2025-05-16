@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import type { IRoutePageEmits, IRoutePageProps } from "./types";
 import { PullRefresh } from "vant";
-import { IRoutePageEmits, IRoutePageProps } from "./types";
 
 const props = withDefaults(defineProps<IRoutePageProps>(), {
   adapt: true,
@@ -13,7 +13,8 @@ const emits = defineEmits<IRoutePageEmits>();
 const router = useRouter();
 
 router.beforeEach(async (to, from, next) => {
-  if (!props.loading) next();
+  if (!props.loading)
+    next();
 });
 
 const innerRefresh = ref(false);
@@ -41,16 +42,14 @@ async function handleRefresh() {
       class="RoutePage-Main relative w-full flex-1 overflow-hidden"
     >
       <PullRefresh
-        :disabled="!enablePullRefresh"
-        h-full
+        v-model="innerRefresh"
         w-full
         @refresh="handleRefresh"
-        v-model="innerRefresh"
       >
         <!-- 加载提示 -->
         <template #loading>
-          <div flex justify-center items-center w-full h-full>
-            <Loading class="w-[24px] h-[24px]" />
+          <div h-full w-full flex items-center justify-center>
+            <Loading class="h-[24px] w-[24px]" />
           </div>
         </template>
         <slot />
