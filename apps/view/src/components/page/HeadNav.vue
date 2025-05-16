@@ -169,12 +169,6 @@ onBeforeRouteLeave(() => {
 }
 
 .head-nav__back-text {
-  position: absolute;
-
-  left: 50%;
-
-  transform: translateX(-50%);
-
   font-size: 14px;
   opacity: 0;
   animation: backTextEnter 0.35s 0.25s forwards;
@@ -203,6 +197,7 @@ onBeforeRouteLeave(() => {
 }
 
 .head-nav__title {
+  position: absolute;
   flex: 1;
   text-align: center;
   font-size: 16px;
@@ -212,6 +207,10 @@ onBeforeRouteLeave(() => {
   text-overflow: ellipsis;
   white-space: nowrap;
   padding: 0 16px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
 }
 
 .head-nav__right {
