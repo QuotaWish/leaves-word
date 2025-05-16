@@ -195,7 +195,7 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
 <template>
   <div class="RedTyphoonPage">
     <div class="RedTyphoonPage-Banner">
-      <h1>红色旋风</h1>
+      <h1>红色革命</h1>
       <h2>Revolution in English</h2>
     </div>
 
@@ -394,17 +394,20 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
   }
 
   &-Tabs {
+    z-index: 10;
+    position: sticky;
     display: flex;
+
+    top: 0;
+
     margin-bottom: 1.5rem;
     background-color: var(--el-fill-color-light);
-    border-radius: 12px;
     overflow: hidden;
   }
 
   &-Tab {
     flex: 1;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 0.75rem 0;
