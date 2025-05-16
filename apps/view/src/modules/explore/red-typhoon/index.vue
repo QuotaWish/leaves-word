@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
-import { ElCard, ElButton, ElInput, ElDivider, ElSkeleton, ElDialog } from 'element-plus'
+import { ElButton, ElCard, ElDialog, ElDivider, ElInput, ElSkeleton } from 'element-plus'
+import { computed, reactive, ref } from 'vue'
 import 'element-plus/theme-chalk/el-card.css'
 import 'element-plus/theme-chalk/el-button.css'
 import 'element-plus/theme-chalk/el-input.css'
@@ -50,57 +50,57 @@ const vocabList = reactive<Vocabulary[]>([
     english: 'revolution',
     chinese: '革命',
     sentence: 'The revolution changed the course of Chinese history.',
-    category: 'history'
+    category: 'history',
   },
   {
     id: 2,
     english: 'solidarity',
     chinese: '团结',
     sentence: 'The solidarity of the workers was their greatest strength.',
-    category: 'spirit'
+    category: 'spirit',
   },
   {
     id: 3,
     english: 'perseverance',
     chinese: '毅力',
     sentence: 'Their perseverance during the Long March is legendary.',
-    category: 'spirit'
+    category: 'spirit',
   },
   {
     id: 4,
     english: 'struggle',
     chinese: '斗争',
     sentence: 'The struggle for independence lasted many years.',
-    category: 'history'
+    category: 'history',
   },
   {
     id: 5,
     english: 'liberation',
     chinese: '解放',
     sentence: 'The liberation of China was achieved in 1949.',
-    category: 'history'
+    category: 'history',
   },
   {
     id: 6,
     english: 'comrade',
     chinese: '同志',
     sentence: 'The comrades worked together to achieve their goals.',
-    category: 'figures'
+    category: 'figures',
   },
   {
     id: 7,
     english: 'historical materialism',
     chinese: '历史唯物主义',
     sentence: 'Historical materialism is a methodological approach to history and society.',
-    category: 'spirit'
+    category: 'spirit',
   },
   {
     id: 8,
     english: 'revolutionary base',
     chinese: '革命根据地',
     sentence: 'Yan\'an served as a revolutionary base during the war.',
-    category: 'places'
-  }
+    category: 'places',
+  },
 ])
 
 const articles = reactive<Article[]>([
@@ -114,7 +114,7 @@ Although the retreat was originally intended to link up with forces in Shaanxi p
 
 The determination and perseverance shown by the participants of the Long March have made it a central event in Chinese Communist history. It consolidated Mao Zedong's leadership position and the experience became a source of inspiration for the Chinese people.`,
     vocabulary: [3, 1, 4],
-    imageUrl: 'https://img2.quotawish.com/2025/03/07/67c9e5a3f06a5.jpg'
+    imageUrl: 'https://img2.quotawish.com/2025/03/07/67c9e5a3f06a5.jpg',
   },
   {
     id: 2,
@@ -126,16 +126,17 @@ During this period, Yan'an became the center for revolutionary education and cul
 
 The Yan'an spirit, characterized by self-reliance, hard work, and serving the people, continues to be an important part of Chinese revolutionary heritage. Today, Yan'an is a popular revolutionary tourism destination, where visitors can learn about this crucial period in Chinese history.`,
     vocabulary: [1, 8, 2],
-    imageUrl: 'https://img2.quotawish.com/2025/03/07/67c9e5a49e5cc.jpg'
-  }
+    imageUrl: 'https://img2.quotawish.com/2025/03/07/67c9e5a49e5cc.jpg',
+  },
 ])
 
 const filteredVocab = computed(() => {
-  if (!searchQuery.value) return vocabList
+  if (!searchQuery.value)
+    return vocabList
   const query = searchQuery.value.toLowerCase()
   return vocabList.filter(
-    (word) => word.english.toLowerCase().includes(query) ||
-    word.chinese.includes(query)
+    word => word.english.toLowerCase().includes(query) ||
+      word.chinese.includes(query),
   )
 })
 
@@ -161,7 +162,8 @@ function showArticle(article: Article): void {
 }
 
 function generateAiResponse(): void {
-  if (!userPrompt.value.trim()) return
+  if (!userPrompt.value.trim())
+    return
 
   isGenerating.value = true
   aiResponse.value = ''
@@ -185,7 +187,7 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
 </script>
 
 <template>
-  <div class="RedTyphoonPage">
+  <div class="RedTyphoonPage h-full overflow-y-scroll">
     <div class="RedTyphoonPage-Banner">
       <h1>红色旋风</h1>
       <h2>Revolution in English</h2>
@@ -196,7 +198,7 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
         v-for="tab in [
           { id: 'study', name: '学习', icon: 'i-carbon-book' },
           { id: 'readings', name: '文章', icon: 'i-carbon-document' },
-          { id: 'ai', name: 'AI 导师', icon: 'i-carbon-machine-learning-model' }
+          { id: 'ai', name: 'AI 导师', icon: 'i-carbon-machine-learning-model' },
         ]"
         :key="tab.id"
         class="RedTyphoonPage-Tab"
@@ -215,7 +217,7 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
           v-model="searchQuery"
           placeholder="搜索红色词汇..."
           clearable
-          :prefix-icon="'i-carbon-search'"
+          prefix-icon="i-carbon-search"
         />
       </div>
 
@@ -236,7 +238,9 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
               <h4>{{ word.english }}</h4>
               <span class="RedTyphoonPage-WordChinese">{{ word.chinese }}</span>
             </div>
-            <p class="RedTyphoonPage-WordSentence">{{ word.sentence }}</p>
+            <p class="RedTyphoonPage-WordSentence">
+              {{ word.sentence }}
+            </p>
             <div class="RedTyphoonPage-WordActions">
               <ElButton type="text" size="small" class="RedTyphoonPage-VoiceButton">
                 <div class="i-carbon-volume-up"></div>
@@ -258,8 +262,12 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
       >
         <div class="RedTyphoonPage-ArticleContent">
           <h3>{{ article.title }}</h3>
-          <p class="RedTyphoonPage-ArticleAuthor">By {{ article.author }}</p>
-          <p class="RedTyphoonPage-ArticleExcerpt">{{ article.content.slice(0, 150) }}...</p>
+          <p class="RedTyphoonPage-ArticleAuthor">
+            By {{ article.author }}
+          </p>
+          <p class="RedTyphoonPage-ArticleExcerpt">
+            {{ article.content.slice(0, 150) }}...
+          </p>
 
           <div class="RedTyphoonPage-ArticleVocab">
             <div class="i-carbon-dictionary"></div>
@@ -354,8 +362,12 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
               class="RedTyphoonPage-ArticleHeaderImage"
             >
             <div class="RedTyphoonPage-ArticleOverlay"></div>
-            <h2 class="RedTyphoonPage-ArticleTitle">{{ selectedArticle.title }}</h2>
-            <p class="RedTyphoonPage-ArticleAuthorDetail">By {{ selectedArticle.author }}</p>
+            <h2 class="RedTyphoonPage-ArticleTitle">
+              {{ selectedArticle.title }}
+            </h2>
+            <p class="RedTyphoonPage-ArticleAuthorDetail">
+              By {{ selectedArticle.author }}
+            </p>
           </div>
 
           <div class="RedTyphoonPage-ArticleBody">
@@ -405,8 +417,6 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
 
 <style lang="scss" scoped>
 .RedTyphoonPage {
-  padding: 1rem;
-
   &-Banner {
     background: linear-gradient(135deg, #d50000, #b71c1c);
     color: white;
@@ -462,7 +472,7 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
     cursor: pointer;
     transition: all 0.3s ease;
 
-    [class^="i-"] {
+    [class^='i-'] {
       font-size: 1.5rem;
       margin-bottom: 0.25rem;
     }
@@ -489,7 +499,7 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
       align-items: center;
       margin-bottom: 0.75rem;
 
-      [class^="i-"] {
+      [class^='i-'] {
         font-size: 1.25rem;
         margin-right: 0.5rem;
         color: #d32f2f;
@@ -549,7 +559,7 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
   }
 
   &-VoiceButton {
-    [class^="i-"] {
+    [class^='i-'] {
       font-size: 1.1rem;
       color: var(--el-color-primary);
     }
@@ -619,7 +629,7 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
       flex-wrap: wrap;
       gap: 0.5rem;
 
-      [class^="i-"] {
+      [class^='i-'] {
         color: #d32f2f;
         font-size: 1rem;
       }
@@ -733,11 +743,12 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
       background-color: #d32f2f;
       border-color: #d32f2f;
 
-      [class^="i-"] {
+      [class^='i-'] {
         margin-right: 0.5rem;
       }
 
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         background-color: #b71c1c;
         border-color: #b71c1c;
       }
@@ -773,7 +784,7 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
   }
 
   &-ArticleTitle {
@@ -811,7 +822,7 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
     border-radius: 8px;
     margin-bottom: 1.5rem;
 
-    [class^="i-"] {
+    [class^='i-'] {
       color: #d32f2f;
       font-size: 1.25rem;
       margin-right: 0.5rem;
@@ -872,15 +883,9 @@ Would you like to know more about any specific aspect of Chinese revolutionary h
     display: flex;
     align-items: center;
 
-    [class^="i-"] {
+    [class^='i-'] {
       margin-right: 0.5rem;
     }
   }
 }
 </style>
-
-<route lang="yaml">
-meta:
-  title: 红色旋风
-  layout: explore
-</route>

@@ -31,6 +31,7 @@ export interface IWIthPageProps {
 }
 
 export interface IRoutePageProps extends IWIthPageProps {
+  empty?: boolean;
   loading?: boolean;
   loadingMask?: boolean;
   innerClass?: string;
@@ -47,7 +48,6 @@ export interface IRoutePageEmits {
 
 export interface IPageNavHolderProps extends IRoutePageProps {
   title: string;
-  empty?: boolean;
   header?: boolean;
   contentPadding?: boolean;
   /**

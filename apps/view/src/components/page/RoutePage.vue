@@ -31,40 +31,61 @@ async function handleRefresh() {
   <!-- :class="{ visible }" -->
   <WithPage
     v-bind="props"
-    :class="{ pageLoading: loading, loadingMask }"
+    :class="{ empty, pageLoading: loading, loadingMask }"
     class="RoutePage transition-cubic absolute-layout flex flex-col"
   >
     <div class="RoutePage-Header">
       <slot name="header" />
     </div>
+
     <div
       :class="innerClass"
       class="RoutePage-Main relative w-full flex-1 overflow-hidden"
     >
       <PullRefresh
         v-model="innerRefresh"
-        w-full
+
+        h-full w-full
+        :disabled="!enablePullRefresh"
         @refresh="handleRefresh"
       >
+        <slot />
+
+        <div
+          class="transition-cubic fake-background RoutePage-Loading absolute-layout z-1 h-full w-full flex flex-col items-center justify-center gap-4 p-4"
+        >
+          <Loading />
+        </div>
+
         <!-- 加载提示 -->
         <template #loading>
           <div h-full w-full flex items-center justify-center>
             <Loading class="h-[24px] w-[24px]" />
           </div>
         </template>
-        <slot />
       </PullRefresh>
-
-      <div
-        class="transition-cubic fake-background RoutePage-Loading absolute-layout z-1 h-full w-full flex flex-col items-center justify-center gap-4 p-4"
-      >
-        <Loading />
-      </div>
     </div>
 
     <template #bg>
       <slot name="bg" />
     </template>
+
+    <div
+      class="RoutePage-Empty transition-cubic absolute-layout z-1 h-full w-full flex flex-col items-center justify-center gap-4 p-4"
+    >
+      <div class="RoutePage-Empty-Illusion">
+        <div class="RoutePage-Empty-Illusion-Image">
+          <img src="/svg/empty.svg" alt="empty" />
+        </div>
+        <div class="RoutePage-Empty-Illusion-Text">
+          <slot name="empty">
+            <div>
+              <span>数据踏空而去...</span>
+            </div>
+          </slot>
+        </div>
+      </div>
+    </div>
   </WithPage>
 </template>
 
@@ -85,6 +106,23 @@ async function handleRefresh() {
   opacity: 0;
   pointer-events: none;
   background-color: var(--el-fill-color);
+}
+
+.RoutePage-Empty {
+  &-Illusion {
+    &-Image {
+      width: 120px;
+      height: 120px;
+    }
+  }
+
+  .RoutePage.empty & {
+    transform: scale(1) translateY(0);
+  }
+
+  background-color: var(--el-fill-color);
+
+  transform: scale(0.8) translateY(300%);
 }
 
 .RoutePage {

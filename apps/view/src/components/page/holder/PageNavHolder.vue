@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import type { IPageNavHolderProps } from "../types";
 import HeadNav from "../HeadNav.vue";
-import { IPageNavHolderEmits, IPageNavHolderProps } from "../types";
+import { IPageNavHolderEmits } from "../types";
 
 const props = withDefaults(defineProps<IPageNavHolderProps>(), {
   adapt: true,
@@ -22,7 +23,8 @@ const IMMERSIVE_HEIGHT = 20;
 
 function handleScroll() {
   const scrollEl = scroller.value;
-  if (!scrollEl) return;
+  if (!scrollEl)
+    return;
 
   immersiveOptions.enable = scrollEl.scrollTop >= IMMERSIVE_HEIGHT;
 }
@@ -30,7 +32,7 @@ function handleScroll() {
 
 <template>
   <RoutePage
-    :class="{ empty, immersive: immersiveOptions.enable }"
+    :class="{ immersive: immersiveOptions.enable }"
     v-bind="props"
     class="PageNavHolder"
   >
@@ -45,8 +47,7 @@ function handleScroll() {
             <span
               class="PageNavHolder-ImmersiveTitle transition-cubic"
               :class="{ enter: immersiveOptions.enable }"
-              >{{ title }}</span
-            >
+            >{{ title }}</span>
           </template>
         </HeadNav>
       </slot>
@@ -64,12 +65,12 @@ function handleScroll() {
       <div
         ref="scroll"
         :class="{ 'px-4': contentPadding }"
-        class="PageNavHolder-Content h-full w-full"
+        class="PageNavHolder-Content h-full w-full overflow-y-scroll"
         @scroll="handleScroll"
       >
         <h1
-          class="PageNavHolder-ImmersiveMainTitle transition-cubic"
           v-if="immersive"
+          class="PageNavHolder-ImmersiveMainTitle transition-cubic"
           :class="{ enter: immersiveOptions.enable }"
           mb-4
           text-3xl
@@ -77,23 +78,6 @@ function handleScroll() {
           {{ title }}
         </h1>
         <slot />
-
-        <div
-          class="RoutePage-Empty transition-cubic absolute-layout z-1 h-full w-full flex flex-col items-center justify-center gap-4 p-4"
-        >
-          <div class="RoutePage-Empty-Illusion">
-            <div class="RoutePage-Empty-Illusion-Image">
-              <img src="/svg/empty.svg" alt="empty" />
-            </div>
-            <div class="RoutePage-Empty-Illusion-Text">
-              <slot name="empty">
-                <div>
-                  <span>数据踏空而去...</span>
-                </div>
-              </slot>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </RoutePage>
@@ -122,31 +106,8 @@ function handleScroll() {
   transform: translateY(0);
 }
 
-.RoutePage-Empty {
-  &-Illusion {
-    &-Image {
-      width: 120px;
-      height: 120px;
-    }
-  }
-
-  .PageNavHolder.empty & {
-    transform: scale(1) translateY(0);
-  }
-
-  background-color: var(--el-fill-color);
-
-  transform: scale(0.8) translateY(300%);
-}
-
 .PageNavHolder-Container {
   height: 100%;
-}
-
-.PageNavHolder-Content {
-  height: 100%;
-
-  overflow-y: auto;
 }
 
 .PageNavHolder {
