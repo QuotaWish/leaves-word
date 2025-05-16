@@ -71,7 +71,7 @@ const xRequest = new XRequest({
       // 检查是否是多行数据
       if (data.includes("\n")) {
         // 将数据按行分割，处理每一行
-        const lines = data.split("\n").filter((line) => line.trim());
+        const lines = data.split("\n").filter(line => line.trim());
         let result = "";
 
         for (const line of lines) {
@@ -274,6 +274,7 @@ async function handleSubmit(value: string): Promise<void> {
 
   // 添加用户消息
   addMessage("user", value);
+  inputMessage.value = ""
 
   // 开始聊天（通过 useSend 的 send 方法控制 loading 状态）
   startChat(value);
@@ -288,6 +289,12 @@ function handleCancel(): void {
 onMounted(() => {
   addMessage("ai", "千叶单词为您服务。", true);
 });
+
+function handleSenderSend() {
+  senderRef.value.submit()
+}
+
+const router = useRouter()
 </script>
 
 <template>
@@ -306,7 +313,19 @@ onMounted(() => {
         :autosize="{ minRows: 1, maxRows: 3 }"
         @submit="handleSubmit"
         @cancel="handleCancel"
-      />
+      >
+        <template #action-list>
+          <div class="flex items-center gap-1">
+            <el-button type="primary" plain circle color="#626aef" @click="router.push('/test/call')">
+              <div i-carbon-phone />
+            </el-button>
+
+            <el-button type="primary" circle color="#626aef" @click="handleSenderSend">
+              <div i-carbon-send />
+            </el-button>
+          </div>
+        </template>
+      </Sender>
     </div>
   </div>
 </template>
@@ -328,11 +347,7 @@ onMounted(() => {
   height: calc(100% - 120px);
   padding: 16px;
   overflow-y: auto;
-  background-image: linear-gradient(
-    to bottom,
-    var(--el-fill-color),
-    var(--el-fill-color-light)
-  );
+  background-image: linear-gradient(to bottom, var(--el-fill-color), var(--el-fill-color-light));
 }
 
 .chat-input {
