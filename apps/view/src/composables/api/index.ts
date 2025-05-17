@@ -34,6 +34,7 @@ const { onAuthRequired, onResponseRefreshToken } = createClientTokenAuthenticati
   },
   assignToken: method => {
     const token = globalAuthStorage.value.token
+    console.log("assign token", method, token)
     if (!token)
       return
 

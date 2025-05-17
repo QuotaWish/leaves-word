@@ -113,18 +113,31 @@ const nextWeekPrediction = ref({
               <p font-size-5 font-bold class="name">
                 {{ userName }}
               </p>
-              <p class="indent-[2px]" font-size-4 op-60>{{ userProfile }}</p>
+              <p class="indent-[2px]" font-size-4 op-60>
+                {{ userProfile }}
+              </p>
             </div>
           </div>
 
           <div
-            flex
-            justify-end
-            font-size-6
-            class="header-line"
-            @click="$router.push('/personal/edit')"
+            flex items-center justify-end gap-4
           >
-            <div i-ri:edit-2-fill class="cursor-pointer" />
+            <div
+              flex justify-end font-size-4
+              class="header-line"
+              @click="$router.push('/personal/scan')"
+            >
+              <div i-carbon-scan-alt class="cursor-pointer" />
+            </div>
+            <div
+              flex
+              justify-end
+              font-size-4
+              class="header-line"
+              @click="$router.push('/personal/edit')"
+            >
+              <div i-carbon-edit class="cursor-pointer" />
+            </div>
           </div>
         </div>
       </PersonalHeaderDisplay>
@@ -140,12 +153,16 @@ const nextWeekPrediction = ref({
             <div class="ai-icon">
               <div i-carbon:machine-learning-model />
             </div>
-            <div class="ai-title">学习风格分析</div>
+            <div class="ai-title">
+              学习风格分析
+            </div>
           </div>
           <div class="ai-card-content">
             <div class="learning-style">
               <div class="style-item">
-                <div class="style-label">视觉学习</div>
+                <div class="style-label">
+                  视觉学习
+                </div>
                 <div class="style-bar">
                   <div
                     class="style-fill"
@@ -157,7 +174,9 @@ const nextWeekPrediction = ref({
                 </div>
               </div>
               <div class="style-item">
-                <div class="style-label">听觉学习</div>
+                <div class="style-label">
+                  听觉学习
+                </div>
                 <div class="style-bar">
                   <div
                     class="style-fill"
@@ -169,7 +188,9 @@ const nextWeekPrediction = ref({
                 </div>
               </div>
               <div class="style-item">
-                <div class="style-label">阅读学习</div>
+                <div class="style-label">
+                  阅读学习
+                </div>
                 <div class="style-bar">
                   <div
                     class="style-fill"
@@ -190,7 +211,9 @@ const nextWeekPrediction = ref({
             <div class="ai-icon">
               <div i-carbon:chart-evaluation />
             </div>
-            <div class="ai-title">学习数据分析</div>
+            <div class="ai-title">
+              学习数据分析
+            </div>
           </div>
           <div class="ai-card-content">
             <div class="ai-stat-row">
@@ -198,22 +221,32 @@ const nextWeekPrediction = ref({
                 <div class="stat-value">
                   {{ aiAnalysisData.wordCount }}
                 </div>
-                <div class="stat-label">已学单词</div>
+                <div class="stat-label">
+                  已学单词
+                </div>
               </div>
               <div class="ai-stat">
-                <div class="stat-value">{{ aiAnalysisData.progress }}%</div>
-                <div class="stat-label">完成度</div>
+                <div class="stat-value">
+                  {{ aiAnalysisData.progress }}%
+                </div>
+                <div class="stat-label">
+                  完成度
+                </div>
               </div>
               <div class="ai-stat">
                 <div class="stat-value">
                   {{ aiAnalysisData.consistencyScore }}
                 </div>
-                <div class="stat-label">连贯性</div>
+                <div class="stat-label">
+                  连贯性
+                </div>
               </div>
             </div>
 
             <div class="ai-graph">
-              <div class="graph-title">学习时段分布</div>
+              <div class="graph-title">
+                学习时段分布
+              </div>
               <div class="time-distribution">
                 <div class="time-bar">
                   <div
@@ -238,7 +271,9 @@ const nextWeekPrediction = ref({
             </div>
 
             <div class="word-frequency">
-              <div class="graph-title">常用词汇</div>
+              <div class="graph-title">
+                常用词汇
+              </div>
               <div class="word-tags">
                 <span
                   v-for="item in aiAnalysisData.wordFrequency"
@@ -259,7 +294,9 @@ const nextWeekPrediction = ref({
             <div class="ai-icon">
               <div i-carbon:idea />
             </div>
-            <div class="ai-title">学习建议</div>
+            <div class="ai-title">
+              学习建议
+            </div>
           </div>
           <div class="ai-card-content">
             <ul class="suggestion-list">
@@ -276,29 +313,39 @@ const nextWeekPrediction = ref({
             <div class="ai-icon">
               <div i-carbon:forecast-lightning />
             </div>
-            <div class="ai-title">下周预测</div>
+            <div class="ai-title">
+              下周预测
+            </div>
           </div>
           <div class="ai-card-content">
             <div class="prediction-item">
-              <div class="prediction-label">建议主题:</div>
+              <div class="prediction-label">
+                建议主题:
+              </div>
               <div class="prediction-value">
                 {{ nextWeekPrediction.topicSuggestion }}
               </div>
             </div>
             <div class="prediction-item">
-              <div class="prediction-label">最佳学习日:</div>
+              <div class="prediction-label">
+                最佳学习日:
+              </div>
               <div class="prediction-value">
                 {{ nextWeekPrediction.bestStudyDay }}
               </div>
             </div>
             <div class="prediction-item">
-              <div class="prediction-label">预计词汇量:</div>
+              <div class="prediction-label">
+                预计词汇量:
+              </div>
               <div class="prediction-value">
                 {{ nextWeekPrediction.estimatedWords }}
               </div>
             </div>
             <div class="prediction-item">
-              <div class="prediction-label">完成度预测:</div>
+              <div class="prediction-label">
+                完成度预测:
+              </div>
               <div class="prediction-value">
                 {{ nextWeekPrediction.completion }}%
               </div>
@@ -328,7 +375,9 @@ const nextWeekPrediction = ref({
       <p class="select-none" @click="handleVersionClick">
         <VersionBar />
       </p>
-      <p font-size-3 class="select-none">Powered by QuotaWish.</p>
+      <p font-size-3 class="select-none">
+        Powered by QuotaWish.
+      </p>
     </template>
   </PersonalLayout>
 </template>
@@ -448,11 +497,7 @@ const nextWeekPrediction = ref({
 
       .style-fill {
         height: 100%;
-        background: linear-gradient(
-          to right,
-          var(--theme-color-primary),
-          var(--theme-color-light)
-        );
+        background: linear-gradient(to right, var(--theme-color-primary), var(--theme-color-light));
         border-radius: 4px;
 
         .light & {
@@ -492,11 +537,7 @@ const nextWeekPrediction = ref({
   .stat-value {
     font-size: 20px;
     font-weight: 600;
-    background: linear-gradient(
-      to right,
-      var(--theme-color-primary),
-      var(--theme-color-light)
-    );
+    background: linear-gradient(to right, var(--theme-color-primary), var(--theme-color-light));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 4px;
@@ -618,7 +659,7 @@ const nextWeekPrediction = ref({
     }
 
     &::before {
-      content: "•";
+      content: '•';
       position: absolute;
       left: -15px;
       color: var(--theme-color-primary);
