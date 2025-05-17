@@ -68,6 +68,10 @@ const modeClass = computed(() => {
 
 <style lang="scss" scoped>
 .SplashContainer.wrapped-box .SplashWrapper.empty {
+  &:has(.SplashWrapper-Clip.screenshot) {
+    border-radius: 0 !important;
+    border-color: red !important;
+  }
   // iPhone 12 Pro
   width: 390px;
   height: 844px;
@@ -94,6 +98,9 @@ const modeClass = computed(() => {
   }
 
   &-Clip {
+    &.screenshot {
+      border-radius: 0 !important;
+    }
     padding-bottom: 1rem;
 
     border-radius: 48px !important;

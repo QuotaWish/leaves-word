@@ -26,6 +26,12 @@ export const MOCK_DEVICES = {
     size: '420:874', // 18px是左右侧按键的增加 一侧9px 数出来的
     mask: iPhone16Mock,
   },
+  screenshot: {
+    value: 'screenshot',
+    label: 'Screenshot',
+    size: '402:874', // 18px是左右侧按键的增加 一侧9px 数出来的
+    mask: null,
+  },
 } as const
 
 export const useGlobalSplashState = createGlobalState(
