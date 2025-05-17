@@ -15,13 +15,14 @@ const Login: React.FC = () => {
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
   const containerClassName = useEmotionCss(() => {
+    // https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/V-_oS6r-i7wAAAAAAAAAAAAAFl94AQBr
     return {
       display: 'flex',
       flexDirection: 'column',
       height: '100vh',
       overflow: 'auto',
       backgroundImage:
-        "url('https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/V-_oS6r-i7wAAAAAAAAAAAAAFl94AQBr')",
+        "url('/auth-bg.png')",
       backgroundSize: '100% 100%',
     };
   });
@@ -64,14 +65,24 @@ const Login: React.FC = () => {
       </Helmet>
       <div
         style={{
+          position: 'absolute',
+          right: '10%',
+          top: '50%',
+          transform: 'translateY(-50%)',
           flex: '1',
           padding: '32px 0',
+          backdropFilter: 'blur(18px) saturate(180%)',
+          backgroundColor: '#ffffff80',
+          borderRadius: '18px',
         }}
       >
         <LoginForm
           contentStyle={{
             minWidth: 280,
             maxWidth: '75vw',
+          }}
+          containerStyle={{
+            backgroundColor: 'transparent',
           }}
           logo={<img alt="logo" style={{ height: '100%' }} src="/logo.png" />}
           title="千叶单词"
