@@ -161,7 +161,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "E:\\Documents\\千叶单词\\leaves-word\\apps\\ends\\prisma-meta-database\\meta-database-client-types",
+      "value": "/Users/talexdreamsoul/Workspace/Research/leaves-word/apps/ends/prisma-meta-database/meta-database-client-types",
       "fromEnvVar": null
     },
     "config": {
@@ -170,17 +170,16 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "E:\\Documents\\千叶单词\\leaves-word\\apps\\ends\\prisma-meta-database\\schema.prisma",
+    "sourceFilePath": "/Users/talexdreamsoul/Workspace/Research/leaves-word/apps/ends/prisma-meta-database/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "..",
   "clientVersion": "6.8.1",

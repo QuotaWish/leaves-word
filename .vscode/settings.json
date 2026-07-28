@@ -2,5 +2,8 @@
   "cSpell.words": [
     "eventbus"
   ],
-  "typescript.tsdk": "node_modules\\typescript\\lib"
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "debug.javascript.defaultRuntimeExecutable": {
+    "pwa-node": "/Users/talexdreamsoul/.local/share/mise/shims/node"
+  }
 }
